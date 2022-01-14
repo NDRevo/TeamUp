@@ -7,23 +7,16 @@
 
 import Foundation
 
-struct TUMatch {
-
-    static let kTime        = "time"
+struct TUMatch: Identifiable {
+    var id = UUID()
 
     let startTime: Date
     let endTime: Date?
-    let desc: String
+    var name: String
 
-    var convertedDateToString: String {
-        let timeFormatter = DateFormatter()
-        timeFormatter.timeStyle = .short
-        return timeFormatter.string(from: startTime)
-    }
-
-    init(date: Date, description: String){
+    init(date: Date, name: String){
         startTime  = date
-        desc  = description
+        self.name  = name
         endTime = nil
     }
 }

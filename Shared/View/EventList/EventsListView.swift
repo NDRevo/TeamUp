@@ -8,20 +8,17 @@
 import SwiftUI
 
 struct EventsListView: View {
+    
+    @EnvironmentObject var eventsManager: EventsManager
+    @State var isPresentingAddEvent: Bool = false
+    
     var body: some View {
         NavigationView{
             List {
-                NavigationLink( destination: EventDetailView()){
-                    EventListCell()
-                }
-                NavigationLink( destination: EventDetailView()){
-                    EventListCell()
-                }
-                NavigationLink( destination: EventDetailView()){
-                    EventListCell()
-                }
-                NavigationLink( destination: EventDetailView()){
-                    EventListCell()
+                ForEach(eventsManager.events){ event in
+                    NavigationLink( destination: EventDetailView(event: event)){
+                        EventListCell(event: event)
+                    }
                 }
             }
             .listStyle(.plain)
@@ -29,7 +26,7 @@ struct EventsListView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
                     Button {
-                        print("Hello")
+                        isPresentingAddEvent = true
                     } label: {
                         Image(systemName: "plus.rectangle")
                             .tint(.blue)
@@ -37,6 +34,15 @@ struct EventsListView: View {
 
                 }
             }
+            .sheet(isPresented: $isPresentingAddEvent){
+                NavigationView {
+                    AddEventSheet(eventGame: Game.games[0])
+                        .toolbar { Button("Dismiss") { isPresentingAddEvent = false } }
+                        .navigationTitle("Create Event")
+                }
+               
+            }
+
         }
     }
 }

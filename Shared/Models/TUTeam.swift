@@ -7,6 +7,7 @@
 
 import Foundation
 
-struct TUTeam {
-    
+struct TUTeam: Identifiable {
+    let id = UUID()
+    let name: String
 }

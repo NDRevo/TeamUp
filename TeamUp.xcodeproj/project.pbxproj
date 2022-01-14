@@ -15,6 +15,24 @@
 		560E4271278F97EF00408B4B /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E426F278F97EF00408B4B /* EventDetailView.swift */; };
 		560E4274278FA68200408B4B /* MatchDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E4273278FA68200408B4B /* MatchDetailView.swift */; };
 		560E4275278FA68200408B4B /* MatchDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E4273278FA68200408B4B /* MatchDetailView.swift */; };
+		560E427927907E1200408B4B /* MatchDetailButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427827907E1200408B4B /* MatchDetailButton.swift */; };
+		560E427A27907E1200408B4B /* MatchDetailButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427827907E1200408B4B /* MatchDetailButton.swift */; };
+		560E427C2790825E00408B4B /* AddEventSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427B2790825E00408B4B /* AddEventSheet.swift */; };
+		560E427D2790825E00408B4B /* AddEventSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427B2790825E00408B4B /* AddEventSheet.swift */; };
+		560E42802790B2C000408B4B /* AddMatchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427F2790B2C000408B4B /* AddMatchSheet.swift */; };
+		560E42812790B2C000408B4B /* AddMatchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427F2790B2C000408B4B /* AddMatchSheet.swift */; };
+		560E42832790B2C700408B4B /* AddPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42822790B2C700408B4B /* AddPlayerSheet.swift */; };
+		560E42842790B2C700408B4B /* AddPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42822790B2C700408B4B /* AddPlayerSheet.swift */; };
+		560E42862790B2CC00408B4B /* AddAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42852790B2CC00408B4B /* AddAdminSheet.swift */; };
+		560E42872790B2CC00408B4B /* AddAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42852790B2CC00408B4B /* AddAdminSheet.swift */; };
+		560E42892790B6C900408B4B /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42882790B6C900408B4B /* MockData.swift */; };
+		560E428A2790B6C900408B4B /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42882790B6C900408B4B /* MockData.swift */; };
+		560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428B2790C0EE00408B4B /* Date+Ext.swift */; };
+		560E428D2790C0EE00408B4B /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428B2790C0EE00408B4B /* Date+Ext.swift */; };
+		560E428F2790C28300408B4B /* AddPlayerInEventSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428E2790C28300408B4B /* AddPlayerInEventSheet.swift */; };
+		560E42902790C28300408B4B /* AddPlayerInEventSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428E2790C28300408B4B /* AddPlayerInEventSheet.swift */; };
+		560E42982790C84900408B4B /* EventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42972790C84900408B4B /* EventsManager.swift */; };
+		560E42992790C84900408B4B /* EventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42972790C84900408B4B /* EventsManager.swift */; };
 		566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2DA278D27F000F4035C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566AB2C8278D27F000F4035C /* Assets.xcassets */; };
@@ -38,6 +56,15 @@
 		560E426B278E8F1500408B4B /* View+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Ext.swift"; sourceTree = "<group>"; };
 		560E426F278F97EF00408B4B /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		560E4273278FA68200408B4B /* MatchDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDetailView.swift; sourceTree = "<group>"; };
+		560E427827907E1200408B4B /* MatchDetailButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDetailButton.swift; sourceTree = "<group>"; };
+		560E427B2790825E00408B4B /* AddEventSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventSheet.swift; sourceTree = "<group>"; };
+		560E427F2790B2C000408B4B /* AddMatchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMatchSheet.swift; sourceTree = "<group>"; };
+		560E42822790B2C700408B4B /* AddPlayerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerSheet.swift; sourceTree = "<group>"; };
+		560E42852790B2CC00408B4B /* AddAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAdminSheet.swift; sourceTree = "<group>"; };
+		560E42882790B6C900408B4B /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
+		560E428B2790C0EE00408B4B /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
+		560E428E2790C28300408B4B /* AddPlayerInEventSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerInEventSheet.swift; sourceTree = "<group>"; };
+		560E42972790C84900408B4B /* EventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsManager.swift; sourceTree = "<group>"; };
 		566AB2C6278D27EE00F4035C /* TeamUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpApp.swift; sourceTree = "<group>"; };
 		566AB2C8278D27F000F4035C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		566AB2CD278D27F000F4035C /* TeamUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +101,7 @@
 			children = (
 				566AB2E7278D285000F4035C /* EventsListView.swift */,
 				560E4268278E8A2A00408B4B /* EventListCell.swift */,
+				560E427B2790825E00408B4B /* AddEventSheet.swift */,
 			);
 			path = EventList;
 			sourceTree = "<group>";
@@ -82,6 +110,9 @@
 			isa = PBXGroup;
 			children = (
 				560E426F278F97EF00408B4B /* EventDetailView.swift */,
+				560E427F2790B2C000408B4B /* AddMatchSheet.swift */,
+				560E42822790B2C700408B4B /* AddPlayerSheet.swift */,
+				560E42852790B2CC00408B4B /* AddAdminSheet.swift */,
 			);
 			path = EventDetail;
 			sourceTree = "<group>";
@@ -90,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				560E426B278E8F1500408B4B /* View+Ext.swift */,
+				560E428B2790C0EE00408B4B /* Date+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -98,8 +130,45 @@
 			isa = PBXGroup;
 			children = (
 				560E4273278FA68200408B4B /* MatchDetailView.swift */,
+				560E428E2790C28300408B4B /* AddPlayerInEventSheet.swift */,
 			);
 			path = MatchDetail;
+			sourceTree = "<group>";
+		};
+		560E427E2790B1F000408B4B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				560E42922790C77300408B4B /* CustomViews */,
+				560E426E278F94E600408B4B /* EventList */,
+				560E4272278F9EE600408B4B /* EventDetail */,
+				560E427727906B3A00408B4B /* MatchDetail */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		560E42912790C76300408B4B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				560E42962790C83600408B4B /* Managers */,
+				560E427627906B1C00408B4B /* Extensions */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		560E42922790C77300408B4B /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				560E427827907E1200408B4B /* MatchDetailButton.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		560E42962790C83600408B4B /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				560E42972790C84900408B4B /* EventsManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		566AB2C0278D27EE00F4035C = {
@@ -114,11 +183,9 @@
 		566AB2C5278D27EE00F4035C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				560E427627906B1C00408B4B /* Extensions */,
+				560E42912790C76300408B4B /* Utilities */,
 				566AB2EA278D2D9D00F4035C /* Models */,
-				560E427727906B3A00408B4B /* MatchDetail */,
-				560E4272278F9EE600408B4B /* EventDetail */,
-				560E426E278F94E600408B4B /* EventList */,
+				560E427E2790B1F000408B4B /* View */,
 				566AB2E4278D280D00F4035C /* AppTabView.swift */,
 				566AB2C6278D27EE00F4035C /* TeamUpApp.swift */,
 				566AB2C8278D27F000F4035C /* Assets.xcassets */,
@@ -150,6 +217,7 @@
 				566AB2EB278D2DA700F4035C /* TUMatch.swift */,
 				566AB2F4278D2DC200F4035C /* TUTeam.swift */,
 				566AB2F1278D2DB300F4035C /* TUPlayer.swift */,
+				560E42882790B6C900408B4B /* MockData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -254,15 +322,24 @@
 			files = (
 				566AB2E5278D280D00F4035C /* AppTabView.swift in Sources */,
 				560E4274278FA68200408B4B /* MatchDetailView.swift in Sources */,
+				560E427927907E1200408B4B /* MatchDetailButton.swift in Sources */,
+				560E42892790B6C900408B4B /* MockData.swift in Sources */,
+				560E42832790B2C700408B4B /* AddPlayerSheet.swift in Sources */,
 				566AB2E8278D285000F4035C /* EventsListView.swift in Sources */,
 				560E426C278E8F1500408B4B /* View+Ext.swift in Sources */,
 				566AB2EC278D2DA700F4035C /* TUMatch.swift in Sources */,
 				566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */,
+				560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */,
+				560E42802790B2C000408B4B /* AddMatchSheet.swift in Sources */,
+				560E42862790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
 				560E4269278E8A2A00408B4B /* EventListCell.swift in Sources */,
 				560E4270278F97EF00408B4B /* EventDetailView.swift in Sources */,
 				566AB2EF278D2DAD00F4035C /* TUEvent.swift in Sources */,
 				566AB2F5278D2DC200F4035C /* TUTeam.swift in Sources */,
 				566AB2F2278D2DB300F4035C /* TUPlayer.swift in Sources */,
+				560E427C2790825E00408B4B /* AddEventSheet.swift in Sources */,
+				560E42982790C84900408B4B /* EventsManager.swift in Sources */,
+				560E428F2790C28300408B4B /* AddPlayerInEventSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,15 +349,24 @@
 			files = (
 				566AB2E6278D280D00F4035C /* AppTabView.swift in Sources */,
 				560E4275278FA68200408B4B /* MatchDetailView.swift in Sources */,
+				560E427A27907E1200408B4B /* MatchDetailButton.swift in Sources */,
+				560E428A2790B6C900408B4B /* MockData.swift in Sources */,
+				560E42842790B2C700408B4B /* AddPlayerSheet.swift in Sources */,
 				566AB2E9278D285000F4035C /* EventsListView.swift in Sources */,
 				560E426D278E8F1500408B4B /* View+Ext.swift in Sources */,
 				566AB2ED278D2DA700F4035C /* TUMatch.swift in Sources */,
 				566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */,
+				560E428D2790C0EE00408B4B /* Date+Ext.swift in Sources */,
+				560E42812790B2C000408B4B /* AddMatchSheet.swift in Sources */,
+				560E42872790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
 				560E426A278E8A2A00408B4B /* EventListCell.swift in Sources */,
 				560E4271278F97EF00408B4B /* EventDetailView.swift in Sources */,
 				566AB2F0278D2DAD00F4035C /* TUEvent.swift in Sources */,
 				566AB2F6278D2DC200F4035C /* TUTeam.swift in Sources */,
 				566AB2F3278D2DB300F4035C /* TUPlayer.swift in Sources */,
+				560E427D2790825E00408B4B /* AddEventSheet.swift in Sources */,
+				560E42992790C84900408B4B /* EventsManager.swift in Sources */,
+				560E42902790C28300408B4B /* AddPlayerInEventSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

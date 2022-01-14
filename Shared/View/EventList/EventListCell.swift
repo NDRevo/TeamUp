@@ -8,31 +8,34 @@
 import SwiftUI
 
 struct EventListCell: View {
+    
+    var event: TUEvent
     var body: some View {
+     
         HStack {
            Rectangle()
                 .frame(width: 30)
-                .foregroundColor(.red)
+                .foregroundColor(event.game.gameColor)
                 .cornerRadius(8, corners: [.topLeft, .bottomLeft])
                 
             VStack(spacing: 10){
                 HStack{
                     VStack(alignment: .leading){
-                        Text("VALORANT")
+                        Text(event.game.name)
                             .bold()
                             .font(.caption2)
                             .foregroundColor(.secondary)
-                        Text("10 Mans In-Houses")
+                        Text(event.eventName)
                             .bold()
                             .font(.title3)
                     }
                     Spacer()
                     VStack(alignment: .trailing){
-                        Text("Oct")
+                        Text("\(event.getMonth())")
                             .bold()
                             .font(.caption2)
                             .foregroundColor(.secondary)
-                        Text("09")
+                        Text("\(event.getDateDetails.day!)")
                             .bold()
                             .font(.title3)
                     }
@@ -43,7 +46,7 @@ struct EventListCell: View {
                             .bold()
                             .font(.caption2)
                             .foregroundColor(.secondary)
-                        Text("8:00PM")
+                        Text("\(event.getTime())")
                             .bold()
                             .font(.body)
                     }
@@ -76,7 +79,7 @@ struct EventListCell: View {
 
 struct EventListCell_Previews: PreviewProvider {
     static var previews: some View {
-        EventListCell()
+        EventListCell(event: TUEvent(date: Date(), name: "Event", game: Game(name: "VALORANT", gameColor: .blue)))
             .environment(\.sizeCategory, .large)
     }
 }
