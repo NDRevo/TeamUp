@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct AddPlayerSheet: View {
     
     @EnvironmentObject var eventsManager: EventsManager
     
-    @State var playerName: String   = ""
+    @State var playerFirstName: String   = ""
     @State var game: Games          = .VALORANT
     @State var gameID: String       = ""
     @State var playerRank: String   = ""
@@ -21,7 +22,7 @@ struct AddPlayerSheet: View {
     var body: some View {
         List{
             Section{
-                TextField("Player Name", text: $playerName)
+                TextField("First Name", text: $playerFirstName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
             }
@@ -46,7 +47,7 @@ struct AddPlayerSheet: View {
 
             Section{
                 Button {
-                    //Add player to database
+                    createAndSavePlayer()
                     dismiss()
                 } label: {
                     Text("Add Player")
@@ -55,6 +56,24 @@ struct AddPlayerSheet: View {
             }
         }
         .navigationTitle("Create Player")
+    }
+    
+    func createPlayer() -> CKRecord{
+        let playerRecord = CKRecord(recordType: RecordType.player)
+        playerRecord[TUPlayer.kFirstName] = playerFirstName
+        
+        return playerRecord
+    }
+    
+    func createAndSavePlayer(){
+        let playerRecord = createPlayer()
+        Task{
+            do {
+                let _ = try await CloudKitManager.shared.save(record: playerRecord)
+            } catch {
+                //Alert
+            }
+        }
     }
 }
 
