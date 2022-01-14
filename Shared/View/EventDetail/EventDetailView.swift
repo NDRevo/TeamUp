@@ -56,13 +56,6 @@ struct EventDetailView: View {
                             Text("Add Player")
                                 .foregroundColor(.blue)
                         }
-                        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
-                            NavigationView{
-                                AddPlayerSheet(eventGame: event.game, players: $viewModel.players, viewModel: viewModel)
-                                    .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayer = false } }
-                                    .navigationTitle("Add Player")
-                            }
-                        }
                     }
                 
 

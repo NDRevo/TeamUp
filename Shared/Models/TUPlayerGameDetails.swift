@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct TUPlayerGameDetails:Hashable {
+struct TUPlayerGameDetails {
     let game: Games
     let gameID: String?
     let rank: String?

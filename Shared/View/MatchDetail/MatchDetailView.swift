@@ -10,6 +10,8 @@ import SwiftUI
 struct MatchDetailView: View {
     
     var match: TUMatch
+    
+    //Players that are in events, retrieved by finding players that have reference to the event id 
     @State var players = [TUPlayer(name: "John"),TUPlayer(name: "Luke"),TUPlayer(name: "Mick"),TUPlayer(name: "Justin"),TUPlayer(name: "Jack")]
     
     @State var isShowingAddPlayer = false

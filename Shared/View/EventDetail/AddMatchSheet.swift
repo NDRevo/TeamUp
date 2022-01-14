@@ -29,7 +29,6 @@ struct AddMatchSheet: View {
     
     var body: some View {
         List{
-            
             TextField("Match Name", text: $matchName)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)

@@ -9,32 +9,45 @@ import SwiftUI
 
 struct AddPlayerSheet: View {
     
-    var eventGame: Games
-    @Binding var players: [String]
-    @ObservedObject var viewModel: EventDetailViewModel
+    @Binding var players: [TUPlayer]
+    @EnvironmentObject var eventsManager: EventsManager
+    
     @State var playerName: String = ""
     @State var gameID: String = ""
-    @State var playerRank: TUPlayerGameDetails = TUPlayerGameDetails(game: .VALORANT, gameID: "Revo#0010", rank: "Immortal")
+    @State var game: Games = .VALORANT
+    
+    @State var playerRank: String = ""
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         List{
-            TextField("Player Name", text: $playerName)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.words)
+            Section{
+                TextField("Player Name", text: $playerName)
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.words)
+            }
+
+            Picker("Game", selection: $game) {
+                ForEach(Games.allCases, id: \.self){ game in
+                    Text(game.rawValue)
+                }
+            }
+            .pickerStyle(.menu)
+            
             TextField("Game ID", text: $gameID)
                 .disableAutocorrection(true)
                 .keyboardType(.twitter)
                 .textInputAutocapitalization(.never)
             Picker("Rank", selection: $playerRank) {
-                ForEach(viewModel.getRanksForGame(game: eventGame), id: \.self){ rank in
+                ForEach(eventsManager.getRanksForGame(game: game), id: \.self){ rank in
                     Text(rank)
                 }
             }
-            .pickerStyle(.menu)
+            .pickerStyle(.inline)
+
             Section{
                 Button {
-                    players.append(playerName)
+                    players.append(TUPlayer(name: playerName))
                     dismiss()
                 } label: {
                     Text("Add Player")
@@ -42,11 +55,12 @@ struct AddPlayerSheet: View {
                 }
             }
         }
+        .navigationTitle("Create Player")
     }
 }
 
 struct AddPlayerSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddPlayerSheet(eventGame: .VALORANT, players: .constant([]), viewModel: EventDetailViewModel())
+        AddPlayerSheet(players: .constant([]))
     }
 }

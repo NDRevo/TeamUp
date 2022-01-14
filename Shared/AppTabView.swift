@@ -9,7 +9,18 @@ import SwiftUI
 
 struct AppTabView: View {
     var body: some View {
-        EventsListView()
+        TabView {
+            EventsListView()
+                .tabItem {
+                    Label("Map", systemImage: "map.fill")
+                }
+            NavigationView{
+                PlayerListView()
+            }
+            .tabItem {
+                Label("Players", systemImage: "person.3.fill")
+            }
+        }
     }
 }
 
