@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct AddEventPlayer: View {
-    
-    @State var playerName: String = ""
+
     @Binding var players: [TUPlayer]
+    @State var playerName: String = ""
+
     @Environment(\.dismiss) var dismiss
     
     var body: some View {

@@ -10,6 +10,7 @@ import SwiftUI
 struct EventListCell: View {
     
     var event: TUEvent
+
     var body: some View {
      
         HStack {

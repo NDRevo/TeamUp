@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct PlayerListView: View {
-    
-    @State var isShowingAddPlayerSheet = false
+
     @EnvironmentObject var eventsManager: EventsManager
+
+    @State var isShowingAddPlayerSheet = false
     
     var body: some View {
         List{
@@ -26,7 +27,7 @@ struct PlayerListView: View {
         .navigationTitle("Players")
         .sheet(isPresented: $isShowingAddPlayerSheet, content: {
             NavigationView {
-                AddPlayerSheet(players: $eventsManager.players)
+                AddPlayerSheet()
                     .toolbar { Button("Dismiss") { isShowingAddPlayerSheet = false } }
                     .navigationTitle("Create Player")
             }

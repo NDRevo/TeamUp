@@ -45,6 +45,8 @@
 		560E42A927911AFD00408B4B /* PlayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A727911AFD00408B4B /* PlayerListView.swift */; };
 		560E42AB2791B40800408B4B /* AddExistingPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AA2791B40800408B4B /* AddExistingPlayer.swift */; };
 		560E42AC2791B40800408B4B /* AddExistingPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AA2791B40800408B4B /* AddExistingPlayer.swift */; };
+		560E42AE2791DA2D00408B4B /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AD2791DA2D00408B4B /* CloudKitManager.swift */; };
+		560E42AF2791DA2D00408B4B /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AD2791DA2D00408B4B /* CloudKitManager.swift */; };
 		566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2DA278D27F000F4035C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566AB2C8278D27F000F4035C /* Assets.xcassets */; };
@@ -83,6 +85,7 @@
 		560E42A32791100200408B4B /* EventDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewModel.swift; sourceTree = "<group>"; };
 		560E42A727911AFD00408B4B /* PlayerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListView.swift; sourceTree = "<group>"; };
 		560E42AA2791B40800408B4B /* AddExistingPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExistingPlayer.swift; sourceTree = "<group>"; };
+		560E42AD2791DA2D00408B4B /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		566AB2C6278D27EE00F4035C /* TeamUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpApp.swift; sourceTree = "<group>"; };
 		566AB2C8278D27F000F4035C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		566AB2CD278D27F000F4035C /* TeamUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				560E42972790C84900408B4B /* EventsManager.swift */,
+				560E42AD2791DA2D00408B4B /* CloudKitManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -378,6 +382,7 @@
 				560E427C2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42982790C84900408B4B /* EventsManager.swift in Sources */,
 				560E428F2790C28300408B4B /* AddEventPlayer.swift in Sources */,
+				560E42AE2791DA2D00408B4B /* CloudKitManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +416,7 @@
 				560E427D2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42992790C84900408B4B /* EventsManager.swift in Sources */,
 				560E42902790C28300408B4B /* AddEventPlayer.swift in Sources */,
+				560E42AF2791DA2D00408B4B /* CloudKitManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

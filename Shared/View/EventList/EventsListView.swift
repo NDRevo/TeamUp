@@ -10,6 +10,7 @@ import SwiftUI
 struct EventsListView: View {
     
     @EnvironmentObject var eventsManager: EventsManager
+
     @State var isPresentingAddEvent: Bool = false
     
     var body: some View {

@@ -8,29 +8,47 @@
 import SwiftUI
 
 struct AddExistingPlayer: View {
-    
-    @EnvironmentObject var eventsManager: EventsManager
-    @State var selectedPlayer: TUPlayer = TUPlayer(name: "Bob")
-    @Binding var players: [TUPlayer]
+
+    @EnvironmentObject var manager: EventsManager
+    @ObservedObject var viewModel: EventDetailViewModel
+
+    @State private var selectedPlayers = Set<UUID>()
+
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
-        
-        List{
-            Picker("Player", selection: $selectedPlayer) {
-                ForEach(eventsManager.players, id: \.self){ player in
-                    Text(player.name)
-                }
+        VStack{
+            List(manager.players, selection: $selectedPlayers) {
+                    Text($0.name)
             }
-            .pickerStyle(.inline)
-            
             Section{
                 Button {
-                    players.append(selectedPlayer)
+                    compare(selectedPlayers: Array(selectedPlayers))
                     dismiss()
                 } label: {
                     Text("Add Player")
                         .foregroundColor(.blue)
+                }
+            }
+        }
+        .navigationTitle("Add Player")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Dismiss") {
+                    dismiss()
+                }
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+               EditButton()
+            }
+        }
+    }
+
+    func compare(selectedPlayers: [UUID]){
+        for player in manager.players {
+            for selectedPlayer in selectedPlayers {
+                if player.id == selectedPlayer {
+                    viewModel.players.append(player)
                 }
             }
         }
@@ -39,6 +57,6 @@ struct AddExistingPlayer: View {
 
 struct AddExistingPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        AddExistingPlayer(players: .constant([]))
+        AddExistingPlayer(viewModel: EventDetailViewModel())
     }
 }

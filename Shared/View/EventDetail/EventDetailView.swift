@@ -9,8 +9,9 @@ import SwiftUI
 
 struct EventDetailView: View {
     
-    var event: TUEvent
     @StateObject var viewModel = EventDetailViewModel()
+
+    var event: TUEvent
 
     var body: some View {
             VStack {
@@ -37,8 +38,6 @@ struct EventDetailView: View {
                         .sheet(isPresented: $viewModel.isShowingAddMatch) {
                             NavigationView{
                                 AddMatchSheet(matches: $viewModel.matches)
-                                    .toolbar { Button("Dismiss") { viewModel.isShowingAddMatch = false } }
-                                    .navigationTitle("Create Match")
                             }
                         }
                     }
@@ -48,19 +47,17 @@ struct EventDetailView: View {
                             Text(player.name)
                         }
                         .onDelete { index in
-                            //Remove Player
+                            viewModel.players.remove(atOffsets: index)
                         }
                         Button {
-                            viewModel.isShowingAddPlayerToEvent = true
+                                viewModel.isShowingAddPlayerToEvent = true
                         } label: {
                             Text("Add Player")
                                 .foregroundColor(.blue)
                         }
                         .sheet(isPresented: $viewModel.isShowingAddPlayerToEvent) {
-                            NavigationView{
-                                AddExistingPlayer(players: $viewModel.players)
-                                    .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayerToEvent = false } }
-                                    .navigationTitle("Add Player")
+                            NavigationView {
+                                AddExistingPlayer(viewModel: viewModel)
                             }
                         }
                     }
@@ -82,8 +79,6 @@ struct EventDetailView: View {
                         .sheet(isPresented: $viewModel.isShowingAddAdmin) {
                             NavigationView{
                                 AddAdminSheet()
-                                    .toolbar { Button("Dismiss") { viewModel.isShowingAddAdmin = false } }
-                                    .navigationTitle("Add Admin")
                             }
                         }
                     }

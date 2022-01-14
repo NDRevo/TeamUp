@@ -45,6 +45,8 @@ struct AddMatchSheet: View {
                 }
             }
         }
+        .toolbar { Button("Dismiss") { dismiss() } }
+        .navigationTitle("Create Match")
     }
 }
 

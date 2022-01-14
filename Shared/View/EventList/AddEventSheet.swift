@@ -10,11 +10,12 @@ import SwiftUI
 struct AddEventSheet: View {
     
     @EnvironmentObject var eventsManager: EventsManager
-    @Environment(\.dismiss) var dismiss
-    let games = ["VALORANT", "Apex", "Fortnite"]
-    @State var eventName: String = ""
+
     @State var eventGame: Games
-    @State var eventDate: Date = Date()
+    @State var eventName: String    = ""
+    @State var eventDate: Date      = Date()
+
+    @Environment(\.dismiss) var dismiss
     
     let dateRange: PartialRangeFrom<Date> = {
         let date = Date()

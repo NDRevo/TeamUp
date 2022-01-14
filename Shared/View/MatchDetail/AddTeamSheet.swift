@@ -10,6 +10,7 @@ import SwiftUI
 struct AddTeamSheet: View {
     
     @Binding var teamName: String
+
     @Environment(\.dismiss) var dismiss
     
     var body: some View {

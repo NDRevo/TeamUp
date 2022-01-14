@@ -9,14 +9,13 @@ import SwiftUI
 
 struct AddPlayerSheet: View {
     
-    @Binding var players: [TUPlayer]
     @EnvironmentObject var eventsManager: EventsManager
     
-    @State var playerName: String = ""
-    @State var gameID: String = ""
-    @State var game: Games = .VALORANT
-    
-    @State var playerRank: String = ""
+    @State var playerName: String   = ""
+    @State var game: Games          = .VALORANT
+    @State var gameID: String       = ""
+    @State var playerRank: String   = ""
+
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -47,7 +46,7 @@ struct AddPlayerSheet: View {
 
             Section{
                 Button {
-                    players.append(TUPlayer(name: playerName))
+                    eventsManager.players.append(TUPlayer(name: playerName))
                     dismiss()
                 } label: {
                     Text("Add Player")
@@ -59,8 +58,8 @@ struct AddPlayerSheet: View {
     }
 }
 
-struct AddPlayerSheet_Previews: PreviewProvider {
-    static var previews: some View {
-        AddPlayerSheet(players: .constant([]))
-    }
-}
+//struct AddPlayerSheet_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddPlayerSheet()
+//    }
+//}
