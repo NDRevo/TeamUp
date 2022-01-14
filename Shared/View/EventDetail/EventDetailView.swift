@@ -45,16 +45,23 @@ struct EventDetailView: View {
 
                     Section(header: Text("Players")) {
                         ForEach(viewModel.players, id: \.self){ player in
-                            Text(player)
+                            Text(player.name)
                         }
                         .onDelete { index in
                             //Remove Player
                         }
                         Button {
-                            viewModel.isShowingAddPlayer = true
+                            viewModel.isShowingAddPlayerToEvent = true
                         } label: {
                             Text("Add Player")
                                 .foregroundColor(.blue)
+                        }
+                        .sheet(isPresented: $viewModel.isShowingAddPlayerToEvent) {
+                            NavigationView{
+                                AddExistingPlayer(players: $viewModel.players)
+                                    .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayerToEvent = false } }
+                                    .navigationTitle("Add Player")
+                            }
                         }
                     }
                 

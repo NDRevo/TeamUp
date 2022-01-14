@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddPlayerInEventSheet: View {
+struct AddEventPlayer: View {
     
     @State var playerName: String = ""
     @Binding var players: [TUPlayer]
@@ -31,8 +31,8 @@ struct AddPlayerInEventSheet: View {
     }
 }
 
-struct AddPlayerInEventSheet_Previews: PreviewProvider {
+struct AddEventPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        AddPlayerInEventSheet(players: .constant([]))
+        AddEventPlayer(players: .constant([]))
     }
 }

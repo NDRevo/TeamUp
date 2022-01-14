@@ -31,7 +31,6 @@ struct EventsListView: View {
                         Image(systemName: "plus.rectangle")
                             .tint(.blue)
                     }
-
                 }
             }
             .sheet(isPresented: $isPresentingAddEvent){
@@ -40,9 +39,7 @@ struct EventsListView: View {
                         .toolbar { Button("Dismiss") { isPresentingAddEvent = false } }
                         .navigationTitle("Create Event")
                 }
-               
             }
-
         }
     }
 }

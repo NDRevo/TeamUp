@@ -53,7 +53,7 @@ struct MatchDetailView: View {
                     }
                     .sheet(isPresented: $isShowingAddPlayer) {
                         NavigationView{
-                            AddPlayerInEventSheet(players: $players)
+                            AddEventPlayer(players: $players)
                                 .toolbar { Button("Dismiss") { isShowingAddPlayer = false } }
                                 .navigationTitle("Add Player")
                         }

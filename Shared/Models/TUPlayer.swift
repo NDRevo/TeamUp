@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TUPlayer: Identifiable {
+struct TUPlayer: Identifiable, Hashable {
     let id = UUID()
     let name: String
 }
