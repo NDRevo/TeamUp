@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MatchDetailView: View {
     
+    var match: TUMatch
     @State var players = [TUPlayer(name: "John", rank: ["VALORANT" : "Diamond"]),TUPlayer(name: "Luke", rank: ["VALORANT" : "Diamond"]),TUPlayer(name: "Mick", rank: ["VALORANT" : "Diamond"]),TUPlayer(name: "Justin", rank: ["VALORANT" : "Diamond"]),TUPlayer(name: "Jack", rank: ["VALORANT" : "Diamond"])]
     
     @State var isShowingAddPlayer = false
@@ -68,27 +69,18 @@ struct MatchDetailView: View {
                         Text("Add Team")
                     }
                 }
-
-                Section {
-                    Button(role: .destructive) {
-                        //Delete
-                    } label: {
-                        Text("Delete Match")
-                            .bold()
-                    }
-                }
             }
             .toolbar {
                 EditButton()
             }
         }
-        .navigationTitle("Immortal")
+        .navigationTitle(match.name)
     }
     
 }
 
 struct MatchDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchDetailView()
+        MatchDetailView(match: TUMatch(date: Date(), name: "Match"))
     }
 }

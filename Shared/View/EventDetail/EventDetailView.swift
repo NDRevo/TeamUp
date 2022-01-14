@@ -22,13 +22,16 @@ struct EventDetailView: View {
                 List {
                     Section(header: Text("Matches")) {
                         ForEach(matches) { match in
-                            NavigationLink(destination: MatchDetailView()) {
+                            NavigationLink(destination: MatchDetailView(match: match)) {
                                 VStack(alignment: .leading){
                                     Text(match.name)
                                     Text(match.startTime.convertDateToString())
                                         .font(.caption)
                                 }
                             }
+                        }
+                        .onDelete { index in
+                           //Delete Match
                         }
                         Button {
                             isShowingAddMatch = true
@@ -48,6 +51,9 @@ struct EventDetailView: View {
                     Section(header: Text("Players")) {
                         ForEach(players, id: \.self){ player in
                             Text(player)
+                        }
+                        .onDelete { index in
+                            //Remove Player
                         }
                         Button {
                             isShowingAddPlayer = true
@@ -69,6 +75,9 @@ struct EventDetailView: View {
                         ForEach(MockData.Matches) { match in
                                 Text(match.name)
                         }
+                        .onDelete { index in
+                            //Remove Admin
+                        }
                         Button {
                             isShowingAddAdmin = true
                         } label: {
@@ -84,6 +93,10 @@ struct EventDetailView: View {
                         }
                     }
                 }
+                .toolbar {
+                    EditButton()
+                }
+                
             }
             .navigationTitle(event.eventName)
     }
@@ -91,6 +104,6 @@ struct EventDetailView: View {
 
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailView(event: TUEvent(date: Date(), name: "Event", game: Game(name: "VALORANT", gameColor: .blue)))
+        EventDetailView(event: TUEvent(date: Date(), name: "Event", game: Games.VALORANT))
     }
 }

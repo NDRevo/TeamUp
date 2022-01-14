@@ -36,7 +36,7 @@ struct EventsListView: View {
             }
             .sheet(isPresented: $isPresentingAddEvent){
                 NavigationView {
-                    AddEventSheet(eventGame: Game.games[0])
+                    AddEventSheet(eventGame: Games.VALORANT)
                         .toolbar { Button("Dismiss") { isPresentingAddEvent = false } }
                         .navigationTitle("Create Event")
                 }

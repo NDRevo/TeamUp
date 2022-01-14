@@ -15,60 +15,60 @@ struct EventListCell: View {
         HStack {
            Rectangle()
                 .frame(width: 30)
-                .foregroundColor(event.game.gameColor)
+                .foregroundColor(event.getGameColor())
                 .cornerRadius(8, corners: [.topLeft, .bottomLeft])
                 
             VStack(spacing: 10){
                 HStack{
                     VStack(alignment: .leading){
-                        Text(event.game.name)
+                        Text(event.game.rawValue)
                             .bold()
-                            .font(.caption2)
+                            .font(.body)
                             .foregroundColor(.secondary)
                         Text(event.eventName)
                             .bold()
-                            .font(.title3)
+                            .font(.title2)
                     }
                     Spacer()
                     VStack(alignment: .trailing){
                         Text("\(event.getMonth())")
                             .bold()
-                            .font(.caption2)
+                            .font(.body)
                             .foregroundColor(.secondary)
                         Text("\(event.getDateDetails.day!)")
                             .bold()
-                            .font(.title3)
+                            .font(.title2)
                     }
                 }
                 HStack{
-                    VStack(alignment: .center){
+                    VStack(alignment: .center,spacing: 5){
                         Text("Time")
                             .bold()
-                            .font(.caption2)
+                            .font(.body)
                             .foregroundColor(.secondary)
                         Text("\(event.getTime())")
                             .bold()
-                            .font(.body)
+                            .font(.subheadline)
                     }
                     Spacer()
-                    VStack(alignment: .center){
+                    VStack(alignment: .center,spacing: 5){
                         Text("Players")
                             .bold()
-                            .font(.caption2)
+                            .font(.body)
                             .foregroundColor(.secondary)
                         Text("9")
                             .bold()
-                            .font(.body)
+                            .font(.subheadline)
                     }
                     Spacer()
-                    VStack(alignment: .center){
+                    VStack(alignment: .center,spacing: 5){
                         Text("Team")
                             .bold()
-                            .font(.caption2)
+                            .font(.body)
                             .foregroundColor(.secondary)
                         Text("2")
                             .bold()
-                            .font(.body)
+                            .font(.subheadline)
                     }
                 }
             }
@@ -79,7 +79,7 @@ struct EventListCell: View {
 
 struct EventListCell_Previews: PreviewProvider {
     static var previews: some View {
-        EventListCell(event: TUEvent(date: Date(), name: "Event", game: Game(name: "VALORANT", gameColor: .blue)))
+        EventListCell(event: TUEvent(date: Date(), name: "Event", game: Games.VALORANT))
             .environment(\.sizeCategory, .large)
     }
 }

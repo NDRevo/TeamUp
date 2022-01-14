@@ -1,5 +1,5 @@
 //
-//  AddPlayerInEventSheet.swift
+//  AddTeamSheet.swift
 //  TeamUp
 //
 //  Created by Noé Duran on 1/13/22.
@@ -7,23 +7,22 @@
 
 import SwiftUI
 
-struct AddPlayerInEventSheet: View {
+struct AddTeamSheet: View {
     
-    @State var playerName: String = ""
-    @Binding var players: [TUPlayer]
+    @Binding var teamName: String
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         List{
-            TextField("Player Name", text: $playerName)
+            TextField("Team Name", text: $teamName)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)
             Section{
                 Button {
-                    players.append(TUPlayer(name: playerName, rank: [:]))
+                    //players.append(TUTeam(name: teamName))
                     dismiss()
                 } label: {
-                    Text("Add Player")
+                    Text("Add Team")
                         .foregroundColor(.blue)
                 }
             }
@@ -31,8 +30,8 @@ struct AddPlayerInEventSheet: View {
     }
 }
 
-struct AddPlayerInEventSheet_Previews: PreviewProvider {
+struct AddTeamSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddPlayerInEventSheet(players: .constant([]))
+        AddTeamSheet(teamName: .constant("Team"))
     }
 }

@@ -13,7 +13,7 @@ struct AddEventSheet: View {
     @Environment(\.dismiss) var dismiss
     let games = ["VALORANT", "Apex", "Fortnite"]
     @State var eventName: String = ""
-    @State var eventGame: Game
+    @State var eventGame: Games
     @State var eventDate: Date = Date()
     
     let dateRange: PartialRangeFrom<Date> = {
@@ -30,8 +30,8 @@ struct AddEventSheet: View {
     var body: some View {
         List{
             Picker("Game", selection: $eventGame) {
-                ForEach(Game.games, id: \.self){game in
-                    Text(game.name)
+                ForEach(Games.allCases, id: \.self){game in
+                    Text(game.rawValue)
                 }
             }
             .pickerStyle(MenuPickerStyle())
@@ -57,6 +57,6 @@ struct AddEventSheet: View {
 
 struct AddEventSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddEventSheet(eventGame: Game(name: "VALORANT", gameColor: .blue))
+        AddEventSheet(eventGame: Games.VALORANT)
     }
 }

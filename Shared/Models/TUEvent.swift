@@ -7,26 +7,14 @@
 
 import SwiftUI
 
-struct Game: Hashable {
-    let id = UUID()
-    var name: String
-    var gameColor: Color
-    
-    static var games: [Game] = [
-        Game(name: "VALORANT", gameColor: .red),
-        Game(name: "Overwatch", gameColor: .yellow),
-        Game(name: "Apex Legends", gameColor: Color(UIColor.systemRed))
-    ]
-}
-
 struct TUEvent: Identifiable {
     var id = UUID()
 
     let startDate: Date
     let eventName: String
-    var game: Game
+    var game: Games
 
-    init(date: Date, name: String, game: Game){
+    init(date: Date, name: String, game: Games){
         startDate  = date
         eventName  = name
         self.game = game
@@ -44,7 +32,7 @@ struct TUEvent: Identifiable {
         return dateDetails
     }
     
-     func getMonth() -> String {
+    func getMonth() -> String {
          let dateFormatter = DateFormatter()
          dateFormatter.dateFormat = "LLL"
          return dateFormatter.string(from: startDate)
@@ -55,4 +43,15 @@ struct TUEvent: Identifiable {
         dateFormatter.dateFormat = "hh:mm a"
         return dateFormatter.string(from: startDate)
    }
+    
+    func getGameColor() -> Color{
+        switch game {
+        case .overwatch:
+            return .yellow
+        case .apex:
+            return .red
+        case .VALORANT:
+            return .red
+        }
+    }
 }

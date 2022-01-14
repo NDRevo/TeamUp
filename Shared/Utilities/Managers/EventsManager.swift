@@ -8,5 +8,5 @@
 import Foundation
 
 final class EventsManager: ObservableObject {
-    @Published var events: [TUEvent] = []
+    @Published var events: [TUEvent] = [TUEvent(date: Date(), name: "In-Houses", game: Games.VALORANT)]
 }
