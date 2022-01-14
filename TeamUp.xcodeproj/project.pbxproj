@@ -47,6 +47,7 @@
 		560E42AC2791B40800408B4B /* AddExistingPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AA2791B40800408B4B /* AddExistingPlayer.swift */; };
 		560E42AE2791DA2D00408B4B /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AD2791DA2D00408B4B /* CloudKitManager.swift */; };
 		560E42AF2791DA2D00408B4B /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AD2791DA2D00408B4B /* CloudKitManager.swift */; };
+		560E42B327920DAC00408B4B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 560E42B227920DAC00408B4B /* CloudKit.framework */; };
 		566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2DA278D27F000F4035C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566AB2C8278D27F000F4035C /* Assets.xcassets */; };
@@ -86,6 +87,8 @@
 		560E42A727911AFD00408B4B /* PlayerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListView.swift; sourceTree = "<group>"; };
 		560E42AA2791B40800408B4B /* AddExistingPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExistingPlayer.swift; sourceTree = "<group>"; };
 		560E42AD2791DA2D00408B4B /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
+		560E42B027920DA800408B4B /* TeamUp (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TeamUp (iOS).entitlements"; sourceTree = "<group>"; };
+		560E42B227920DAC00408B4B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		566AB2C6278D27EE00F4035C /* TeamUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpApp.swift; sourceTree = "<group>"; };
 		566AB2C8278D27F000F4035C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		566AB2CD278D27F000F4035C /* TeamUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				560E42B327920DAC00408B4B /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,12 +210,22 @@
 			path = PlayerListView;
 			sourceTree = "<group>";
 		};
+		560E42B127920DAC00408B4B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				560E42B227920DAC00408B4B /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		566AB2C0278D27EE00F4035C = {
 			isa = PBXGroup;
 			children = (
+				560E42B027920DA800408B4B /* TeamUp (iOS).entitlements */,
 				566AB2C5278D27EE00F4035C /* Shared */,
 				566AB2D4278D27F000F4035C /* macOS */,
 				566AB2CE278D27F000F4035C /* Products */,
+				560E42B127920DAC00408B4B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -541,6 +555,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "TeamUp (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Q8CL37543D;
@@ -571,6 +586,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "TeamUp (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Q8CL37543D;

@@ -21,7 +21,7 @@ struct AddEventPlayer: View {
                 .textInputAutocapitalization(.words)
             Section{
                 Button {
-                    players.append(TUPlayer(name: playerName))
+                    //Add player to match/team
                     dismiss()
                 } label: {
                     Text("Add Player")

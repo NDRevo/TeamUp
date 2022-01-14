@@ -12,3 +12,11 @@ enum Games: String, CaseIterable{
     case apex         = "Apex Legends"
     case VALORANT     = "VALORANT"
 }
+
+enum RecordType{
+    static let event             = "TUEvent"
+    static let match             = "TUMatch"
+    static let team              = "TUTeam"
+    static let player            = "TUPlayer"
+    static let playerGameDetails = "TUPlayGameDetails"
+}

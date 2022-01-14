@@ -44,7 +44,7 @@ struct EventDetailView: View {
 
                     Section(header: Text("Players")) {
                         ForEach(viewModel.players, id: \.self){ player in
-                            Text(player.name)
+                            Text(player.firstName)
                         }
                         .onDelete { index in
                             viewModel.players.remove(atOffsets: index)

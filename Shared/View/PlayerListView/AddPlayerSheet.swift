@@ -46,7 +46,7 @@ struct AddPlayerSheet: View {
 
             Section{
                 Button {
-                    eventsManager.players.append(TUPlayer(name: playerName))
+                    //Add player to database
                     dismiss()
                 } label: {
                     Text("Add Player")

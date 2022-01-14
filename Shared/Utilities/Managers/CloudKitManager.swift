@@ -20,4 +20,16 @@ final class CloudKitManager {
 
     private init(){}
     
+    
+    func getPlayers() async throws -> [TUPlayer] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
+        let query = CKQuery(recordType: RecordType.player, predicate: NSPredicate(value: true))
+        query.sortDescriptors = [sortDescriptor]
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap{_, result in try? result.get()}
+        
+        return records.map(TUPlayer.init)
+    }
+    
 }

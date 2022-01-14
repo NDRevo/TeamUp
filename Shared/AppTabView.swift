@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct AppTabView: View {
+    
+    @EnvironmentObject var eventsManager: EventsManager
+    
     var body: some View {
         TabView {
             EventsListView()
@@ -19,6 +22,15 @@ struct AppTabView: View {
             }
             .tabItem {
                 Label("Players", systemImage: "person.3.fill")
+            }
+        }
+        .task{
+            Task{
+                do{
+                    eventsManager.players = try await CloudKitManager.shared.getPlayers()
+                }catch {
+                    //Alert
+                }
             }
         }
     }

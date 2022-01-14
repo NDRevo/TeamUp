@@ -16,7 +16,7 @@ struct PlayerListView: View {
     var body: some View {
         List{
             ForEach(eventsManager.players){ player in
-                Text(player.name)
+                Text(player.firstName)
             }
             .onDelete { index in
                 eventsManager.players.remove(atOffsets: index)

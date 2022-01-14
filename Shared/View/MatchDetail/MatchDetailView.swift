@@ -12,7 +12,7 @@ struct MatchDetailView: View {
     var match: TUMatch
     
     //Players that are in events, retrieved by finding players that have reference to the event id 
-    @State var players = [TUPlayer(name: "John"),TUPlayer(name: "Luke"),TUPlayer(name: "Mick"),TUPlayer(name: "Justin"),TUPlayer(name: "Jack")]
+    @State var players: [TUPlayer] = []
     
     @State var isShowingAddPlayer = false
     var body: some View {
@@ -40,7 +40,7 @@ struct MatchDetailView: View {
                 
                 Section {
                     ForEach(players){ player in
-                        Text(player.name)
+                        Text(player.firstName)
                     }
                     .onDelete(perform: { indexSet in
                         print("Hello")

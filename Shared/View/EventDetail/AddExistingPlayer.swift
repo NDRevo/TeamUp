@@ -19,11 +19,11 @@ struct AddExistingPlayer: View {
     var body: some View {
         VStack{
             List(manager.players, selection: $selectedPlayers) {
-                    Text($0.name)
+                    Text($0.firstName)
             }
             Section{
                 Button {
-                    compare(selectedPlayers: Array(selectedPlayers))
+                    // Add player to event
                     dismiss()
                 } label: {
                     Text("Add Player")
@@ -44,15 +44,16 @@ struct AddExistingPlayer: View {
         }
     }
 
-    func compare(selectedPlayers: [UUID]){
-        for player in manager.players {
-            for selectedPlayer in selectedPlayers {
-                if player.id == selectedPlayer {
-                    viewModel.players.append(player)
-                }
-            }
-        }
-    }
+    //Add player to event
+//    func compare(selectedPlayers: [UUID]){
+//        for player in manager.players {
+//            for selectedPlayer in selectedPlayers {
+//                if player.id == selectedPlayer {
+//                    viewModel.players.append(player)
+//                }
+//            }
+//        }
+//    }
 }
 
 struct AddExistingPlayer_Previews: PreviewProvider {
