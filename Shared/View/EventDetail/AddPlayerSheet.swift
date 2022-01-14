@@ -9,8 +9,12 @@ import SwiftUI
 
 struct AddPlayerSheet: View {
     
-    @State var playerName: String = ""
+    var eventGame: Games
     @Binding var players: [String]
+    @ObservedObject var viewModel: EventDetailViewModel
+    @State var playerName: String = ""
+    @State var gameID: String = ""
+    @State var playerRank: TUPlayerGameDetails = TUPlayerGameDetails(game: .VALORANT, gameID: "Revo#0010", rank: "Immortal")
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -18,6 +22,16 @@ struct AddPlayerSheet: View {
             TextField("Player Name", text: $playerName)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)
+            TextField("Game ID", text: $gameID)
+                .disableAutocorrection(true)
+                .keyboardType(.twitter)
+                .textInputAutocapitalization(.never)
+            Picker("Rank", selection: $playerRank) {
+                ForEach(viewModel.getRanksForGame(game: eventGame), id: \.self){ rank in
+                    Text(rank)
+                }
+            }
+            .pickerStyle(.menu)
             Section{
                 Button {
                     players.append(playerName)
@@ -33,6 +47,6 @@ struct AddPlayerSheet: View {
 
 struct AddPlayerSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddPlayerSheet(players: .constant([]))
+        AddPlayerSheet(eventGame: .VALORANT, players: .constant([]), viewModel: EventDetailViewModel())
     }
 }

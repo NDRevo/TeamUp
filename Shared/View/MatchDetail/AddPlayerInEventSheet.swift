@@ -20,7 +20,7 @@ struct AddPlayerInEventSheet: View {
                 .textInputAutocapitalization(.words)
             Section{
                 Button {
-                    players.append(TUPlayer(name: playerName, rank: [:]))
+                    players.append(TUPlayer(name: playerName))
                     dismiss()
                 } label: {
                     Text("Add Player")

@@ -10,7 +10,7 @@ import SwiftUI
 struct MatchDetailView: View {
     
     var match: TUMatch
-    @State var players = [TUPlayer(name: "John", rank: ["VALORANT" : "Diamond"]),TUPlayer(name: "Luke", rank: ["VALORANT" : "Diamond"]),TUPlayer(name: "Mick", rank: ["VALORANT" : "Diamond"]),TUPlayer(name: "Justin", rank: ["VALORANT" : "Diamond"]),TUPlayer(name: "Jack", rank: ["VALORANT" : "Diamond"])]
+    @State var players = [TUPlayer(name: "John"),TUPlayer(name: "Luke"),TUPlayer(name: "Mick"),TUPlayer(name: "Justin"),TUPlayer(name: "Jack")]
     
     @State var isShowingAddPlayer = false
     var body: some View {

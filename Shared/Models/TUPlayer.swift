@@ -10,5 +10,4 @@ import Foundation
 struct TUPlayer: Identifiable {
     let id = UUID()
     let name: String
-    let rank: [String: String]
 }

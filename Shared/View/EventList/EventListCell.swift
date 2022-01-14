@@ -31,7 +31,7 @@ struct EventListCell: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing){
-                        Text("\(event.getMonth())")
+                        Text("\(event.getMonth)")
                             .bold()
                             .font(.body)
                             .foregroundColor(.secondary)
@@ -46,7 +46,7 @@ struct EventListCell: View {
                             .bold()
                             .font(.body)
                             .foregroundColor(.secondary)
-                        Text("\(event.getTime())")
+                        Text("\(event.getTime)")
                             .bold()
                             .font(.subheadline)
                     }

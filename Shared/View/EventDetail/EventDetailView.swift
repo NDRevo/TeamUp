@@ -10,18 +10,13 @@ import SwiftUI
 struct EventDetailView: View {
     
     var event: TUEvent
-    @State var isShowingAddMatch = false
-    @State var isShowingAddPlayer = false
-    @State var isShowingAddAdmin = false
-    
-    @State var players: [String] = ["John", "Mick", "David"]
-    @State var matches: [TUMatch] = [TUMatch(date: Date(), name: "Immortal"),TUMatch(date: Date(), name: "Diamond"),TUMatch(date: Date(), name: "Randoms")]
+    @StateObject var viewModel = EventDetailViewModel()
 
     var body: some View {
             VStack {
                 List {
                     Section(header: Text("Matches")) {
-                        ForEach(matches) { match in
+                        ForEach(viewModel.matches) { match in
                             NavigationLink(destination: MatchDetailView(match: match)) {
                                 VStack(alignment: .leading){
                                     Text(match.name)
@@ -34,37 +29,37 @@ struct EventDetailView: View {
                            //Delete Match
                         }
                         Button {
-                            isShowingAddMatch = true
+                            viewModel.isShowingAddMatch = true
                         } label: {
                             Text("Add Match")
                                 .foregroundColor(.blue)
                         }
-                        .sheet(isPresented: $isShowingAddMatch) {
+                        .sheet(isPresented: $viewModel.isShowingAddMatch) {
                             NavigationView{
-                                AddMatchSheet(matches: $matches)
-                                    .toolbar { Button("Dismiss") { isShowingAddMatch = false } }
+                                AddMatchSheet(matches: $viewModel.matches)
+                                    .toolbar { Button("Dismiss") { viewModel.isShowingAddMatch = false } }
                                     .navigationTitle("Create Match")
                             }
                         }
                     }
 
                     Section(header: Text("Players")) {
-                        ForEach(players, id: \.self){ player in
+                        ForEach(viewModel.players, id: \.self){ player in
                             Text(player)
                         }
                         .onDelete { index in
                             //Remove Player
                         }
                         Button {
-                            isShowingAddPlayer = true
+                            viewModel.isShowingAddPlayer = true
                         } label: {
                             Text("Add Player")
                                 .foregroundColor(.blue)
                         }
-                        .sheet(isPresented: $isShowingAddPlayer) {
+                        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
                             NavigationView{
-                                AddPlayerSheet(players: $players)
-                                    .toolbar { Button("Dismiss") { isShowingAddPlayer = false } }
+                                AddPlayerSheet(eventGame: event.game, players: $viewModel.players, viewModel: viewModel)
+                                    .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayer = false } }
                                     .navigationTitle("Add Player")
                             }
                         }
@@ -79,15 +74,15 @@ struct EventDetailView: View {
                             //Remove Admin
                         }
                         Button {
-                            isShowingAddAdmin = true
+                            viewModel.isShowingAddAdmin = true
                         } label: {
                             Text("Add Admin")
                                 .foregroundColor(.blue)
                         }
-                        .sheet(isPresented: $isShowingAddAdmin) {
+                        .sheet(isPresented: $viewModel.isShowingAddAdmin) {
                             NavigationView{
                                 AddAdminSheet()
-                                    .toolbar { Button("Dismiss") { isShowingAddAdmin = false } }
+                                    .toolbar { Button("Dismiss") { viewModel.isShowingAddAdmin = false } }
                                     .navigationTitle("Add Admin")
                             }
                         }

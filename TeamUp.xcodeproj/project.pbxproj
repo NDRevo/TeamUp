@@ -37,6 +37,10 @@
 		560E429C2791009900408B4B /* AddTeamSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429A2791009900408B4B /* AddTeamSheet.swift */; };
 		560E429E279103BB00408B4B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429D279103BB00408B4B /* Constants.swift */; };
 		560E429F279103BB00408B4B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429D279103BB00408B4B /* Constants.swift */; };
+		560E42A127910CF900408B4B /* TUPlayerGameDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A027910CF800408B4B /* TUPlayerGameDetails.swift */; };
+		560E42A227910CF900408B4B /* TUPlayerGameDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A027910CF800408B4B /* TUPlayerGameDetails.swift */; };
+		560E42A42791100200408B4B /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A32791100200408B4B /* EventDetailViewModel.swift */; };
+		560E42A52791100200408B4B /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A32791100200408B4B /* EventDetailViewModel.swift */; };
 		566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2DA278D27F000F4035C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566AB2C8278D27F000F4035C /* Assets.xcassets */; };
@@ -71,6 +75,8 @@
 		560E42972790C84900408B4B /* EventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsManager.swift; sourceTree = "<group>"; };
 		560E429A2791009900408B4B /* AddTeamSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeamSheet.swift; sourceTree = "<group>"; };
 		560E429D279103BB00408B4B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		560E42A027910CF800408B4B /* TUPlayerGameDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TUPlayerGameDetails.swift; sourceTree = "<group>"; };
+		560E42A32791100200408B4B /* EventDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewModel.swift; sourceTree = "<group>"; };
 		566AB2C6278D27EE00F4035C /* TeamUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpApp.swift; sourceTree = "<group>"; };
 		566AB2C8278D27F000F4035C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		566AB2CD278D27F000F4035C /* TeamUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +121,7 @@
 		560E4272278F9EE600408B4B /* EventDetail */ = {
 			isa = PBXGroup;
 			children = (
+				560E42A32791100200408B4B /* EventDetailViewModel.swift */,
 				560E426F278F97EF00408B4B /* EventDetailView.swift */,
 				560E427F2790B2C000408B4B /* AddMatchSheet.swift */,
 				560E42822790B2C700408B4B /* AddPlayerSheet.swift */,
@@ -225,6 +232,7 @@
 				566AB2EB278D2DA700F4035C /* TUMatch.swift */,
 				566AB2F4278D2DC200F4035C /* TUTeam.swift */,
 				566AB2F1278D2DB300F4035C /* TUPlayer.swift */,
+				560E42A027910CF800408B4B /* TUPlayerGameDetails.swift */,
 				560E42882790B6C900408B4B /* MockData.swift */,
 			);
 			path = Models;
@@ -342,7 +350,9 @@
 				560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */,
 				560E42802790B2C000408B4B /* AddMatchSheet.swift in Sources */,
 				560E42862790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
+				560E42A42791100200408B4B /* EventDetailViewModel.swift in Sources */,
 				560E4269278E8A2A00408B4B /* EventListCell.swift in Sources */,
+				560E42A127910CF900408B4B /* TUPlayerGameDetails.swift in Sources */,
 				560E4270278F97EF00408B4B /* EventDetailView.swift in Sources */,
 				566AB2EF278D2DAD00F4035C /* TUEvent.swift in Sources */,
 				566AB2F5278D2DC200F4035C /* TUTeam.swift in Sources */,
@@ -371,7 +381,9 @@
 				560E428D2790C0EE00408B4B /* Date+Ext.swift in Sources */,
 				560E42812790B2C000408B4B /* AddMatchSheet.swift in Sources */,
 				560E42872790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
+				560E42A52791100200408B4B /* EventDetailViewModel.swift in Sources */,
 				560E426A278E8A2A00408B4B /* EventListCell.swift in Sources */,
+				560E42A227910CF900408B4B /* TUPlayerGameDetails.swift in Sources */,
 				560E4271278F97EF00408B4B /* EventDetailView.swift in Sources */,
 				566AB2F0278D2DAD00F4035C /* TUEvent.swift in Sources */,
 				566AB2F6278D2DC200F4035C /* TUTeam.swift in Sources */,

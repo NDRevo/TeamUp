@@ -32,13 +32,13 @@ struct TUEvent: Identifiable {
         return dateDetails
     }
     
-    func getMonth() -> String {
+    var getMonth: String {
          let dateFormatter = DateFormatter()
          dateFormatter.dateFormat = "LLL"
          return dateFormatter.string(from: startDate)
     }
     
-    func getTime() -> String {
+    var getTime: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
         return dateFormatter.string(from: startDate)
