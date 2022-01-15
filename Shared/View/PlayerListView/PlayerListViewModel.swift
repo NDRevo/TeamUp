@@ -18,6 +18,9 @@ import CloudKit
     @Published var gameID: String           = ""
     @Published var playerGameRank: String   = ""
     
+    //Stops app from calling getPlayers() twice in .task modifier: Swift Bug
+    @Published var onAppearHasFired = false
+
     private func createPlayer() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
         playerRecord[TUPlayer.kFirstName]   = playerFirstName
@@ -64,7 +67,7 @@ import CloudKit
     func getPlayers(for eventsManager: EventsManager){
         Task {
             do {
-                let _ = try await CloudKitManager.shared.getPlayers()
+                eventsManager.players = try await CloudKitManager.shared.getPlayers()
             } catch {
                 //Alert: couldnt get players lsit
             }

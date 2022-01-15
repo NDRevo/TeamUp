@@ -45,7 +45,10 @@ struct PlayerListView: View {
             }
         }
         .task {
-            viewModel.getPlayers(for: eventsManager)
+            if !viewModel.onAppearHasFired{
+                viewModel.getPlayers(for: eventsManager)
+                viewModel.onAppearHasFired = true
+            }
         }
     }
 }

@@ -17,6 +17,8 @@ import CloudKit
     @Published var eventGame: Games           = .VALORANT
     @Published var eventLocation: String      = ""
     
+    //Stops app from calling getEvents() twice in .task modifier: Swift Bug
+    @Published var onAppearHasFired = false
     
     private func createEventRecord() -> CKRecord{
         let record = CKRecord(recordType: RecordType.event)
