@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EventDetailView: View {
     
+    @EnvironmentObject var eventsManager: EventsManager
     @StateObject var viewModel = EventDetailViewModel()
 
     var event: TUEvent
@@ -62,26 +63,26 @@ struct EventDetailView: View {
                         }
                     }
                 
-
-                    Section(header: Text("Admins")) {
-                        ForEach(MockData.Matches) { match in
-                                Text(match.name)
-                        }
-                        .onDelete { index in
-                            //Remove Admin
-                        }
-                        Button {
-                            viewModel.isShowingAddAdmin = true
-                        } label: {
-                            Text("Add Admin")
-                                .foregroundColor(.blue)
-                        }
-                        .sheet(isPresented: $viewModel.isShowingAddAdmin) {
-                            NavigationView{
-                                AddAdminSheet()
-                            }
-                        }
-                    }
+//MARK: Admin
+//                    Section(header: Text("Admins")) {
+//                        ForEach(MockData.Matches) { match in
+//                                Text(match.name)
+//                        }
+//                        .onDelete { index in
+//                            //Remove Admin
+//                        }
+//                        Button {
+//                            viewModel.isShowingAddAdmin = true
+//                        } label: {
+//                            Text("Add Admin")
+//                                .foregroundColor(.blue)
+//                        }
+//                        .sheet(isPresented: $viewModel.isShowingAddAdmin) {
+//                            NavigationView{
+//                                AddAdminSheet()
+//                            }
+//                        }
+//                    }
                 }
                 .toolbar {
                     EditButton()
@@ -94,6 +95,6 @@ struct EventDetailView: View {
 
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailView(event: TUEvent(date: Date(), name: "Event", game: Games.VALORANT))
+        EventDetailView(event: TUEvent(record: MockData.event))
     }
 }

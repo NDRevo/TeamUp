@@ -23,12 +23,21 @@ struct AppTabView: View {
             .tabItem {
                 Label("Players", systemImage: "person.3.fill")
             }
+            .task {
+                Task {
+                    do{
+                        eventsManager.events  = try await CloudKitManager.shared.getEvents()
+                    } catch {
+                        //Alert could not get events
+                    }
+                }
+            }
             .task{
                 Task{
                     do{
                         eventsManager.players = try await CloudKitManager.shared.getPlayers()
                     }catch {
-                        //Alert
+                        //Alert could not get players
                     }
                 }
             }

@@ -10,10 +10,7 @@ import SwiftUI
 struct AddEventSheet: View {
     
     @EnvironmentObject var eventsManager: EventsManager
-
-    @State var eventGame: Games
-    @State var eventName: String    = ""
-    @State var eventDate: Date      = Date()
+    @ObservedObject var viewModel: EventsListViewModel
 
     @Environment(\.dismiss) var dismiss
     
@@ -30,22 +27,26 @@ struct AddEventSheet: View {
     
     var body: some View {
         List{
-            Picker("Game", selection: $eventGame) {
+            TextField("Event Name", text: $viewModel.eventName)
+                .disableAutocorrection(true)
+                .textInputAutocapitalization(.words)
+
+            DatePicker("Event Date", selection: $viewModel.eventDate, in: dateRange)
+
+            Picker("Game", selection: $viewModel.eventGame) {
                 ForEach(Games.allCases, id: \.self){game in
                     Text(game.rawValue)
                 }
             }
             .pickerStyle(MenuPickerStyle())
             
-            TextField("Event Name", text: $eventName)
+            TextField("Event Location", text: $viewModel.eventLocation)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)
-
-            DatePicker("Event Date", selection: $eventDate, in: dateRange)
             
             Section{
                 Button {
-                    eventsManager.events.append(TUEvent(date: eventDate, name: eventName, game: eventGame))
+                    viewModel.createEvent()
                     dismiss()
                 } label: {
                     Text("Create Event")
@@ -58,6 +59,6 @@ struct AddEventSheet: View {
 
 struct AddEventSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddEventSheet(eventGame: Games.VALORANT)
+        AddEventSheet(viewModel: EventsListViewModel())
     }
 }

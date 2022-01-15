@@ -32,6 +32,17 @@ final class CloudKitManager {
         return records.map(TUPlayer.init)
     }
     
+    func getEvents() async throws -> [TUEvent] {
+        let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventDate, ascending: true)
+        let query = CKQuery(recordType: RecordType.event, predicate: NSPredicate(value: true))
+        query.sortDescriptors = [sortDescriptor]
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap{_, result in try? result.get()}
+
+        return records.map(TUEvent.init)
+    }
+    
     func save(record: CKRecord) async throws -> CKRecord {
         return try await container.publicCloudDatabase.save(record)
     }

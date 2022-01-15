@@ -6,27 +6,41 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct TUEvent: Identifiable {
-    var id = UUID()
 
-    let startDate: Date
+    static let kEventName      = "eventName"
+    static let kEventDate      = "eventDate"
+    static let kEventGame      = "eventGame"
+    static let kEventLocation  = "eventLocation"
+
+
+    let id: CKRecord.ID
+
     let eventName: String
-    var game: Games
+    let eventDate: Date
+    let eventGame: String
+    let eventLocation: String
 
-    init(date: Date, name: String, game: Games){
-        startDate  = date
-        eventName  = name
-        self.game = game
+    init(record: CKRecord){
+        id = record.recordID
+        
+        eventName     = record[TUEvent.kEventName] as? String ?? "N/A"
+        eventDate     = record[TUEvent.kEventDate] as? Date ?? Date()
+        eventGame     = record[TUEvent.kEventGame] as? String ?? "N/A"
+        eventLocation = record[TUEvent.kEventLocation] as? String ?? "N/A"
     }
+    
+    
     
     
     var getDateDetails: DateComponents {
         let calendar = Calendar.current
         let dateDetails = DateComponents(
-        year: calendar.component(.year, from: startDate),
-        month: calendar.component(.month, from: startDate),
-        day: calendar.component(.day, from: startDate)
+        year: calendar.component(.year, from: eventDate),
+        month: calendar.component(.month, from: eventDate),
+        day: calendar.component(.day, from: eventDate)
         )
     
         return dateDetails
@@ -35,23 +49,25 @@ struct TUEvent: Identifiable {
     var getMonth: String {
          let dateFormatter = DateFormatter()
          dateFormatter.dateFormat = "LLL"
-         return dateFormatter.string(from: startDate)
+         return dateFormatter.string(from: eventDate)
     }
     
     var getTime: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
-        return dateFormatter.string(from: startDate)
+        return dateFormatter.string(from: eventDate)
    }
     
     func getGameColor() -> Color{
-        switch game {
-        case .overwatch:
-            return .yellow
-        case .apex:
-            return .red
-        case .VALORANT:
-            return .red
+        switch eventGame {
+            case "Overwatch":
+                return .yellow
+            case "Apex Legends":
+                return .red
+            case "VALORANT":
+                return .red
+            default:
+                return .gray
         }
     }
 }

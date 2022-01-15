@@ -22,7 +22,7 @@ struct EventListCell: View {
             VStack(spacing: 10){
                 HStack{
                     VStack(alignment: .leading){
-                        Text(event.game.rawValue)
+                        Text(event.eventGame)
                             .bold()
                             .font(.body)
                             .foregroundColor(.secondary)
@@ -80,7 +80,7 @@ struct EventListCell: View {
 
 struct EventListCell_Previews: PreviewProvider {
     static var previews: some View {
-        EventListCell(event: TUEvent(date: Date(), name: "Event", game: Games.VALORANT))
+        EventListCell(event: TUEvent(record: MockData.event))
             .environment(\.sizeCategory, .large)
     }
 }

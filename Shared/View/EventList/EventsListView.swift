@@ -10,8 +10,7 @@ import SwiftUI
 struct EventsListView: View {
     
     @EnvironmentObject var eventsManager: EventsManager
-
-    @State var isPresentingAddEvent: Bool = false
+    @StateObject var viewModel = EventsListViewModel()
     
     var body: some View {
         NavigationView{
@@ -27,17 +26,17 @@ struct EventsListView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
                     Button {
-                        isPresentingAddEvent = true
+                        viewModel.isPresentingAddEvent = true
                     } label: {
                         Image(systemName: "plus.rectangle")
                             .tint(.blue)
                     }
                 }
             }
-            .sheet(isPresented: $isPresentingAddEvent){
+            .sheet(isPresented: $viewModel.isPresentingAddEvent){
                 NavigationView {
-                    AddEventSheet(eventGame: Games.VALORANT)
-                        .toolbar { Button("Dismiss") { isPresentingAddEvent = false } }
+                    AddEventSheet(viewModel: viewModel)
+                        .toolbar { Button("Dismiss") { viewModel.isPresentingAddEvent = false } }
                         .navigationTitle("Create Event")
                 }
             }

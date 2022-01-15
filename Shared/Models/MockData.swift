@@ -6,14 +6,17 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct MockData {
-    static var Matches: [TUMatch] {
-        var matches: [TUMatch] = []
-        matches.append(TUMatch(date: Date(), name: "Immortal"))
-        matches.append(TUMatch(date: Date(), name: "Diamond"))
-        matches.append(TUMatch(date: Date(), name: "Randoms"))
-        return matches
-        
+
+    static var event: CKRecord {
+        let event = CKRecord(recordType: RecordType.event)
+        event[TUEvent.kEventName]      = "In-Houses"
+        event[TUEvent.kEventDate]      = Date()
+        event[TUEvent.kEventGame]      = "Overwatch"
+        event[TUEvent.kEventLocation]  = "BSC 122A"
+    
+        return event
     }
 }

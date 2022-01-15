@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 final class EventDetailViewModel: ObservableObject {
     @Published var isShowingAddMatch            = false
     @Published var isShowingAddPlayerToEvent    = false
