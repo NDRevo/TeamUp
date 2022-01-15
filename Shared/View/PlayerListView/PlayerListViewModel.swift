@@ -9,11 +9,14 @@ import CloudKit
 
 
 final class PlayerListViewModel: ObservableObject {
-    @Published var playerFirstName: String   = ""
+    
+    @Published var isShowingAddPlayerSheet  = false
+    
+    @Published var playerFirstName: String  = ""
     @Published var playerLastName: String   = ""
-    @Published var game: Games          = .VALORANT
-    @Published var gameID: String       = ""
-    @Published var playerRank: String   = ""
+    @Published var game: Games              = .VALORANT
+    @Published var gameID: String           = ""
+    @Published var playerGameRank: String   = ""
     
     private func createPlayer() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
@@ -23,13 +26,37 @@ final class PlayerListViewModel: ObservableObject {
         return playerRecord
     }
     
+    private func createPlayerGameDetails() -> CKRecord {
+        let playerGameDetails = CKRecord(recordType: RecordType.playerGameDetails)
+        playerGameDetails[TUPlayerGameDetails.kGameName]    = game.rawValue
+        playerGameDetails[TUPlayerGameDetails.kGameRank]    = playerGameRank
+        playerGameDetails[TUPlayerGameDetails.kGameID]      = gameID
+
+        return playerGameDetails
+    }
+    
     func createAndSavePlayer(){
         let playerRecord = createPlayer()
+        let playerGameDetails = createPlayerGameDetails()
+        
+        playerGameDetails[TUPlayerGameDetails.kAssociatedToPlayer] = CKRecord.Reference(recordID: playerRecord.recordID, action: .deleteSelf)
+        
         Task{
             do {
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                let _ = try await CloudKitManager.shared.save(record: playerGameDetails)
             } catch {
-                //Alert
+                //Alert couldnt save
+            }
+        }
+    }
+    
+    func removePlayer(recordID: CKRecord.ID){
+        Task {
+            do {
+                let _ = try await CloudKitManager.shared.remove(recordID: recordID)
+            } catch {
+                //Alert couldnt remove player
             }
         }
     }

@@ -39,7 +39,7 @@ struct AddPlayerSheet: View {
                     .disableAutocorrection(true)
                     .keyboardType(.twitter)
                     .textInputAutocapitalization(.never)
-                Picker("Rank", selection: $viewModel.playerRank) {
+                Picker("Rank", selection: $viewModel.playerGameRank) {
                     ForEach(eventsManager.getRanksForGame(game: viewModel.game), id: \.self){ rank in
                         Text(rank)
                     }
@@ -56,6 +56,7 @@ struct AddPlayerSheet: View {
                     .foregroundColor(.blue)
             }
         }
+        .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayerSheet = false } }
         .navigationTitle("Create Player")
     }
 }

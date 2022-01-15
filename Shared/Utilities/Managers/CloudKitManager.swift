@@ -35,4 +35,8 @@ final class CloudKitManager {
     func save(record: CKRecord) async throws -> CKRecord {
         return try await container.publicCloudDatabase.save(record)
     }
+    
+    func remove(recordID: CKRecord.ID) async throws -> CKRecord.ID {
+       return try await CloudKitManager.shared.container.publicCloudDatabase.deleteRecord(withID: recordID)
+    }
 }

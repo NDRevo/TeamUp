@@ -11,26 +11,25 @@ struct PlayerListView: View {
 
     @EnvironmentObject var eventsManager: EventsManager
     @StateObject var viewModel = PlayerListViewModel()
-
-    @State var isShowingAddPlayerSheet = false
     
     var body: some View {
         List{
             ForEach(eventsManager.players){ player in
                 Text(player.firstName)
             }
-            .onDelete { index in
-                eventsManager.players.remove(atOffsets: index)
+            .onDelete { indexs in
+                for index in indexs {
+                    let recordID = eventsManager.players[index].id
+                    viewModel.removePlayer(recordID: recordID)
+                    eventsManager.players.remove(at: index)
+                }
             }
-            
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Players")
-        .sheet(isPresented: $isShowingAddPlayerSheet, content: {
+        .sheet(isPresented: $viewModel.isShowingAddPlayerSheet, content: {
             NavigationView {
                 AddPlayerSheet(viewModel: viewModel)
-                    .toolbar { Button("Dismiss") { isShowingAddPlayerSheet = false } }
-                    .navigationTitle("Create Player")
             }
         })
         .toolbar {
@@ -39,13 +38,11 @@ struct PlayerListView: View {
             }
             ToolbarItem(placement:.navigationBarTrailing) {
                 Button {
-                    isShowingAddPlayerSheet = true
+                    viewModel.isShowingAddPlayerSheet = true
                 } label: {
                     Text("Create Player")
                 }
             }
-
-
         }
     }
 }
