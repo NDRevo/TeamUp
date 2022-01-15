@@ -9,8 +9,8 @@ import SwiftUI
 
 struct EventsListView: View {
     
-    @EnvironmentObject var eventsManager: EventsManager
-    @StateObject var viewModel = EventsListViewModel()
+    @EnvironmentObject private var eventsManager: EventsManager
+    @StateObject private var viewModel = EventsListViewModel()
     
     var body: some View {
         NavigationView{
@@ -39,6 +39,9 @@ struct EventsListView: View {
                         .toolbar { Button("Dismiss") { viewModel.isPresentingAddEvent = false } }
                         .navigationTitle("Create Event")
                 }
+            }
+            .task {
+                viewModel.getEvents(for: eventsManager)
             }
         }
     }

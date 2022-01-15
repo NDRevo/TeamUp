@@ -8,7 +8,7 @@
 import CloudKit
 
 
-final class PlayerListViewModel: ObservableObject {
+@MainActor final class PlayerListViewModel: ObservableObject {
     
     @Published var isShowingAddPlayerSheet  = false
     
@@ -57,6 +57,16 @@ final class PlayerListViewModel: ObservableObject {
                 let _ = try await CloudKitManager.shared.remove(recordID: recordID)
             } catch {
                 //Alert couldnt remove player
+            }
+        }
+    }
+    
+    func getPlayers(for eventsManager: EventsManager){
+        Task {
+            do {
+                let _ = try await CloudKitManager.shared.getPlayers()
+            } catch {
+                //Alert: couldnt get players lsit
             }
         }
     }

@@ -9,8 +9,8 @@ import SwiftUI
 
 struct EventDetailView: View {
     
-    @EnvironmentObject var eventsManager: EventsManager
-    @StateObject var viewModel = EventDetailViewModel()
+    @EnvironmentObject private var eventsManager: EventsManager
+    @StateObject private var viewModel = EventDetailViewModel()
 
     var event: TUEvent
 

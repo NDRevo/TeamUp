@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-final class EventsListViewModel: ObservableObject {
+@MainActor final class EventsListViewModel: ObservableObject {
 
     @Published var isPresentingAddEvent: Bool = false
 
@@ -39,4 +39,16 @@ final class EventsListViewModel: ObservableObject {
             }
         }
     }
+    
+    func getEvents(for eventsManager: EventsManager){
+        Task {
+            do{
+                eventsManager.events  = try await CloudKitManager.shared.getEvents()
+            } catch {
+                //Alert could not get events
+            }
+        }
+    }
+    
+    
 }

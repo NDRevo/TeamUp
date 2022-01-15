@@ -9,8 +9,8 @@ import SwiftUI
 
 struct PlayerListView: View {
 
-    @EnvironmentObject var eventsManager: EventsManager
-    @StateObject var viewModel = PlayerListViewModel()
+    @EnvironmentObject private var eventsManager: EventsManager
+    @StateObject private var viewModel = PlayerListViewModel()
     
     var body: some View {
         List{
@@ -43,6 +43,9 @@ struct PlayerListView: View {
                     Text("Create Player")
                 }
             }
+        }
+        .task {
+            viewModel.getPlayers(for: eventsManager)
         }
     }
 }

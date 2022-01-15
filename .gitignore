@@ -48,6 +48,7 @@ playground.xcworkspace
 
 .build/
 *.DS_Store
+*.UserInterfaceState.xcuserstate
 
 # CocoaPods
 #

@@ -202,8 +202,8 @@
 		560E42962790C83600408B4B /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				560E42972790C84900408B4B /* EventsManager.swift */,
 				560E42AD2791DA2D00408B4B /* CloudKitManager.swift */,
+				560E42972790C84900408B4B /* EventsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
