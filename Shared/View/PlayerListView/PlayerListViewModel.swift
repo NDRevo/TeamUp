@@ -18,7 +18,7 @@ import CloudKit
     @Published var gameID: String           = ""
     @Published var playerGameRank: String   = ""
     
-    //Stops app from calling getPlayers() twice in .task modifier: Swift Bug
+    //HANDLE LATER: Stops app from calling getPlayers() twice in .task modifier: Swift Bug
     @Published var onAppearHasFired = false
 
     private func createPlayer() -> CKRecord{

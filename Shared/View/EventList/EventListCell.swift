@@ -53,17 +53,17 @@ struct EventListCell: View {
                     }
                     Spacer()
                     VStack(alignment: .center,spacing: 5){
-                        Text("Players")
+                        Text("Location")
                             .bold()
                             .font(.body)
                             .foregroundColor(.secondary)
-                        Text("9")
+                        Text(event.eventLocation)
                             .bold()
                             .font(.subheadline)
                     }
                     Spacer()
                     VStack(alignment: .center,spacing: 5){
-                        Text("Team")
+                        Text("Players")
                             .bold()
                             .font(.body)
                             .foregroundColor(.secondary)

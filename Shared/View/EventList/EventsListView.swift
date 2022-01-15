@@ -48,9 +48,7 @@ struct EventsListView: View {
                 }
             }
             .task {
-                if !viewModel.onAppearHasFired {
                     viewModel.getEvents(for: eventsManager)
-                    viewModel.onAppearHasFired = true
                 }
             }
         }
