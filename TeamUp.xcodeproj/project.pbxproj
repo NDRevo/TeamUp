@@ -48,6 +48,8 @@
 		560E42AE2791DA2D00408B4B /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AD2791DA2D00408B4B /* CloudKitManager.swift */; };
 		560E42AF2791DA2D00408B4B /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AD2791DA2D00408B4B /* CloudKitManager.swift */; };
 		560E42B327920DAC00408B4B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 560E42B227920DAC00408B4B /* CloudKit.framework */; };
+		560E42B52792443700408B4B /* PlayerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42B42792443700408B4B /* PlayerListViewModel.swift */; };
+		560E42B62792443700408B4B /* PlayerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42B42792443700408B4B /* PlayerListViewModel.swift */; };
 		566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2DA278D27F000F4035C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566AB2C8278D27F000F4035C /* Assets.xcassets */; };
@@ -89,6 +91,7 @@
 		560E42AD2791DA2D00408B4B /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		560E42B027920DA800408B4B /* TeamUp (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TeamUp (iOS).entitlements"; sourceTree = "<group>"; };
 		560E42B227920DAC00408B4B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		560E42B42792443700408B4B /* PlayerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewModel.swift; sourceTree = "<group>"; };
 		566AB2C6278D27EE00F4035C /* TeamUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpApp.swift; sourceTree = "<group>"; };
 		566AB2C8278D27F000F4035C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		566AB2CD278D27F000F4035C /* TeamUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -204,6 +207,7 @@
 		560E42A627911AF400408B4B /* PlayerListView */ = {
 			isa = PBXGroup;
 			children = (
+				560E42B42792443700408B4B /* PlayerListViewModel.swift */,
 				560E42A727911AFD00408B4B /* PlayerListView.swift */,
 				560E42822790B2C700408B4B /* AddPlayerSheet.swift */,
 			);
@@ -395,6 +399,7 @@
 				566AB2F2278D2DB300F4035C /* TUPlayer.swift in Sources */,
 				560E427C2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42982790C84900408B4B /* EventsManager.swift in Sources */,
+				560E42B52792443700408B4B /* PlayerListViewModel.swift in Sources */,
 				560E428F2790C28300408B4B /* AddEventPlayer.swift in Sources */,
 				560E42AE2791DA2D00408B4B /* CloudKitManager.swift in Sources */,
 			);
@@ -429,6 +434,7 @@
 				566AB2F3278D2DB300F4035C /* TUPlayer.swift in Sources */,
 				560E427D2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42992790C84900408B4B /* EventsManager.swift in Sources */,
+				560E42B62792443700408B4B /* PlayerListViewModel.swift in Sources */,
 				560E42902790C28300408B4B /* AddEventPlayer.swift in Sources */,
 				560E42AF2791DA2D00408B4B /* CloudKitManager.swift in Sources */,
 			);
