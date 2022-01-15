@@ -51,7 +51,7 @@ import CloudKit
         }
     }
     
-    func removePlayer(recordID: CKRecord.ID){
+    func deletePlayer(recordID: CKRecord.ID){
         Task {
             do {
                 let _ = try await CloudKitManager.shared.remove(recordID: recordID)

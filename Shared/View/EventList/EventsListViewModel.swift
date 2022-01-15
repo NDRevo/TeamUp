@@ -50,5 +50,15 @@ import CloudKit
         }
     }
     
+    func deleteEvent(recordID: CKRecord.ID){
+        Task{
+            do {
+                let _ = try await CloudKitManager.shared.remove(recordID: recordID)
+            } catch{
+                //Alert: could not delete event
+            }
+        }
+    }
+    
     
 }

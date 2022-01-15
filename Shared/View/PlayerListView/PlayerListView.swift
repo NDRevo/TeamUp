@@ -17,10 +17,10 @@ struct PlayerListView: View {
             ForEach(eventsManager.players){ player in
                 Text(player.firstName)
             }
-            .onDelete { indexs in
-                for index in indexs {
+            .onDelete { indexSet in
+                for index in indexSet {
                     let recordID = eventsManager.players[index].id
-                    viewModel.removePlayer(recordID: recordID)
+                    viewModel.deletePlayer(recordID: recordID)
                     eventsManager.players.remove(at: index)
                 }
             }

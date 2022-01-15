@@ -20,6 +20,13 @@ struct EventsListView: View {
                         EventListCell(event: event)
                     }
                 }
+                .onDelete { indexSet in
+                    for index in indexSet {
+                        let recordID = eventsManager.events[index].id
+                        viewModel.deleteEvent(recordID: recordID)
+                        eventsManager.events.remove(at: index)
+                    }
+                }
             }
             .listStyle(.plain)
             .navigationTitle("Events")
