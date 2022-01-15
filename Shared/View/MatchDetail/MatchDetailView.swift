@@ -9,15 +9,13 @@ import SwiftUI
 
 struct MatchDetailView: View {
     
-    var match: TUMatch
+    @ObservedObject var viewModel: MatchDetailViewModel
     
     //Players that are in events, retrieved by finding players that have reference to the event id 
     @State var players: [TUPlayer] = []
     
-    @State var isShowingAddPlayer = false
     var body: some View {
         VStack{
-
             List {
                 HStack(spacing: 20) {
                     Button(action: {
@@ -46,18 +44,12 @@ struct MatchDetailView: View {
                         print("Hello")
                     })
                     Button {
-                        isShowingAddPlayer = true
+                        viewModel.isShowingAddPlayer = true
                     } label: {
                         Text("Add Player")
                             .foregroundColor(.blue)
                     }
-                    .sheet(isPresented: $isShowingAddPlayer) {
-                        NavigationView{
-                            AddEventPlayer(players: $players)
-                                .toolbar { Button("Dismiss") { isShowingAddPlayer = false } }
-                                .navigationTitle("Add Player")
-                        }
-                    }
+                    
                 } header: {
                     Text("Team 1")
                         .bold()
@@ -66,23 +58,36 @@ struct MatchDetailView: View {
                 
                 Section {
                     Button {
-                        //Delete
+                        viewModel.isShowingAddTeam = true
                     } label: {
                         Text("Add Team")
                     }
+                    .sheet(isPresented: $viewModel.isShowingAddTeam) {
+                        NavigationView{
+                            AddTeamSheet(teamName: $viewModel.teamName)
+                
+                        }
+                    }
                 }
             }
-            .toolbar {
-                EditButton()
+        }
+        .toolbar {
+            EditButton()
+        }
+        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
+            NavigationView{
+                AddEventPlayer(players: $players)
+                    .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayer = false } }
+                    .navigationTitle("Add Player")
             }
         }
-        .navigationTitle(match.matchName)
+        .navigationTitle(viewModel.match.matchName)
     }
     
 }
 
 struct MatchDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchDetailView(match: TUMatch(record: MockData.match))
+        MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match)))
     }
 }

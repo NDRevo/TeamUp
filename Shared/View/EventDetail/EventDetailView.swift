@@ -9,16 +9,14 @@ import SwiftUI
 
 struct EventDetailView: View {
     
-    @StateObject private var viewModel = EventDetailViewModel()
-
-    var event: TUEvent
+    @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
             VStack {
                 List {
                     Section(header: Text("Matches")) {
                         ForEach(viewModel.matches) { match in
-                            NavigationLink(destination: MatchDetailView(match: match)) {
+                            NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match))) {
                                 VStack(alignment: .leading){
                                     Text(match.matchName)
                                     Text(match.matchStartTime.convertDateToString())
@@ -41,7 +39,7 @@ struct EventDetailView: View {
                         }
                         .sheet(isPresented: $viewModel.isShowingAddMatch) {
                             NavigationView{
-                                AddMatchSheet(viewModel: viewModel, eventID: event.id)
+                                AddMatchSheet(viewModel: viewModel, event: viewModel.event)
                             }
                         }
                     }
@@ -70,16 +68,16 @@ struct EventDetailView: View {
                     EditButton()
                 }
                 .task {
-                    viewModel.getMatchesForEvent(for: event.id)
+                    viewModel.getMatchesForEvent(for: viewModel.event.id)
                 }
                 
             }
-            .navigationTitle(event.eventName)
+            .navigationTitle(viewModel.event.eventName)
     }
 }
 
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailView(event: TUEvent(record: MockData.event))
+        EventDetailView(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
     }
 }

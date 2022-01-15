@@ -8,6 +8,13 @@
 import CloudKit
 
 @MainActor final class EventDetailViewModel: ObservableObject {
+    
+    var event: TUEvent
+    
+    init(event: TUEvent){
+        self.event = event
+    }
+    
     @Published var isShowingAddMatch            = false
     @Published var isShowingAddPlayerToEvent    = false
     @Published var isShowingAddAdmin            = false
@@ -59,5 +66,15 @@ import CloudKit
                 //Alert couldnt remove player
             }
         }
+    }
+    
+    func dateRange(from event: TUEvent) -> PartialRangeFrom<Date> {
+        let calendar = Calendar.current
+        let startDate = DateComponents(
+            year: calendar.component(.year, from: event.eventDate),
+            month: calendar.component(.month, from: event.eventDate),
+            day: calendar.component(.day, from: event.eventDate)
+        )
+        return calendar.date(from:startDate)!...
     }
 }

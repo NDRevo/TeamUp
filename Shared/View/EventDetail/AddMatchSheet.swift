@@ -12,32 +12,21 @@ struct AddMatchSheet: View {
     
     @ObservedObject var viewModel: EventDetailViewModel
 
-    var eventID: CKRecord.ID
+    var event: TUEvent
 
     @Environment(\.dismiss) var dismiss
-    
-    let dateRange: PartialRangeFrom<Date> = {
-        let date = Date()
-        let calendar = Calendar.current
-        let startDate = DateComponents(
-            year: calendar.component(.year, from: date),
-            month: calendar.component(.month, from: date),
-            day: calendar.component(.day, from: date)
-        )
-        return calendar.date(from:startDate)!...
-    }()
-    
+  
     var body: some View {
         List{
             TextField("Match Name", text: $viewModel.matchName)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)
 
-            DatePicker("Match Date", selection: $viewModel.matchDate, in: dateRange, displayedComponents: [.hourAndMinute])
+            DatePicker("Match Date", selection: $viewModel.matchDate, in: viewModel.dateRange(from: event), displayedComponents: [.hourAndMinute])
             
             Section{
                 Button {
-                    viewModel.createMatchForEvent(for: eventID)
+                    viewModel.createMatchForEvent(for: event.id)
                     dismiss()
                 } label: {
                     Text("Create Match")
@@ -52,6 +41,6 @@ struct AddMatchSheet: View {
 
 struct AddMatchSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddMatchSheet(viewModel: EventDetailViewModel(), eventID: MockData.event.recordID)
+        AddMatchSheet(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)), event: TUEvent(record: MockData.event))
     }
 }

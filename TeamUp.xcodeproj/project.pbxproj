@@ -52,6 +52,8 @@
 		560E42B62792443700408B4B /* PlayerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42B42792443700408B4B /* PlayerListViewModel.swift */; };
 		560E42B827926A3F00408B4B /* EventsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42B727926A3F00408B4B /* EventsListViewModel.swift */; };
 		560E42B927926A3F00408B4B /* EventsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42B727926A3F00408B4B /* EventsListViewModel.swift */; };
+		560E42BB279386BF00408B4B /* MatchDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42BA279386BF00408B4B /* MatchDetailViewModel.swift */; };
+		560E42BC279386BF00408B4B /* MatchDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42BA279386BF00408B4B /* MatchDetailViewModel.swift */; };
 		566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2DA278D27F000F4035C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566AB2C8278D27F000F4035C /* Assets.xcassets */; };
@@ -95,6 +97,7 @@
 		560E42B227920DAC00408B4B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		560E42B42792443700408B4B /* PlayerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewModel.swift; sourceTree = "<group>"; };
 		560E42B727926A3F00408B4B /* EventsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsListViewModel.swift; sourceTree = "<group>"; };
+		560E42BA279386BF00408B4B /* MatchDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDetailViewModel.swift; sourceTree = "<group>"; };
 		566AB2C6278D27EE00F4035C /* TeamUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpApp.swift; sourceTree = "<group>"; };
 		566AB2C8278D27F000F4035C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		566AB2CD278D27F000F4035C /* TeamUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,6 +165,7 @@
 		560E427727906B3A00408B4B /* MatchDetail */ = {
 			isa = PBXGroup;
 			children = (
+				560E42BA279386BF00408B4B /* MatchDetailViewModel.swift */,
 				560E4273278FA68200408B4B /* MatchDetailView.swift */,
 				560E428E2790C28300408B4B /* AddEventPlayer.swift */,
 				560E429A2791009900408B4B /* AddTeamSheet.swift */,
@@ -381,6 +385,7 @@
 				566AB2E5278D280D00F4035C /* AppTabView.swift in Sources */,
 				560E429E279103BB00408B4B /* Constants.swift in Sources */,
 				560E4274278FA68200408B4B /* MatchDetailView.swift in Sources */,
+				560E42BB279386BF00408B4B /* MatchDetailViewModel.swift in Sources */,
 				560E427927907E1200408B4B /* MatchDetailButton.swift in Sources */,
 				560E42892790B6C900408B4B /* MockData.swift in Sources */,
 				560E42832790B2C700408B4B /* AddPlayerSheet.swift in Sources */,
@@ -417,6 +422,7 @@
 				566AB2E6278D280D00F4035C /* AppTabView.swift in Sources */,
 				560E429F279103BB00408B4B /* Constants.swift in Sources */,
 				560E4275278FA68200408B4B /* MatchDetailView.swift in Sources */,
+				560E42BC279386BF00408B4B /* MatchDetailViewModel.swift in Sources */,
 				560E427A27907E1200408B4B /* MatchDetailButton.swift in Sources */,
 				560E428A2790B6C900408B4B /* MockData.swift in Sources */,
 				560E42842790B2C700408B4B /* AddPlayerSheet.swift in Sources */,

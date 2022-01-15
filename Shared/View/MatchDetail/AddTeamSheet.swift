@@ -20,7 +20,7 @@ struct AddTeamSheet: View {
                 .textInputAutocapitalization(.words)
             Section{
                 Button {
-                    //players.append(TUTeam(name: teamName))
+                    print("✅ \(teamName)")
                     dismiss()
                 } label: {
                     Text("Add Team")
@@ -28,11 +28,13 @@ struct AddTeamSheet: View {
                 }
             }
         }
+        .toolbar { Button("Dismiss") { dismiss() } }
+        .navigationTitle("Add Team")
     }
 }
 
 struct AddTeamSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddTeamSheet(teamName: .constant("Team"))
+        AddTeamSheet(teamName: .constant("Team Envy"))
     }
 }

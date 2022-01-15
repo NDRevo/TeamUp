@@ -16,7 +16,7 @@ struct EventsListView: View {
         NavigationView{
             List {
                 ForEach(eventsManager.events){ event in
-                    NavigationLink( destination: EventDetailView(event: event)){
+                    NavigationLink( destination: EventDetailView(viewModel: EventDetailViewModel(event: event))){
                         EventListCell(event: event)
                     }
                 }

@@ -6,8 +6,18 @@
 //
 
 import Foundation
+import CloudKit
 
 struct TUTeam: Identifiable {
-    let id = UUID()
-    let name: String
+    
+    static let kAssociatedToMatch = "associatedToMatch"
+    static let kTeamName          = "teamName"
+    
+    let id: CKRecord.ID
+    let teamName: String
+    
+    init(record: CKRecord){
+        id       = record.recordID
+        teamName = record[TUTeam.kTeamName] as? String ?? "N/A"
+    }
 }
