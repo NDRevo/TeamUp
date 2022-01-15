@@ -5,15 +5,59 @@
 //  Created by Noé Duran on 1/13/22.
 //
 
-import Foundation
+import CloudKit
 
-final class EventDetailViewModel: ObservableObject {
+@MainActor final class EventDetailViewModel: ObservableObject {
     @Published var isShowingAddMatch            = false
     @Published var isShowingAddPlayerToEvent    = false
     @Published var isShowingAddAdmin            = false
     
+    @Published var matchName: String = ""
+    @Published var matchDate: Date = Date()
+
     //Players that join/added to the event from the players list
     @Published var players: [TUPlayer] = []
+    @Published var matches: [TUMatch] = []
     
-    @Published var matches: [TUMatch] = [TUMatch(date: Date(), name: "Immortal"),TUMatch(date: Date(), name: "Diamond"),TUMatch(date: Date(), name: "Randoms")]
+    func createMatchRecord() -> CKRecord {
+        let record = CKRecord(recordType: RecordType.match)
+
+        record[TUMatch.kMatchName]     = matchName
+        record[TUMatch.kStartTime]     = matchDate
+
+        return record
+    }
+    
+    func createMatchForEvent(for eventID: CKRecord.ID){
+        Task{
+            do{
+                let matchRecord = createMatchRecord()
+                matchRecord[TUMatch.kAssociatedToEvent] = CKRecord.Reference(recordID: eventID, action: .deleteSelf)
+
+                let _ = try await CloudKitManager.shared.save(record: matchRecord)
+            }catch{
+                //Alert could not save match
+            }
+        }
+    }
+    
+    func getMatchesForEvent(for eventID: CKRecord.ID){
+        Task {
+            do {
+                matches = try await CloudKitManager.shared.getMatches(for: eventID)
+            } catch{
+                //Alert could not get matches
+            }
+        }
+    }
+    
+    func deleteMatch(recordID: CKRecord.ID){
+        Task {
+            do {
+                let _ = try await CloudKitManager.shared.remove(recordID: recordID)
+            } catch {
+                //Alert couldnt remove player
+            }
+        }
+    }
 }

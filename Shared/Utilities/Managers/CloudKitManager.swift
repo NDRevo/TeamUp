@@ -43,6 +43,23 @@ final class CloudKitManager {
         return records.map(TUEvent.init)
     }
     
+    func getMatches(for eventID: CKRecord.ID) async throws -> [TUMatch]{
+        //Get Reference
+        let reference = CKRecord.Reference(recordID: eventID, action: .deleteSelf)
+        let predicate = NSPredicate(format: "associatedToEvent == %@", reference)
+        
+        //Sort by time
+        let sortDescriptor = NSSortDescriptor(key: TUMatch.kStartTime, ascending: true)
+        let query = CKQuery(recordType: RecordType.match, predicate: predicate)
+        
+        query.sortDescriptors = [sortDescriptor]
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap{ _, result in try? result.get()}
+        
+        return records.map(TUMatch.init)
+    }
+    
     func save(record: CKRecord) async throws -> CKRecord {
         return try await container.publicCloudDatabase.save(record)
     }

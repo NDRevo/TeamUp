@@ -15,7 +15,7 @@ struct EventListCell: View {
      
         HStack {
            Rectangle()
-                .frame(width: 30)
+                .frame(width: 30, height: 120)
                 .foregroundColor(event.getGameColor())
                 .cornerRadius(8, corners: [.topLeft, .bottomLeft])
                 

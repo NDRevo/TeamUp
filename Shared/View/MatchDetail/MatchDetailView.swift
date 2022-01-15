@@ -76,13 +76,13 @@ struct MatchDetailView: View {
                 EditButton()
             }
         }
-        .navigationTitle(match.name)
+        .navigationTitle(match.matchName)
     }
     
 }
 
 struct MatchDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchDetailView(match: TUMatch(date: Date(), name: "Match"))
+        MatchDetailView(match: TUMatch(record: MockData.match))
     }
 }

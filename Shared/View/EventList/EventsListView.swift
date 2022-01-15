@@ -48,8 +48,7 @@ struct EventsListView: View {
                 }
             }
             .task {
-                    viewModel.getEvents(for: eventsManager)
-                }
+                viewModel.getEvents(for: eventsManager)
             }
         }
     }

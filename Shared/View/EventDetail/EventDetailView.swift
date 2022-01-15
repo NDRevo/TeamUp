@@ -9,7 +9,6 @@ import SwiftUI
 
 struct EventDetailView: View {
     
-    @EnvironmentObject private var eventsManager: EventsManager
     @StateObject private var viewModel = EventDetailViewModel()
 
     var event: TUEvent
@@ -21,14 +20,18 @@ struct EventDetailView: View {
                         ForEach(viewModel.matches) { match in
                             NavigationLink(destination: MatchDetailView(match: match)) {
                                 VStack(alignment: .leading){
-                                    Text(match.name)
-                                    Text(match.startTime.convertDateToString())
+                                    Text(match.matchName)
+                                    Text(match.matchStartTime.convertDateToString())
                                         .font(.caption)
                                 }
                             }
                         }
-                        .onDelete { index in
-                           //Delete Match
+                        .onDelete { indexSet in
+                            for index in indexSet {
+                                let recordID = viewModel.matches[index].id
+                                viewModel.deleteMatch(recordID: recordID)
+                                viewModel.matches.remove(at: index)
+                            }
                         }
                         Button {
                             viewModel.isShowingAddMatch = true
@@ -38,7 +41,7 @@ struct EventDetailView: View {
                         }
                         .sheet(isPresented: $viewModel.isShowingAddMatch) {
                             NavigationView{
-                                AddMatchSheet(matches: $viewModel.matches)
+                                AddMatchSheet(viewModel: viewModel, eventID: event.id)
                             }
                         }
                     }
@@ -62,30 +65,12 @@ struct EventDetailView: View {
                             }
                         }
                     }
-                
-//MARK: Admin
-//                    Section(header: Text("Admins")) {
-//                        ForEach(MockData.Matches) { match in
-//                                Text(match.name)
-//                        }
-//                        .onDelete { index in
-//                            //Remove Admin
-//                        }
-//                        Button {
-//                            viewModel.isShowingAddAdmin = true
-//                        } label: {
-//                            Text("Add Admin")
-//                                .foregroundColor(.blue)
-//                        }
-//                        .sheet(isPresented: $viewModel.isShowingAddAdmin) {
-//                            NavigationView{
-//                                AddAdminSheet()
-//                            }
-//                        }
-//                    }
                 }
                 .toolbar {
                     EditButton()
+                }
+                .task {
+                    viewModel.getMatchesForEvent(for: event.id)
                 }
                 
             }

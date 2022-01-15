@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct AddMatchSheet: View {
     
-    @Binding var matches: [TUMatch]
-    
-    @State var matchName: String = ""
-    @State var matchDate: Date = Date()
+    @ObservedObject var viewModel: EventDetailViewModel
+
+    var eventID: CKRecord.ID
 
     @Environment(\.dismiss) var dismiss
     
@@ -29,15 +29,15 @@ struct AddMatchSheet: View {
     
     var body: some View {
         List{
-            TextField("Match Name", text: $matchName)
+            TextField("Match Name", text: $viewModel.matchName)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)
 
-            DatePicker("Match Date", selection: $matchDate, in: dateRange, displayedComponents: [.hourAndMinute])
+            DatePicker("Match Date", selection: $viewModel.matchDate, in: dateRange, displayedComponents: [.hourAndMinute])
             
             Section{
                 Button {
-                    matches.append(TUMatch(date: matchDate, name: matchName))
+                    viewModel.createMatchForEvent(for: eventID)
                     dismiss()
                 } label: {
                     Text("Create Match")
@@ -52,6 +52,6 @@ struct AddMatchSheet: View {
 
 struct AddMatchSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddMatchSheet(matches: .constant([TUMatch(date: Date(), name: "Randoms")]))
+        AddMatchSheet(viewModel: EventDetailViewModel(), eventID: MockData.event.recordID)
     }
 }
