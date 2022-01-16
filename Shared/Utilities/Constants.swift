@@ -10,7 +10,7 @@ import SwiftUI
 enum Games: String, CaseIterable{
     case overwatch    = "Overwatch"
     case apex         = "Apex Legends"
-    case VALORANT     = "VALORANT"
+    case valorant     = "VALORANT"
 }
 
 enum RecordType{

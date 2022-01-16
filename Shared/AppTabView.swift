@@ -15,7 +15,7 @@ struct AppTabView: View {
         TabView {
             EventsListView()
                 .tabItem {
-                    Label("Map", systemImage: "map.fill")
+                    Label("Events", systemImage: "calendar")
                 }
             NavigationView{
                 PlayerListView()

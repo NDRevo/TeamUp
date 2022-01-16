@@ -14,7 +14,7 @@ import CloudKit
     
     @Published var playerFirstName: String  = ""
     @Published var playerLastName: String   = ""
-    @Published var game: Games              = .VALORANT
+    @Published var game: Games              = .valorant
     @Published var gameID: String           = ""
     @Published var playerGameRank: String   = ""
     
@@ -38,6 +38,14 @@ import CloudKit
         return playerGameDetails
     }
     
+     func resetInput(){
+        playerFirstName = ""
+        playerLastName  = ""
+        game            = .valorant
+        gameID          = ""
+        playerGameRank  = ""
+    }
+
     func createAndSavePlayer(for eventsManager: EventsManager){
         let playerRecord = createPlayer()
         let playerGameDetails = createPlayerGameDetails()

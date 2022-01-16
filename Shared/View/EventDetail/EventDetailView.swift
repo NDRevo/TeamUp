@@ -33,6 +33,7 @@ struct EventDetailView: View {
                         }
                         Button {
                             viewModel.isShowingAddMatch = true
+                            viewModel.resetMatchInput()
                         } label: {
                             Text("Add Match")
                                 .foregroundColor(.blue)

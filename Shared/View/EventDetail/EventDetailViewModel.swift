@@ -13,6 +13,7 @@ import CloudKit
 
     init(event: TUEvent){
         self.event = event
+        matchDate = event.eventDate
     }
 
     @Published var isShowingAddMatch            = false
@@ -26,6 +27,11 @@ import CloudKit
     @Published var players: [TUPlayer] = []
     @Published var matches: [TUMatch] = []
 
+    func resetMatchInput(){
+        matchName = ""
+        matchDate = event.eventDate
+    }
+    
     func createMatchRecord() -> CKRecord {
         let record = CKRecord(recordType: RecordType.match)
 

@@ -40,6 +40,7 @@ struct PlayerListView: View {
             ToolbarItem(placement:.navigationBarTrailing) {
                 Button {
                     viewModel.isShowingAddPlayerSheet = true
+                    viewModel.resetInput()
                 } label: {
                     Text("Create Player")
                 }

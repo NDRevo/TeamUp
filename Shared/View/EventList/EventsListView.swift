@@ -35,6 +35,7 @@ struct EventsListView: View {
                 ToolbarItemGroup(placement: .primaryAction) {
                     Button {
                         viewModel.isPresentingAddEvent = true
+                        viewModel.resetInput()
                     } label: {
                         Image(systemName: "plus.rectangle")
                             .tint(.blue)
