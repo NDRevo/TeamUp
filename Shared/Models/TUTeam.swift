@@ -12,6 +12,7 @@ struct TUTeam: Identifiable {
     
     static let kAssociatedToMatch = "associatedToMatch"
     static let kTeamName          = "teamName"
+    static let kCreationDate  = "creationDate"
     
     let id: CKRecord.ID
     let teamName: String

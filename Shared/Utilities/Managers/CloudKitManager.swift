@@ -60,6 +60,21 @@ final class CloudKitManager {
         return records.map(TUMatch.init)
     }
     
+    func getTeams(for matchID: CKRecord.ID) async throws -> [TUTeam]{
+        //Get Reference
+        let reference = CKRecord.Reference(recordID: matchID, action: .deleteSelf)
+        let predicate = NSPredicate(format: "associatedToMatch == %@", reference)
+        
+        let sortDescriptor = NSSortDescriptor(key: TUTeam.kCreationDate, ascending: true)
+        let query = CKQuery(recordType: RecordType.team, predicate: predicate)
+        query.sortDescriptors = [sortDescriptor]
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap{ _, result in try? result.get()}
+        
+        return records.map(TUTeam.init)
+    }
+    
     func save(record: CKRecord) async throws -> CKRecord {
         return try await container.publicCloudDatabase.save(record)
     }

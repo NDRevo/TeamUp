@@ -35,25 +35,24 @@ struct MatchDetailView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .listRowBackground(Color.clear)
                 
-                
-                Section {
-                    ForEach(players){ player in
-                        Text(player.firstName)
+                ForEach(viewModel.teams) { team in
+                    Section {
+                        ForEach(players){ player in
+                            Text(player.firstName)
+                        }
+ 
+                        Button {
+                            viewModel.isShowingAddPlayer = true
+                        } label: {
+                            Text("Add Player")
+                                .foregroundColor(.blue)
+                        }
+                        
+                    } header: {
+                        Text(team.teamName)
+                            .bold()
+                            .font(.subheadline)
                     }
-                    .onDelete(perform: { indexSet in
-                        print("Hello")
-                    })
-                    Button {
-                        viewModel.isShowingAddPlayer = true
-                    } label: {
-                        Text("Add Player")
-                            .foregroundColor(.blue)
-                    }
-                    
-                } header: {
-                    Text("Team 1")
-                        .bold()
-                        .font(.subheadline)
                 }
                 
                 Section {
@@ -64,12 +63,14 @@ struct MatchDetailView: View {
                     }
                     .sheet(isPresented: $viewModel.isShowingAddTeam) {
                         NavigationView{
-                            AddTeamSheet(teamName: $viewModel.teamName)
-                
+                            AddTeamSheet(viewModel: viewModel)
                         }
                     }
                 }
             }
+        }
+        .task {
+            viewModel.getTeamsForMatch()
         }
         .toolbar {
             EditButton()

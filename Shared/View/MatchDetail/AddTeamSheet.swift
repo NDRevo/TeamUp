@@ -9,18 +9,18 @@ import SwiftUI
 
 struct AddTeamSheet: View {
     
-    @Binding var teamName: String
+    @ObservedObject var viewModel: MatchDetailViewModel
 
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         List{
-            TextField("Team Name", text: $teamName)
+            TextField("Team Name", text: $viewModel.teamName)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)
             Section{
                 Button {
-                    print("✅ \(teamName)")
+                    viewModel.createAndSaveTeam()
                     dismiss()
                 } label: {
                     Text("Add Team")
@@ -35,6 +35,6 @@ struct AddTeamSheet: View {
 
 struct AddTeamSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddTeamSheet(teamName: .constant("Team Envy"))
+        AddTeamSheet(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match)))
     }
 }
