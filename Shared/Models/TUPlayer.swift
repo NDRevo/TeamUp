@@ -20,9 +20,10 @@ struct TUPlayer: Identifiable, Hashable {
 
     let firstName: String
     let lastName: String
-    
+
     init(record: CKRecord){
         id  = record.recordID
+
         firstName   = record[TUPlayer.kFirstName]     as? String ?? "N/A"
         lastName    = record[TUPlayer.kLastName]      as? String ?? "N/A"
     }

@@ -5,12 +5,10 @@
 //  Created by Noé Duran on 1/14/22.
 //
 
-import Foundation
 import CloudKit
+import SwiftUI
 
 @MainActor final class EventsListViewModel: ObservableObject {
-
-    @Published var isPresentingAddEvent: Bool = false
 
     @Published var eventName: String          = ""
     @Published var eventDate: Date            = Date()
@@ -18,7 +16,11 @@ import CloudKit
     @Published var eventLocation: String      = ""
     
     //HANDLE LATER: Stops app from calling getEvents() twice in .task modifier: Swift Bug
-    @Published var onAppearHasFired = false
+    @Published var onAppearHasFired           = false
+    @Published var isPresentingAddEvent: Bool = false
+    @Published var isShowingAlert: Bool       = false
+
+    @Published var alertItem: AlertItem       = AlertItem(alertDesc: Text("Error showing correct Alert"), button: Button.init("Ok",role: .none ,action:{}))
     
     let dateRange: PartialRangeFrom<Date> = {
         let date = Date()
@@ -72,7 +74,8 @@ import CloudKit
                 //Reloads view, locally adds player until another network call is made
                 eventsManager.events.append(TUEvent(record: event))
             } catch {
-                //Error: Could not create event, try again later
+                alertItem = AlertContext.unableToCreateEvent
+                isShowingAlert = true
             }
         }
     }
@@ -82,7 +85,8 @@ import CloudKit
             do{
                 eventsManager.events  = try await CloudKitManager.shared.getEvents()
             } catch {
-                //Alert could not get events
+                alertItem = AlertContext.unableToRetrieveEvents
+                isShowingAlert = true
             }
         }
     }
@@ -92,10 +96,9 @@ import CloudKit
             do {
                 let _ = try await CloudKitManager.shared.remove(recordID: recordID)
             } catch{
-                //Alert: could not delete event
+                alertItem = AlertContext.unableToDeleteEvent
+                isShowingAlert = true
             }
         }
     }
-    
-    
 }

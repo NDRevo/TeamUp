@@ -15,10 +15,12 @@ struct TUTeam: Identifiable {
     static let kCreationDate  = "creationDate"
     
     let id: CKRecord.ID
+
     let teamName: String
-    
+
     init(record: CKRecord){
         id       = record.recordID
+
         teamName = record[TUTeam.kTeamName] as? String ?? "N/A"
     }
 }

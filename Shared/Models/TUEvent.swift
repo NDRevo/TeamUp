@@ -15,7 +15,6 @@ struct TUEvent: Identifiable {
     static let kEventGame      = "eventGame"
     static let kEventLocation  = "eventLocation"
 
-
     let id: CKRecord.ID
 
     let eventName: String
@@ -25,16 +24,13 @@ struct TUEvent: Identifiable {
 
     init(record: CKRecord){
         id = record.recordID
-        
+
         eventName     = record[TUEvent.kEventName] as? String ?? "N/A"
         eventDate     = record[TUEvent.kEventDate] as? Date ?? Date()
         eventGame     = record[TUEvent.kEventGame] as? String ?? "N/A"
         eventLocation = record[TUEvent.kEventLocation] as? String ?? "N/A"
     }
-    
-    
-    
-    
+
     var getDateDetails: DateComponents {
         let calendar = Calendar.current
         let dateDetails = DateComponents(
@@ -56,7 +52,7 @@ struct TUEvent: Identifiable {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
         return dateFormatter.string(from: eventDate)
-   }
+    }
     
     func getGameColor() -> Color{
         switch eventGame {

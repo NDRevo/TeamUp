@@ -31,6 +31,9 @@ struct EventsListView: View {
             }
             .listStyle(.plain)
             .navigationTitle("Events")
+            .alert(viewModel.alertItem.alertDesc, isPresented: $viewModel.isShowingAlert) {
+                viewModel.alertItem.button
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
                     Button {

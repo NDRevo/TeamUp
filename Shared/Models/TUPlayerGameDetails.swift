@@ -20,9 +20,10 @@ struct TUPlayerGameDetails: Identifiable {
     let gameName: String
     let gameID: String
     let gameRank: String
-    
+
     init(record: CKRecord){
         id  = record.recordID
+
         gameName    = record[TUPlayerGameDetails.kGameName]  as? String ?? "N/A"
         gameID      = record[TUPlayerGameDetails.kGameID]    as? String ?? "N/A"
         gameRank    = record[TUPlayerGameDetails.kGameRank]  as? String ?? "N/A"

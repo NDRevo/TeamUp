@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct AddEventSheet: View {
-    
+
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventsListViewModel
 
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         List{
             TextField("Event Name", text: $viewModel.eventName)

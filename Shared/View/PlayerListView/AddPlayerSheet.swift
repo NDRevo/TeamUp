@@ -9,12 +9,12 @@ import SwiftUI
 import CloudKit
 
 struct AddPlayerSheet: View {
-    
+
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerListViewModel
 
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         List{
             Section{
@@ -56,8 +56,8 @@ struct AddPlayerSheet: View {
                     .foregroundColor(.blue)
             }
         }
-        .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayerSheet = false } }
         .navigationTitle("Create Player")
+        .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayerSheet = false } }
     }
 }
 

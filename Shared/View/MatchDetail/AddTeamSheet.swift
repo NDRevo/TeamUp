@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct AddTeamSheet: View {
-    
+
     @ObservedObject var viewModel: MatchDetailViewModel
 
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         List{
             TextField("Team Name", text: $viewModel.teamName)
@@ -28,8 +28,8 @@ struct AddTeamSheet: View {
                 }
             }
         }
-        .toolbar { Button("Dismiss") { dismiss() } }
         .navigationTitle("Add Team")
+        .toolbar { Button("Dismiss") { dismiss() } }
     }
 }
 

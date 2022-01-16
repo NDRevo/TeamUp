@@ -8,72 +8,72 @@
 import SwiftUI
 
 struct EventDetailView: View {
-    
+
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
-            VStack {
-                List {
-                    Section(header: Text("Matches")) {
-                        ForEach(viewModel.matches) { match in
-                            NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match))) {
-                                VStack(alignment: .leading){
-                                    Text(match.matchName)
-                                    Text(match.matchStartTime.convertDateToString())
-                                        .font(.caption)
-                                }
-                            }
-                        }
-                        .onDelete { indexSet in
-                            for index in indexSet {
-                                let recordID = viewModel.matches[index].id
-                                viewModel.deleteMatch(recordID: recordID)
-                                viewModel.matches.remove(at: index)
-                            }
-                        }
-                        Button {
-                            viewModel.isShowingAddMatch = true
-                            viewModel.resetMatchInput()
-                        } label: {
-                            Text("Add Match")
-                                .foregroundColor(.blue)
-                        }
-                        .sheet(isPresented: $viewModel.isShowingAddMatch) {
-                            NavigationView{
-                                AddMatchSheet(viewModel: viewModel)
-                            }
-                        }
-                    }
-
-                    Section(header: Text("Players")) {
-                        ForEach(viewModel.players, id: \.self){ player in
-                            Text(player.firstName)
-                        }
-                        .onDelete { index in
-                            viewModel.players.remove(atOffsets: index)
-                        }
-                        Button {
-                                viewModel.isShowingAddPlayerToEvent = true
-                        } label: {
-                            Text("Add Player")
-                                .foregroundColor(.blue)
-                        }
-                        .sheet(isPresented: $viewModel.isShowingAddPlayerToEvent) {
-                            NavigationView {
-                                AddExistingPlayer(viewModel: viewModel)
-                            }
+        List {
+            Section(header: Text("Matches")) {
+                ForEach(viewModel.matches) { match in
+                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match))) {
+                        VStack(alignment: .leading){
+                            Text(match.matchName)
+                            Text(match.matchStartTime.convertDateToString())
+                                .font(.caption)
                         }
                     }
                 }
-                .toolbar {
-                    EditButton()
+                .onDelete { indexSet in
+                    for index in indexSet {
+                        let recordID = viewModel.matches[index].id
+                        viewModel.deleteMatch(recordID: recordID)
+                        viewModel.matches.remove(at: index)
+                    }
                 }
-                .task {
-                    viewModel.getMatchesForEvent()
+                Button {
+                    viewModel.isShowingAddMatch = true
+                    viewModel.resetMatchInput()
+                } label: {
+                    Text("Add Match")
+                        .foregroundColor(.blue)
                 }
-                
+                .sheet(isPresented: $viewModel.isShowingAddMatch) {
+                    NavigationView{
+                        AddMatchSheet(viewModel: viewModel)
+                    }
+                }
             }
-            .navigationTitle(viewModel.event.eventName)
+
+            Section(header: Text("Players")) {
+                ForEach(viewModel.players, id: \.self){ player in
+                    Text(player.firstName)
+                }
+                .onDelete { index in
+                    viewModel.players.remove(atOffsets: index)
+                }
+                Button {
+                    viewModel.isShowingAddPlayerToEvent = true
+                } label: {
+                    Text("Add Player")
+                        .foregroundColor(.blue)
+                }
+                .sheet(isPresented: $viewModel.isShowingAddPlayerToEvent) {
+                    NavigationView {
+                        AddExistingPlayer(viewModel: viewModel)
+                    }
+                }
+            }
+        }
+        .navigationTitle(viewModel.event.eventName)
+        .task {
+            viewModel.getMatchesForEvent()
+        }
+        .toolbar {
+            EditButton()
+        }
+        .alert(viewModel.alertItem.alertDesc, isPresented: $viewModel.isShowingAlert) {
+            viewModel.alertItem.button
+        }
     }
 }
 

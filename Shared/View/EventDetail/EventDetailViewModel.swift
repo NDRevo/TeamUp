@@ -6,6 +6,7 @@
 //
 
 import CloudKit
+import SwiftUI
 
 @MainActor final class EventDetailViewModel: ObservableObject {
 
@@ -26,6 +27,9 @@ import CloudKit
     //Players that join/added to the event from the players list
     @Published var players: [TUPlayer] = []
     @Published var matches: [TUMatch] = []
+
+    @Published var alertItem: AlertItem = AlertItem(alertDesc: Text("Error showing correct Alert"), button: Button.init("Ok",role: .destructive ,action:{}))
+    @Published var isShowingAlert: Bool = false
 
     func resetMatchInput(){
         matchName = ""
@@ -51,7 +55,8 @@ import CloudKit
                 //Reloads view, locally adds player until another network call is made
                 matches.append(TUMatch(record: matchRecord))
             }catch{
-                //Alert could not save match
+                alertItem = AlertContext.unableToCreateMatch
+                isShowingAlert = true
             }
         }
     }
@@ -61,7 +66,8 @@ import CloudKit
             do {
                 matches = try await CloudKitManager.shared.getMatches(for: event.id)
             } catch{
-                //Alert could not get matches
+                alertItem = AlertContext.unableToGetMatchesForEvent
+                isShowingAlert = true
             }
         }
     }
@@ -74,7 +80,8 @@ import CloudKit
                 //Reloads view, locally adds player until another network call is made
                 matches.removeAll(where: {$0.id == recordID})
             } catch {
-                //Alert couldnt remove player
+                alertItem = AlertContext.unableToDeleteMatch
+                isShowingAlert = true
             }
         }
     }

@@ -19,7 +19,6 @@ struct TUMatch: Identifiable {
     let matchStartTime: Date
 
     init(record: CKRecord){
-        
         id = record.recordID
         
         matchName      = record[TUMatch.kMatchName] as? String ?? "N/A"

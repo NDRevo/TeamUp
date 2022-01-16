@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct MatchDetailView: View {
-    
+
     @ObservedObject var viewModel: MatchDetailViewModel
-    
+
     //Players that are in events, retrieved by finding players that have reference to the event id 
     @State var players: [TUPlayer] = []
-    
+
     var body: some View {
         VStack{
             List {
@@ -73,11 +73,9 @@ struct MatchDetailView: View {
                 }
             }
         }
+        .navigationTitle(viewModel.match.matchName)
         .task {
             viewModel.getTeamsForMatch()
-        }
-        .toolbar {
-            EditButton()
         }
         .sheet(isPresented: $viewModel.isShowingAddPlayer) {
             NavigationView{
@@ -86,9 +84,10 @@ struct MatchDetailView: View {
                     .navigationTitle("Add Player")
             }
         }
-        .navigationTitle(viewModel.match.matchName)
+        .toolbar {
+            EditButton()
+        }
     }
-    
 }
 
 struct MatchDetailView_Previews: PreviewProvider {

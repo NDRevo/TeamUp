@@ -6,20 +6,23 @@
 //
 
 import CloudKit
+import SwiftUI
 
 
 @MainActor final class PlayerListViewModel: ObservableObject {
-    
-    @Published var isShowingAddPlayerSheet  = false
-    
+
     @Published var playerFirstName: String  = ""
     @Published var playerLastName: String   = ""
     @Published var game: Games              = .valorant
     @Published var gameID: String           = ""
     @Published var playerGameRank: String   = ""
-    
+
     //HANDLE LATER: Stops app from calling getPlayers() twice in .task modifier: Swift Bug
-    @Published var onAppearHasFired = false
+    @Published var onAppearHasFired         = false
+    @Published var isShowingAddPlayerSheet  = false
+    @Published var isShowingAlert: Bool     = false
+
+    @Published var alertItem: AlertItem     = AlertItem(alertDesc: Text("Error showing correct Alert"), button: Button.init("Ok",role: .destructive ,action:{}))
 
     private func createPlayer() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
@@ -37,8 +40,8 @@ import CloudKit
 
         return playerGameDetails
     }
-    
-     func resetInput(){
+
+    func resetInput(){
         playerFirstName = ""
         playerLastName  = ""
         game            = .valorant
@@ -60,27 +63,30 @@ import CloudKit
                 //Reloads view, locally adds player until another network call is made
                 eventsManager.players.append(TUPlayer(record: playerRecord))
             } catch {
-                //Alert couldnt save
+                alertItem = AlertContext.unableToCreatePlayer
+                isShowingAlert = true
             }
         }
     }
-    
+
     func deletePlayer(recordID: CKRecord.ID){
         Task {
             do {
                 let _ = try await CloudKitManager.shared.remove(recordID: recordID)
             } catch {
-                //Alert couldnt remove player
+                alertItem = AlertContext.unableToDeletePlayer
+                isShowingAlert = true
             }
         }
     }
-    
+
     func getPlayers(for eventsManager: EventsManager){
         Task {
             do {
                 eventsManager.players = try await CloudKitManager.shared.getPlayers()
             } catch {
-                //Alert: couldnt get players lsit
+                alertItem = AlertContext.unableToGetPlayerList
+                isShowingAlert = true
             }
         }
     }

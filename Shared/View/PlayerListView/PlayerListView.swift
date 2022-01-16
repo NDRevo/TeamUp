@@ -11,7 +11,7 @@ struct PlayerListView: View {
 
     @EnvironmentObject private var eventsManager: EventsManager
     @StateObject private var viewModel = PlayerListViewModel()
-    
+
     var body: some View {
         List{
             ForEach(eventsManager.players){ player in
@@ -28,6 +28,9 @@ struct PlayerListView: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Players")
+        .task {
+            viewModel.getPlayers(for: eventsManager)
+        }
         .sheet(isPresented: $viewModel.isShowingAddPlayerSheet, content: {
             NavigationView {
                 AddPlayerSheet(viewModel: viewModel)
@@ -46,8 +49,8 @@ struct PlayerListView: View {
                 }
             }
         }
-        .task {
-            viewModel.getPlayers(for: eventsManager)
+        .alert(viewModel.alertItem.alertDesc, isPresented: $viewModel.isShowingAlert) {
+            viewModel.alertItem.button
         }
     }
 }

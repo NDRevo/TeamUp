@@ -6,31 +6,25 @@
 //
 
 import CloudKit
+import SwiftUI
 
 @MainActor final class MatchDetailViewModel: ObservableObject {
-    
+
     var match: TUMatch
-    
+
     @Published var teams: [TUTeam]      = []
     @Published var isShowingAddPlayer   = false
     @Published var isShowingAddTeam     = false
     @Published var teamName             = ""
-    
+
+    @Published var isShowingAlert: Bool = false
+
+    @Published var alertItem: AlertItem = AlertItem(alertDesc: Text("Error showing correct Alert"), button: Button.init("Ok",role: .destructive ,action:{}))
+
     init(match: TUMatch){
         self.match = match
     }
-    
-    func getTeamsForMatch(){
-        Task {
-            do {
-                teams = try await CloudKitManager.shared.getTeams(for: match.id)
-            } catch {
-                print("❌ \(error)")
-                //Alert: Could not get teams
-            }
-        }
-    }
-    
+
     private func createTeamRecord() -> CKRecord {
         let record = CKRecord(recordType: RecordType.team)
         record[TUTeam.kTeamName] = teamName
@@ -38,7 +32,7 @@ import CloudKit
         
         return record
     }
-    
+
     func createAndSaveTeam() {
         Task {
             do {
@@ -48,11 +42,23 @@ import CloudKit
                 //Reloads view, locally adds player until another network call is made
                 teams.append(TUTeam(record: teamRecord))
             } catch {
-                //Unable to save team
+                alertItem = AlertContext.unableToCreateTeam
+                isShowingAlert = true
             }
         }
     }
-    
+
+    func getTeamsForMatch(){
+        Task {
+            do {
+                teams = try await CloudKitManager.shared.getTeams(for: match.id)
+            } catch {
+                alertItem = AlertContext.unableToGetTeamsForMatch
+                isShowingAlert = true
+            }
+        }
+    }
+
     func deleteTeam(recordID: CKRecord.ID){
         Task {
             do {
@@ -61,7 +67,8 @@ import CloudKit
                 //Reloads view, locally adds player until another network call is made
                 teams.removeAll(where: {$0.id == recordID})
             } catch {
-                //Could not delete team
+                alertItem = AlertContext.unableToDeleteTeam
+                isShowingAlert = true
             }
         }
     }

@@ -19,7 +19,7 @@ struct MockData {
     
         return event
     }
-    
+
     static var match: CKRecord {
         let match = CKRecord(recordType: RecordType.match)
         match[TUMatch.kMatchName] = "Immortal"

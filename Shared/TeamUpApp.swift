@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct TeamUpApp: App {
-    
+
     let eventsManager = EventsManager()
-    
+
     var body: some Scene {
         WindowGroup {
             AppTabView()

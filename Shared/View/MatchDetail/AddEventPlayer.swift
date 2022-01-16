@@ -13,7 +13,7 @@ struct AddEventPlayer: View {
     @State var playerName: String = ""
 
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         List{
             TextField("Player Name", text: $playerName)
