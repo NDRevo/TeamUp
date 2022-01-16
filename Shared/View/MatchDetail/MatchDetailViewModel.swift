@@ -45,7 +45,6 @@ import CloudKit
                 let teamRecord = createTeamRecord()
                 let _ = try await CloudKitManager.shared.save(record: teamRecord)
             } catch {
-                print("❌ \(error)")
                 //Unable to save team
             }
         }

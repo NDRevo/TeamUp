@@ -47,6 +47,11 @@ struct MatchDetailView: View {
                             Text("Add Player")
                                 .foregroundColor(.blue)
                         }
+                        Button(role: .destructive) {
+                            viewModel.deleteTeam(recordID: team.id)
+                        } label: {
+                            Text("Delete Team")
+                        }
                         
                     } header: {
                         Text(team.teamName)
@@ -54,7 +59,6 @@ struct MatchDetailView: View {
                             .font(.subheadline)
                     }
                 }
-                
                 Section {
                     Button {
                         viewModel.isShowingAddTeam = true
