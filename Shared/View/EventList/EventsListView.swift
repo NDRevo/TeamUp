@@ -24,6 +24,7 @@ struct EventsListView: View {
                     for index in indexSet {
                         let recordID = eventsManager.events[index].id
                         viewModel.deleteEvent(recordID: recordID)
+
                         eventsManager.events.remove(at: index)
                     }
                 }

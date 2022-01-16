@@ -39,7 +39,7 @@ struct EventDetailView: View {
                         }
                         .sheet(isPresented: $viewModel.isShowingAddMatch) {
                             NavigationView{
-                                AddMatchSheet(viewModel: viewModel, event: viewModel.event)
+                                AddMatchSheet(viewModel: viewModel)
                             }
                         }
                     }
@@ -68,7 +68,7 @@ struct EventDetailView: View {
                     EditButton()
                 }
                 .task {
-                    viewModel.getMatchesForEvent(for: viewModel.event.id)
+                    viewModel.getMatchesForEvent()
                 }
                 
             }

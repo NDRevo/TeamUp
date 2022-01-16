@@ -46,7 +46,7 @@ struct AddEventSheet: View {
             
             Section{
                 Button {
-                    viewModel.createEvent()
+                    viewModel.createEvent(for: eventsManager)
                     dismiss()
                 } label: {
                     Text("Create Event")

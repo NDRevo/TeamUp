@@ -49,7 +49,7 @@ struct AddPlayerSheet: View {
             }
 
             Button {
-                viewModel.createAndSavePlayer()
+                viewModel.createAndSavePlayer(for: eventsManager)
                 dismiss()
             } label: {
                 Text("Add Player")

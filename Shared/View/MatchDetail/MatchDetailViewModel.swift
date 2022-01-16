@@ -44,6 +44,9 @@ import CloudKit
             do {
                 let teamRecord = createTeamRecord()
                 let _ = try await CloudKitManager.shared.save(record: teamRecord)
+
+                //Reloads view, locally adds player until another network call is made
+                teams.append(TUTeam(record: teamRecord))
             } catch {
                 //Unable to save team
             }
@@ -54,6 +57,9 @@ import CloudKit
         Task {
             do {
                 let _ = try await CloudKitManager.shared.remove(recordID: recordID)
+
+                //Reloads view, locally adds player until another network call is made
+                teams.removeAll(where: {$0.id == recordID})
             } catch {
                 //Could not delete team
             }

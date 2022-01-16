@@ -38,7 +38,7 @@ import CloudKit
         return playerGameDetails
     }
     
-    func createAndSavePlayer(){
+    func createAndSavePlayer(for eventsManager: EventsManager){
         let playerRecord = createPlayer()
         let playerGameDetails = createPlayerGameDetails()
         
@@ -48,6 +48,9 @@ import CloudKit
             do {
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
                 let _ = try await CloudKitManager.shared.save(record: playerGameDetails)
+                
+                //Reloads view, locally adds player until another network call is made
+                eventsManager.players.append(TUPlayer(record: playerRecord))
             } catch {
                 //Alert couldnt save
             }

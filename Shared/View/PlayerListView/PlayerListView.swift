@@ -21,6 +21,7 @@ struct PlayerListView: View {
                 for index in indexSet {
                     let recordID = eventsManager.players[index].id
                     viewModel.deletePlayer(recordID: recordID)
+
                     eventsManager.players.remove(at: index)
                 }
             }
@@ -45,7 +46,7 @@ struct PlayerListView: View {
             }
         }
         .task {
-                viewModel.getPlayers(for: eventsManager)
+            viewModel.getPlayers(for: eventsManager)
         }
     }
 }

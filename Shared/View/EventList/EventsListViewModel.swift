@@ -30,12 +30,15 @@ import CloudKit
         return record
     }
     
-    func createEvent() {
+    func createEvent(for eventsManager: EventsManager) {
         let event = createEventRecord()
         
         Task {
             do {
                 let _ = try await CloudKitManager.shared.save(record: event)
+
+                //Reloads view, locally adds player until another network call is made
+                eventsManager.events.append(TUEvent(record: event))
             } catch {
                 //Error: Could not create event, try again later
             }
