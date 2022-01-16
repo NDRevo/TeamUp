@@ -28,7 +28,7 @@ import SwiftUI
     @Published var players: [TUPlayer] = []
     @Published var matches: [TUMatch] = []
 
-    @Published var alertItem: AlertItem = AlertItem(alertDesc: Text("Error showing correct Alert"), button: Button.init("Ok",role: .destructive ,action:{}))
+    @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
     @Published var isShowingAlert: Bool = false
 
     func resetMatchInput(){

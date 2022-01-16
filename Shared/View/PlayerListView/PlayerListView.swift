@@ -49,9 +49,9 @@ struct PlayerListView: View {
                 }
             }
         }
-        .alert(viewModel.alertItem.alertDesc, isPresented: $viewModel.isShowingAlert) {
-            viewModel.alertItem.button
-        }
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
     }
 }
 
