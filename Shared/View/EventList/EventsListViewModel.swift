@@ -81,9 +81,9 @@ import SwiftUI
             return
         }
 
-        let event = createEventRecord()
         Task {
             do {
+                let event = createEventRecord()
                 let _ = try await CloudKitManager.shared.save(record: event)
 
                 //Reloads view, locally adds player until another network call is made

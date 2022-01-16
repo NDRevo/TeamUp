@@ -27,7 +27,6 @@ import SwiftUI
     @Published var isShowingAddMatch            = false
     @Published var isShowingAddPlayerToEvent    = false
     @Published var isShowingAddAdmin            = false
-    @Published var createMatchButtonPressed     = false
     
     @Published var isShowingAlert: Bool         = false
     @Published var alertItem: AlertItem         = AlertItem(alertTitle: Text("Unable To Show Alert"),
@@ -64,9 +63,9 @@ import SwiftUI
             return
         }
 
-        let matchRecord = createMatchRecord()
         Task{
             do{
+                let matchRecord = createMatchRecord()
                 let _ = try await CloudKitManager.shared.save(record: matchRecord)
 
                 //Reloads view, locally adds player until another network call is made

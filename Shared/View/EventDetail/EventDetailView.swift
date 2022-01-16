@@ -38,17 +38,12 @@ struct EventDetailView: View {
                         .foregroundColor(.blue)
                 }
             }
-            .sheet(isPresented: $viewModel.isShowingAddMatch, onDismiss: {
-                if viewModel.createMatchButtonPressed {
-                    viewModel.createMatchForEvent()
-                    viewModel.createMatchButtonPressed = false
-                }
-            }, content:{
+            .sheet(isPresented: $viewModel.isShowingAddMatch){
                 NavigationView{
                     AddMatchSheet(viewModel: viewModel)
                 }
-            })
-
+            }
+    
             Section(header: Text("Players")) {
                 ForEach(viewModel.players, id: \.self){ player in
                     Text(player.firstName)

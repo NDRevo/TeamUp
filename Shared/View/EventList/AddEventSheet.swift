@@ -43,6 +43,8 @@ struct AddEventSheet: View {
                 }
             }
         }
+        .navigationTitle("Create Event")
+        .toolbar { Button("Dismiss") { dismiss() } }
     }
 }
 

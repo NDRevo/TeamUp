@@ -26,7 +26,7 @@ struct AddMatchSheet: View {
                 Button {
                     Task {
                         dismiss()
-                        viewModel.createMatchButtonPressed = true
+                        viewModel.createMatchForEvent()
                     }
                 } label: {
                     Text("Create Match")

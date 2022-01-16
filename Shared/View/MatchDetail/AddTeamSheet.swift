@@ -20,8 +20,10 @@ struct AddTeamSheet: View {
                 .textInputAutocapitalization(.words)
             Section{
                 Button {
-                    viewModel.createAndSaveTeam()
-                    dismiss()
+                    Task{
+                        dismiss()
+                        viewModel.createAndSaveTeam()
+                    }
                 } label: {
                     Text("Add Team")
                         .foregroundColor(.blue)

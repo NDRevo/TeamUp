@@ -25,6 +25,17 @@ import SwiftUI
         self.match = match
     }
 
+    func resetInput(){
+        teamName = ""
+    }
+    
+    private func isValidTeam() -> Bool{
+        guard !teamName.isEmpty else {
+            return false
+        }
+        return true
+    }
+
     private func createTeamRecord() -> CKRecord {
         let record = CKRecord(recordType: RecordType.team)
         record[TUTeam.kTeamName] = teamName
@@ -34,6 +45,12 @@ import SwiftUI
     }
 
     func createAndSaveTeam() {
+        guard isValidTeam() else {
+            alertItem = AlertContext.invalidTeam
+            isShowingAlert = true
+            return
+        }
+
         Task {
             do {
                 let teamRecord = createTeamRecord()

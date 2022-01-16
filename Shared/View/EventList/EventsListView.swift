@@ -53,8 +53,6 @@ struct EventsListView: View {
             },content: {
                 NavigationView {
                     AddEventSheet(viewModel: viewModel)
-                        .toolbar { Button("Dismiss") { viewModel.isPresentingAddEvent = false } }
-                        .navigationTitle("Create Event")
                 }
             })
             .task {

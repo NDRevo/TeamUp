@@ -29,6 +29,8 @@ struct AddEventPlayer: View {
                 }
             }
         }
+        .toolbar { Button("Dismiss") { dismiss() } }
+        .navigationTitle("Add Player")
     }
 }
 

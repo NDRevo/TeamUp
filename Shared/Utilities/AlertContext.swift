@@ -56,7 +56,7 @@ struct AlertContext {
     //MARK: - PlayersListView
 
     static let invalidPlayer                = AlertItem(alertTitle: Text("Invalid Player"),
-                                                        alertMessage: Text("A player must have a first name."),
+                                                        alertMessage: Text("Player must have a first name."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToCreatePlayer         = AlertItem(alertTitle: Text("Server Error"),
@@ -73,6 +73,10 @@ struct AlertContext {
     
     //MARK: - MatchDetailView
     
+    static let invalidTeam                  = AlertItem(alertTitle: Text("Invalid Team"),
+                                                        alertMessage: Text("Team must have a name."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
     static let unableToCreateTeam           = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to create team.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))

@@ -47,6 +47,11 @@ struct MatchDetailView: View {
                             Text("Add Player")
                                 .foregroundColor(.blue)
                         }
+                        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
+                            NavigationView{
+                                AddEventPlayer(players: $players)
+                            }
+                        }
                         Button(role: .destructive) {
                             viewModel.deleteTeam(recordID: team.id)
                         } label: {
@@ -62,6 +67,7 @@ struct MatchDetailView: View {
                 Section {
                     Button {
                         viewModel.isShowingAddTeam = true
+                        viewModel.resetInput()
                     } label: {
                         Text("Add Team")
                     }
@@ -77,16 +83,12 @@ struct MatchDetailView: View {
         .task {
             viewModel.getTeamsForMatch()
         }
-        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
-            NavigationView{
-                AddEventPlayer(players: $players)
-                    .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayer = false } }
-                    .navigationTitle("Add Player")
-            }
-        }
         .toolbar {
             EditButton()
         }
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
     }
 }
 
