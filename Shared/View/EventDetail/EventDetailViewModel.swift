@@ -17,26 +17,30 @@ import SwiftUI
         matchDate = event.eventDate
     }
 
-    @Published var isShowingAddMatch            = false
-    @Published var isShowingAddPlayerToEvent    = false
-    @Published var isShowingAddAdmin            = false
-
-    @Published var matchName: String = ""
-    @Published var matchDate: Date = Date()
-
     //Players that join/added to the event from the players list
     @Published var players: [TUPlayer] = []
     @Published var matches: [TUMatch] = []
 
-    @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
-    @Published var isShowingAlert: Bool = false
+    @Published var matchName: String = ""
+    @Published var matchDate: Date = Date()
+
+    @Published var isShowingAddMatch            = false
+    @Published var isShowingAddPlayerToEvent    = false
+    @Published var isShowingAddAdmin            = false
+    @Published var createMatchButtonPressed     = false
+    
+    @Published var isShowingAlert: Bool         = false
+    @Published var alertItem: AlertItem         = AlertItem(alertTitle: Text("Unable To Show Alert"),
+                                                            alertMessage: Text("There was a problem showing the alert."))
+    
+    @Environment(\.dismiss) var dismiss
 
     func resetMatchInput(){
         matchName = ""
         matchDate = event.eventDate
     }
-    
-    func createMatchRecord() -> CKRecord {
+
+    private func createMatchRecord() -> CKRecord{
         let record = CKRecord(recordType: RecordType.match)
 
         record[TUMatch.kMatchName]     = matchName
@@ -45,16 +49,29 @@ import SwiftUI
 
         return record
     }
-    
+
+    private func isValidMatch() -> Bool{
+        guard !matchName.isEmpty, matchDate >= event.eventDate else {
+            return false
+        }
+        return true
+    }
+
     func createMatchForEvent(){
+        guard isValidMatch() else {
+            alertItem = AlertContext.invalidMatch
+            isShowingAlert = true
+            return
+        }
+
+        let matchRecord = createMatchRecord()
         Task{
             do{
-                let matchRecord = createMatchRecord()
                 let _ = try await CloudKitManager.shared.save(record: matchRecord)
 
                 //Reloads view, locally adds player until another network call is made
                 matches.append(TUMatch(record: matchRecord))
-            }catch{
+            } catch {
                 alertItem = AlertContext.unableToCreateMatch
                 isShowingAlert = true
             }

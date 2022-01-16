@@ -19,6 +19,10 @@ struct AlertContext {
     
     //MARK: - EventsListView
     
+    static let invalidEvent                 = AlertItem(alertTitle: Text("Invalid Event"),
+                                                        alertMessage: Text("Event must have a title, location, and start date past now."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
     static let unableToCreateEvent          = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to create event. Try again later."),
                                                         button:Button.init("Ok", role: .none, action: {}))
@@ -32,7 +36,11 @@ struct AlertContext {
                                                         button: Button.init("Ok", role: .none, action: {}))
     
     //MARK: - EventsDetailView
-    
+
+    static let invalidMatch                = AlertItem(alertTitle: Text("Invalid Match"),
+                                                        alertMessage: Text("Match must have a title and starte date past event."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
     static let unableToCreateMatch          = AlertItem(alertTitle: Text("Unable to create match.\n Check your internet connection and try again."),
                                                         alertMessage: Text("Unable to create match.\n Check your internet connection and try again."),
                                                         button:Button.init("Ok", role: .none, action: {}))
@@ -46,7 +54,11 @@ struct AlertContext {
                                                         button: Button.init("Ok", role: .none, action: {}))
     
     //MARK: - PlayersListView
-    
+
+    static let invalidPlayer                = AlertItem(alertTitle: Text("Invalid Player"),
+                                                        alertMessage: Text("A player must have a first name."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
     static let unableToCreatePlayer         = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to create player.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))

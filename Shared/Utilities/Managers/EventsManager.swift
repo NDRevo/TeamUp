@@ -20,6 +20,8 @@ final class EventsManager: ObservableObject {
             return ["None", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Apex Predator"]
         case .valorant:
             return ["None", "Iron", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Immortal", "Radiant"]
+        case .none:
+            return []
         }
     }
 }

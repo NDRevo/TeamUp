@@ -183,10 +183,10 @@
 			isa = PBXGroup;
 			children = (
 				560E42922790C77300408B4B /* CustomViews */,
-				560E42A627911AF400408B4B /* PlayerListView */,
 				560E426E278F94E600408B4B /* EventList */,
 				560E4272278F9EE600408B4B /* EventDetail */,
 				560E427727906B3A00408B4B /* MatchDetail */,
+				560E42A627911AF400408B4B /* PlayerListView */,
 			);
 			path = View;
 			sourceTree = "<group>";

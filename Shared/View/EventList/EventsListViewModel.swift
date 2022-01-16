@@ -16,9 +16,10 @@ import SwiftUI
     @Published var eventLocation: String      = ""
     
     //HANDLE LATER: Stops app from calling getEvents() twice in .task modifier: Swift Bug
-    @Published var onAppearHasFired           = false
-    @Published var isPresentingAddEvent: Bool = false
-    @Published var isShowingAlert: Bool       = false
+    @Published var onAppearHasFired          = false
+    @Published var isPresentingAddEvent      = false
+    @Published var isShowingAlert            = false
+    @Published var createEventButtonPressed  = false
 
     @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 
@@ -64,9 +65,23 @@ import SwiftUI
         eventLocation = ""
     }
     
+    private func isValidEvent() -> Bool{
+        guard !eventName.isEmpty,
+              eventDate > Date(),
+              !eventLocation.isEmpty else {
+            return false
+        }
+        return true
+    }
+    
     func createEvent(for eventsManager: EventsManager) {
+        guard isValidEvent() else {
+            alertItem = AlertContext.invalidEvent
+            isShowingAlert = true
+            return
+        }
+
         let event = createEventRecord()
-        
         Task {
             do {
                 let _ = try await CloudKitManager.shared.save(record: event)

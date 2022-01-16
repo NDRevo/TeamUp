@@ -31,7 +31,13 @@ struct PlayerListView: View {
         .task {
             viewModel.getPlayers(for: eventsManager)
         }
-        .sheet(isPresented: $viewModel.isShowingAddPlayerSheet, content: {
+        .sheet(isPresented: $viewModel.isShowingAddPlayerSheet, onDismiss: {
+            if viewModel.createPlayerButtonPressed {
+                //Hacky way to get alert to present
+                viewModel.createAndSavePlayer(for: eventsManager)
+                viewModel.createPlayerButtonPressed = false
+            }
+        }, content: {
             NavigationView {
                 AddPlayerSheet(viewModel: viewModel)
             }

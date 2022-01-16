@@ -45,13 +45,18 @@ struct EventsListView: View {
                     }
                 }
             }
-            .sheet(isPresented: $viewModel.isPresentingAddEvent){
+            .sheet(isPresented: $viewModel.isPresentingAddEvent, onDismiss: {
+                if viewModel.createEventButtonPressed{
+                    viewModel.createEvent(for: eventsManager)
+                    viewModel.createEventButtonPressed = false
+                }
+            },content: {
                 NavigationView {
                     AddEventSheet(viewModel: viewModel)
                         .toolbar { Button("Dismiss") { viewModel.isPresentingAddEvent = false } }
                         .navigationTitle("Create Event")
                 }
-            }
+            })
             .task {
                 viewModel.getEvents(for: eventsManager)
             }

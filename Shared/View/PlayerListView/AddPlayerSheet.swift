@@ -47,17 +47,18 @@ struct AddPlayerSheet: View {
             } header: {
                 Text("Game Info")
             }
-
-            Button {
-                viewModel.createAndSavePlayer(for: eventsManager)
-                dismiss()
-            } label: {
-                Text("Add Player")
-                    .foregroundColor(.blue)
+            Section {
+                Button {
+                    dismiss()
+                    viewModel.createPlayerButtonPressed = true
+                } label: {
+                    Text("Add Player")
+                        .foregroundColor(.blue)
+                }
             }
         }
         .navigationTitle("Create Player")
-        .toolbar { Button("Dismiss") { viewModel.isShowingAddPlayerSheet = false } }
+        .toolbar { Button("Dismiss") { dismiss() }}
     }
 }
 

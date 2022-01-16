@@ -37,12 +37,17 @@ struct EventDetailView: View {
                     Text("Add Match")
                         .foregroundColor(.blue)
                 }
-                .sheet(isPresented: $viewModel.isShowingAddMatch) {
-                    NavigationView{
-                        AddMatchSheet(viewModel: viewModel)
-                    }
-                }
             }
+            .sheet(isPresented: $viewModel.isShowingAddMatch, onDismiss: {
+                if viewModel.createMatchButtonPressed {
+                    viewModel.createMatchForEvent()
+                    viewModel.createMatchButtonPressed = false
+                }
+            }, content:{
+                NavigationView{
+                    AddMatchSheet(viewModel: viewModel)
+                }
+            })
 
             Section(header: Text("Players")) {
                 ForEach(viewModel.players, id: \.self){ player in
@@ -57,10 +62,10 @@ struct EventDetailView: View {
                     Text("Add Player")
                         .foregroundColor(.blue)
                 }
-                .sheet(isPresented: $viewModel.isShowingAddPlayerToEvent) {
-                    NavigationView {
-                        AddExistingPlayer(viewModel: viewModel)
-                    }
+            }
+            .sheet(isPresented: $viewModel.isShowingAddPlayerToEvent) {
+                NavigationView {
+                    AddExistingPlayer(viewModel: viewModel)
                 }
             }
         }

@@ -18,11 +18,20 @@ import SwiftUI
     @Published var playerGameRank: String   = ""
 
     //HANDLE LATER: Stops app from calling getPlayers() twice in .task modifier: Swift Bug
-    @Published var onAppearHasFired         = false
-    @Published var isShowingAddPlayerSheet  = false
-    @Published var isShowingAlert: Bool     = false
+    @Published var onAppearHasFired          = false
+    @Published var isShowingAddPlayerSheet   = false
+    @Published var isShowingAlert            = false
+    @Published var createPlayerButtonPressed = false
 
     @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
+
+    func resetInput(){
+        playerFirstName = ""
+        playerLastName  = ""
+        game            = .valorant
+        gameID          = ""
+        playerGameRank  = ""
+    }
 
     private func createPlayer() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
@@ -41,20 +50,23 @@ import SwiftUI
         return playerGameDetails
     }
 
-    func resetInput(){
-        playerFirstName = ""
-        playerLastName  = ""
-        game            = .valorant
-        gameID          = ""
-        playerGameRank  = ""
+    private func isValidPlayer() -> Bool{
+        guard !playerFirstName.isEmpty else {
+            return false
+        }
+        return true
     }
 
     func createAndSavePlayer(for eventsManager: EventsManager){
+        guard isValidPlayer() else {
+            alertItem = AlertContext.invalidPlayer
+            isShowingAlert = true
+            return
+        }
+
         let playerRecord = createPlayer()
         let playerGameDetails = createPlayerGameDetails()
-        
         playerGameDetails[TUPlayerGameDetails.kAssociatedToPlayer] = CKRecord.Reference(recordID: playerRecord.recordID, action: .deleteSelf)
-        
         Task{
             do {
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)

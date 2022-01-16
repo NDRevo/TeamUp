@@ -24,8 +24,10 @@ struct AddMatchSheet: View {
             
             Section{
                 Button {
-                    viewModel.createMatchForEvent()
-                    dismiss()
+                    Task {
+                        dismiss()
+                        viewModel.createMatchButtonPressed = true
+                    }
                 } label: {
                     Text("Create Match")
                         .foregroundColor(.blue)
