@@ -12,8 +12,6 @@ struct AddExistingPlayer: View {
 
     @EnvironmentObject var manager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
-    
-    @State var isChecked: Bool = false
 
     @Environment(\.dismiss) var dismiss
 
@@ -31,7 +29,7 @@ struct AddExistingPlayer: View {
                 }
                 
                 Section{
-                    ForEach(manager.players) { player in
+                    ForEach(viewModel.availablePlayers) { player in
                         PlayerListCell(viewModel: viewModel, player: player)
                     }
                 } header: {

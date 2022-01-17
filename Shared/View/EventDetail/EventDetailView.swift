@@ -63,7 +63,7 @@ struct EventDetailView: View {
                     viewModel.removePlayerFromEventWith(indexSet: indexSet)
                 }
                 Button {
-                    viewModel.isShowingAddPlayerToEvent = true
+                    viewModel.isShowingAddPlayerToEvent     = true
                 } label: {
                     Text("Add Player")
                         .foregroundColor(.blue)
@@ -79,6 +79,7 @@ struct EventDetailView: View {
         .task {
             viewModel.getMatchesForEvent()
             viewModel.getPlayersInEvents()
+            viewModel.getAvailablePlayers(from: manager.players)
         }
         .toolbar {
             EditButton()

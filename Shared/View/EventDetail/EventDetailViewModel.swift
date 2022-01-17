@@ -18,9 +18,11 @@ import SwiftUI
     }
 
     //Players that join/added to the event from the players list
-    @Published var playersInEvents: [TUPlayer] = []
-    @Published var matches: [TUMatch] = []
+    @Published var playersInEvents: [TUPlayer]   = []
+    @Published var matches: [TUMatch]            = []
+
     @Published var checkedOffPlayers: [TUPlayer] = []
+    @Published var availablePlayers: [TUPlayer]  = []
 
     @Published var matchName: String = ""
     @Published var matchDate: Date = Date()
@@ -84,6 +86,24 @@ import SwiftUI
                 matches = try await CloudKitManager.shared.getMatches(for: event.id)
             } catch{
                 alertItem = AlertContext.unableToGetMatchesForEvent
+                isShowingAlert = true
+            }
+        }
+    }
+    
+    func getAvailablePlayers(from players: [TUPlayer]){
+        Task {
+            do{
+                availablePlayers = []
+                for player in players {
+                    let playerRecord    = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                    let playerInEvents  = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
+                    if playerInEvents.contains(where: {$0.recordID != event.id}) || playerInEvents.isEmpty{
+                        availablePlayers.append(player)
+                    }
+                }
+            } catch {
+                alertItem = AlertContext.unableToGetAvailablePlayers
                 isShowingAlert = true
             }
         }

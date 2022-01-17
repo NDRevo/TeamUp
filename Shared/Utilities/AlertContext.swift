@@ -60,6 +60,10 @@ struct AlertContext {
                                                         alertMessage: Text("Unable to delete match.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
     
+    static let unableToGetAvailablePlayers  = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Unable to get available players.\n Check your internet connection and try again."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
     //MARK: - PlayersListView
 
     static let invalidPlayer                = AlertItem(alertTitle: Text("Invalid Player"),
