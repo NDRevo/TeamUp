@@ -58,6 +58,8 @@
 		560E42BF2793C30900408B4B /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42BD2793C30900408B4B /* LoadingView.swift */; };
 		560E42C127946E6100408B4B /* AlertContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42C027946E6100408B4B /* AlertContext.swift */; };
 		560E42C227946E6100408B4B /* AlertContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42C027946E6100408B4B /* AlertContext.swift */; };
+		560E42C42794F22200408B4B /* PlayerListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42C32794F22200408B4B /* PlayerListCell.swift */; };
+		560E42C52794F22200408B4B /* PlayerListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42C32794F22200408B4B /* PlayerListCell.swift */; };
 		566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2DA278D27F000F4035C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566AB2C8278D27F000F4035C /* Assets.xcassets */; };
@@ -104,6 +106,7 @@
 		560E42BA279386BF00408B4B /* MatchDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDetailViewModel.swift; sourceTree = "<group>"; };
 		560E42BD2793C30900408B4B /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		560E42C027946E6100408B4B /* AlertContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertContext.swift; sourceTree = "<group>"; };
+		560E42C32794F22200408B4B /* PlayerListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListCell.swift; sourceTree = "<group>"; };
 		566AB2C6278D27EE00F4035C /* TeamUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpApp.swift; sourceTree = "<group>"; };
 		566AB2C8278D27F000F4035C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		566AB2CD278D27F000F4035C /* TeamUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +158,7 @@
 				560E427F2790B2C000408B4B /* AddMatchSheet.swift */,
 				560E42AA2791B40800408B4B /* AddExistingPlayer.swift */,
 				560E42852790B2CC00408B4B /* AddAdminSheet.swift */,
+				560E42C32794F22200408B4B /* PlayerListCell.swift */,
 			);
 			path = EventDetail;
 			sourceTree = "<group>";
@@ -396,6 +400,7 @@
 				560E42BB279386BF00408B4B /* MatchDetailViewModel.swift in Sources */,
 				560E427927907E1200408B4B /* MatchDetailButton.swift in Sources */,
 				560E42892790B6C900408B4B /* MockData.swift in Sources */,
+				560E42C42794F22200408B4B /* PlayerListCell.swift in Sources */,
 				560E42832790B2C700408B4B /* AddPlayerSheet.swift in Sources */,
 				566AB2E8278D285000F4035C /* EventsListView.swift in Sources */,
 				560E426C278E8F1500408B4B /* View+Ext.swift in Sources */,
@@ -435,6 +440,7 @@
 				560E42BC279386BF00408B4B /* MatchDetailViewModel.swift in Sources */,
 				560E427A27907E1200408B4B /* MatchDetailButton.swift in Sources */,
 				560E428A2790B6C900408B4B /* MockData.swift in Sources */,
+				560E42C52794F22200408B4B /* PlayerListCell.swift in Sources */,
 				560E42842790B2C700408B4B /* AddPlayerSheet.swift in Sources */,
 				566AB2E9278D285000F4035C /* EventsListView.swift in Sources */,
 				560E426D278E8F1500408B4B /* View+Ext.swift in Sources */,

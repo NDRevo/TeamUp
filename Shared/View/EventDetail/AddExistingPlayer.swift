@@ -6,29 +6,38 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct AddExistingPlayer: View {
 
     @EnvironmentObject var manager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
-
-    @State private var selectedPlayers = Set<UUID>()
+    
+    @State var isChecked: Bool = false
 
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
         VStack{
-            List(manager.players, selection: $selectedPlayers) {
-                    Text($0.firstName)
-            }
-            Section{
-                Button {
-                    // Add player to event
-                    dismiss()
-                } label: {
-                    Text("Add Player")
-                        .foregroundColor(.blue)
+            List {
+                Section{
+                    Button {
+                        viewModel.addCheckedPlayersToEvent()
+                        dismiss()
+                    } label: {
+                        Text("Add Players")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
                 }
+                
+                Section{
+                    ForEach(manager.players) { player in
+                        PlayerListCell(viewModel: viewModel, player: player)
+                    }
+                } header: {
+                    Text("Available Players")
+                }
+
             }
         }
         .navigationTitle("Add Player")
@@ -38,22 +47,8 @@ struct AddExistingPlayer: View {
                     dismiss()
                 }
             }
-            ToolbarItem(placement: .navigationBarLeading) {
-               EditButton()
-            }
         }
     }
-
-    //Add player to event
-//    func compare(selectedPlayers: [UUID]){
-//        for player in manager.players {
-//            for selectedPlayer in selectedPlayers {
-//                if player.id == selectedPlayer {
-//                    viewModel.players.append(player)
-//                }
-//            }
-//        }
-//    }
 }
 
 struct AddExistingPlayer_Previews: PreviewProvider {

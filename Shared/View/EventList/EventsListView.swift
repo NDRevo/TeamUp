@@ -23,7 +23,7 @@ struct EventsListView: View {
                 .onDelete { indexSet in
                     for index in indexSet {
                         let recordID = eventsManager.events[index].id
-                        viewModel.deleteEvent(recordID: recordID)
+                        viewModel.deleteEvent(eventID: recordID)
 
                         eventsManager.events.remove(at: index)
                     }
@@ -31,6 +31,9 @@ struct EventsListView: View {
             }
             .listStyle(.plain)
             .navigationTitle("Events")
+            .task {
+                viewModel.startUp(for: eventsManager)
+            }
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                 viewModel.alertItem.alertMessage
             })
@@ -55,9 +58,6 @@ struct EventsListView: View {
                     AddEventSheet(viewModel: viewModel)
                 }
             })
-            .task {
-                viewModel.getEvents(for: eventsManager)
-            }
         }
     }
 }

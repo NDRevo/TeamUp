@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EventDetailView: View {
 
+    @EnvironmentObject var manager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
@@ -45,11 +46,21 @@ struct EventDetailView: View {
             }
     
             Section(header: Text("Players")) {
-                ForEach(viewModel.players, id: \.self){ player in
-                    Text(player.firstName)
+                ForEach(viewModel.playersInEvents){ player in
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text(player.firstName)
+                                .bold()
+                                .font(.title2)
+                            //Handle Later: Multiple games
+                            Text(manager.playerDetails[player.id]![0].gameID)
+                                .font(.callout)
+                        }
+                        Spacer()
+                    }
                 }
-                .onDelete { index in
-                    viewModel.players.remove(atOffsets: index)
+                .onDelete { indexSet in
+                    viewModel.removePlayerFromEventWith(indexSet: indexSet)
                 }
                 Button {
                     viewModel.isShowingAddPlayerToEvent = true
@@ -67,6 +78,7 @@ struct EventDetailView: View {
         .navigationTitle(viewModel.event.eventName)
         .task {
             viewModel.getMatchesForEvent()
+            viewModel.getPlayersInEvents()
         }
         .toolbar {
             EditButton()

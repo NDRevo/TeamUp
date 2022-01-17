@@ -19,20 +19,27 @@ struct AlertContext {
     
     //MARK: - EventsListView
     
-    static let invalidEvent                 = AlertItem(alertTitle: Text("Invalid Event"),
+    static let invalidEvent                     = AlertItem(alertTitle: Text("Invalid Event"),
                                                         alertMessage: Text("Event must have a title, location, and start date past now."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
-    static let unableToCreateEvent          = AlertItem(alertTitle: Text("Server Error"),
+    static let unableToCreateEvent              = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to create event. Try again later."),
                                                         button:Button.init("Ok", role: .none, action: {}))
 
-    static let unableToRetrieveEvents       = AlertItem(alertTitle: Text("Server Error"),
+    static let unableToRetrieveEvents           = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to retrieve events.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
-    static let unableToDeleteEvent          = AlertItem(alertTitle: Text("Server Error"),
+    static let unableToDeleteEvent              = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to delete event.\n Check your internet connection and try again."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+    static let unableToGetPlayerDetails         = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Unable to get player details.\n Check your internet connection and try again."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
+    static let unableToRemovePlayersFromEvent   = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Unable to delete players from event.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
     
     //MARK: - EventsDetailView

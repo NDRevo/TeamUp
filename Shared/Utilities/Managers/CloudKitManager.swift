@@ -32,6 +32,42 @@ final class CloudKitManager {
         return records.map(TUPlayer.init)
     }
     
+    func getPlayersAndDetails() async throws -> [CKRecord.ID: [TUPlayerGameDetails]] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayerGameDetails.kGameName, ascending: true)
+        let query = CKQuery(recordType: RecordType.playerGameDetails, predicate: NSPredicate(value: true))
+        query.sortDescriptors = [sortDescriptor]
+        
+        var playersAndDetails: [CKRecord.ID: [TUPlayerGameDetails]] = [:]
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap { _ , result in try? result.get()}
+        
+        for record in records {
+            let playerGameDetails = TUPlayerGameDetails(record: record)
+
+            //Gets location record because isCheckedIn is reference to location
+            guard let playerReference = record[TUPlayerGameDetails.kAssociatedToPlayer] as? CKRecord.Reference else { continue }
+            playersAndDetails[playerReference.recordID, default: []].append(playerGameDetails)
+        }
+
+        return playersAndDetails
+    }
+    
+    func getPlayersForEvent(for eventID: CKRecord.ID) async throws -> [TUPlayer] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
+        //Get Reference
+        let reference = CKRecord.Reference(recordID: eventID, action: .none)
+        let predicate = NSPredicate(format: "inEvents CONTAINS %@", reference)
+
+        let query = CKQuery(recordType: RecordType.player, predicate: predicate)
+        query.sortDescriptors = [sortDescriptor]
+
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap { _ , result in try? result.get()}
+        
+        return records.map(TUPlayer.init)
+    }
+    
     func getEvents() async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventDate, ascending: true)
         let query = CKQuery(recordType: RecordType.event, predicate: NSPredicate(value: true))
@@ -81,5 +117,9 @@ final class CloudKitManager {
     
     func remove(recordID: CKRecord.ID) async throws -> CKRecord.ID {
        return try await CloudKitManager.shared.container.publicCloudDatabase.deleteRecord(withID: recordID)
+    }
+    
+    func fetchRecord(with id: CKRecord.ID) async throws -> CKRecord {
+        return try await container.publicCloudDatabase.record(for: id)
     }
 }

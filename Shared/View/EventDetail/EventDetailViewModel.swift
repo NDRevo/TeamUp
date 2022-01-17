@@ -18,8 +18,9 @@ import SwiftUI
     }
 
     //Players that join/added to the event from the players list
-    @Published var players: [TUPlayer] = []
+    @Published var playersInEvents: [TUPlayer] = []
     @Published var matches: [TUMatch] = []
+    @Published var checkedOffPlayers: [TUPlayer] = []
 
     @Published var matchName: String = ""
     @Published var matchDate: Date = Date()
@@ -88,6 +89,42 @@ import SwiftUI
         }
     }
     
+    func getPlayersInEvents(){
+        Task {
+            do {
+                playersInEvents = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
+            } catch{
+                //Unable to get players
+                alertItem = AlertContext.unableToGetMatchesForEvent
+                isShowingAlert = true
+            }
+        }
+    }
+    
+    func removePlayerFromEventWith(indexSet: IndexSet){
+        for index in indexSet {
+            Task {
+                do {
+                    let player = playersInEvents[index]
+                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+    
+                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as! [CKRecord.Reference]
+                    references.removeAll(where: {$0.recordID == event.id})
+                    
+                    playerRecord[TUPlayer.kInEvents] = references
+                    
+                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                    
+                    playersInEvents.remove(at: index)
+                } catch{
+                    //Unable to get players
+                    alertItem = AlertContext.unableToGetMatchesForEvent
+                    isShowingAlert = true
+                }
+            }
+        }
+    }
+    
     func deleteMatch(recordID: CKRecord.ID){
         Task {
             do {
@@ -96,6 +133,31 @@ import SwiftUI
                 //Reloads view, locally adds player until another network call is made
                 matches.removeAll(where: {$0.id == recordID})
             } catch {
+                alertItem = AlertContext.unableToDeleteMatch
+                isShowingAlert = true
+            }
+        }
+    }
+    
+    func addCheckedPlayersToEvent(){
+        Task {
+            do {
+                for player in checkedOffPlayers {
+                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                    
+                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
+
+                    if references.isEmpty{
+                        playerRecord[TUPlayer.kInEvents] = [CKRecord.Reference(recordID: event.id, action: .none)]
+                    } else {
+                        references.append(CKRecord.Reference(recordID: event.id, action: .none))
+                        playerRecord[TUPlayer.kInEvents] = references
+                    }
+                    
+                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                }
+            } catch {
+                //Could check players in event
                 alertItem = AlertContext.unableToDeleteMatch
                 isShowingAlert = true
             }

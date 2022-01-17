@@ -74,6 +74,12 @@ import SwiftUI
         return true
     }
     
+    func startUp(for eventsManager: EventsManager){
+        getEvents(for: eventsManager)
+        getPlayers(for: eventsManager)
+        getPlayersAndDetails(for: eventsManager)
+    }
+    
     func createEvent(for eventsManager: EventsManager) {
         guard isValidEvent() else {
             alertItem = AlertContext.invalidEvent
@@ -95,7 +101,7 @@ import SwiftUI
         }
     }
     
-    func getEvents(for eventsManager: EventsManager){
+    private func getEvents(for eventsManager: EventsManager){
         Task {
             do{
                 eventsManager.events  = try await CloudKitManager.shared.getEvents()
@@ -106,10 +112,54 @@ import SwiftUI
         }
     }
     
-    func deleteEvent(recordID: CKRecord.ID){
+    private func getPlayers(for eventsManager: EventsManager){
+        Task {
+            do {
+                eventsManager.players = try await CloudKitManager.shared.getPlayers()
+            } catch {
+                alertItem = AlertContext.unableToGetPlayerList
+                isShowingAlert = true
+            }
+        }
+    }
+    
+    private func getPlayersAndDetails(for eventsManager: EventsManager){
+        Task {
+            do {
+                eventsManager.playerDetails = try await CloudKitManager.shared.getPlayersAndDetails()
+            } catch {
+                alertItem = AlertContext.unableToGetPlayerDetails
+                isShowingAlert = true
+            }
+        }
+    }
+    
+    private func removePlayersFromEvent(eventID: CKRecord.ID){
         Task{
             do {
-                let _ = try await CloudKitManager.shared.remove(recordID: recordID)
+                let playersInEvent = try await CloudKitManager.shared.getPlayersForEvent(for: eventID)
+
+                for player in playersInEvent {
+                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
+                    references.removeAll(where: {$0.recordID == eventID})
+                    playerRecord[TUPlayer.kInEvents] = references
+                    
+                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                }
+            } catch {
+                alertItem = AlertContext.unableToRemovePlayersFromEvent
+                isShowingAlert = true
+            }
+        }
+    }
+    
+    func deleteEvent(eventID: CKRecord.ID){
+        Task{
+            do {
+                removePlayersFromEvent(eventID: eventID)
+                let _ = try await CloudKitManager.shared.remove(recordID: eventID)
+
             } catch{
                 alertItem = AlertContext.unableToDeleteEvent
                 isShowingAlert = true

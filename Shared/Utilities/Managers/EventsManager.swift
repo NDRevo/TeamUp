@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import CloudKit
 
 final class EventsManager: ObservableObject {
     @Published var events: [TUEvent] = []
     @Published var players: [TUPlayer] = []
-    
+    @Published var playerDetails: [CKRecord.ID:[TUPlayerGameDetails]] = [:]
+
     func getRanksForGame(game: Games) -> [String]{
         switch game {
             
