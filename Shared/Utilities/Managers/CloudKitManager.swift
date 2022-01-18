@@ -68,6 +68,28 @@ final class CloudKitManager {
         return records.map(TUPlayer.init)
     }
     
+    func getPlayersForTeams(for teamID: CKRecord.ID) async throws -> [CKRecord.ID: [TUPlayer]] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
+        let query = CKQuery(recordType: RecordType.player, predicate: NSPredicate(value: true))
+        query.sortDescriptors = [sortDescriptor]
+        
+        var playersAndTeams: [CKRecord.ID: [TUPlayer]] = [:]
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap { _ , result in try? result.get()}
+        
+        for record in records {
+            let player = TUPlayer(record: record)
+
+            guard let teamReferences = record[TUPlayer.kOnTeams] as? [CKRecord.Reference] else { continue }
+            if teamReferences.contains(where: {$0.recordID == teamID}) {
+                playersAndTeams[teamID, default: []].append(player)
+            }
+        }
+
+        return playersAndTeams
+    }
+    
     func getEvents() async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventDate, ascending: true)
         let query = CKQuery(recordType: RecordType.event, predicate: NSPredicate(value: true))
@@ -94,6 +116,27 @@ final class CloudKitManager {
         let records = matchResults.compactMap{ _, result in try? result.get()}
         
         return records.map(TUMatch.init)
+    }
+    
+    func getTeams() async throws -> [TUTeam] {
+        let query = CKQuery(recordType: RecordType.team, predicate: NSPredicate(value: true))
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap{_, result in try? result.get()}
+
+        return records.map(TUTeam.init)
+    }
+    
+    func getTeamsRecordID() async throws -> [CKRecord.ID] {
+        let query = CKQuery(recordType: RecordType.team, predicate: NSPredicate(value: true))
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap{_, result in try? result.get()}
+
+        
+        return records.map { record in
+            return record.recordID
+        }
     }
     
     func getTeams(for matchID: CKRecord.ID) async throws -> [TUTeam]{

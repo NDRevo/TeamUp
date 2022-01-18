@@ -11,8 +11,14 @@ import SwiftUI
 @MainActor final class MatchDetailViewModel: ObservableObject {
 
     var match: TUMatch
+    var playersInEvent: [TUPlayer]
 
-    @Published var teams: [TUTeam]      = []
+    @Published var teams: [TUTeam]                  = []
+    @Published var teamsAndPlayer: [CKRecord.ID: [TUPlayer]] = [:]
+    
+    @Published var availablePlayers: [TUPlayer]     = []
+    @Published var checkedOffPlayers: [TUPlayer]    = []
+
     @Published var isShowingAddPlayer   = false
     @Published var isShowingAddTeam     = false
     @Published var teamName             = ""
@@ -21,8 +27,9 @@ import SwiftUI
 
     @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
-    init(match: TUMatch){
+    init(match: TUMatch, playersInEvent: [TUPlayer]){
         self.match = match
+        self.playersInEvent = playersInEvent
     }
 
     func resetInput(){
@@ -65,6 +72,31 @@ import SwiftUI
         }
     }
 
+    func addCheckedPlayersToTeam(with teamID: CKRecord.ID){
+        Task {
+            do {
+                for player in checkedOffPlayers {
+                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                    
+                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
+
+                    if references.isEmpty{
+                        playerRecord[TUPlayer.kOnTeams] = [CKRecord.Reference(recordID: teamID, action: .none)]
+                    } else {
+                        references.append(CKRecord.Reference(recordID: teamID, action: .none))
+                        playerRecord[TUPlayer.kOnTeams] = references
+                    }
+                    
+                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                }
+            } catch {
+                //Could check players in event
+
+                isShowingAlert = true
+            }
+        }
+    }
+
     func getTeamsForMatch(){
         Task {
             do {
@@ -76,9 +108,66 @@ import SwiftUI
         }
     }
 
+    func getPlayersForTeam(for teamID: CKRecord.ID){
+        Task {
+            do {
+                let playersInTeam =  try await CloudKitManager.shared.getPlayersForTeams(for: teamID)
+                teamsAndPlayer = playersInTeam
+            } catch {
+                //Unable to get players for team
+            }
+        }
+    }
+    
+    func deletePlayerReferenceToTeam(indexSet: IndexSet, teamID: CKRecord.ID){
+        for index in indexSet {
+            Task {
+                do {
+                    guard let player = teamsAndPlayer[teamID]?[index] else {
+                        //Alert could not find player to delete
+                        return
+                    }
+                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                    
+                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as! [CKRecord.Reference]
+                    references.removeAll(where: {$0.recordID == teamID})
+                    
+                    playerRecord[TUPlayer.kOnTeams] = references
+                    
+                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                    teamsAndPlayer[teamID]?.remove(at: index)
+                } catch{
+                    //Unable to get players
+                    alertItem = AlertContext.unableToGetMatchesForEvent
+                    isShowingAlert = true
+                }
+            }
+        }
+    }
+    
+    private func removeTeamReferenceFromPlayerOnDelete(for teamID: CKRecord.ID){
+        Task {
+            do {
+                for player in teamsAndPlayer[teamID] ?? []{
+                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+    
+                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as! [CKRecord.Reference]
+                    references.removeAll(where: {$0.recordID == teamID})
+                    
+                    playerRecord[TUPlayer.kOnTeams] = references
+                    
+                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                }
+            } catch {
+                //unable to remove team reference from player
+            }
+        }
+    }
+
     func deleteTeam(recordID: CKRecord.ID){
         Task {
             do {
+                removeTeamReferenceFromPlayerOnDelete(for: recordID)
                 let _ = try await CloudKitManager.shared.remove(recordID: recordID)
 
                 //Reloads view, locally adds player until another network call is made

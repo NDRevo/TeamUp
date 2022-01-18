@@ -9,33 +9,50 @@ import SwiftUI
 
 struct AddEventPlayer: View {
 
-    @Binding var players: [TUPlayer]
-    @State var playerName: String = ""
+    @ObservedObject var viewModel: MatchDetailViewModel
+    var team: TUTeam
 
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        List{
-            TextField("Player Name", text: $playerName)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.words)
-            Section{
-                Button {
-                    //Add player to match/team
+        VStack{
+            List {
+                Section{
+                    Button {
+                        viewModel.addCheckedPlayersToTeam(with: team.id)
+                        dismiss()
+                    } label: {
+                        Text("Add Players")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                }
+                
+                Section{
+                    ForEach(viewModel.playersInEvent) { player in
+                        ExistingPlayerListCell(viewModel: viewModel, player: player)
+                            .onTapGesture {
+                                
+                            }
+                    }
+                } header: {
+                    Text("Available Players")
+                }
+
+            }
+        }
+        .navigationTitle("Add Player")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Dismiss") {
                     dismiss()
-                } label: {
-                    Text("Add Player")
-                        .foregroundColor(.blue)
                 }
             }
         }
-        .toolbar { Button("Dismiss") { dismiss() } }
-        .navigationTitle("Add Player")
     }
 }
 
 struct AddEventPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        AddEventPlayer(players: .constant([]))
+        AddEventPlayer(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: []), team: TUTeam(record: MockData.team))
     }
 }

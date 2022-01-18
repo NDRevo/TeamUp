@@ -18,7 +18,7 @@ import SwiftUI
     }
 
     //Players that join/added to the event from the players list
-    @Published var playersInEvents: [TUPlayer]   = []
+    @Published var playersInEvent: [TUPlayer]   = []
     @Published var matches: [TUMatch]            = []
 
     @Published var checkedOffPlayers: [TUPlayer] = []
@@ -112,7 +112,7 @@ import SwiftUI
     func getPlayersInEvents(){
         Task {
             do {
-                playersInEvents = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
+                playersInEvent = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
             } catch{
                 //Unable to get players
                 alertItem = AlertContext.unableToGetMatchesForEvent
@@ -125,7 +125,7 @@ import SwiftUI
         for index in indexSet {
             Task {
                 do {
-                    let player = playersInEvents[index]
+                    let player = playersInEvent[index]
                     let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
     
                     var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as! [CKRecord.Reference]
@@ -135,7 +135,7 @@ import SwiftUI
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
                     
-                    playersInEvents.remove(at: index)
+                    playersInEvent.remove(at: index)
                 } catch{
                     //Unable to get players
                     alertItem = AlertContext.unableToGetMatchesForEvent

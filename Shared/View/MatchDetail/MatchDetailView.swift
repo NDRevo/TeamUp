@@ -37,9 +37,13 @@ struct MatchDetailView: View {
                 
                 ForEach(viewModel.teams) { team in
                     Section {
-                        ForEach(players){ player in
+                        ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
                             Text(player.firstName)
                         }
+                        .onDelete { indexSet in
+                            viewModel.deletePlayerReferenceToTeam(indexSet: indexSet, teamID: team.id)
+                        }
+                        
  
                         Button {
                             viewModel.isShowingAddPlayer = true
@@ -49,9 +53,13 @@ struct MatchDetailView: View {
                         }
                         .sheet(isPresented: $viewModel.isShowingAddPlayer) {
                             NavigationView{
-                                AddEventPlayer(players: $players)
+                                AddEventPlayer(viewModel: viewModel, team: team)
                             }
                         }
+                        .task{
+                            viewModel.getPlayersForTeam(for: team.id)
+                        }
+
                         Button(role: .destructive) {
                             viewModel.deleteTeam(recordID: team.id)
                         } label: {
@@ -94,6 +102,6 @@ struct MatchDetailView: View {
 
 struct MatchDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match)))
+        MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: []))
     }
 }

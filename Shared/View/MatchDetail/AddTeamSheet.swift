@@ -37,6 +37,6 @@ struct AddTeamSheet: View {
 
 struct AddTeamSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddTeamSheet(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match)))
+        AddTeamSheet(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: []))
     }
 }

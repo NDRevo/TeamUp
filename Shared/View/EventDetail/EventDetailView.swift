@@ -16,7 +16,7 @@ struct EventDetailView: View {
         List {
             Section(header: Text("Matches")) {
                 ForEach(viewModel.matches) { match in
-                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match))) {
+                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent))) {
                         VStack(alignment: .leading){
                             Text(match.matchName)
                             Text(match.matchStartTime.convertDateToString())
@@ -46,7 +46,7 @@ struct EventDetailView: View {
             }
     
             Section(header: Text("Players")) {
-                ForEach(viewModel.playersInEvents){ player in
+                ForEach(viewModel.playersInEvent){ player in
                     HStack{
                         VStack(alignment: .leading){
                             Text(player.firstName)

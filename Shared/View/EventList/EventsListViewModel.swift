@@ -20,7 +20,7 @@ import SwiftUI
     @Published var isPresentingAddEvent      = false
     @Published var isShowingAlert            = false
     @Published var createEventButtonPressed  = false
-
+    
     @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 
     let dateRange: PartialRangeFrom<Date> = {
@@ -141,6 +141,22 @@ import SwiftUI
 
                 for player in playersInEvent {
                     let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+
+                    let allTeams = try await CloudKitManager.shared.getTeamsRecordID()
+
+                    var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
+                    if allTeams.isEmpty {
+                        teamReferences.removeAll()
+                        playerRecord[TUPlayer.kOnTeams] = teamReferences
+                    } else {
+                        for teamReference in teamReferences {
+                            if !allTeams.contains(where: {$0 == teamReference.recordID}){
+                                teamReferences.removeAll(where: {$0 == teamReference})
+                                playerRecord[TUPlayer.kOnTeams] = teamReferences
+                            }
+                        }
+                    }
+                    
                     var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
                     references.removeAll(where: {$0.recordID == eventID})
                     playerRecord[TUPlayer.kInEvents] = references
@@ -153,12 +169,12 @@ import SwiftUI
             }
         }
     }
-    
+
     func deleteEvent(eventID: CKRecord.ID){
         Task{
             do {
                 removePlayersFromEvent(eventID: eventID)
-                let _ = try await CloudKitManager.shared.remove(recordID: eventID)
+               let _ = try await CloudKitManager.shared.remove(recordID: eventID)
 
             } catch{
                 alertItem = AlertContext.unableToDeleteEvent
