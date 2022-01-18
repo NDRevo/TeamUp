@@ -10,10 +10,9 @@ import SwiftUI
 
 @MainActor final class EventDetailViewModel: ObservableObject {
 
-    var event: TUEvent
+    var event: TUEvent = TUEvent(record: MockData.event)
 
-    init(event: TUEvent){
-        self.event = event
+    init(){
         matchDate = event.eventDate
     }
 

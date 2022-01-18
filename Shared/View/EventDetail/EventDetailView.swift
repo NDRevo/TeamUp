@@ -10,13 +10,14 @@ import SwiftUI
 struct EventDetailView: View {
 
     @EnvironmentObject var manager: EventsManager
-    @ObservedObject var viewModel: EventDetailViewModel
+    @StateObject var eventManager = EventDetailViewModel()
+    var event: TUEvent
 
     var body: some View {
         List {
             Section(header: Text("Matches")) {
-                ForEach(viewModel.matches) { match in
-                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent))) {
+                ForEach(eventManager.matches) { match in
+                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: eventManager.playersInEvent))) {
                         VStack(alignment: .leading){
                             Text(match.matchName)
                             Text(match.matchStartTime.convertDateToString())
@@ -26,27 +27,27 @@ struct EventDetailView: View {
                 }
                 .onDelete { indexSet in
                     for index in indexSet {
-                        let recordID = viewModel.matches[index].id
-                        viewModel.deleteMatch(recordID: recordID)
-                        viewModel.matches.remove(at: index)
+                        let recordID = eventManager.matches[index].id
+                        eventManager.deleteMatch(recordID: recordID)
+                        eventManager.matches.remove(at: index)
                     }
                 }
                 Button {
-                    viewModel.isShowingAddMatch = true
-                    viewModel.resetMatchInput()
+                    eventManager.isShowingAddMatch = true
+                    eventManager.resetMatchInput()
                 } label: {
                     Text("Add Match")
                         .foregroundColor(.blue)
                 }
             }
-            .sheet(isPresented: $viewModel.isShowingAddMatch){
+            .sheet(isPresented: $eventManager.isShowingAddMatch){
                 NavigationView{
-                    AddMatchSheet(viewModel: viewModel)
+                    AddMatchSheet(viewModel: eventManager)
                 }
             }
     
             Section(header: Text("Players")) {
-                ForEach(viewModel.playersInEvent){ player in
+                ForEach(eventManager.playersInEvent){ player in
                     HStack{
                         VStack(alignment: .leading){
                             Text(player.firstName)
@@ -60,38 +61,42 @@ struct EventDetailView: View {
                     }
                 }
                 .onDelete { indexSet in
-                    viewModel.removePlayerFromEventWith(indexSet: indexSet)
+                    eventManager.removePlayerFromEventWith(indexSet: indexSet)
                 }
                 Button {
-                    viewModel.isShowingAddPlayerToEvent     = true
+                    eventManager.isShowingAddPlayerToEvent     = true
                 } label: {
                     Text("Add Player")
                         .foregroundColor(.blue)
                 }
             }
-            .sheet(isPresented: $viewModel.isShowingAddPlayerToEvent) {
+            .sheet(isPresented: $eventManager.isShowingAddPlayerToEvent) {
                 NavigationView {
-                    AddExistingPlayer(viewModel: viewModel)
+                    AddExistingPlayer(viewModel: eventManager)
                 }
             }
         }
-        .navigationTitle(viewModel.event.eventName)
+        .environmentObject(eventManager)
+        .onAppear{
+            eventManager.event = event
+        }
+        .navigationTitle(eventManager.event.eventName)
         .task {
-            viewModel.getMatchesForEvent()
-            viewModel.getPlayersInEvents()
-            viewModel.getAvailablePlayers(from: manager.players)
+            eventManager.getMatchesForEvent()
+            eventManager.getPlayersInEvents()
+            eventManager.getAvailablePlayers(from: manager.players)
         }
         .toolbar {
             EditButton()
         }
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
+        .alert(eventManager.alertItem.alertTitle, isPresented: $eventManager.isShowingAlert, actions: {}, message: {
+            eventManager.alertItem.alertMessage
         })
     }
 }
 
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailView(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+        EventDetailView(event: TUEvent(record: MockData.event))
     }
 }

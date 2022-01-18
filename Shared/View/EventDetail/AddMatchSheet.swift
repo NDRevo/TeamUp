@@ -41,6 +41,6 @@ struct AddMatchSheet: View {
 
 struct AddMatchSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddMatchSheet(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+        AddMatchSheet(viewModel: EventDetailViewModel())
     }
 }

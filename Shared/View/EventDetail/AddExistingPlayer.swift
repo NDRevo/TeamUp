@@ -51,6 +51,6 @@ struct AddExistingPlayer: View {
 
 struct AddExistingPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        AddExistingPlayer(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+        AddExistingPlayer(viewModel: EventDetailViewModel())
     }
 }
