@@ -68,6 +68,7 @@ import SwiftUI
 
                 //Reloads view, locally adds player until another network call is made
                 teams.append(TUTeam(record: teamRecord))
+                teamsAndPlayer[teamRecord.recordID] = []
             } catch {
                 alertItem = AlertContext.unableToCreateTeam
                 isShowingAlert = true
@@ -91,6 +92,7 @@ import SwiftUI
                     }
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                    teamsAndPlayer[teamID]?.append(TUPlayer(record: playerRecord))
                 }
             } catch {
                 //Could check players in event

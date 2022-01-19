@@ -207,6 +207,7 @@ import SwiftUI
                     }
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                    playersInEvent.append(TUPlayer(record: playerRecord))
                 }
             } catch {
                 //Could check players in event
