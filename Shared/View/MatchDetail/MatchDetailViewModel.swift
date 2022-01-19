@@ -11,6 +11,7 @@ import SwiftUI
 @MainActor final class MatchDetailViewModel: ObservableObject {
 
     var match: TUMatch
+    var event: TUEvent
     var playersInEvent: [TUPlayer]
 
     @Published var teams: [TUTeam]                  = []
@@ -27,9 +28,10 @@ import SwiftUI
 
     @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
-    init(match: TUMatch, playersInEvent: [TUPlayer]){
+    init(match: TUMatch, playersInEvent: [TUPlayer], event: TUEvent){
         self.match = match
         self.playersInEvent = playersInEvent
+        self.event = event
     }
 
     func resetInput(){
@@ -47,6 +49,7 @@ import SwiftUI
         let record = CKRecord(recordType: RecordType.team)
         record[TUTeam.kTeamName] = teamName
         record[TUTeam.kAssociatedToMatch] = CKRecord.Reference(recordID: match.id, action: .deleteSelf)
+        record[TUTeam.kAssociatedToEvent] = CKRecord.Reference(recordID: event.id, action: .deleteSelf)
         
         return record
     }
@@ -100,13 +103,12 @@ import SwiftUI
     func getTeamsForMatch(){
         Task {
             do {
-                teams = try await CloudKitManager.shared.getTeams(for: match.id)
+                teams = try await CloudKitManager.shared.getTeamsForMatch(for: match.id)
                 for team in teams {
-                    let playersInTeam =  try await CloudKitManager.shared.getPlayersForTeams(for: team.id)
+                    let playersInTeam =  try await CloudKitManager.shared.getEventPlayersForTeams(for: team.id)
                     teamsAndPlayer[team.id] = playersInTeam
                 }
             } catch {
-                print(error)
                 alertItem = AlertContext.unableToGetTeamsForMatch
                 isShowingAlert = true
             }
@@ -158,14 +160,14 @@ import SwiftUI
         }
     }
 
-    func deleteTeam(recordID: CKRecord.ID){
+    func deleteTeam(teamID: CKRecord.ID){
         Task {
             do {
-                removeTeamReferenceFromPlayerOnDelete(for: recordID)
-                let _ = try await CloudKitManager.shared.remove(recordID: recordID)
+                removeTeamReferenceFromPlayerOnDelete(for: teamID)
+                let _ = try await CloudKitManager.shared.remove(recordID: teamID)
 
                 //Reloads view, locally adds player until another network call is made
-                teams.removeAll(where: {$0.id == recordID})
+                teams.removeAll(where: {$0.id == teamID})
             } catch {
                 alertItem = AlertContext.unableToDeleteTeam
                 isShowingAlert = true

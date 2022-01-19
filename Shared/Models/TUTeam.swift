@@ -10,9 +10,10 @@ import CloudKit
 
 struct TUTeam: Identifiable {
     
-    static let kAssociatedToMatch = "associatedToMatch"
-    static let kTeamName          = "teamName"
-    static let kCreationDate  = "creationDate"
+    static let kAssociatedToMatch   = "associatedToMatch"
+    static let kAssociatedToEvent   = "associatedToEvent"
+    static let kTeamName            = "teamName"
+    static let kCreationDate        = "creationDate"
     
     let id: CKRecord.ID
 

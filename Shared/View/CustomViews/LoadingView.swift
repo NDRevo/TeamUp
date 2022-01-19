@@ -17,7 +17,6 @@ struct LoadingView: View {
                 .progressViewStyle(CircularProgressViewStyle(tint: .gray))
                 .scaleEffect(2)
                 .offset(y: -40)
-            
         }
     }
 }

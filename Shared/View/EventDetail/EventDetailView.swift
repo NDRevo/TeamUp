@@ -16,7 +16,7 @@ struct EventDetailView: View {
         List {
             Section(header: Text("Matches")) {
                 ForEach(viewModel.matches) { match in
-                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent))) {
+                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent, event: viewModel.event))) {
                         VStack(alignment: .leading){
                             Text(match.matchName)
                             Text(match.matchStartTime.convertDateToString())

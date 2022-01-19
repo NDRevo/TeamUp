@@ -13,9 +13,6 @@ final class CloudKitManager {
 
     static let shared = CloudKitManager()
 
-    var userRecord: CKRecord?
-    var profileRecordID: CKRecord.ID?
-
     let container = CKContainer.default()
 
     private init(){}
@@ -68,7 +65,22 @@ final class CloudKitManager {
         return records.map(TUPlayer.init)
     }
     
-    func getPlayersForTeams(for teamID: CKRecord.ID) async throws -> [TUPlayer]  {
+    func getPlayerRecordsForEvent(for eventID: CKRecord.ID) async throws -> [CKRecord] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
+        //Get Reference
+        let reference = CKRecord.Reference(recordID: eventID, action: .none)
+        let predicate = NSPredicate(format: "inEvents CONTAINS %@", reference)
+
+        let query = CKQuery(recordType: RecordType.player, predicate: predicate)
+        query.sortDescriptors = [sortDescriptor]
+
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap { _ , result in try? result.get()}
+        
+        return records
+    }
+
+    func getEventPlayersForTeams(for teamID: CKRecord.ID) async throws -> [TUPlayer]  {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
 
         let teamReference = CKRecord.Reference(recordID: teamID, action: .none)
@@ -121,7 +133,7 @@ final class CloudKitManager {
         return records.map(TUTeam.init)
     }
     
-    func getTeamsRecordID() async throws -> [CKRecord.ID] {
+    func getAllTeamRecordIDs() async throws -> [CKRecord.ID] {
         let query = CKQuery(recordType: RecordType.team, predicate: NSPredicate(value: true))
         
         let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
@@ -133,7 +145,19 @@ final class CloudKitManager {
         }
     }
     
-    func getTeams(for matchID: CKRecord.ID) async throws -> [TUTeam]{
+    func getTeamsFromEvent(for eventID: CKRecord.ID) async throws -> [CKRecord] {
+        let reference = CKRecord.Reference(recordID: eventID, action: .deleteSelf)
+        let predicate = NSPredicate(format: "associatedToEvent == %@", reference)
+        
+        let query = CKQuery(recordType: RecordType.team, predicate: predicate)
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap{_, result in try? result.get()}
+
+        
+        return records    }
+    
+    func getTeamsForMatch(for matchID: CKRecord.ID) async throws -> [TUTeam]{
         //Get Reference
         let reference = CKRecord.Reference(recordID: matchID, action: .deleteSelf)
         let predicate = NSPredicate(format: "associatedToMatch == %@", reference)

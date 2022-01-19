@@ -47,17 +47,7 @@ import SwiftUI
         
         return calendar.date(from: mock)!
     }()
-    
-    private func createEventRecord() -> CKRecord{
-        let record = CKRecord(recordType: RecordType.event)
-        record[TUEvent.kEventName]     = eventName
-        record[TUEvent.kEventDate]     = eventDate
-        record[TUEvent.kEventGame]     = eventGame.rawValue
-        record[TUEvent.kEventLocation] = eventLocation
-        
-        return record
-    }
-    
+
     func resetInput(){
         eventName = ""
         eventDate = mockDate
@@ -79,7 +69,17 @@ import SwiftUI
         getPlayers(for: eventsManager)
         getPlayersAndDetails(for: eventsManager)
     }
-    
+
+    private func createEventRecord() -> CKRecord{
+        let record = CKRecord(recordType: RecordType.event)
+        record[TUEvent.kEventName]     = eventName
+        record[TUEvent.kEventDate]     = eventDate
+        record[TUEvent.kEventGame]     = eventGame.rawValue
+        record[TUEvent.kEventLocation] = eventLocation
+        
+        return record
+    }
+
     func createEvent(for eventsManager: EventsManager) {
         guard isValidEvent() else {
             alertItem = AlertContext.invalidEvent
@@ -137,29 +137,27 @@ import SwiftUI
     private func removePlayersFromEvent(eventID: CKRecord.ID){
         Task{
             do {
-                let playersInEvent = try await CloudKitManager.shared.getPlayersForEvent(for: eventID)
+                let playerRecordsInEvent = try await CloudKitManager.shared.getPlayerRecordsForEvent(for: eventID)
+                let teamsFromDeleteEvent = try await CloudKitManager.shared.getTeamsFromEvent(for: eventID)
 
-                for player in playersInEvent {
-                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
-
-                    let allTeams = try await CloudKitManager.shared.getTeamsRecordID()
-
+                for playerRecord in playerRecordsInEvent {
                     var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
-                    if allTeams.isEmpty {
+                    if teamsFromDeleteEvent.isEmpty {
                         teamReferences.removeAll()
                         playerRecord[TUPlayer.kOnTeams] = teamReferences
                     } else {
                         for teamReference in teamReferences {
-                            if !allTeams.contains(where: {$0 == teamReference.recordID}){
+                            //If team doesnt exist then remove from player's onTeams
+                            if teamsFromDeleteEvent.contains(where: {$0.recordID == teamReference.recordID}){
                                 teamReferences.removeAll(where: {$0 == teamReference})
-                                playerRecord[TUPlayer.kOnTeams] = teamReferences
                             }
                         }
+                        playerRecord[TUPlayer.kOnTeams] = teamReferences
                     }
                     
-                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
-                    references.removeAll(where: {$0.recordID == eventID})
-                    playerRecord[TUPlayer.kInEvents] = references
+                    var eventReference = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
+                    eventReference.removeAll(where: {$0.recordID == eventID})
+                    playerRecord[TUPlayer.kInEvents] = eventReference
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
                 }
@@ -174,8 +172,7 @@ import SwiftUI
         Task{
             do {
                 removePlayersFromEvent(eventID: eventID)
-               let _ = try await CloudKitManager.shared.remove(recordID: eventID)
-
+                let _ = try await CloudKitManager.shared.remove(recordID: eventID)
             } catch{
                 alertItem = AlertContext.unableToDeleteEvent
                 isShowingAlert = true

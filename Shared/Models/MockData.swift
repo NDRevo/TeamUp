@@ -9,7 +9,6 @@ import SwiftUI
 import CloudKit
 
 struct MockData {
-
     static var event: CKRecord {
         let event = CKRecord(recordType: RecordType.event)
         event[TUEvent.kEventName]      = "In-Houses"

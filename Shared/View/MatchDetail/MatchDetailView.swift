@@ -57,7 +57,7 @@ struct MatchDetailView: View {
                             }
                         }
                         Button(role: .destructive) {
-                            viewModel.deleteTeam(recordID: team.id)
+                            viewModel.deleteTeam(teamID: team.id)
                         } label: {
                             Text("Delete Team")
                         }
