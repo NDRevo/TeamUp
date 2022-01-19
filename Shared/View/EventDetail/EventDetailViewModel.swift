@@ -151,13 +151,39 @@ import SwiftUI
         }
     }
 
-    func deleteMatch(recordID: CKRecord.ID){
+    func removePlayersFromMatchTeam(matchID: CKRecord.ID){
+        Task{
+            do {
+                let teamsFromDeletedMatch = try await CloudKitManager.shared.getTeamsForMatch(for: matchID)
+
+                for team in teamsFromDeletedMatch{
+                    //For players in each team
+                    let playerRecordsInTeam = try await CloudKitManager.shared.getEventPlayersRecordForTeams(teamID: team.id)
+
+                    //For player in specific team
+                    for playerRecord in playerRecordsInTeam {
+                        var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
+
+                        teamReferences.removeAll(where: {$0.recordID == team.id})
+                        playerRecord[TUPlayer.kOnTeams] = teamReferences
+                        let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                    }
+                }
+            } catch {
+                alertItem = AlertContext.unableToDeleteMatch
+                isShowingAlert = true
+            }
+        }
+    }
+
+    func deleteMatch(matchID: CKRecord.ID){
         Task {
             do {
-                let _ = try await CloudKitManager.shared.remove(recordID: recordID)
+                removePlayersFromMatchTeam(matchID: matchID)
+                let _ = try await CloudKitManager.shared.remove(recordID: matchID)
 
                 //Reloads view, locally adds player until another network call is made
-                matches.removeAll(where: {$0.id == recordID})
+                matches.removeAll(where: {$0.id == matchID})
             } catch {
                 alertItem = AlertContext.unableToDeleteMatch
                 isShowingAlert = true

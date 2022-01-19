@@ -79,7 +79,7 @@ final class CloudKitManager {
         return records
     }
 
-    func getEventPlayersForTeams(for teamID: CKRecord.ID) async throws -> [TUPlayer]  {
+    func getEventPlayersForTeams(teamID: CKRecord.ID) async throws -> [TUPlayer]  {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
 
         let teamReference = CKRecord.Reference(recordID: teamID, action: .none)
@@ -93,6 +93,22 @@ final class CloudKitManager {
         let records = matchResults.compactMap { _ , result in try? result.get()}
 
         return records.map(TUPlayer.init)
+    }
+    
+    func getEventPlayersRecordForTeams(teamID: CKRecord.ID) async throws -> [CKRecord]  {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
+
+        let teamReference = CKRecord.Reference(recordID: teamID, action: .none)
+        let predicate = NSPredicate(format: "onTeams CONTAINS %@", teamReference)
+        
+        let query = CKQuery(recordType: RecordType.player, predicate: predicate)
+        query.sortDescriptors = [sortDescriptor]
+        
+        
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap { _ , result in try? result.get()}
+
+        return records
     }
 
     func getEvents() async throws -> [TUEvent] {

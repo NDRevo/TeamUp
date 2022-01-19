@@ -27,7 +27,7 @@ struct EventDetailView: View {
                 .onDelete { indexSet in
                     for index in indexSet {
                         let recordID = viewModel.matches[index].id
-                        viewModel.deleteMatch(recordID: recordID)
+                        viewModel.deleteMatch(matchID: recordID)
                         viewModel.matches.remove(at: index)
                     }
                 }

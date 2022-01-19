@@ -105,7 +105,7 @@ import SwiftUI
             do {
                 teams = try await CloudKitManager.shared.getTeamsForMatch(for: match.id)
                 for team in teams {
-                    let playersInTeam =  try await CloudKitManager.shared.getEventPlayersForTeams(for: team.id)
+                    let playersInTeam =  try await CloudKitManager.shared.getEventPlayersForTeams(teamID: team.id)
                     teamsAndPlayer[team.id] = playersInTeam
                 }
             } catch {
