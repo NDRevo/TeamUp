@@ -36,7 +36,9 @@ struct AddEventSheet: View {
             Section{
                 Button {
                     dismiss()
-                    viewModel.createEventButtonPressed = true
+                    Task {
+                       viewModel.createEvent(for: eventsManager)
+                    }
                 } label: {
                     Text("Create Event")
                         .foregroundColor(.blue)

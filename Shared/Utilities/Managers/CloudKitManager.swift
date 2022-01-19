@@ -171,7 +171,12 @@ final class CloudKitManager {
         
         return records.map(TUTeam.init)
     }
-    
+
+    func batchSave(records: [CKRecord]) async throws -> [CKRecord]{
+        let (savedResult, _) = try await container.publicCloudDatabase.modifyRecords(saving: records, deleting: [])
+        return savedResult.compactMap { _, result in try? result.get() }
+    }
+
     func save(record: CKRecord) async throws -> CKRecord {
         return try await container.publicCloudDatabase.save(record)
     }

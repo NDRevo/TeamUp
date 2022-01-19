@@ -17,12 +17,10 @@ struct AppTabView: View {
                 .tabItem {
                     Label("Events", systemImage: "calendar")
                 }
-            NavigationView{
-                PlayerListView()
-            }
-            .tabItem {
-                Label("Players", systemImage: "person.3.fill")
-            }
+            PlayerListView()
+                .tabItem {
+                    Label("Players", systemImage: "person.3.fill")
+                }
         }
     }
 }

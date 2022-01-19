@@ -50,7 +50,9 @@ struct AddPlayerSheet: View {
             Section {
                 Button {
                     dismiss()
-                    viewModel.createPlayerButtonPressed = true
+                    Task{
+                        viewModel.createAndSavePlayer(for: eventsManager)
+                    }
                 } label: {
                     Text("Add Player")
                         .foregroundColor(.blue)

@@ -10,18 +10,16 @@ import SwiftUI
 
 @MainActor final class EventsListViewModel: ObservableObject {
 
-    @Published var eventName: String          = ""
-    @Published var eventDate: Date            = Date()
-    @Published var eventGame: Games           = .valorant
-    @Published var eventLocation: String      = ""
+    @Published var eventName: String         = ""
+    @Published var eventDate: Date           = Date()
+    @Published var eventGame: Games          = .valorant
+    @Published var eventLocation: String     = ""
     
-    //HANDLE LATER: Stops app from calling getEvents() twice in .task modifier: Swift Bug
     @Published var onAppearHasFired          = false
     @Published var isPresentingAddEvent      = false
     @Published var isShowingAlert            = false
-    @Published var createEventButtonPressed  = false
     
-    @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
+    @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 
     let dateRange: PartialRangeFrom<Date> = {
         let date = Date()
@@ -29,19 +27,20 @@ import SwiftUI
         let startDate = DateComponents(
             year: calendar.component(.year, from: date),
             month: calendar.component(.month, from: date),
-            day: calendar.component(.day, from: date)
+            day: calendar.component(.day, from: date),
+            hour: calendar.component(.hour, from: date) + 1
         )
         return calendar.date(from:startDate)!...
     }()
     
-    var mockDate: Date = {
+    var currentDateAndHour: Date = {
         let date = Date()
         let calendar = Calendar.current
         let mock = DateComponents(
             year: calendar.component(.year, from: date),
             month: calendar.component(.month, from: date),
             day: calendar.component(.day, from: date),
-            hour: 7,
+            hour: calendar.component(.hour, from: date) + 1,
             minute: 00
         )
         
@@ -50,24 +49,35 @@ import SwiftUI
 
     func resetInput(){
         eventName = ""
-        eventDate = mockDate
+        eventDate = currentDateAndHour
         eventGame = .valorant
         eventLocation = ""
     }
-    
+
     private func isValidEvent() -> Bool{
         guard !eventName.isEmpty,
-              eventDate > Date(),
+              eventDate >= Date(),
               !eventLocation.isEmpty else {
             return false
         }
         return true
     }
-    
-    func startUp(for eventsManager: EventsManager){
+
+    func refresh(for eventsManager: EventsManager){
         getEvents(for: eventsManager)
         getPlayers(for: eventsManager)
         getPlayersAndDetails(for: eventsManager)
+    }
+
+    func startUp(for eventsManager: EventsManager){
+        //Forces app to call this once, but would force user to pull to refresh to get new events
+        //Fixed flashing list cell
+        if !onAppearHasFired {
+            getEvents(for: eventsManager)
+            getPlayers(for: eventsManager)
+            getPlayersAndDetails(for: eventsManager)
+        }
+        onAppearHasFired = true
     }
 
     private func createEventRecord() -> CKRecord{
@@ -94,6 +104,7 @@ import SwiftUI
 
                 //Reloads view, locally adds player until another network call is made
                 eventsManager.events.append(TUEvent(record: event))
+                eventsManager.events.sort(by: {$0.eventDate < $1.eventDate})
             } catch {
                 alertItem = AlertContext.unableToCreateEvent
                 isShowingAlert = true
@@ -101,7 +112,7 @@ import SwiftUI
         }
     }
     
-    func getEvents(for eventsManager: EventsManager){
+    private func getEvents(for eventsManager: EventsManager){
         Task {
             do{
                 eventsManager.events  = try await CloudKitManager.shared.getEvents()

@@ -32,36 +32,22 @@ struct EventsListView: View {
             .listStyle(.plain)
             .navigationTitle("Events")
             .refreshable {
-                viewModel.getEvents(for: eventsManager)
+                viewModel.refresh(for: eventsManager)
             }
             .task {
-                //Causes issue with flashing cell
                 viewModel.startUp(for: eventsManager)
             }
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                 viewModel.alertItem.alertMessage
             })
             .toolbar {
-                ToolbarItemGroup(placement: .primaryAction) {
-                    Button {
-                        viewModel.isPresentingAddEvent = true
-                        viewModel.resetInput()
-                    } label: {
-                        Image(systemName: "plus.rectangle")
-                            .tint(.blue)
-                    }
-                }
+                EventsListToolbarContent(viewModel: viewModel)
             }
-            .sheet(isPresented: $viewModel.isPresentingAddEvent, onDismiss: {
-                if viewModel.createEventButtonPressed{
-                    viewModel.createEvent(for: eventsManager)
-                    viewModel.createEventButtonPressed = false
-                }
-            },content: {
+            .sheet(isPresented: $viewModel.isPresentingAddEvent) {
                 NavigationView {
                     AddEventSheet(viewModel: viewModel)
                 }
-            })
+            }
         }
     }
 }
@@ -69,5 +55,21 @@ struct EventsListView: View {
 struct EventsListView_Previews: PreviewProvider {
     static var previews: some View {
         EventsListView()
+    }
+}
+
+struct EventsListToolbarContent: ToolbarContent {
+    @ObservedObject var viewModel: EventsListViewModel
+    
+    var body: some ToolbarContent {
+        ToolbarItemGroup(placement: .primaryAction) {
+            Button {
+                viewModel.isPresentingAddEvent = true
+                viewModel.resetInput()
+            } label: {
+                Image(systemName: "plus.rectangle")
+                    .tint(.blue)
+            }
+        }
     }
 }
