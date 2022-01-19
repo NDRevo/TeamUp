@@ -101,24 +101,18 @@ import SwiftUI
         Task {
             do {
                 teams = try await CloudKitManager.shared.getTeams(for: match.id)
+                for team in teams {
+                    let playersInTeam =  try await CloudKitManager.shared.getPlayersForTeams(for: team.id)
+                    teamsAndPlayer[team.id] = playersInTeam
+                }
             } catch {
+                print(error)
                 alertItem = AlertContext.unableToGetTeamsForMatch
                 isShowingAlert = true
             }
         }
     }
 
-    func getPlayersForTeam(for teamID: CKRecord.ID){
-        Task {
-            do {
-                let playersInTeam =  try await CloudKitManager.shared.getPlayersForTeams(for: teamID)
-                teamsAndPlayer = playersInTeam
-            } catch {
-                //Unable to get players for team
-            }
-        }
-    }
-    
     func deletePlayerReferenceToTeam(indexSet: IndexSet, teamID: CKRecord.ID){
         for index in indexSet {
             Task {

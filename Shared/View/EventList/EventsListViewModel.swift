@@ -101,7 +101,7 @@ import SwiftUI
         }
     }
     
-    private func getEvents(for eventsManager: EventsManager){
+    func getEvents(for eventsManager: EventsManager){
         Task {
             do{
                 eventsManager.events  = try await CloudKitManager.shared.getEvents()

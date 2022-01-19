@@ -68,26 +68,20 @@ final class CloudKitManager {
         return records.map(TUPlayer.init)
     }
     
-    func getPlayersForTeams(for teamID: CKRecord.ID) async throws -> [CKRecord.ID: [TUPlayer]] {
+    func getPlayersForTeams(for teamID: CKRecord.ID) async throws -> [TUPlayer]  {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
-        let query = CKQuery(recordType: RecordType.player, predicate: NSPredicate(value: true))
+
+        let teamReference = CKRecord.Reference(recordID: teamID, action: .none)
+        let predicate = NSPredicate(format: "onTeams CONTAINS %@", teamReference)
+        
+        let query = CKQuery(recordType: RecordType.player, predicate: predicate)
         query.sortDescriptors = [sortDescriptor]
         
-        var playersAndTeams: [CKRecord.ID: [TUPlayer]] = [:]
         
         let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
         let records = matchResults.compactMap { _ , result in try? result.get()}
-        
-        for record in records {
-            let player = TUPlayer(record: record)
 
-            guard let teamReferences = record[TUPlayer.kOnTeams] as? [CKRecord.Reference] else { continue }
-            if teamReferences.contains(where: {$0.recordID == teamID}) {
-                playersAndTeams[teamID, default: []].append(player)
-            }
-        }
-
-        return playersAndTeams
+        return records.map(TUPlayer.init)
     }
     
     func getEvents() async throws -> [TUEvent] {

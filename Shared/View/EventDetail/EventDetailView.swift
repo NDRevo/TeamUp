@@ -53,8 +53,8 @@ struct EventDetailView: View {
                                 .bold()
                                 .font(.title2)
                             //Handle Later: Multiple games
-                            Text(manager.playerDetails[player.id]![0].gameID)
-                                .font(.callout)
+//                            Text(manager.playerDetails[player.id]![0].gameID)
+//                                .font(.callout)
                         }
                         Spacer()
                     }
@@ -76,6 +76,11 @@ struct EventDetailView: View {
             }
         }
         .navigationTitle(viewModel.event.eventName)
+        .refreshable {
+            viewModel.getMatchesForEvent()
+            viewModel.getPlayersInEvents()
+            viewModel.getAvailablePlayers(from: manager.players)
+        }
         .task {
             viewModel.getMatchesForEvent()
             viewModel.getPlayersInEvents()

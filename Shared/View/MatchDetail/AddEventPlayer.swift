@@ -51,8 +51,8 @@ struct AddEventPlayer: View {
     }
 }
 
-struct AddEventPlayer_Previews: PreviewProvider {
-    static var previews: some View {
-        AddEventPlayer(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: []), team: TUTeam(record: MockData.team))
-    }
-}
+//struct AddEventPlayer_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddEventPlayer(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: [], event: TUEvent(record: MockData.event)), team: TUTeam(record: MockData.team))
+//    }
+//}

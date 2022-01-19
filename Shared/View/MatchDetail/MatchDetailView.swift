@@ -56,10 +56,6 @@ struct MatchDetailView: View {
                                 AddEventPlayer(viewModel: viewModel, team: team)
                             }
                         }
-                        .task{
-                            viewModel.getPlayersForTeam(for: team.id)
-                        }
-
                         Button(role: .destructive) {
                             viewModel.deleteTeam(recordID: team.id)
                         } label: {
@@ -100,8 +96,8 @@ struct MatchDetailView: View {
     }
 }
 
-struct MatchDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: []))
-    }
-}
+//struct MatchDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: []))
+//    }
+//}

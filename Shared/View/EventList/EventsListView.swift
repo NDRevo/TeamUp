@@ -31,7 +31,11 @@ struct EventsListView: View {
             }
             .listStyle(.plain)
             .navigationTitle("Events")
+            .refreshable {
+                viewModel.getEvents(for: eventsManager)
+            }
             .task {
+                //Causes issue with flashing cell
                 viewModel.startUp(for: eventsManager)
             }
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
