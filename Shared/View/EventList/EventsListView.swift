@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct EventsListView: View {
-    
+
     @EnvironmentObject private var eventsManager: EventsManager
     @StateObject private var viewModel = EventsListViewModel()
-    
+
     var body: some View {
         NavigationView{
             List {
@@ -60,7 +60,7 @@ struct EventsListView_Previews: PreviewProvider {
 
 struct EventsListToolbarContent: ToolbarContent {
     @ObservedObject var viewModel: EventsListViewModel
-    
+
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
             Button {

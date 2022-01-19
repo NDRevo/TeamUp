@@ -14,11 +14,11 @@ import SwiftUI
     @Published var eventDate: Date           = Date()
     @Published var eventGame: Games          = .valorant
     @Published var eventLocation: String     = ""
-    
+
     @Published var onAppearHasFired          = false
     @Published var isPresentingAddEvent      = false
     @Published var isShowingAlert            = false
-    
+
     @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 
     let dateRange: PartialRangeFrom<Date> = {
@@ -32,7 +32,7 @@ import SwiftUI
         )
         return calendar.date(from:startDate)!...
     }()
-    
+
     var currentDateAndHour: Date = {
         let date = Date()
         let calendar = Calendar.current
@@ -111,7 +111,7 @@ import SwiftUI
             }
         }
     }
-    
+
     private func getEvents(for eventsManager: EventsManager){
         Task {
             do{
@@ -122,7 +122,7 @@ import SwiftUI
             }
         }
     }
-    
+
     private func getPlayers(for eventsManager: EventsManager){
         Task {
             do {
@@ -133,7 +133,7 @@ import SwiftUI
             }
         }
     }
-    
+
     private func getPlayersAndDetails(for eventsManager: EventsManager){
         Task {
             do {
@@ -144,7 +144,7 @@ import SwiftUI
             }
         }
     }
-    
+
     private func removePlayersFromEvent(eventID: CKRecord.ID){
         Task{
             do {

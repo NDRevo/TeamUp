@@ -1,16 +1,17 @@
 //
-//  AddPlayerInEventSheet.swift
+//  AddExistingPlayer.swift
 //  TeamUp
 //
-//  Created by Noé Duran on 1/13/22.
+//  Created by Noé Duran on 1/14/22.
 //
 
 import SwiftUI
+import CloudKit
 
-struct AddEventPlayer: View {
+struct AddExistingPlayerSheet: View {
 
-    @ObservedObject var viewModel: MatchDetailViewModel
-    var team: TUTeam
+    @EnvironmentObject var manager: EventsManager
+    @ObservedObject var viewModel: EventDetailViewModel
 
     @Environment(\.dismiss) var dismiss
 
@@ -19,7 +20,7 @@ struct AddEventPlayer: View {
             List {
                 Section{
                     Button {
-                        viewModel.addCheckedPlayersToTeam(with: team.id)
+                        viewModel.addCheckedPlayersToEvent()
                         dismiss()
                     } label: {
                         Text("Add Players")
@@ -28,11 +29,8 @@ struct AddEventPlayer: View {
                 }
                 
                 Section{
-                    ForEach(viewModel.playersInEvent) { player in
-                        ExistingPlayerListCell(viewModel: viewModel, player: player)
-                            .onTapGesture {
-                                
-                            }
+                    ForEach(viewModel.availablePlayers) { player in
+                        PlayerListCell(viewModel: viewModel, player: player)
                     }
                 } header: {
                     Text("Available Players")
@@ -51,8 +49,8 @@ struct AddEventPlayer: View {
     }
 }
 
-//struct AddEventPlayer_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddEventPlayer(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: [], event: TUEvent(record: MockData.event)), team: TUTeam(record: MockData.team))
-//    }
-//}
+struct AddExistingPlayerSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        AddExistingPlayerSheet(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+    }
+}

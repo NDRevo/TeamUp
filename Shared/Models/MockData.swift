@@ -26,7 +26,7 @@ struct MockData {
         
         return match
     }
-    
+
     static var team: CKRecord {
         let team = CKRecord(recordType: RecordType.team)
         team[TUTeam.kTeamName] = "Team One"

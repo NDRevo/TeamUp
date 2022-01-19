@@ -8,7 +8,6 @@
 import CloudKit
 import SwiftUI
 
-
 @MainActor final class PlayerListViewModel: ObservableObject {
 
     @Published var playerFirstName: String  = ""
@@ -38,7 +37,7 @@ import SwiftUI
         
         return playerRecord
     }
-    
+
     private func createPlayerGameDetails() -> CKRecord {
         let playerGameDetails = CKRecord(recordType: RecordType.playerGameDetails)
         playerGameDetails[TUPlayerGameDetails.kGameName]    = game.rawValue

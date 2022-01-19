@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct PlayerListCell: View {
-    
+
     @EnvironmentObject var manager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
-    var player: TUPlayer
     @State var isChecked = false
-    
+    var player: TUPlayer
+
     var body: some View {
         HStack{
             VStack(alignment: .leading){

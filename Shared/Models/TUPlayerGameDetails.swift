@@ -9,7 +9,7 @@ import CloudKit
 
 
 struct TUPlayerGameDetails: Identifiable {
-    
+
     static let kGameName            = "gameName"
     static let kGameID              = "gameID"
     static let kGameRank            = "gameRank"

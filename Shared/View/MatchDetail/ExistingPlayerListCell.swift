@@ -11,9 +11,9 @@ struct ExistingPlayerListCell: View {
 
     @ObservedObject var viewModel: MatchDetailViewModel
 
-    var player: TUPlayer
     @State var isChecked = false
-    
+    var player: TUPlayer
+
     var body: some View {
         HStack{
             VStack(alignment: .leading){

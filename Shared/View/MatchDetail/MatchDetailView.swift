@@ -43,8 +43,7 @@ struct MatchDetailView: View {
                         .onDelete { indexSet in
                             viewModel.deletePlayerReferenceToTeam(indexSet: indexSet, teamID: team.id)
                         }
-                        
- 
+
                         Button {
                             viewModel.isShowingAddPlayer = true
                         } label: {
@@ -53,15 +52,15 @@ struct MatchDetailView: View {
                         }
                         .sheet(isPresented: $viewModel.isShowingAddPlayer) {
                             NavigationView{
-                                AddEventPlayer(viewModel: viewModel, team: team)
+                                AddEventPlayerSheet(viewModel: viewModel, team: team)
                             }
                         }
+
                         Button(role: .destructive) {
                             viewModel.deleteTeam(teamID: team.id)
                         } label: {
                             Text("Delete Team")
                         }
-                        
                     } header: {
                         Text(team.teamName)
                             .bold()
@@ -87,12 +86,12 @@ struct MatchDetailView: View {
         .task {
             viewModel.getTeamsForMatch()
         }
-        .toolbar {
-            EditButton()
-        }
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage
         })
+        .toolbar {
+            EditButton()
+        }
     }
 }
 

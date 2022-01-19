@@ -57,9 +57,9 @@ struct PlayerListView_Previews: PreviewProvider {
 }
 
 struct PlayerListToolbarContent: ToolbarContent {
-    
+
     @ObservedObject var viewModel: PlayerListViewModel
-    
+
     var body: some ToolbarContent {
         ToolbarItem(placement:.navigationBarLeading) {
             EditButton()

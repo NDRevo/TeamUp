@@ -12,13 +12,11 @@ struct AlertItem {
     var alertTitle: Text
     var alertMessage: Text
     var button: Button<Text>?
-
 }
 
 struct AlertContext {
-    
     //MARK: - EventsListView
-    
+
     static let invalidEvent                     = AlertItem(alertTitle: Text("Invalid Event"),
                                                         alertMessage: Text("Event must have a title, location, and start date past now."),
                                                         button: Button.init("Ok", role: .none, action: {}))
@@ -34,6 +32,7 @@ struct AlertContext {
     static let unableToDeleteEvent              = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to delete event.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
+
     static let unableToGetPlayerDetails         = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to get player details.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
@@ -41,25 +40,25 @@ struct AlertContext {
     static let unableToRemovePlayersFromEvent   = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to delete players from event.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
-    
+
     //MARK: - EventsDetailView
 
     static let invalidMatch                = AlertItem(alertTitle: Text("Invalid Match"),
                                                         alertMessage: Text("Match must have a title and starte date past event."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
-    static let unableToCreateMatch          = AlertItem(alertTitle: Text("Unable to create match.\n Check your internet connection and try again."),
+    static let unableToCreateMatch          = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to create match.\n Check your internet connection and try again."),
                                                         button:Button.init("Ok", role: .none, action: {}))
-    
+
     static let unableToGetMatchesForEvent   = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to get matches for event.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
-    
+
     static let unableToDeleteMatch          = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to delete match.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
-    
+
     static let unableToGetAvailablePlayers  = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to get available players.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
@@ -73,17 +72,17 @@ struct AlertContext {
     static let unableToCreatePlayer         = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to create player.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
-    
+
     static let unableToGetPlayerList        = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to get the list of players.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
-    
+
     static let unableToDeletePlayer         = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to delete player.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
-    
+
     //MARK: - MatchDetailView
-    
+
     static let invalidTeam                  = AlertItem(alertTitle: Text("Invalid Team"),
                                                         alertMessage: Text("Team must have a name."),
                                                         button: Button.init("Ok", role: .none, action: {}))
@@ -91,11 +90,11 @@ struct AlertContext {
     static let unableToCreateTeam           = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to create team.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
-    
+
     static let unableToDeleteTeam           = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to delete team.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
-    
+
     static let unableToGetTeamsForMatch     = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to get teams for match.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))

@@ -47,6 +47,7 @@ struct AddPlayerSheet: View {
             } header: {
                 Text("Game Info")
             }
+
             Section {
                 Button {
                     dismiss()

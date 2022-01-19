@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct AppTabView: View {
-    
+
     @EnvironmentObject var eventsManager: EventsManager
-    
+
     var body: some View {
         TabView {
             EventsListView()

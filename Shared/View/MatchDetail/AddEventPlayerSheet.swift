@@ -1,17 +1,16 @@
 //
-//  AddExistingPlayer.swift
+//  AddPlayerInEventSheet.swift
 //  TeamUp
 //
-//  Created by Noé Duran on 1/14/22.
+//  Created by Noé Duran on 1/13/22.
 //
 
 import SwiftUI
-import CloudKit
 
-struct AddExistingPlayer: View {
+struct AddEventPlayerSheet: View {
 
-    @EnvironmentObject var manager: EventsManager
-    @ObservedObject var viewModel: EventDetailViewModel
+    @ObservedObject var viewModel: MatchDetailViewModel
+    var team: TUTeam
 
     @Environment(\.dismiss) var dismiss
 
@@ -20,7 +19,7 @@ struct AddExistingPlayer: View {
             List {
                 Section{
                     Button {
-                        viewModel.addCheckedPlayersToEvent()
+                        viewModel.addCheckedPlayersToTeam(with: team.id)
                         dismiss()
                     } label: {
                         Text("Add Players")
@@ -29,8 +28,11 @@ struct AddExistingPlayer: View {
                 }
                 
                 Section{
-                    ForEach(viewModel.availablePlayers) { player in
-                        PlayerListCell(viewModel: viewModel, player: player)
+                    ForEach(viewModel.playersInEvent) { player in
+                        ExistingPlayerListCell(viewModel: viewModel, player: player)
+                            .onTapGesture {
+                                
+                            }
                     }
                 } header: {
                     Text("Available Players")
@@ -49,8 +51,8 @@ struct AddExistingPlayer: View {
     }
 }
 
-struct AddExistingPlayer_Previews: PreviewProvider {
-    static var previews: some View {
-        AddExistingPlayer(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
-    }
-}
+//struct AddEventPlayerSheet_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddEventPlayerSheet(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: [], event: TUEvent(record: MockData.event)), team: TUTeam(record: MockData.team))
+//    }
+//}

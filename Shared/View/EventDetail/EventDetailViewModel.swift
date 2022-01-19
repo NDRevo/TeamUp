@@ -58,6 +58,12 @@ import SwiftUI
         }
         return true
     }
+    
+    func setUpEventDetail(with players: [TUPlayer]){
+        getMatchesForEvent()
+        getPlayersInEvents()
+        getAvailablePlayers(from: players)
+    }
 
     func createMatchForEvent(){
         guard isValidMatch() else {
@@ -79,8 +85,8 @@ import SwiftUI
             }
         }
     }
-    
-    func getMatchesForEvent(){
+
+    private func getMatchesForEvent(){
         Task {
             do {
                 matches = try await CloudKitManager.shared.getMatches(for: event.id)
@@ -90,8 +96,20 @@ import SwiftUI
             }
         }
     }
-    
-    func getAvailablePlayers(from players: [TUPlayer]){
+
+    private func getPlayersInEvents(){
+        Task {
+            do {
+                playersInEvent = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
+            } catch{
+                //Unable to get players
+                alertItem = AlertContext.unableToGetMatchesForEvent
+                isShowingAlert = true
+            }
+        }
+    }
+
+    private func getAvailablePlayers(from players: [TUPlayer]){
         Task {
             do{
                 availablePlayers = []
@@ -108,19 +126,7 @@ import SwiftUI
             }
         }
     }
-    
-    func getPlayersInEvents(){
-        Task {
-            do {
-                playersInEvent = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
-            } catch{
-                //Unable to get players
-                alertItem = AlertContext.unableToGetMatchesForEvent
-                isShowingAlert = true
-            }
-        }
-    }
-    
+
     func removePlayerFromEventWith(indexSet: IndexSet){
         for index in indexSet {
             Task {
@@ -144,7 +150,7 @@ import SwiftUI
             }
         }
     }
-    
+
     func deleteMatch(recordID: CKRecord.ID){
         Task {
             do {
@@ -158,7 +164,7 @@ import SwiftUI
             }
         }
     }
-    
+
     func addCheckedPlayersToEvent(){
         Task {
             do {
@@ -183,7 +189,7 @@ import SwiftUI
             }
         }
     }
-    
+
     func dateRange() -> PartialRangeFrom<Date> {
         let calendar = Calendar.current
         let startDate = DateComponents(

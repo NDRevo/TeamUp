@@ -41,19 +41,19 @@ struct TUEvent: Identifiable {
     
         return dateDetails
     }
-    
+
     var getMonth: String {
          let dateFormatter = DateFormatter()
          dateFormatter.dateFormat = "LLL"
          return dateFormatter.string(from: eventDate)
     }
-    
+
     var getTime: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
         return dateFormatter.string(from: eventDate)
     }
-    
+
     func getGameColor() -> Color{
         switch eventGame {
             case "Overwatch":

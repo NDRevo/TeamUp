@@ -16,7 +16,7 @@ import SwiftUI
 
     @Published var teams: [TUTeam]                  = []
     @Published var teamsAndPlayer: [CKRecord.ID: [TUPlayer]] = [:]
-    
+
     @Published var availablePlayers: [TUPlayer]     = []
     @Published var checkedOffPlayers: [TUPlayer]    = []
 
@@ -37,7 +37,7 @@ import SwiftUI
     func resetInput(){
         teamName = ""
     }
-    
+
     private func isValidTeam() -> Bool{
         guard !teamName.isEmpty else {
             return false
@@ -140,7 +140,7 @@ import SwiftUI
             }
         }
     }
-    
+
     private func removeTeamReferenceFromPlayerOnDelete(for teamID: CKRecord.ID){
         Task {
             do {

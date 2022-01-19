@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MatchDetailButtonStyle: ViewModifier {
     var color: Color
-    
+
     func body(content: Content) -> some View {
         content
             .buttonStyle(.bordered)

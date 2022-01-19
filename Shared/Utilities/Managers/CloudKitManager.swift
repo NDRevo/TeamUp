@@ -16,8 +16,7 @@ final class CloudKitManager {
     let container = CKContainer.default()
 
     private init(){}
-    
-    
+
     func getPlayers() async throws -> [TUPlayer] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
         let query = CKQuery(recordType: RecordType.player, predicate: NSPredicate(value: true))
@@ -28,7 +27,7 @@ final class CloudKitManager {
 
         return records.map(TUPlayer.init)
     }
-    
+
     func getPlayersAndDetails() async throws -> [CKRecord.ID: [TUPlayerGameDetails]] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayerGameDetails.kGameName, ascending: true)
         let query = CKQuery(recordType: RecordType.playerGameDetails, predicate: NSPredicate(value: true))
@@ -49,7 +48,7 @@ final class CloudKitManager {
 
         return playersAndDetails
     }
-    
+
     func getPlayersForEvent(for eventID: CKRecord.ID) async throws -> [TUPlayer] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
         //Get Reference
@@ -64,7 +63,7 @@ final class CloudKitManager {
         
         return records.map(TUPlayer.init)
     }
-    
+
     func getPlayerRecordsForEvent(for eventID: CKRecord.ID) async throws -> [CKRecord] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
         //Get Reference
@@ -95,7 +94,7 @@ final class CloudKitManager {
 
         return records.map(TUPlayer.init)
     }
-    
+
     func getEvents() async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventDate, ascending: true)
         let query = CKQuery(recordType: RecordType.event, predicate: NSPredicate(value: true))
@@ -106,7 +105,7 @@ final class CloudKitManager {
 
         return records.map(TUEvent.init)
     }
-    
+
     func getMatches(for eventID: CKRecord.ID) async throws -> [TUMatch]{
         //Get Reference
         let reference = CKRecord.Reference(recordID: eventID, action: .deleteSelf)
@@ -123,7 +122,7 @@ final class CloudKitManager {
         
         return records.map(TUMatch.init)
     }
-    
+
     func getTeams() async throws -> [TUTeam] {
         let query = CKQuery(recordType: RecordType.team, predicate: NSPredicate(value: true))
         
@@ -132,7 +131,7 @@ final class CloudKitManager {
 
         return records.map(TUTeam.init)
     }
-    
+
     func getAllTeamRecordIDs() async throws -> [CKRecord.ID] {
         let query = CKQuery(recordType: RecordType.team, predicate: NSPredicate(value: true))
         
@@ -144,7 +143,7 @@ final class CloudKitManager {
             return record.recordID
         }
     }
-    
+
     func getTeamsFromEvent(for eventID: CKRecord.ID) async throws -> [CKRecord] {
         let reference = CKRecord.Reference(recordID: eventID, action: .deleteSelf)
         let predicate = NSPredicate(format: "associatedToEvent == %@", reference)
@@ -155,8 +154,9 @@ final class CloudKitManager {
         let records = matchResults.compactMap{_, result in try? result.get()}
 
         
-        return records    }
-    
+        return records
+    }
+
     func getTeamsForMatch(for matchID: CKRecord.ID) async throws -> [TUTeam]{
         //Get Reference
         let reference = CKRecord.Reference(recordID: matchID, action: .deleteSelf)
@@ -180,11 +180,11 @@ final class CloudKitManager {
     func save(record: CKRecord) async throws -> CKRecord {
         return try await container.publicCloudDatabase.save(record)
     }
-    
+
     func remove(recordID: CKRecord.ID) async throws -> CKRecord.ID {
        return try await CloudKitManager.shared.container.publicCloudDatabase.deleteRecord(withID: recordID)
     }
-    
+
     func fetchRecord(with id: CKRecord.ID) async throws -> CKRecord {
         return try await container.publicCloudDatabase.record(for: id)
     }

@@ -71,20 +71,16 @@ struct EventDetailView: View {
             }
             .sheet(isPresented: $viewModel.isShowingAddPlayerToEvent) {
                 NavigationView {
-                    AddExistingPlayer(viewModel: viewModel)
+                    AddExistingPlayerSheet(viewModel: viewModel)
                 }
             }
         }
         .navigationTitle(viewModel.event.eventName)
         .refreshable {
-            viewModel.getMatchesForEvent()
-            viewModel.getPlayersInEvents()
-            viewModel.getAvailablePlayers(from: manager.players)
+            viewModel.setUpEventDetail(with: manager.players)
         }
         .task {
-            viewModel.getMatchesForEvent()
-            viewModel.getPlayersInEvents()
-            viewModel.getAvailablePlayers(from: manager.players)
+            viewModel.setUpEventDetail(with: manager.players)
         }
         .toolbar {
             EditButton()

@@ -29,8 +29,8 @@
 		560E428A2790B6C900408B4B /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42882790B6C900408B4B /* MockData.swift */; };
 		560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428B2790C0EE00408B4B /* Date+Ext.swift */; };
 		560E428D2790C0EE00408B4B /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428B2790C0EE00408B4B /* Date+Ext.swift */; };
-		560E428F2790C28300408B4B /* AddEventPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428E2790C28300408B4B /* AddEventPlayer.swift */; };
-		560E42902790C28300408B4B /* AddEventPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428E2790C28300408B4B /* AddEventPlayer.swift */; };
+		560E428F2790C28300408B4B /* AddEventPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428E2790C28300408B4B /* AddEventPlayerSheet.swift */; };
+		560E42902790C28300408B4B /* AddEventPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428E2790C28300408B4B /* AddEventPlayerSheet.swift */; };
 		560E42982790C84900408B4B /* EventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42972790C84900408B4B /* EventsManager.swift */; };
 		560E42992790C84900408B4B /* EventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42972790C84900408B4B /* EventsManager.swift */; };
 		560E429B2791009900408B4B /* AddTeamSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429A2791009900408B4B /* AddTeamSheet.swift */; };
@@ -43,8 +43,8 @@
 		560E42A52791100200408B4B /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A32791100200408B4B /* EventDetailViewModel.swift */; };
 		560E42A827911AFD00408B4B /* PlayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A727911AFD00408B4B /* PlayerListView.swift */; };
 		560E42A927911AFD00408B4B /* PlayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A727911AFD00408B4B /* PlayerListView.swift */; };
-		560E42AB2791B40800408B4B /* AddExistingPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AA2791B40800408B4B /* AddExistingPlayer.swift */; };
-		560E42AC2791B40800408B4B /* AddExistingPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AA2791B40800408B4B /* AddExistingPlayer.swift */; };
+		560E42AB2791B40800408B4B /* AddExistingPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AA2791B40800408B4B /* AddExistingPlayerSheet.swift */; };
+		560E42AC2791B40800408B4B /* AddExistingPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AA2791B40800408B4B /* AddExistingPlayerSheet.swift */; };
 		560E42AE2791DA2D00408B4B /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AD2791DA2D00408B4B /* CloudKitManager.swift */; };
 		560E42AF2791DA2D00408B4B /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42AD2791DA2D00408B4B /* CloudKitManager.swift */; };
 		560E42B327920DAC00408B4B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 560E42B227920DAC00408B4B /* CloudKit.framework */; };
@@ -92,14 +92,14 @@
 		560E42852790B2CC00408B4B /* AddAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAdminSheet.swift; sourceTree = "<group>"; };
 		560E42882790B6C900408B4B /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		560E428B2790C0EE00408B4B /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
-		560E428E2790C28300408B4B /* AddEventPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventPlayer.swift; sourceTree = "<group>"; };
+		560E428E2790C28300408B4B /* AddEventPlayerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventPlayerSheet.swift; sourceTree = "<group>"; };
 		560E42972790C84900408B4B /* EventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsManager.swift; sourceTree = "<group>"; };
 		560E429A2791009900408B4B /* AddTeamSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeamSheet.swift; sourceTree = "<group>"; };
 		560E429D279103BB00408B4B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		560E42A027910CF800408B4B /* TUPlayerGameDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TUPlayerGameDetails.swift; sourceTree = "<group>"; };
 		560E42A32791100200408B4B /* EventDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewModel.swift; sourceTree = "<group>"; };
 		560E42A727911AFD00408B4B /* PlayerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListView.swift; sourceTree = "<group>"; };
-		560E42AA2791B40800408B4B /* AddExistingPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExistingPlayer.swift; sourceTree = "<group>"; };
+		560E42AA2791B40800408B4B /* AddExistingPlayerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExistingPlayerSheet.swift; sourceTree = "<group>"; };
 		560E42AD2791DA2D00408B4B /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		560E42B027920DA800408B4B /* TeamUp (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TeamUp (iOS).entitlements"; sourceTree = "<group>"; };
 		560E42B227920DAC00408B4B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -159,7 +159,7 @@
 				560E42A32791100200408B4B /* EventDetailViewModel.swift */,
 				560E426F278F97EF00408B4B /* EventDetailView.swift */,
 				560E427F2790B2C000408B4B /* AddMatchSheet.swift */,
-				560E42AA2791B40800408B4B /* AddExistingPlayer.swift */,
+				560E42AA2791B40800408B4B /* AddExistingPlayerSheet.swift */,
 				560E42852790B2CC00408B4B /* AddAdminSheet.swift */,
 				560E42C32794F22200408B4B /* PlayerListCell.swift */,
 			);
@@ -180,7 +180,7 @@
 			children = (
 				560E42BA279386BF00408B4B /* MatchDetailViewModel.swift */,
 				560E4273278FA68200408B4B /* MatchDetailView.swift */,
-				560E428E2790C28300408B4B /* AddEventPlayer.swift */,
+				560E428E2790C28300408B4B /* AddEventPlayerSheet.swift */,
 				560E429A2791009900408B4B /* AddTeamSheet.swift */,
 				560E42C627960D8A00408B4B /* ExistingPlayerListCell.swift */,
 			);
@@ -412,7 +412,7 @@
 				560E42C127946E6100408B4B /* AlertContext.swift in Sources */,
 				566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */,
 				560E429B2791009900408B4B /* AddTeamSheet.swift in Sources */,
-				560E42AB2791B40800408B4B /* AddExistingPlayer.swift in Sources */,
+				560E42AB2791B40800408B4B /* AddExistingPlayerSheet.swift in Sources */,
 				560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */,
 				560E42802790B2C000408B4B /* AddMatchSheet.swift in Sources */,
 				560E42862790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
@@ -428,7 +428,7 @@
 				560E427C2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42982790C84900408B4B /* EventsManager.swift in Sources */,
 				560E42B52792443700408B4B /* PlayerListViewModel.swift in Sources */,
-				560E428F2790C28300408B4B /* AddEventPlayer.swift in Sources */,
+				560E428F2790C28300408B4B /* AddEventPlayerSheet.swift in Sources */,
 				560E42C727960D8A00408B4B /* ExistingPlayerListCell.swift in Sources */,
 				560E42BE2793C30900408B4B /* LoadingView.swift in Sources */,
 				560E42AE2791DA2D00408B4B /* CloudKitManager.swift in Sources */,
@@ -453,7 +453,7 @@
 				560E42C227946E6100408B4B /* AlertContext.swift in Sources */,
 				566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */,
 				560E429C2791009900408B4B /* AddTeamSheet.swift in Sources */,
-				560E42AC2791B40800408B4B /* AddExistingPlayer.swift in Sources */,
+				560E42AC2791B40800408B4B /* AddExistingPlayerSheet.swift in Sources */,
 				560E428D2790C0EE00408B4B /* Date+Ext.swift in Sources */,
 				560E42812790B2C000408B4B /* AddMatchSheet.swift in Sources */,
 				560E42872790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
@@ -469,7 +469,7 @@
 				560E427D2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42992790C84900408B4B /* EventsManager.swift in Sources */,
 				560E42B62792443700408B4B /* PlayerListViewModel.swift in Sources */,
-				560E42902790C28300408B4B /* AddEventPlayer.swift in Sources */,
+				560E42902790C28300408B4B /* AddEventPlayerSheet.swift in Sources */,
 				560E42C827960D8A00408B4B /* ExistingPlayerListCell.swift in Sources */,
 				560E42BF2793C30900408B4B /* LoadingView.swift in Sources */,
 				560E42AF2791DA2D00408B4B /* CloudKitManager.swift in Sources */,
