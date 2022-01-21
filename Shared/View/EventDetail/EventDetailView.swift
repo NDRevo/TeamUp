@@ -32,16 +32,11 @@ struct EventDetailView: View {
                     }
                 }
                 Button {
-                    viewModel.isShowingAddMatch = true
+                    viewModel.sheetToPresent = .addMatch
                     viewModel.resetMatchInput()
                 } label: {
                     Text("Add Match")
                         .foregroundColor(.blue)
-                }
-            }
-            .sheet(isPresented: $viewModel.isShowingAddMatch){
-                NavigationView{
-                    AddMatchSheet(viewModel: viewModel)
                 }
             }
     
@@ -63,21 +58,21 @@ struct EventDetailView: View {
                     viewModel.removePlayerFromEventWith(indexSet: indexSet)
                 }
                 Button {
-                    viewModel.isShowingAddPlayerToEvent     = true
+                    viewModel.sheetToPresent = .addPlayer
                 } label: {
                     Text("Add Player")
                         .foregroundColor(.blue)
-                }
-            }
-            .sheet(isPresented: $viewModel.isShowingAddPlayerToEvent) {
-                NavigationView {
-                    AddExistingPlayerSheet(viewModel: viewModel)
                 }
             }
         }
         .navigationTitle(viewModel.event.eventName)
         .refreshable {
             viewModel.setUpEventDetail(with: manager.players)
+        }
+        .sheet(isPresented: $viewModel.isShowingSheet){
+            NavigationView{
+                viewModel.presentSheet()
+            }
         }
         .task {
             viewModel.setUpEventDetail(with: manager.players)

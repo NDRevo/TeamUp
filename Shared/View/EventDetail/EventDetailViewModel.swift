@@ -8,6 +8,10 @@
 import CloudKit
 import SwiftUI
 
+enum PresentingSheet {
+    case addMatch, addPlayer, addAdmin
+}
+
 @MainActor final class EventDetailViewModel: ObservableObject {
 
     var event: TUEvent
@@ -18,22 +22,25 @@ import SwiftUI
     }
 
     //Players that join/added to the event from the players list
-    @Published var playersInEvent: [TUPlayer]   = []
-    @Published var matches: [TUMatch]            = []
+    @Published var playersInEvent: [TUPlayer]       = []
+    @Published var matches: [TUMatch]               = []
 
-    @Published var checkedOffPlayers: [TUPlayer] = []
-    @Published var availablePlayers: [TUPlayer]  = []
+    @Published var checkedOffPlayers: [TUPlayer]    = []
+    @Published var availablePlayers: [TUPlayer]     = []
 
-    @Published var matchName: String = ""
-    @Published var matchDate: Date = Date()
+    @Published var matchName: String                = ""
+    @Published var matchDate: Date                  = Date()
 
-    @Published var isShowingAddMatch            = false
-    @Published var isShowingAddPlayerToEvent    = false
-    @Published var isShowingAddAdmin            = false
+    @Published var isShowingSheet                   = false
+    @Published var sheetToPresent: PresentingSheet? {
+        didSet{
+            isShowingSheet = true
+        }
+    }
     
-    @Published var isShowingAlert: Bool         = false
-    @Published var alertItem: AlertItem         = AlertItem(alertTitle: Text("Unable To Show Alert"),
-                                                            alertMessage: Text("There was a problem showing the alert."))
+    @Published var isShowingAlert: Bool             = false
+    @Published var alertItem: AlertItem             = AlertItem(alertTitle: Text("Unable To Show Alert"),
+                                                                alertMessage: Text("There was a problem showing the alert."))
     
     @Environment(\.dismiss) var dismiss
 
@@ -56,6 +63,7 @@ import SwiftUI
         guard !matchName.isEmpty, matchDate >= event.eventDate else {
             return false
         }
+
         return true
     }
     
@@ -63,6 +71,19 @@ import SwiftUI
         getMatchesForEvent()
         getPlayersInEvents()
         getAvailablePlayers(from: players)
+    }
+
+    @ViewBuilder func presentSheet() -> some View {
+        switch sheetToPresent {
+            case .addMatch:
+                AddMatchSheet(viewModel: self)
+            case .addPlayer:
+                AddExistingPlayerSheet(viewModel: self)
+            case .addAdmin:
+                AddAdminSheet()
+            case .none:
+                EmptyView()
+        }
     }
 
     func createMatchForEvent(){
@@ -79,6 +100,7 @@ import SwiftUI
 
                 //Reloads view, locally adds player until another network call is made
                 matches.append(TUMatch(record: matchRecord))
+                matches.sort(by: {$0.matchStartTime < $1.matchStartTime})
             } catch {
                 alertItem = AlertContext.unableToCreateMatch
                 isShowingAlert = true
@@ -207,7 +229,9 @@ import SwiftUI
                     }
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
+
                     playersInEvent.append(TUPlayer(record: playerRecord))
+                    playersInEvent.sort(by: {$0.firstName < $1.firstName})
                 }
             } catch {
                 //Could check players in event
