@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EventListCell: View {
 
+    @EnvironmentObject var eventsManager: EventsManager
     var event: TUEvent
 
     var body: some View {
@@ -66,7 +67,7 @@ struct EventListCell: View {
                             .bold()
                             .font(.body)
                             .foregroundColor(.secondary)
-                        Text("2")
+                        Text("\(eventsManager.playerCountPerEvent[event.id] ?? 0)")
                             .bold()
                             .font(.subheadline)
                     }

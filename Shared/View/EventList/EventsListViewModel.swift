@@ -116,6 +116,12 @@ import SwiftUI
         Task {
             do{
                 eventsManager.events  = try await CloudKitManager.shared.getEvents()
+                
+                //More efficient way of doing this?
+                for event in eventsManager.events {
+                    eventsManager.playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id
+                    ).count
+                }
             } catch {
                 alertItem = AlertContext.unableToRetrieveEvents
                 isShowingAlert = true
