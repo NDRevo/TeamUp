@@ -119,8 +119,7 @@ import SwiftUI
                 
                 //More efficient way of doing this?
                 for event in eventsManager.events {
-                    eventsManager.playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id
-                    ).count
+                    eventsManager.playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id).count
                 }
             } catch {
                 alertItem = AlertContext.unableToRetrieveEvents

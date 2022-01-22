@@ -10,7 +10,6 @@ import CloudKit
 
 struct AddExistingPlayerSheet: View {
 
-    @EnvironmentObject var manager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     @Environment(\.dismiss) var dismiss

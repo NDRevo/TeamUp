@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EventDetailView: View {
 
-    @EnvironmentObject var manager: EventsManager
+    @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
@@ -67,7 +67,7 @@ struct EventDetailView: View {
         }
         .navigationTitle(viewModel.event.eventName)
         .refreshable {
-            viewModel.setUpEventDetail(with: manager.players)
+            viewModel.setUpEventDetail(with: eventsManager.players)
         }
         .sheet(isPresented: $viewModel.isShowingSheet){
             NavigationView{
@@ -75,7 +75,7 @@ struct EventDetailView: View {
             }
         }
         .task {
-            viewModel.setUpEventDetail(with: manager.players)
+            viewModel.setUpEventDetail(with: eventsManager.players)
         }
         .toolbar {
             EditButton()
