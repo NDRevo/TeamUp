@@ -16,7 +16,13 @@ struct PlayerListView: View {
         NavigationView {
             List{
                 ForEach(eventsManager.players){ player in
-                    Text(player.firstName)
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text(player.firstName)
+                                .bold()
+                                .font(.title2)
+                        }
+                    }
                 }
                 .onDelete { indexSet in
                     for index in indexSet {

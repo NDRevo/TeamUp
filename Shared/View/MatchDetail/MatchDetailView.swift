@@ -38,7 +38,13 @@ struct MatchDetailView: View {
                 ForEach(viewModel.teams) { team in
                     Section {
                         ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
-                            Text(player.firstName)
+                            HStack{
+                                VStack(alignment: .leading){
+                                    Text(player.firstName)
+                                        .bold()
+                                        .font(.title2)
+                                }
+                            }
                         }
                         .onDelete { indexSet in
                             viewModel.deletePlayerReferenceToTeam(indexSet: indexSet, teamID: team.id)
