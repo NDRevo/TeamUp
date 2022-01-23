@@ -16,11 +16,13 @@ struct PlayerListView: View {
         NavigationView {
             List{
                 ForEach(eventsManager.players){ player in
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text(player.firstName)
-                                .bold()
-                                .font(.title2)
+                    NavigationLink(destination: PlayerProfileView(player: player, playerDetails: eventsManager.playerDetails[player.id])) {
+                        HStack{
+                            VStack(alignment: .leading){
+                                Text(player.firstName)
+                                    .bold()
+                                    .font(.title2)
+                            }
                         }
                     }
                 }
