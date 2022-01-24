@@ -48,6 +48,21 @@ final class CloudKitManager {
 
         return playersAndDetails
     }
+    
+    func getGamesForPlayer(for playerID: CKRecord.ID) async throws -> [TUPlayerGameDetails] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayerGameDetails.kGameName, ascending: true)
+       
+        let reference = CKRecord.Reference(recordID: playerID, action: .none)
+        let predicate = NSPredicate(format: "associatedToPlayer == %@", reference)
+        
+        let query = CKQuery(recordType: RecordType.playerGameDetails, predicate: predicate)
+        query.sortDescriptors = [sortDescriptor]
+
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap { _ , result in try? result.get()}
+    
+        return records.map(TUPlayerGameDetails.init)
+    }
 
     func getPlayersForEvent(for eventID: CKRecord.ID) async throws -> [TUPlayer] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)

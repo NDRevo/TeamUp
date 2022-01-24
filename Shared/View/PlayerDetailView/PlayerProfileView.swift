@@ -9,33 +9,50 @@ import SwiftUI
 
 struct PlayerProfileView: View {
 
-    var player: TUPlayer
-    var playerDetails: [TUPlayerGameDetails]?
-
+    @EnvironmentObject var eventsManager: EventsManager
+    @ObservedObject var viewModel: PlayerProfileViewModel
+    
     var body: some View {
         VStack(alignment: .leading){
-           
             Text("Game Profiles")
                 .bold()
                 .font(.title2)
                 .accessibilityAddTraits(.isHeader)
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),spacing: 25) {
-                    ForEach(playerDetails ?? []) { detail in
-                        PlayerGameDetailCell(gameDetail: detail)
+                    ForEach(viewModel.playerDetails) { gameDetail in
+                        PlayerGameDetailCell(gameDetail: gameDetail)
+                            .onLongPressGesture {
+                                viewModel.deleteGameDetail(for: gameDetail.id)
+                            }
                     }
                     AddGameDetailCell()
+                        .onTapGesture {
+                            viewModel.isPresentingSheet = true
+                            viewModel.resetInput()
+                        }
                 }
             }
         }
         .padding(.horizontal)
-        .navigationTitle(player.firstName)
+        .navigationTitle(viewModel.player.firstName)
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
+        .task {
+            viewModel.getPlayersAndDetails(for: eventsManager)
+        }
+        .sheet(isPresented: $viewModel.isPresentingSheet) {
+            NavigationView {
+                AddPlayerGameDetailSheet(viewModel: viewModel)
+            }
+        }
     }
 }
 
 struct PlayerProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerProfileView(player: TUPlayer(record: MockData.player))
+        PlayerProfileView(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)))
     }
 }
 
