@@ -12,23 +12,49 @@ struct PlayerGameDetailCell: View {
     var gameDetail: TUPlayerGameDetails
     
     var body: some View {
-        ZStack {
+        VStack {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(Color(UIColor.systemBackground))
-                .shadow(color: .black.opacity(0.2), radius: 2, x: 1, y: 6)
-                .overlay(alignment: .leading){
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("\(gameDetail.gameName)")
-                            .font(.title3)
-                            .bold()
-                            .minimumScaleFactor(0.75)
-                        Text("\(gameDetail.gameID)")
-                        Text("\(gameDetail.gameRank)")
-                            .font(.caption)
-                    }
-                    .padding(.horizontal)
+                .shadow(color: .black.opacity(0.10), radius: 2, x: 0, y: 7)
+                .overlay(alignment: .top){
+                    Rectangle()
+                        .fill(
+                            LinearGradient(colors: [.blue, .blue], startPoint: .top, endPoint: .bottom)
+                        )
+                        .cornerRadius(8, corners: [.topLeft, .topRight])
+                        .frame(height: 45)
+                        .overlay(alignment: .center){
+                            Text("\(gameDetail.gameName)")
+                                .font(.system(size: 20, weight: .heavy))
+                                .foregroundColor(.white)
+                        }
                 }
-                .frame(width: 170, height: 170)
+                .overlay(alignment: .bottomLeading) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(alignment: .firstTextBaseline) {
+                            Text("ID:")
+                                .bold()
+                                .font(.subheadline)
+                            Text("\(gameDetail.gameID)")
+                                .font(.callout)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.65)
+                                .textSelection(.enabled)
+                            Spacer()
+                        }
+                        HStack {
+                            Text("Rank:")
+                                .bold()
+                                .font(.subheadline)
+                            Text("\(gameDetail.gameRank)")
+                                .font(.callout)
+                                .minimumScaleFactor(0.75)
+                        }
+                    }
+                    .frame(width: 155, height: 60)
+                    .padding(.horizontal, 8)
+                }
+                .frame(width: 170, height: 110)
         }
     }
 }

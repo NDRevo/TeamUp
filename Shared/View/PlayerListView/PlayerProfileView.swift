@@ -43,7 +43,7 @@ struct AddGameDetailCell: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .foregroundColor(Color(UIColor.systemBackground))
-            .shadow(color: .black.opacity(0.2), radius: 2, x: 1, y: 6)
+            .shadow(color: .black.opacity(0.10), radius: 2, x: 0, y: 7)
             .overlay(alignment: .center){
                 Image(systemName: "plus.circle")
                     .resizable()
@@ -51,6 +51,6 @@ struct AddGameDetailCell: View {
                     .frame(width: 50, height: 50)
                     .foregroundColor(.blue)
             }
-            .frame(width: 170, height: 170)
+            .frame(width: 170, height: 110)
     }
 }
