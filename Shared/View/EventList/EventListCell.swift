@@ -61,7 +61,6 @@ struct EventListCell: View {
                             .bold()
                             .font(.subheadline)
                             .lineLimit(1)
-                            .minimumScaleFactor(0.75)
                     }
                     Spacer()
                     VStack(alignment: .center,spacing: 5){

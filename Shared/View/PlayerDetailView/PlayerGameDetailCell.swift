@@ -10,7 +10,9 @@ import SwiftUI
 struct PlayerGameDetailCell: View {
 
     @EnvironmentObject var eventsManager: EventsManager
+    @ObservedObject var viewModel: PlayerProfileViewModel
     var gameDetail: TUPlayerGameDetails
+    @Environment(\.editMode) var editMode
 
     var body: some View {
         VStack {
@@ -29,6 +31,18 @@ struct PlayerGameDetailCell: View {
                                 .font(.system(size: 20, weight: .heavy))
                                 .foregroundColor(.white)
                         }
+                }
+                .overlay(alignment: .topTrailing){
+                    if editMode?.wrappedValue == .active{
+                        Button(role: .destructive) {
+                            viewModel.deleteGameDetail(for: gameDetail.id)
+                        } label: {
+                            Image(systemName: "minus.circle.fill")
+                                .renderingMode(.original)
+                        }
+                        .font(.system(size: 24, weight: .regular, design: .default))
+                        .offset(x: 9, y: -12)
+                    }
                 }
                 .overlay(alignment: .bottomLeading) {
                     VStack(alignment: .leading, spacing: 4) {
@@ -62,6 +76,6 @@ struct PlayerGameDetailCell: View {
 
 struct PlayerGameDetailCell_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerGameDetailCell(gameDetail: TUPlayerGameDetails(record: MockData.playerGameDetail))
+        PlayerGameDetailCell(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)), gameDetail: TUPlayerGameDetails(record: MockData.playerGameDetail))
     }
 }

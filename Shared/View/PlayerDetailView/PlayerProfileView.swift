@@ -11,6 +11,7 @@ struct PlayerProfileView: View {
 
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
+    @Environment(\.editMode) var editMode
     
     var body: some View {
         VStack(alignment: .leading){
@@ -18,10 +19,12 @@ struct PlayerProfileView: View {
                 .bold()
                 .font(.title2)
                 .accessibilityAddTraits(.isHeader)
+                .padding(.horizontal)
             ScrollView {
+                Spacer(minLength: 12)
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),spacing: 25) {
                     ForEach(viewModel.playerDetails) { gameDetail in
-                        PlayerGameDetailCell(gameDetail: gameDetail)
+                        PlayerGameDetailCell(viewModel: viewModel, gameDetail: gameDetail)
                             .onLongPressGesture {
                                 viewModel.deleteGameDetail(for: gameDetail.id)
                             }
@@ -29,12 +32,13 @@ struct PlayerProfileView: View {
                     AddGameDetailCell()
                         .onTapGesture {
                             viewModel.isPresentingSheet = true
+                            editMode?.wrappedValue = .inactive
                             viewModel.resetInput()
                         }
                 }
             }
+            .padding(.horizontal, 6)
         }
-        .padding(.horizontal)
         .navigationTitle(viewModel.player.firstName)
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage
@@ -46,6 +50,14 @@ struct PlayerProfileView: View {
             NavigationView {
                 AddPlayerGameDetailSheet(viewModel: viewModel)
             }
+        }
+        .toolbar {
+            ToolbarItem {
+                EditButton()
+            }
+        }
+        .onDisappear {
+            editMode?.wrappedValue = .inactive
         }
     }
 }
