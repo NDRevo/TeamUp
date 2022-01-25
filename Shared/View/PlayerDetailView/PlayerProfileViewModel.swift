@@ -75,6 +75,7 @@ import CloudKit
                 let _ = try await CloudKitManager.shared.save(record: playerGameDetail)
                 
                 playerDetails.append(TUPlayerGameDetails(record: playerGameDetail))
+                playerDetails.sort(by: {$0.gameName < $1.gameName})
             } catch {
                 alertItem = AlertContext.unableToCreatePlayer
                 isShowingAlert = true

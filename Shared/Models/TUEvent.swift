@@ -53,17 +53,4 @@ struct TUEvent: Identifiable {
         dateFormatter.dateFormat = "hh:mm a"
         return dateFormatter.string(from: eventDate)
     }
-
-    func getGameColor() -> Color{
-        switch eventGame {
-            case "Overwatch":
-                return .yellow
-            case "Apex Legends":
-                return .red
-            case "VALORANT":
-                return .red
-            default:
-                return .gray
-        }
-    }
 }

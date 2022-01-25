@@ -70,6 +70,8 @@
 		563A46E1279EF86C006A406B /* AddPlayerGameDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A46DF279EF86C006A406B /* AddPlayerGameDetailSheet.swift */; };
 		563A46E4279F0FFC006A406B /* PlayerProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A46E3279F0FFC006A406B /* PlayerProfileViewModel.swift */; };
 		563A46E5279F0FFC006A406B /* PlayerProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A46E3279F0FFC006A406B /* PlayerProfileViewModel.swift */; };
+		563A46E7279F862C006A406B /* Color+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A46E6279F862C006A406B /* Color+Ext.swift */; };
+		563A46E8279F862C006A406B /* Color+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A46E6279F862C006A406B /* Color+Ext.swift */; };
 		566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2DA278D27F000F4035C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566AB2C8278D27F000F4035C /* Assets.xcassets */; };
@@ -122,6 +124,7 @@
 		563A46DB279DA14E006A406B /* PlayerGameDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGameDetailCell.swift; sourceTree = "<group>"; };
 		563A46DF279EF86C006A406B /* AddPlayerGameDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerGameDetailSheet.swift; sourceTree = "<group>"; };
 		563A46E3279F0FFC006A406B /* PlayerProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProfileViewModel.swift; sourceTree = "<group>"; };
+		563A46E6279F862C006A406B /* Color+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Ext.swift"; sourceTree = "<group>"; };
 		566AB2C6278D27EE00F4035C /* TeamUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpApp.swift; sourceTree = "<group>"; };
 		566AB2C8278D27F000F4035C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		566AB2CD278D27F000F4035C /* TeamUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,6 +186,7 @@
 			children = (
 				560E426B278E8F1500408B4B /* View+Ext.swift */,
 				560E428B2790C0EE00408B4B /* Date+Ext.swift */,
+				563A46E6279F862C006A406B /* Color+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -439,6 +443,7 @@
 				566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */,
 				560E429B2791009900408B4B /* AddTeamSheet.swift in Sources */,
 				560E42AB2791B40800408B4B /* AddExistingPlayerSheet.swift in Sources */,
+				563A46E7279F862C006A406B /* Color+Ext.swift in Sources */,
 				560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */,
 				560E42802790B2C000408B4B /* AddMatchSheet.swift in Sources */,
 				560E42862790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
@@ -484,6 +489,7 @@
 				566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */,
 				560E429C2791009900408B4B /* AddTeamSheet.swift in Sources */,
 				560E42AC2791B40800408B4B /* AddExistingPlayerSheet.swift in Sources */,
+				563A46E8279F862C006A406B /* Color+Ext.swift in Sources */,
 				560E428D2790C0EE00408B4B /* Date+Ext.swift in Sources */,
 				560E42812790B2C000408B4B /* AddMatchSheet.swift in Sources */,
 				560E42872790B2CC00408B4B /* AddAdminSheet.swift in Sources */,

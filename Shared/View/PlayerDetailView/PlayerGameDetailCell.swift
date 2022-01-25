@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct PlayerGameDetailCell: View {
-    
+
+    @EnvironmentObject var eventsManager: EventsManager
     var gameDetail: TUPlayerGameDetails
-    
+
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 10)
@@ -18,10 +19,10 @@ struct PlayerGameDetailCell: View {
                 .shadow(color: .black.opacity(0.10), radius: 2, x: 0, y: 7)
                 .overlay(alignment: .top){
                     Rectangle()
-                        .fill(
-                            LinearGradient(colors: [.blue, .blue], startPoint: .top, endPoint: .bottom)
+                        .overlay(
+                            LinearGradient(colors: [Color.getGameColor(gameName: gameDetail.gameName), Color.getGameColorGradient(gameName: gameDetail.gameName)], startPoint: .top, endPoint: .bottom)
                         )
-                        .cornerRadius(8, corners: [.topLeft, .topRight])
+                        .cornerRadius(10, corners: [.topLeft, .topRight])
                         .frame(height: 45)
                         .overlay(alignment: .center){
                             Text("\(gameDetail.gameName)")
