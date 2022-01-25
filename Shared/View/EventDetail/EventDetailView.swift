@@ -78,7 +78,9 @@ struct EventDetailView: View {
             viewModel.setUpEventDetail(with: eventsManager.players)
         }
         .toolbar {
-            EditButton()
+            if !viewModel.matches.isEmpty || !viewModel.playersInEvent.isEmpty {
+                EditButton()
+            }
         }
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage

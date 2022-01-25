@@ -11,9 +11,6 @@ struct MatchDetailView: View {
 
     @ObservedObject var viewModel: MatchDetailViewModel
 
-    //Players that are in events, retrieved by finding players that have reference to the event id 
-    @State var players: [TUPlayer] = []
-
     var body: some View {
         VStack{
             List {
@@ -96,7 +93,9 @@ struct MatchDetailView: View {
             viewModel.alertItem.alertMessage
         })
         .toolbar {
-            EditButton()
+            if viewModel.teamsAndPlayer.values.contains(where: {$0 != []}){
+                EditButton()
+            }
         }
     }
 }

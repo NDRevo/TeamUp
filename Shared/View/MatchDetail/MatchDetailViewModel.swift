@@ -170,6 +170,7 @@ import SwiftUI
 
                 //Reloads view, locally adds player until another network call is made
                 teams.removeAll(where: {$0.id == teamID})
+                teamsAndPlayer.removeValue(forKey: teamID)
             } catch {
                 alertItem = AlertContext.unableToDeleteTeam
                 isShowingAlert = true

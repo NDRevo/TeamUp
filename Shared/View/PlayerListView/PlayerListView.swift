@@ -47,7 +47,7 @@ struct PlayerListView: View {
                 viewModel.alertItem.alertMessage
             })
             .toolbar {
-                PlayerListToolbarContent(viewModel: viewModel)
+                PlayerListToolbarContent(viewModel: viewModel, playerList: eventsManager.players)
             }
             .sheet(isPresented: $viewModel.isShowingAddPlayerSheet){
                 NavigationView {
@@ -67,10 +67,14 @@ struct PlayerListView_Previews: PreviewProvider {
 struct PlayerListToolbarContent: ToolbarContent {
 
     @ObservedObject var viewModel: PlayerListViewModel
+    var playerList: [TUPlayer]
 
     var body: some ToolbarContent {
         ToolbarItem(placement:.navigationBarLeading) {
-            EditButton()
+            if !playerList.isEmpty {
+                EditButton()
+            }
+
         }
         ToolbarItem(placement:.navigationBarTrailing) {
             Button {

@@ -26,7 +26,7 @@ struct PlayerProfileView: View {
                     ForEach(viewModel.playerDetails) { gameDetail in
                         PlayerGameDetailCell(viewModel: viewModel, gameDetail: gameDetail)
                             .onLongPressGesture {
-                                viewModel.deleteGameDetail(for: gameDetail.id)
+                                editMode?.wrappedValue = .active
                             }
                     }
                     AddGameDetailCell()
@@ -52,7 +52,7 @@ struct PlayerProfileView: View {
             }
         }
         .toolbar {
-            ToolbarItem {
+            if !viewModel.playerDetails.isEmpty {
                 EditButton()
             }
         }
