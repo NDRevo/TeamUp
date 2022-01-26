@@ -11,8 +11,9 @@ struct PlayerGameDetailCell: View {
 
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
-    var gameDetail: TUPlayerGameDetails
     @Environment(\.editMode) var editMode
+
+    var gameProfile: TUPlayerGameDetails
 
     var body: some View {
         VStack {
@@ -22,12 +23,12 @@ struct PlayerGameDetailCell: View {
                 .overlay(alignment: .top){
                     Rectangle()
                         .overlay(
-                            LinearGradient(colors: [Color.getGameColor(gameName: gameDetail.gameName), Color.getGameColorGradient(gameName: gameDetail.gameName)], startPoint: .top, endPoint: .bottom)
+                            LinearGradient(colors: [Color.getGameColor(gameName: gameProfile.gameName), Color.getGameColorGradient(gameName: gameProfile.gameName)], startPoint: .top, endPoint: .bottom)
                         )
                         .cornerRadius(10, corners: [.topLeft, .topRight])
                         .frame(height: 45)
                         .overlay(alignment: .center){
-                            Text("\(gameDetail.gameName)")
+                            Text("\(gameProfile.gameName)")
                                 .font(.system(size: 20, weight: .heavy))
                                 .foregroundColor(.white)
                         }
@@ -35,7 +36,7 @@ struct PlayerGameDetailCell: View {
                 .overlay(alignment: .topTrailing){
                     if editMode?.wrappedValue == .active{
                         Button(role: .destructive) {
-                            viewModel.deleteGameDetail(for: gameDetail.id)
+                            viewModel.isShowingConfirmationDialogue = true
                         } label: {
                             Image(systemName: "minus.circle.fill")
                                 .renderingMode(.original)
@@ -50,7 +51,7 @@ struct PlayerGameDetailCell: View {
                             Text("ID:")
                                 .bold()
                                 .font(.subheadline)
-                            Text("\(gameDetail.gameID)")
+                            Text("\(gameProfile.gameID)")
                                 .font(.callout)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.65)
@@ -61,7 +62,7 @@ struct PlayerGameDetailCell: View {
                             Text("Rank:")
                                 .bold()
                                 .font(.subheadline)
-                            Text("\(gameDetail.gameRank)")
+                            Text("\(gameProfile.gameRank)")
                                 .font(.callout)
                                 .minimumScaleFactor(0.75)
                         }
@@ -76,6 +77,6 @@ struct PlayerGameDetailCell: View {
 
 struct PlayerGameDetailCell_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerGameDetailCell(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)), gameDetail: TUPlayerGameDetails(record: MockData.playerGameDetail))
+        PlayerGameDetailCell(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)), gameProfile: TUPlayerGameDetails(record: MockData.playerGameDetail))
     }
 }

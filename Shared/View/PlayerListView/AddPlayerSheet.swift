@@ -27,27 +27,6 @@ struct AddPlayerSheet: View {
             } header: {
                 Text("General")
             }
-
-            Section{
-                Picker("Game", selection: $viewModel.game) {
-                    ForEach(Games.allCases, id: \.self){ game in
-                        Text(game.rawValue)
-                    }
-                }
-                .pickerStyle(.menu)
-                TextField("Game ID", text: $viewModel.gameID)
-                    .disableAutocorrection(true)
-                    .keyboardType(.twitter)
-                    .textInputAutocapitalization(.never)
-                Picker("Rank", selection: $viewModel.playerGameRank) {
-                    ForEach(eventsManager.getRanksForGame(game: viewModel.game), id: \.self){ rank in
-                        Text(rank)
-                    }
-                }
-            } header: {
-                Text("Game Info")
-            }
-
             Section {
                 Button {
                     dismiss()

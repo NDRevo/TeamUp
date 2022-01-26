@@ -23,11 +23,20 @@ struct PlayerProfileView: View {
             ScrollView {
                 Spacer(minLength: 12)
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),spacing: 25) {
-                    ForEach(viewModel.playerDetails) { gameDetail in
-                        PlayerGameDetailCell(viewModel: viewModel, gameDetail: gameDetail)
+                    ForEach(viewModel.playerDetails) { gameProfile in
+                        PlayerGameDetailCell(viewModel: viewModel, gameProfile: gameProfile)
                             .onLongPressGesture {
                                 editMode?.wrappedValue = .active
                             }
+                            .confirmationDialog("Delete Profile?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
+                                Button(role: .destructive) {
+                                    viewModel.deleteGameDetail(for: gameProfile.id)
+                                } label: {
+                                    Text("Delete")
+                                }
+                            }, message: {
+                                Text("Do you want to delete the profile?")
+                            })
                     }
                     AddGameDetailCell()
                         .onTapGesture {

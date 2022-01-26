@@ -12,9 +12,6 @@ import SwiftUI
 
     @Published var playerFirstName: String  = ""
     @Published var playerLastName: String   = ""
-    @Published var game: Games              = .valorant
-    @Published var gameID: String           = ""
-    @Published var playerGameRank: String   = ""
 
     //HANDLE LATER: Stop app from calling getPlayers() twice in .task modifier: Swift Bug
     @Published var isShowingAddPlayerSheet   = false
@@ -25,9 +22,6 @@ import SwiftUI
     func resetInput(){
         playerFirstName = ""
         playerLastName  = ""
-        game            = .valorant
-        gameID          = ""
-        playerGameRank  = ""
     }
 
     private func createPlayer() -> CKRecord{
@@ -36,15 +30,6 @@ import SwiftUI
         playerRecord[TUPlayer.kLastName]    = playerLastName
         
         return playerRecord
-    }
-
-    private func createPlayerGameDetails() -> CKRecord {
-        let playerGameDetails = CKRecord(recordType: RecordType.playerGameDetails)
-        playerGameDetails[TUPlayerGameDetails.kGameName]    = game.rawValue
-        playerGameDetails[TUPlayerGameDetails.kGameRank]    = playerGameRank
-        playerGameDetails[TUPlayerGameDetails.kGameID]      = gameID
-
-        return playerGameDetails
     }
 
     private func isValidPlayer() -> Bool{
@@ -64,9 +49,7 @@ import SwiftUI
         Task{
             do {
                 let playerRecord = createPlayer()
-                let playerGameDetails = createPlayerGameDetails()
-                playerGameDetails[TUPlayerGameDetails.kAssociatedToPlayer] = CKRecord.Reference(recordID: playerRecord.recordID, action: .deleteSelf)
-                let _ = try await CloudKitManager.shared.batchSave(records: [playerRecord, playerGameDetails])
+                let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
                 //Reloads view, locally adds player until another network call is made
                 eventsManager.players.append(TUPlayer(record: playerRecord))

@@ -23,8 +23,9 @@ import CloudKit
     @Published var selectedGame: Games      = .valorant
     @Published var playerGameRank: String   = ""
     
-    @Published var isPresentingSheet    = false
-    @Published var isShowingAlert       = false
+    @Published var isPresentingSheet             = false
+    @Published var isShowingAlert                = false
+    @Published var isShowingConfirmationDialogue = false
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
     
