@@ -63,8 +63,7 @@ import CloudKit
     
     func saveGameDetail(){
         guard isValidGameDetail() else {
-            //invalid game detail
-            alertItem = AlertContext.invalidPlayer
+            alertItem = AlertContext.invalidGameProfile
             isShowingAlert = true
             return
         }
@@ -78,7 +77,7 @@ import CloudKit
                 playerDetails.append(TUPlayerGameDetails(record: playerGameDetail))
                 playerDetails.sort(by: {$0.gameName < $1.gameName})
             } catch {
-                alertItem = AlertContext.unableToCreatePlayer
+                alertItem = AlertContext.unableToSaveGameProfile
                 isShowingAlert = true
             }
         }
@@ -93,7 +92,7 @@ import CloudKit
             } catch {
                 
                 //FIX
-                alertItem = AlertContext.unableToCreatePlayer
+                alertItem = AlertContext.unableToDeleteGameProfile
                 isShowingAlert = true
             }
         }

@@ -124,8 +124,7 @@ enum PresentingSheet {
             do {
                 playersInEvent = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
             } catch{
-                //Unable to get players
-                alertItem = AlertContext.unableToGetMatchesForEvent
+                alertItem = AlertContext.unableToGetPlayersForEvent
                 isShowingAlert = true
             }
         }
@@ -165,8 +164,7 @@ enum PresentingSheet {
                     
                     playersInEvent.remove(at: index)
                 } catch{
-                    //Unable to get players
-                    alertItem = AlertContext.unableToGetMatchesForEvent
+                    alertItem = AlertContext.unableToRemovePlayerFromTeam
                     isShowingAlert = true
                 }
             }
@@ -192,7 +190,7 @@ enum PresentingSheet {
                     }
                 }
             } catch {
-                alertItem = AlertContext.unableToDeleteMatch
+                alertItem = AlertContext.unableToRemovePlayerFromTeam
                 isShowingAlert = true
             }
         }
@@ -234,8 +232,7 @@ enum PresentingSheet {
                     playersInEvent.sort(by: {$0.firstName < $1.firstName})
                 }
             } catch {
-                //Could check players in event
-                alertItem = AlertContext.unableToDeleteMatch
+                alertItem = AlertContext.unableToAddSelectedPlayersToEvent
                 isShowingAlert = true
             }
         }

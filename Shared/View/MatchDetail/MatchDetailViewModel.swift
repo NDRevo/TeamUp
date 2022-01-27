@@ -95,8 +95,7 @@ import SwiftUI
                     teamsAndPlayer[teamID]?.append(TUPlayer(record: playerRecord))
                 }
             } catch {
-                //Could check players in event
-
+                alertItem = AlertContext.unableToAddSelectedPlayersToTeam
                 isShowingAlert = true
             }
         }
@@ -117,12 +116,12 @@ import SwiftUI
         }
     }
 
-    func deletePlayerReferenceToTeam(indexSet: IndexSet, teamID: CKRecord.ID){
+    func removePlayerFromTeam(indexSet: IndexSet, teamID: CKRecord.ID){
         for index in indexSet {
             Task {
                 do {
                     guard let player = teamsAndPlayer[teamID]?[index] else {
-                        //Alert could not find player to delete
+                        alertItem = AlertContext.unableToFindPlayerToRemove
                         return
                     }
                     let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
@@ -136,7 +135,7 @@ import SwiftUI
                     teamsAndPlayer[teamID]?.remove(at: index)
                 } catch{
                     //Unable to get players
-                    alertItem = AlertContext.unableToGetMatchesForEvent
+                    alertItem = AlertContext.unableToRemovePlayerFromTeam
                     isShowingAlert = true
                 }
             }
@@ -157,7 +156,8 @@ import SwiftUI
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
                 }
             } catch {
-                //unable to remove team reference from player
+                alertItem = AlertContext.unableToRemovePlayerFromTeam
+                isShowingAlert = true
             }
         }
     }

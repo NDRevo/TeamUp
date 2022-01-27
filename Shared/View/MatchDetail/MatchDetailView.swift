@@ -44,7 +44,7 @@ struct MatchDetailView: View {
                             }
                         }
                         .onDelete { indexSet in
-                            viewModel.deletePlayerReferenceToTeam(indexSet: indexSet, teamID: team.id)
+                            viewModel.removePlayerFromTeam(indexSet: indexSet, teamID: team.id)
                         }
 
                         Button {
