@@ -14,6 +14,26 @@ struct EventDetailView: View {
 
     var body: some View {
         List {
+            Section{
+                VStack(alignment: .leading, spacing: 5){
+                    Text("Description")
+                        .bold()
+                        .font(.title3)
+                    Text(viewModel.event.eventDescription)
+                        .padding(.leading, 10)
+                }
+                VStack(alignment: .leading, spacing: 5){
+                    Text("Location")
+                        .bold()
+                        .font(.title3)
+                    Text(viewModel.event.eventLocation)
+                        .padding(.leading, 10)
+                }
+                .padding(.top, 10)
+            }
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
             Section(header: Text("Matches")) {
                 ForEach(viewModel.matches) { match in
                     NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent, event: viewModel.event))) {

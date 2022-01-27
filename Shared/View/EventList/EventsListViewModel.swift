@@ -13,6 +13,7 @@ import SwiftUI
     @Published var eventName: String         = ""
     @Published var eventDate: Date           = Date()
     @Published var eventGame: Games          = .valorant
+    @Published var eventDescription: String  = ""
     @Published var eventLocation: String     = ""
 
     @Published var onAppearHasFired          = false
@@ -51,13 +52,15 @@ import SwiftUI
         eventName = ""
         eventDate = currentDateAndHour
         eventGame = .valorant
+        eventDescription = ""
         eventLocation = ""
     }
 
     private func isValidEvent() -> Bool{
         guard !eventName.isEmpty,
               eventDate >= Date(),
-              !eventLocation.isEmpty else {
+              !eventDescription.isEmpty,
+              !eventLocation.isEmpty else{
             return false
         }
         return true
@@ -82,11 +85,12 @@ import SwiftUI
 
     private func createEventRecord() -> CKRecord{
         let record = CKRecord(recordType: RecordType.event)
-        record[TUEvent.kEventName]     = eventName
-        record[TUEvent.kEventDate]     = eventDate
-        record[TUEvent.kEventGame]     = eventGame.rawValue
-        record[TUEvent.kEventLocation] = eventLocation
-        
+        record[TUEvent.kEventName]          = eventName
+        record[TUEvent.kEventDate]          = eventDate
+        record[TUEvent.kEventGame]          = eventGame.rawValue
+        record[TUEvent.kEventDescription]   = eventDescription
+        record[TUEvent.kEventLocation]      = eventLocation
+
         return record
     }
 

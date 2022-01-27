@@ -10,25 +10,28 @@ import CloudKit
 
 struct TUEvent: Identifiable {
 
-    static let kEventName      = "eventName"
-    static let kEventDate      = "eventDate"
-    static let kEventGame      = "eventGame"
-    static let kEventLocation  = "eventLocation"
+    static let kEventName         = "eventName"
+    static let kEventDate         = "eventDate"
+    static let kEventGame         = "eventGame"
+    static let kEventDescription  = "eventDescription"
+    static let kEventLocation     = "eventLocation"
 
     let id: CKRecord.ID
 
     let eventName: String
     let eventDate: Date
     let eventGame: String
+    let eventDescription: String
     let eventLocation: String
 
     init(record: CKRecord){
         id = record.recordID
 
-        eventName     = record[TUEvent.kEventName] as? String ?? "N/A"
-        eventDate     = record[TUEvent.kEventDate] as? Date ?? Date()
-        eventGame     = record[TUEvent.kEventGame] as? String ?? "N/A"
-        eventLocation = record[TUEvent.kEventLocation] as? String ?? "N/A"
+        eventName        = record[TUEvent.kEventName] as? String ?? "N/A"
+        eventDate        = record[TUEvent.kEventDate] as? Date ?? Date()
+        eventGame        = record[TUEvent.kEventGame] as? String ?? "N/A"
+        eventDescription = record[TUEvent.kEventDescription] as? String ?? "N/A"
+        eventLocation    = record[TUEvent.kEventLocation] as? String ?? "N/A"
     }
 
     var getDateDetails: DateComponents {

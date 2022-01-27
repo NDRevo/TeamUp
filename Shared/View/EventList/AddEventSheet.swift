@@ -13,25 +13,41 @@ struct AddEventSheet: View {
     @ObservedObject var viewModel: EventsListViewModel
 
     @Environment(\.dismiss) var dismiss
+    @Environment(\.editMode) var editMode
 
     var body: some View {
         List{
-            TextField("Event Name", text: $viewModel.eventName)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.words)
+            Section{
+                TextField("Event Name", text: $viewModel.eventName)
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.words)
 
-            DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
+                DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
 
-            Picker("Game", selection: $viewModel.eventGame) {
-                ForEach(Games.allCases, id: \.self){game in
-                    Text(game.rawValue)
+                Picker("Game", selection: $viewModel.eventGame) {
+                    ForEach(Games.allCases, id: \.self){game in
+                        Text(game.rawValue)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                
+                TextField("Event Location", text: $viewModel.eventLocation)
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.words)
+            }
+            Section {
+                ZStack(alignment: .topLeading){
+                    TextEditor(text: $viewModel.eventDescription)
+                        .frame(height: 100)
+                    if viewModel.eventDescription.isEmpty {
+                        Text("Event Description")
+                            .foregroundColor(.gray)
+                            .opacity(0.50)
+                            .offset(y: 8)
+                    }
                 }
             }
-            .pickerStyle(MenuPickerStyle())
             
-            TextField("Event Location", text: $viewModel.eventLocation)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.words)
             
             Section{
                 Button {
