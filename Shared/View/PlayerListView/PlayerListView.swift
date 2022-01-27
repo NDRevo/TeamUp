@@ -41,7 +41,10 @@ struct PlayerListView: View {
                 viewModel.getPlayers(for: eventsManager)
             }
             .task {
-                viewModel.getPlayers(for: eventsManager)
+                if !viewModel.onAppearHasFired {
+                    viewModel.getPlayers(for: eventsManager)
+                }
+                viewModel.onAppearHasFired = true
             }
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                 viewModel.alertItem.alertMessage

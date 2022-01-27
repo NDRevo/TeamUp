@@ -14,8 +14,9 @@ import SwiftUI
     @Published var playerLastName: String   = ""
 
     //HANDLE LATER: Stop app from calling getPlayers() twice in .task modifier: Swift Bug
-    @Published var isShowingAddPlayerSheet   = false
-    @Published var isShowingAlert            = false
+    @Published var isShowingAddPlayerSheet  = false
+    @Published var isShowingAlert           = false
+    @Published var onAppearHasFired         = false
 
     @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
