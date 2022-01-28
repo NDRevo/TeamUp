@@ -70,6 +70,7 @@ struct EventsListToolbarContent: ToolbarContent {
                 Image(systemName: "plus.rectangle")
                     .tint(.blue)
             }
+            .accessibilityLabel("Create Player")
         }
     }
 }
