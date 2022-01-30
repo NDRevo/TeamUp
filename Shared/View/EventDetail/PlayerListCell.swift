@@ -21,10 +21,11 @@ struct PlayerListCell: View {
                 Text(player.firstName)
                     .bold()
                     .font(.title2)
-                //Handle Later: Multiple games
-                if let player = manager.playerDetails[player.id] {
-                    Text(player[0].gameID)
-                        .font(.callout)
+                ForEach(manager.playerDetails[player.id].flatMap({$0}) ?? []){ playerProfile in
+                    if playerProfile.gameName == viewModel.event.eventGame {
+                        Text(playerProfile.gameID)
+                            .font(.callout)
+                    }
                 }
             }
             Spacer()

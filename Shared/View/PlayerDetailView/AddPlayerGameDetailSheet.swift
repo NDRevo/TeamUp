@@ -39,7 +39,7 @@ struct AddPlayerGameDetailSheet: View {
                     Task {
                         dismiss()
                         try await Task.sleep(nanoseconds: 50_000_000)
-                        viewModel.saveGameDetail()
+                        viewModel.saveGameDetail(to: eventsManager)
                     }
                 } label: {
                     Text("Add Game")

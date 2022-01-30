@@ -17,6 +17,7 @@ struct AddEventSheet: View {
 
     var body: some View {
         List{
+
             Section{
                 TextField("Event Name", text: $viewModel.eventName)
                     .disableAutocorrection(true)
@@ -35,6 +36,7 @@ struct AddEventSheet: View {
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
             }
+
             Section {
                 ZStack(alignment: .topLeading){
                     TextEditor(text: $viewModel.eventDescription)
@@ -47,13 +49,12 @@ struct AddEventSheet: View {
                     }
                 }
             }
-            
-            
+
             Section{
                 Button {
                     dismiss()
                     Task {
-                       viewModel.createEvent(for: eventsManager)
+                        viewModel.createEvent(for: eventsManager)
                     }
                 } label: {
                     Text("Create Event")

@@ -60,8 +60,8 @@ import CloudKit
             }
         }
     }
-    
-    func saveGameDetail(){
+
+    func saveGameDetail(to eventsManager: EventsManager){
         guard isValidGameDetail() else {
             alertItem = AlertContext.invalidGameProfile
             isShowingAlert = true
@@ -73,8 +73,10 @@ import CloudKit
                 let playerGameDetail = createPlayerGameDetail()
                 playerGameDetail[TUPlayerGameDetails.kAssociatedToPlayer] = CKRecord.Reference(recordID: player.id, action: .deleteSelf)
                 let _ = try await CloudKitManager.shared.save(record: playerGameDetail)
-                
-                playerDetails.append(TUPlayerGameDetails(record: playerGameDetail))
+
+                let newPlayerProfile = TUPlayerGameDetails(record: playerGameDetail)
+
+                eventsManager.playerDetails[player.id]?.append(newPlayerProfile)
                 playerDetails.sort(by: {$0.gameName < $1.gameName})
             } catch {
                 alertItem = AlertContext.unableToSaveGameProfile
@@ -83,12 +85,13 @@ import CloudKit
         }
     }
     
-    func deleteGameDetail(for gameDetailRecordID: CKRecord.ID){
+    func deleteGameDetail(for gameDetailRecordID: CKRecord.ID, eventsManager: EventsManager){
         Task {
             do {
                 let _ = try await CloudKitManager.shared.remove(recordID: gameDetailRecordID)
                
                 playerDetails.removeAll(where: {$0.id == gameDetailRecordID})
+                eventsManager.playerDetails[player.id]?.removeAll(where: {$0.id == gameDetailRecordID})
             } catch {
                 
                 //FIX

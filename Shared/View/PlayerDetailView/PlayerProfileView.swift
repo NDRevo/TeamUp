@@ -30,7 +30,7 @@ struct PlayerProfileView: View {
                             }
                             .confirmationDialog("Delete Profile?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
                                 Button(role: .destructive) {
-                                    viewModel.deleteGameDetail(for: gameProfile.id)
+                                    viewModel.deleteGameDetail(for: gameProfile.id, eventsManager: eventsManager)
                                 } label: {
                                     Text("Delete")
                                 }

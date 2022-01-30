@@ -67,15 +67,19 @@ struct EventDetailView: View {
                             Text(player.firstName)
                                 .bold()
                                 .font(.title2)
-                            //Handle Later: Multiple games
-//                            Text(manager.playerDetails[player.id]![0].gameID)
-//                                .font(.callout)
+                            ForEach(eventsManager.playerDetails[player.id].flatMap({$0}) ?? []){ playerProfile in
+                                if playerProfile.gameName == viewModel.event.eventGame {
+                                    Text(playerProfile.gameID)
+                                        .font(.callout)
+                                }
+                            }
                         }
                         Spacer()
                     }
                 }
                 .onDelete { indexSet in
                     viewModel.removePlayerFromEventWith(indexSet: indexSet)
+                    viewModel.setUpEventDetail(with: eventsManager.players)
                 }
                 Button {
                     viewModel.sheetToPresent = .addPlayer
@@ -89,7 +93,9 @@ struct EventDetailView: View {
         .refreshable {
             viewModel.setUpEventDetail(with: eventsManager.players)
         }
-        .sheet(isPresented: $viewModel.isShowingSheet){
+        .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
+            viewModel.setUpEventDetail(with: eventsManager.players)
+        }){
             NavigationView{
                 viewModel.presentSheet()
             }

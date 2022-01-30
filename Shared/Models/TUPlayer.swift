@@ -5,7 +5,6 @@
 //  Created by Noé Duran on 1/10/22.
 //
 
-import Foundation
 import CloudKit
 
 struct TUPlayer: Identifiable, Hashable {

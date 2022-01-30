@@ -227,9 +227,6 @@ enum PresentingSheet {
                     }
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
-
-                    playersInEvent.append(TUPlayer(record: playerRecord))
-                    playersInEvent.sort(by: {$0.firstName < $1.firstName})
                 }
             } catch {
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent

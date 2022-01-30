@@ -41,7 +41,6 @@ final class CloudKitManager {
         for record in records {
             let playerGameDetails = TUPlayerGameDetails(record: record)
 
-            //Gets location record because isCheckedIn is reference to location
             guard let playerReference = record[TUPlayerGameDetails.kAssociatedToPlayer] as? CKRecord.Reference else { continue }
             playersAndDetails[playerReference.recordID, default: []].append(playerGameDetails)
         }
