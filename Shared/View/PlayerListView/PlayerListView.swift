@@ -16,7 +16,7 @@ struct PlayerListView: View {
         NavigationView {
             List{
                 ForEach(eventsManager.players){ player in
-                    NavigationLink(destination: PlayerProfileView(viewModel: PlayerProfileViewModel(player: player, playerDetails: eventsManager.playerDetails[player.id] ?? []))) {
+                    NavigationLink(destination: PlayerProfileView(viewModel: PlayerProfileViewModel(player: player, playerProfiles: eventsManager.playerProfiles[player.id] ?? []))) {
                         HStack{
                             VStack(alignment: .leading){
                                 Text(player.firstName)

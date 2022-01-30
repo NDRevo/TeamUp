@@ -69,7 +69,7 @@ import SwiftUI
     func refresh(for eventsManager: EventsManager){
         getEvents(for: eventsManager)
         getPlayers(for: eventsManager)
-        getPlayersAndDetails(for: eventsManager)
+        getPlayersAndProfiles(for: eventsManager)
     }
 
     func startUp(for eventsManager: EventsManager){
@@ -78,7 +78,7 @@ import SwiftUI
         if !onAppearHasFired {
             getEvents(for: eventsManager)
             getPlayers(for: eventsManager)
-            getPlayersAndDetails(for: eventsManager)
+            getPlayersAndProfiles(for: eventsManager)
         }
         onAppearHasFired = true
     }
@@ -147,12 +147,12 @@ import SwiftUI
         }
     }
 
-    private func getPlayersAndDetails(for eventsManager: EventsManager){
+    private func getPlayersAndProfiles(for eventsManager: EventsManager){
         Task {
             do {
-                eventsManager.playerDetails = try await CloudKitManager.shared.getPlayersAndDetails()
+                eventsManager.playerProfiles = try await CloudKitManager.shared.getPlayersAndProfiles()
             } catch {
-                alertItem = AlertContext.unableToGetPlayerDetails
+                alertItem = AlertContext.unableToGetPlayerProfiles
                 isShowingAlert = true
             }
         }

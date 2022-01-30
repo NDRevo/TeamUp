@@ -8,7 +8,7 @@
 import CloudKit
 
 
-struct TUPlayerGameDetails: Identifiable {
+struct TUPlayerGameProfile: Identifiable {
 
     static let kGameName            = "gameName"
     static let kGameID              = "gameID"
@@ -24,8 +24,8 @@ struct TUPlayerGameDetails: Identifiable {
     init(record: CKRecord){
         id  = record.recordID
 
-        gameName    = record[TUPlayerGameDetails.kGameName]  as? String ?? "N/A"
-        gameID      = record[TUPlayerGameDetails.kGameID]    as? String ?? "N/A"
-        gameRank    = record[TUPlayerGameDetails.kGameRank]  as? String ?? "N/A"
+        gameName    = record[TUPlayerGameProfile.kGameName]  as? String ?? "N/A"
+        gameID      = record[TUPlayerGameProfile.kGameID]    as? String ?? "N/A"
+        gameRank    = record[TUPlayerGameProfile.kGameRank]  as? String ?? "N/A"
     }
 }

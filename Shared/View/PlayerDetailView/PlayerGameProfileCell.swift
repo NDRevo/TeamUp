@@ -1,5 +1,5 @@
 //
-//  PlayerGameDetailCell.swift
+//  PlayerGameProfileCell.swift
 //  TeamUp
 //
 //  Created by Noé Duran on 1/23/22.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct PlayerGameDetailCell: View {
+struct PlayerGameProfileCell: View {
 
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
     @Environment(\.editMode) var editMode
 
-    var gameProfile: TUPlayerGameDetails
+    var gameProfile: TUPlayerGameProfile
 
     var body: some View {
         VStack {
@@ -75,8 +75,8 @@ struct PlayerGameDetailCell: View {
     }
 }
 
-struct PlayerGameDetailCell_Previews: PreviewProvider {
+struct PlayerGameProfileCell_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerGameDetailCell(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)), gameProfile: TUPlayerGameDetails(record: MockData.playerGameDetail))
+        PlayerGameProfileCell(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)), gameProfile: TUPlayerGameProfile(record: MockData.playerGameProfile))
     }
 }

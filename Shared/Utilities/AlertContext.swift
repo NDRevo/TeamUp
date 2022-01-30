@@ -33,8 +33,8 @@ struct AlertContext {
                                                         alertMessage: Text("Unable to delete event.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
-    static let unableToGetPlayerDetails         = AlertItem(alertTitle: Text("Server Error"),
-                                                        alertMessage: Text("Unable to get player details.\n Check your internet connection and try again."),
+    static let unableToGetPlayerProfiles        = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Unable to get player profiles.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToRemovePlayersFromEvent   = AlertItem(alertTitle: Text("Server Error"),

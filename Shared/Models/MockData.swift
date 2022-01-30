@@ -41,12 +41,12 @@ struct MockData {
     
         return player
     }
-    static var playerGameDetail: CKRecord {
-        let playerGameDetail = CKRecord(recordType: RecordType.playerGameDetails)
-        playerGameDetail[TUPlayerGameDetails.kGameName]    = "VALORANT"
-        playerGameDetail[TUPlayerGameDetails.kGameID]      = "Bob#ross"
-        playerGameDetail[TUPlayerGameDetails.kGameRank]    = "Radiant"
+    static var playerGameProfile: CKRecord {
+        let playerGameProfile = CKRecord(recordType: RecordType.playerGameProfiles)
+        playerGameProfile[TUPlayerGameProfile.kGameName]    = "VALORANT"
+        playerGameProfile[TUPlayerGameProfile.kGameID]      = "Bob#ross"
+        playerGameProfile[TUPlayerGameProfile.kGameRank]    = "Radiant"
     
-        return playerGameDetail
+        return playerGameProfile
     }
 }

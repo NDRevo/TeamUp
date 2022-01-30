@@ -1,5 +1,5 @@
 //
-//  AddPlayerGameDetailSheet.swift
+//  AddPlayerGameProfileSheet.swift
 //  TeamUp
 //
 //  Created by Noé Duran on 1/24/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddPlayerGameDetailSheet: View {
+struct AddPlayerGameProfileSheet: View {
     
     @Environment(\.dismiss) var dismiss
     
@@ -39,7 +39,7 @@ struct AddPlayerGameDetailSheet: View {
                     Task {
                         dismiss()
                         try await Task.sleep(nanoseconds: 50_000_000)
-                        viewModel.saveGameDetail(to: eventsManager)
+                        viewModel.saveGameProfile(to: eventsManager)
                     }
                 } label: {
                     Text("Add Game")
@@ -57,8 +57,8 @@ struct AddPlayerGameDetailSheet: View {
     }
 }
 
-struct AddPlayerGameDetailSheet_Previews: PreviewProvider {
+struct AddPlayerGameProfileSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddPlayerGameDetailSheet(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)))
+        AddPlayerGameProfileSheet(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)))
     }
 }

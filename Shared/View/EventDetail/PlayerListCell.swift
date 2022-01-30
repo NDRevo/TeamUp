@@ -21,7 +21,7 @@ struct PlayerListCell: View {
                 Text(player.firstName)
                     .bold()
                     .font(.title2)
-                ForEach(manager.playerDetails[player.id].flatMap({$0}) ?? []){ playerProfile in
+                ForEach(manager.playerProfiles[player.id].flatMap({$0}) ?? []){ playerProfile in
                     if playerProfile.gameName == viewModel.event.eventGame {
                         Text(playerProfile.gameID)
                             .font(.callout)

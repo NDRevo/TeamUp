@@ -23,14 +23,14 @@ struct PlayerProfileView: View {
             ScrollView {
                 Spacer(minLength: 12)
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),spacing: 25) {
-                    ForEach(viewModel.playerDetails) { gameProfile in
-                        PlayerGameDetailCell(viewModel: viewModel, gameProfile: gameProfile)
+                    ForEach(viewModel.playerProfiles) { gameProfile in
+                        PlayerGameProfileCell(viewModel: viewModel, gameProfile: gameProfile)
                             .onLongPressGesture {
                                 editMode?.wrappedValue = .active
                             }
                             .confirmationDialog("Delete Profile?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
                                 Button(role: .destructive) {
-                                    viewModel.deleteGameDetail(for: gameProfile.id, eventsManager: eventsManager)
+                                    viewModel.deleteGameProfile(for: gameProfile.id, eventsManager: eventsManager)
                                 } label: {
                                     Text("Delete")
                                 }
@@ -38,7 +38,7 @@ struct PlayerProfileView: View {
                                 Text("Do you want to delete the profile?")
                             })
                     }
-                    AddGameDetailCell()
+                    AddGameProfileCell()
                         .onTapGesture {
                             viewModel.isPresentingSheet = true
                             editMode?.wrappedValue = .inactive
@@ -53,15 +53,15 @@ struct PlayerProfileView: View {
             viewModel.alertItem.alertMessage
         })
         .task {
-            viewModel.getPlayersAndDetails(for: eventsManager)
+            viewModel.getPlayersAndProfiles(for: eventsManager)
         }
         .sheet(isPresented: $viewModel.isPresentingSheet) {
             NavigationView {
-                AddPlayerGameDetailSheet(viewModel: viewModel)
+                AddPlayerGameProfileSheet(viewModel: viewModel)
             }
         }
         .toolbar {
-            if !viewModel.playerDetails.isEmpty {
+            if !viewModel.playerProfiles.isEmpty {
                 EditButton()
             }
         }
@@ -77,7 +77,7 @@ struct PlayerProfileView_Previews: PreviewProvider {
     }
 }
 
-struct AddGameDetailCell: View {
+struct AddGameProfileCell: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .foregroundColor(Color(UIColor.systemBackground))

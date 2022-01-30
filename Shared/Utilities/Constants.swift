@@ -19,5 +19,5 @@ enum RecordType{
     static let match             = "TUMatch"
     static let team              = "TUTeam"
     static let player            = "TUPlayer"
-    static let playerGameDetails = "TUPlayerGameDetails"
+    static let playerGameProfiles = "TUPlayerGameDetails"
 }

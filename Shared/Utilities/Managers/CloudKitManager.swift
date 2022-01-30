@@ -36,39 +36,39 @@ final class CloudKitManager {
         return records.map(TUPlayer.init)
     }
 
-    func getPlayersAndDetails() async throws -> [CKRecord.ID: [TUPlayerGameDetails]] {
-        let sortDescriptor = NSSortDescriptor(key: TUPlayerGameDetails.kGameName, ascending: true)
-        let query = CKQuery(recordType: RecordType.playerGameDetails, predicate: NSPredicate(value: true))
+    func getPlayersAndProfiles() async throws -> [CKRecord.ID: [TUPlayerGameProfile]] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayerGameProfile.kGameName, ascending: true)
+        let query = CKQuery(recordType: RecordType.playerGameProfiles, predicate: NSPredicate(value: true))
         query.sortDescriptors = [sortDescriptor]
         
-        var playersAndDetails: [CKRecord.ID: [TUPlayerGameDetails]] = [:]
+        var playersAndProfiles: [CKRecord.ID: [TUPlayerGameProfile]] = [:]
         
         let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
         let records = matchResults.compactMap { _ , result in try? result.get()}
         
         for record in records {
-            let playerGameDetails = TUPlayerGameDetails(record: record)
+            let playerGameProfiles = TUPlayerGameProfile(record: record)
 
-            guard let playerReference = record[TUPlayerGameDetails.kAssociatedToPlayer] as? CKRecord.Reference else { continue }
-            playersAndDetails[playerReference.recordID, default: []].append(playerGameDetails)
+            guard let playerReference = record[TUPlayerGameProfile.kAssociatedToPlayer] as? CKRecord.Reference else { continue }
+            playersAndProfiles[playerReference.recordID, default: []].append(playerGameProfiles)
         }
 
-        return playersAndDetails
+        return playersAndProfiles
     }
     
-    func getGamesForPlayer(for playerID: CKRecord.ID) async throws -> [TUPlayerGameDetails] {
-        let sortDescriptor = NSSortDescriptor(key: TUPlayerGameDetails.kGameName, ascending: true)
+    func getGamesForPlayer(for playerID: CKRecord.ID) async throws -> [TUPlayerGameProfile] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayerGameProfile.kGameName, ascending: true)
        
         let reference = CKRecord.Reference(recordID: playerID, action: .none)
         let predicate = NSPredicate(format: "associatedToPlayer == %@", reference)
         
-        let query = CKQuery(recordType: RecordType.playerGameDetails, predicate: predicate)
+        let query = CKQuery(recordType: RecordType.playerGameProfiles, predicate: predicate)
         query.sortDescriptors = [sortDescriptor]
 
         let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
         let records = matchResults.compactMap { _ , result in try? result.get()}
     
-        return records.map(TUPlayerGameDetails.init)
+        return records.map(TUPlayerGameProfile.init)
     }
 
     func getPlayersForEvent(for eventID: CKRecord.ID) async throws -> [TUPlayer] {
