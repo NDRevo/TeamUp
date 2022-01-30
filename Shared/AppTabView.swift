@@ -22,6 +22,9 @@ struct AppTabView: View {
                     Label("Players", systemImage: "person.3.fill")
                 }
         }
+        .task {
+            try? await CloudKitManager.shared.getUserRecord()
+        }
     }
 }
 

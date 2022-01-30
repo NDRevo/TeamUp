@@ -9,6 +9,7 @@ import CloudKit
 import SwiftUI
 
 final class EventsManager: ObservableObject {
+    @Published var userRecord: CKRecord?
     @Published var events: [TUEvent]    = []
     @Published var players: [TUPlayer]  = []
 

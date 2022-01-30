@@ -86,11 +86,14 @@ struct EventDetailView: View {
                         }
                     }
                 }
-                Button {
-                    viewModel.sheetToPresent = .addPlayer
-                } label: {
-                    Text("Add Player")
-                        .foregroundColor(.blue)
+                if viewModel.event.eventOwner.recordID == CloudKitManager.shared.userRecord?.recordID {
+                    
+                    Button {
+                        viewModel.sheetToPresent = .addPlayer
+                    } label: {
+                        Text("Add Player")
+                            .foregroundColor(.blue)
+                    }
                 }
             }
         }

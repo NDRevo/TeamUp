@@ -13,9 +13,17 @@ final class CloudKitManager {
 
     static let shared = CloudKitManager()
 
+    var userRecord: CKRecord?
     let container = CKContainer.default()
 
     private init(){}
+
+    func getUserRecord() async throws{
+        let recordID = try await container.userRecordID()
+        let record =  try await container.publicCloudDatabase.record(for: recordID)
+
+        userRecord = record
+    }
 
     func getPlayers() async throws -> [TUPlayer] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
