@@ -11,7 +11,6 @@ struct TUPlayer: Identifiable, Hashable {
 
     static let kFirstName     = "firstName"
     static let kLastName      = "lastName"
-    static let kIsCheckedIn   = "isCheckedIn"
     static let kInEvents      = "inEvents"
     static let kOnTeams       = "onTeams"
 

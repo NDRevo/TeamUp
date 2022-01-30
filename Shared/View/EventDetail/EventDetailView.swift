@@ -43,12 +43,13 @@ struct EventDetailView: View {
                                 .font(.caption)
                         }
                     }
-                }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        let recordID = viewModel.matches[index].id
-                        viewModel.deleteMatch(matchID: recordID)
-                        viewModel.matches.remove(at: index)
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive){
+                            viewModel.deleteMatch(matchID: match.id)
+                            viewModel.matches.removeAll(where: {$0.id == match.id})
+                        } label: {
+                            Label("Delete Player", systemImage: "minus.circle.fill")
+                        }
                     }
                 }
                 Button {
@@ -76,10 +77,14 @@ struct EventDetailView: View {
                         }
                         Spacer()
                     }
-                }
-                .onDelete { indexSet in
-                    viewModel.removePlayerFromEventWith(indexSet: indexSet)
-                    viewModel.setUpEventDetail(with: eventsManager.players)
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive){
+                            viewModel.removePlayerFromEventWith(for: player)
+                            viewModel.setUpEventDetail(with: eventsManager.players)
+                        } label: {
+                            Label("Delete Player", systemImage: "minus.circle.fill")
+                        }
+                    }
                 }
                 Button {
                     viewModel.sheetToPresent = .addPlayer
@@ -102,11 +107,6 @@ struct EventDetailView: View {
         }
         .task {
             viewModel.setUpEventDetail(with: eventsManager.players)
-        }
-        .toolbar {
-            if !viewModel.matches.isEmpty || !viewModel.playersInEvent.isEmpty {
-                EditButton()
-            }
         }
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage

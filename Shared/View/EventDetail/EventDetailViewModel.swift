@@ -148,11 +148,9 @@ enum PresentingSheet {
         }
     }
 
-    func removePlayerFromEventWith(indexSet: IndexSet){
-        for index in indexSet {
+    func removePlayerFromEventWith(for player: TUPlayer){
             Task {
                 do {
-                    let player = playersInEvent[index]
                     let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
     
                     var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as! [CKRecord.Reference]
@@ -162,13 +160,12 @@ enum PresentingSheet {
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
                     
-                    playersInEvent.remove(at: index)
+                    playersInEvent.removeAll(where: {$0.id == player.id})
                 } catch{
                     alertItem = AlertContext.unableToRemovePlayerFromTeam
                     isShowingAlert = true
                 }
             }
-        }
     }
 
     func removePlayersFromMatchTeam(matchID: CKRecord.ID){
