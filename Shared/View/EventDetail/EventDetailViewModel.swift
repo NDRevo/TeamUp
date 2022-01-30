@@ -44,6 +44,35 @@ enum PresentingSheet {
     
     @Environment(\.dismiss) var dismiss
 
+    func dateRange() -> PartialRangeFrom<Date> {
+        let calendar = Calendar.current
+        let startDate = DateComponents(
+            year: calendar.component(.year, from: event.eventDate),
+            month: calendar.component(.month, from: event.eventDate),
+            day: calendar.component(.day, from: event.eventDate)
+        )
+        return calendar.date(from:startDate)!...
+    }
+
+    func setUpEventDetail(with players: [TUPlayer]){
+        getMatchesForEvent()
+        getPlayersInEvents()
+        getAvailablePlayers(from: players)
+    }
+
+    @ViewBuilder func presentSheet() -> some View {
+        switch sheetToPresent {
+            case .addMatch:
+                AddMatchSheet(viewModel: self)
+            case .addPlayer:
+                AddExistingPlayerSheet(viewModel: self)
+            case .addAdmin:
+                AddAdminSheet()
+            case .none:
+                EmptyView()
+        }
+    }
+
     func resetMatchInput(){
         matchName = ""
         matchDate = event.eventDate
@@ -66,25 +95,6 @@ enum PresentingSheet {
 
         return true
     }
-    
-    func setUpEventDetail(with players: [TUPlayer]){
-        getMatchesForEvent()
-        getPlayersInEvents()
-        getAvailablePlayers(from: players)
-    }
-
-    @ViewBuilder func presentSheet() -> some View {
-        switch sheetToPresent {
-            case .addMatch:
-                AddMatchSheet(viewModel: self)
-            case .addPlayer:
-                AddExistingPlayerSheet(viewModel: self)
-            case .addAdmin:
-                AddAdminSheet()
-            case .none:
-                EmptyView()
-        }
-    }
 
     func createMatchForEvent(){
         guard isValidMatch() else {
@@ -103,6 +113,30 @@ enum PresentingSheet {
                 matches.sort(by: {$0.matchStartTime < $1.matchStartTime})
             } catch {
                 alertItem = AlertContext.unableToCreateMatch
+                isShowingAlert = true
+            }
+        }
+    }
+
+    func addCheckedPlayersToEvent(){
+        Task {
+            do {
+                for player in checkedOffPlayers {
+                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                    
+                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
+
+                    if references.isEmpty{
+                        playerRecord[TUPlayer.kInEvents] = [CKRecord.Reference(recordID: event.id, action: .none)]
+                    } else {
+                        references.append(CKRecord.Reference(recordID: event.id, action: .none))
+                        playerRecord[TUPlayer.kInEvents] = references
+                    }
+                    
+                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                }
+            } catch {
+                alertItem = AlertContext.unableToAddSelectedPlayersToEvent
                 isShowingAlert = true
             }
         }
@@ -206,39 +240,5 @@ enum PresentingSheet {
                 isShowingAlert = true
             }
         }
-    }
-
-    func addCheckedPlayersToEvent(){
-        Task {
-            do {
-                for player in checkedOffPlayers {
-                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
-                    
-                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
-
-                    if references.isEmpty{
-                        playerRecord[TUPlayer.kInEvents] = [CKRecord.Reference(recordID: event.id, action: .none)]
-                    } else {
-                        references.append(CKRecord.Reference(recordID: event.id, action: .none))
-                        playerRecord[TUPlayer.kInEvents] = references
-                    }
-                    
-                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
-                }
-            } catch {
-                alertItem = AlertContext.unableToAddSelectedPlayersToEvent
-                isShowingAlert = true
-            }
-        }
-    }
-
-    func dateRange() -> PartialRangeFrom<Date> {
-        let calendar = Calendar.current
-        let startDate = DateComponents(
-            year: calendar.component(.year, from: event.eventDate),
-            month: calendar.component(.month, from: event.eventDate),
-            day: calendar.component(.day, from: event.eventDate)
-        )
-        return calendar.date(from:startDate)!...
     }
 }

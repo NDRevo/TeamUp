@@ -11,6 +11,7 @@ struct PlayerProfileView: View {
 
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
+
     @Environment(\.editMode) var editMode
     
     var body: some View {
@@ -52,22 +53,14 @@ struct PlayerProfileView: View {
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage
         })
-        .task {
-            viewModel.getPlayersAndProfiles(for: eventsManager)
-        }
+        .task { viewModel.getPlayersAndProfiles(for: eventsManager) }
         .sheet(isPresented: $viewModel.isPresentingSheet) {
             NavigationView {
                 AddPlayerGameProfileSheet(viewModel: viewModel)
             }
         }
-        .toolbar {
-            if !viewModel.playerProfiles.isEmpty {
-                EditButton()
-            }
-        }
-        .onDisappear {
-            editMode?.wrappedValue = .inactive
-        }
+        .toolbar { if !viewModel.playerProfiles.isEmpty { EditButton() } }
+        .onDisappear { editMode?.wrappedValue = .inactive }
     }
 }
 

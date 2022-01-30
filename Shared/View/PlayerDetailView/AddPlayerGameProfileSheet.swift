@@ -9,11 +9,11 @@ import SwiftUI
 
 struct AddPlayerGameProfileSheet: View {
     
-    @Environment(\.dismiss) var dismiss
-    
     @EnvironmentObject private var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
-    
+
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         List {
             Section{
@@ -49,9 +49,7 @@ struct AddPlayerGameProfileSheet: View {
         .navigationTitle("Add Game")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Dismiss") {
-                    dismiss()
-                }
+                Button("Dismiss") { dismiss() }
             }
         }
     }

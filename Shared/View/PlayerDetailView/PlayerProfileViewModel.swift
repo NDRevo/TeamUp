@@ -15,7 +15,7 @@ import CloudKit
     @Published var playerProfiles: [TUPlayerGameProfile] = []
     
     init(player: TUPlayer, playerProfiles: [TUPlayerGameProfile] = []){
-        self.player         = player
+        self.player          = player
         self.playerProfiles  = playerProfiles
     }
     
@@ -28,7 +28,11 @@ import CloudKit
     @Published var isShowingConfirmationDialogue = false
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
-    
+    func resetInput(){
+        gameID          = ""
+        playerGameRank  = ""
+    }
+
     private func createPlayerGameProfile() -> CKRecord {
         let playerGameProfile = CKRecord(recordType: RecordType.playerGameProfiles)
         playerGameProfile[TUPlayerGameProfile.kGameName]    = selectedGame.rawValue
@@ -37,28 +41,12 @@ import CloudKit
 
         return playerGameProfile
     }
-    
-    func resetInput(){
-        gameID          = ""
-        playerGameRank  = ""
-    }
-    
+
     func isValidGameProfile() -> Bool {
         guard !gameID.isEmpty, !playerGameRank.isEmpty else {
             return false
         }
         return true
-    }
-    
-    func getPlayersAndProfiles(for eventsManager: EventsManager){
-        Task {
-            do {
-                eventsManager.playerProfiles = try await CloudKitManager.shared.getPlayersAndProfiles()
-            } catch {
-                alertItem = AlertContext.unableToGetPlayerProfiles
-                isShowingAlert = true
-            }
-        }
     }
 
     func saveGameProfile(to eventsManager: EventsManager){
@@ -84,7 +72,18 @@ import CloudKit
             }
         }
     }
-    
+
+    func getPlayersAndProfiles(for eventsManager: EventsManager){
+        Task {
+            do {
+                eventsManager.playerProfiles = try await CloudKitManager.shared.getPlayersAndProfiles()
+            } catch {
+                alertItem = AlertContext.unableToGetPlayerProfiles
+                isShowingAlert = true
+            }
+        }
+    }
+
     func deleteGameProfile(for gameProfileRecordID: CKRecord.ID, eventsManager: EventsManager){
         Task {
             do {
@@ -93,8 +92,6 @@ import CloudKit
                 playerProfiles.removeAll(where: {$0.id == gameProfileRecordID})
                 eventsManager.playerProfiles[player.id]?.removeAll(where: {$0.id == gameProfileRecordID})
             } catch {
-                
-                //FIX
                 alertItem = AlertContext.unableToDeleteGameProfile
                 isShowingAlert = true
             }

@@ -77,7 +77,6 @@ struct PlayerListToolbarContent: ToolbarContent {
             if !playerList.isEmpty {
                 EditButton()
             }
-
         }
         ToolbarItem(placement:.navigationBarTrailing) {
             Button {

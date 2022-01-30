@@ -9,7 +9,7 @@ import SwiftUI
 import CloudKit
 
 struct AddMatchSheet: View {
-    
+
     @ObservedObject var viewModel: EventDetailViewModel
 
     @Environment(\.dismiss) var dismiss

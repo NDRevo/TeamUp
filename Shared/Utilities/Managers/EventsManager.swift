@@ -14,7 +14,7 @@ final class EventsManager: ObservableObject {
     @Published var players: [TUPlayer]  = []
 
     @Published var playerProfiles: [CKRecord.ID:[TUPlayerGameProfile]] = [:]
-    @Published var playerCountPerEvent: [CKRecord.ID:Int] = [:]
+    @Published var playerCountPerEvent: [CKRecord.ID:Int]              = [:]
 
     func getRanksForGame(game: Games) -> [String]{
         switch game {

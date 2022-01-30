@@ -14,7 +14,7 @@ import SwiftUI
     var event: TUEvent
     var playersInEvent: [TUPlayer]
 
-    @Published var teams: [TUTeam]                  = []
+    @Published var teams: [TUTeam]                           = []
     @Published var teamsAndPlayer: [CKRecord.ID: [TUPlayer]] = [:]
 
     @Published var availablePlayers: [TUPlayer]     = []
@@ -26,7 +26,7 @@ import SwiftUI
 
     @Published var isShowingAlert: Bool = false
 
-    @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
+    @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
     init(match: TUMatch, playersInEvent: [TUPlayer], event: TUEvent){
         self.match = match

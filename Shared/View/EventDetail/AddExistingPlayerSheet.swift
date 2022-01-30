@@ -34,7 +34,6 @@ struct AddExistingPlayerSheet: View {
                 } header: {
                     Text("Available Players")
                 }
-
             }
         }
         .navigationTitle("Add Player")

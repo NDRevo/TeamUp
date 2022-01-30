@@ -10,6 +10,7 @@ import SwiftUI
 struct EventListCell: View {
 
     @EnvironmentObject var eventsManager: EventsManager
+
     var event: TUEvent
 
     var body: some View {

@@ -10,9 +10,10 @@ import SwiftUI
 struct AddEventPlayerSheet: View {
 
     @ObservedObject var viewModel: MatchDetailViewModel
-    var team: TUTeam
 
     @Environment(\.dismiss) var dismiss
+
+    var team: TUTeam
 
     var body: some View {
         VStack{
@@ -26,26 +27,20 @@ struct AddEventPlayerSheet: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                 }
-                
+
                 Section{
                     ForEach(viewModel.playersInEvent) { player in
                         ExistingPlayerListCell(viewModel: viewModel, player: player)
-                            .onTapGesture {
-                                
-                            }
                     }
                 } header: {
                     Text("Available Players")
                 }
-
             }
         }
         .navigationTitle("Add Player")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Dismiss") {
-                    dismiss()
-                }
+                Button("Dismiss") { dismiss() }
             }
         }
     }
