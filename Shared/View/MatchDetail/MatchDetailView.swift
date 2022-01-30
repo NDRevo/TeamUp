@@ -14,24 +14,26 @@ struct MatchDetailView: View {
     var body: some View {
         VStack{
             List {
-                HStack(spacing: 20) {
-                    Button(action: {
-                        //Something
-                    }, label: {
-                        Text("Shuffle")
-                    })
-                    .modifier(MatchDetailButtonStyle(color: .yellow))
-    
-                    Button(action: {
-                        //Something
-                    }, label: {
-                        Text("Balance")
-                    })
-                    .modifier(MatchDetailButtonStyle(color: .blue))
+                if viewModel.teams.count == 2 {
+                    HStack(spacing: 20) {
+                        Button(action: {
+                            //Something
+                        }, label: {
+                            Text("Shuffle")
+                        })
+                        .modifier(MatchDetailButtonStyle(color: .yellow))
+        
+                        Button(action: {
+                            //Something
+                        }, label: {
+                            Text("Balance")
+                        })
+                        .modifier(MatchDetailButtonStyle(color: .blue))
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .listRowBackground(Color.clear)
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .listRowBackground(Color.clear)
-                
+
                 ForEach(viewModel.teams) { team in
                     Section {
                         ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
@@ -70,16 +72,18 @@ struct MatchDetailView: View {
                             .font(.subheadline)
                     }
                 }
-                Section {
-                    Button {
-                        viewModel.isShowingAddTeam = true
-                        viewModel.resetInput()
-                    } label: {
-                        Text("Add Team")
-                    }
-                    .sheet(isPresented: $viewModel.isShowingAddTeam) {
-                        NavigationView{
-                            AddTeamSheet(viewModel: viewModel)
+                if viewModel.teams.count < 2 {
+                    Section {
+                        Button {
+                            viewModel.isShowingAddTeam = true
+                            viewModel.resetInput()
+                        } label: {
+                            Text("Add Team")
+                        }
+                        .sheet(isPresented: $viewModel.isShowingAddTeam) {
+                            NavigationView{
+                                AddTeamSheet(viewModel: viewModel)
+                            }
                         }
                     }
                 }
