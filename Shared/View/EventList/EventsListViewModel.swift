@@ -92,7 +92,7 @@ import SwiftUI
         record[TUEvent.kEventLocation]      = eventLocation
         
         if let userRecord = CloudKitManager.shared.userRecord {
-            record[TUEvent.kEventOwner] = CKRecord.Reference(record: userRecord, action: .none)
+            record[TUEvent.kEventOwners] = [CKRecord.Reference(record: userRecord, action: .none)]
         }
 
         return record

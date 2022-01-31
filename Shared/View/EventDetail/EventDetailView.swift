@@ -86,7 +86,7 @@ struct EventDetailView: View {
                         }
                     }
                 }
-                if viewModel.event.eventOwner.recordID == CloudKitManager.shared.userRecord?.recordID {
+                if viewModel.event.eventOwners.contains(where: {$0.recordID == CloudKitManager.shared.userRecord?.recordID}) {
                     Button {
                         viewModel.sheetToPresent = .addPlayer
                     } label: {
