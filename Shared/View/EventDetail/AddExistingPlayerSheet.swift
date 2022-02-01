@@ -10,6 +10,7 @@ import CloudKit
 
 struct AddExistingPlayerSheet: View {
 
+    @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     @Environment(\.dismiss) var dismiss
@@ -43,6 +44,9 @@ struct AddExistingPlayerSheet: View {
                     dismiss()
                 }
             }
+        }
+        .task {
+            viewModel.getAvailablePlayers(from: eventsManager.players)
         }
     }
 }

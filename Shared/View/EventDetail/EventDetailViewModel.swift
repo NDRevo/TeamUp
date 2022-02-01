@@ -57,7 +57,6 @@ enum PresentingSheet {
     func setUpEventDetail(with players: [TUPlayer]){
         getMatchesForEvent()
         getPlayersInEvents()
-        getAvailablePlayers(from: players)
     }
 
     @ViewBuilder func presentSheet() -> some View {
@@ -164,7 +163,7 @@ enum PresentingSheet {
         }
     }
 
-    private func getAvailablePlayers(from players: [TUPlayer]){
+    func getAvailablePlayers(from players: [TUPlayer]){
         Task {
             do{
                 availablePlayers = []
