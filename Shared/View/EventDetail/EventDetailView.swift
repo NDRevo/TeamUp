@@ -44,23 +44,29 @@ struct EventDetailView: View {
                         }
                     }
                     .swipeActions(edge: .trailing) {
-                        Button(role: .destructive){
-                            viewModel.deleteMatch(matchID: match.id)
-                            viewModel.matches.removeAll(where: {$0.id == match.id})
-                        } label: {
-                            Label("Delete Player", systemImage: "minus.circle.fill")
+                        if viewModel.isEventOwner() {
+                            Button(role: .destructive){
+                                viewModel.deleteMatch(matchID: match.id)
+                                viewModel.matches.removeAll(where: {$0.id == match.id})
+                            } label: {
+                                Label("Remove Player", systemImage: "minus.circle.fill")
+                            }
                         }
                     }
                 }
-                Button {
-                    viewModel.sheetToPresent = .addMatch
-                    viewModel.resetMatchInput()
-                } label: {
-                    Text("Add Match")
-                        .foregroundColor(.blue)
+
+                if viewModel.isEventOwner() {
+                    Button {
+                        viewModel.sheetToPresent = .addMatch
+                        viewModel.resetMatchInput()
+                    } label: {
+                        Text("Add Match")
+                            .foregroundColor(.blue)
+                    }
+                    
                 }
             }
-    
+
             Section(header: Text("Players")) {
                 ForEach(viewModel.playersInEvent){ player in
                     HStack{
@@ -78,15 +84,17 @@ struct EventDetailView: View {
                         Spacer()
                     }
                     .swipeActions(edge: .trailing) {
-                        Button(role: .destructive){
-                            viewModel.removePlayerFromEventWith(for: player)
-                            viewModel.setUpEventDetail(with: eventsManager.players)
-                        } label: {
-                            Label("Delete Player", systemImage: "minus.circle.fill")
+                        if viewModel.isEventOwner() {
+                            Button(role: .destructive){
+                                viewModel.removePlayerFromEventWith(for: player)
+                                viewModel.setUpEventDetail(with: eventsManager.players)
+                            } label: {
+                                Label("Delete Player", systemImage: "minus.circle.fill")
+                            }
                         }
                     }
                 }
-                if viewModel.event.eventOwners.contains(where: {$0.recordID == CloudKitManager.shared.userRecord?.recordID}) {
+                if viewModel.isEventOwner() {
                     Button {
                         viewModel.sheetToPresent = .addPlayer
                     } label: {

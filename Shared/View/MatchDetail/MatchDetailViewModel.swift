@@ -34,6 +34,10 @@ import SwiftUI
         self.event = event
     }
 
+    func isEventOwner() -> Bool{
+        return event.eventOwners.contains(where: {$0.recordID == CloudKitManager.shared.userRecord?.recordID})
+    }
+
     func resetInput(){
         teamName = ""
     }
@@ -116,28 +120,22 @@ import SwiftUI
         }
     }
 
-    func removePlayerFromTeam(indexSet: IndexSet, teamID: CKRecord.ID){
-        for index in indexSet {
-            Task {
-                do {
-                    guard let player = teamsAndPlayer[teamID]?[index] else {
-                        alertItem = AlertContext.unableToFindPlayerToRemove
-                        return
-                    }
-                    let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
-                    
-                    var references: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as! [CKRecord.Reference]
-                    references.removeAll(where: {$0.recordID == teamID})
-                    
-                    playerRecord[TUPlayer.kOnTeams] = references
-                    
-                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
-                    teamsAndPlayer[teamID]?.remove(at: index)
-                } catch{
-                    //Unable to get players
-                    alertItem = AlertContext.unableToRemovePlayerFromTeam
-                    isShowingAlert = true
-                }
+    func removePlayerFromTeam(player: TUPlayer, teamRecordID: CKRecord.ID){
+        Task {
+            do {
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                
+                var references = playerRecord[TUPlayer.kOnTeams] as! [CKRecord.Reference]
+                references.removeAll(where: {$0.recordID == teamRecordID})
+                
+                playerRecord[TUPlayer.kOnTeams] = references
+                
+                let _ = try await CloudKitManager.shared.save(record: playerRecord)
+
+                teamsAndPlayer[teamRecordID]?.removeAll(where: {$0.id == player.id})
+            } catch{
+                alertItem = AlertContext.unableToRemovePlayerFromTeam
+                isShowingAlert = true
             }
         }
     }

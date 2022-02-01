@@ -14,24 +14,8 @@ struct MatchDetailView: View {
     var body: some View {
         VStack{
             List {
-                if viewModel.teams.count == 2 {
-                    HStack(spacing: 20) {
-                        Button(action: {
-                            //Something
-                        }, label: {
-                            Text("Shuffle")
-                        })
-                        .modifier(MatchDetailButtonStyle(color: .yellow))
-        
-                        Button(action: {
-                            //Something
-                        }, label: {
-                            Text("Balance")
-                        })
-                        .modifier(MatchDetailButtonStyle(color: .blue))
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .listRowBackground(Color.clear)
+                if viewModel.teams.count == 2 && viewModel.isEventOwner(){
+                    MatchOptionButtons()
                 }
 
                 ForEach(viewModel.teams) { team in
@@ -44,27 +28,19 @@ struct MatchDetailView: View {
                                         .font(.title2)
                                 }
                             }
-                        }
-                        .onDelete { indexSet in
-                            viewModel.removePlayerFromTeam(indexSet: indexSet, teamID: team.id)
-                        }
-
-                        Button {
-                            viewModel.isShowingAddPlayer = true
-                        } label: {
-                            Text("Add Player")
-                                .foregroundColor(.blue)
-                        }
-                        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
-                            NavigationView{
-                                AddEventPlayerSheet(viewModel: viewModel, team: team)
+                            .swipeActions(edge: .trailing) {
+                                if viewModel.isEventOwner() {
+                                    Button(role: .destructive){
+                                        viewModel.removePlayerFromTeam(player: player, teamRecordID: team.id)
+                                    } label: {
+                                        Label("Remove Player", systemImage: "minus.circle.fill")
+                                    }
+                                }
                             }
                         }
 
-                        Button(role: .destructive) {
-                            viewModel.deleteTeam(teamID: team.id)
-                        } label: {
-                            Text("Delete Team")
+                        if viewModel.isEventOwner(){
+                            TeamButtons(viewModel: viewModel, team: team)
                         }
                     } header: {
                         Text(team.teamName)
@@ -72,7 +48,7 @@ struct MatchDetailView: View {
                             .font(.subheadline)
                     }
                 }
-                if viewModel.teams.count < 2 {
+                if viewModel.teams.count < 2 && viewModel.isEventOwner(){
                     Section {
                         Button {
                             viewModel.isShowingAddTeam = true
@@ -96,11 +72,6 @@ struct MatchDetailView: View {
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage
         })
-        .toolbar {
-            if viewModel.teamsAndPlayer.values.contains(where: {$0 != []}){
-                EditButton()
-            }
-        }
     }
 }
 
@@ -109,3 +80,51 @@ struct MatchDetailView: View {
 //        MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: []))
 //    }
 //}
+
+
+struct TeamButtons: View {
+    
+    @ObservedObject var viewModel: MatchDetailViewModel
+    var team: TUTeam
+    
+    var body: some View {
+        Button {
+            viewModel.isShowingAddPlayer = true
+        } label: {
+            Text("Add Player")
+                .foregroundColor(.blue)
+        }
+        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
+            NavigationView{
+                AddEventPlayerSheet(viewModel: viewModel, team: team)
+            }
+        }
+        Button(role: .destructive) {
+            viewModel.deleteTeam(teamID: team.id)
+        } label: {
+            Text("Delete Team")
+        }
+    }
+}
+
+struct MatchOptionButtons: View {
+    var body: some View {
+        HStack(spacing: 20) {
+            Button(action: {
+                //Something
+            }, label: {
+                Text("Shuffle")
+            })
+            .modifier(MatchDetailButtonStyle(color: .yellow))
+
+            Button(action: {
+                //Something
+            }, label: {
+                Text("Balance")
+            })
+            .modifier(MatchDetailButtonStyle(color: .blue))
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
+        .listRowBackground(Color.clear)
+    }
+}

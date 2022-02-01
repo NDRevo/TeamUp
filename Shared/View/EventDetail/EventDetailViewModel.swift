@@ -44,6 +44,10 @@ enum PresentingSheet {
     
     @Environment(\.dismiss) var dismiss
 
+    func isEventOwner() -> Bool{
+        return event.eventOwners.contains(where: {$0.recordID == CloudKitManager.shared.userRecord?.recordID})
+    }
+
     func dateRange() -> PartialRangeFrom<Date> {
         let calendar = Calendar.current
         let startDate = DateComponents(
