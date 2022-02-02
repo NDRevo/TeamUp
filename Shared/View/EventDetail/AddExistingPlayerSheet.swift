@@ -17,24 +17,36 @@ struct AddExistingPlayerSheet: View {
 
     var body: some View {
         VStack{
-            List {
-                Section{
-                    Button {
-                        viewModel.addCheckedPlayersToEvent()
-                        dismiss()
-                    } label: {
-                        Text("Add Players")
+            if !viewModel.availablePlayers.isEmpty {
+                List {
+                    if !viewModel.checkedOffPlayers.isEmpty {
+                        Section{
+                            Button {
+                                viewModel.addCheckedPlayersToEvent()
+                                dismiss()
+                            } label: {
+                                Text("Add Players")
+                            }
+                            .frame(maxWidth: .infinity, alignment: .center)
+                        }
                     }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                }
-                
-                Section{
-                    ForEach(viewModel.availablePlayers) { player in
-                        PlayerListCell(viewModel: viewModel, player: player)
+                    
+                    Section{
+                        ForEach(viewModel.availablePlayers) { player in
+                            PlayerListCell(viewModel: viewModel, player: player)
+                        }
+                    } header: {
+                        Text("Available Players")
                     }
-                } header: {
-                    Text("Available Players")
                 }
+            } else {
+                VStack(spacing: 12) {
+                    Image(systemName: "person.3")
+                        .font(.system(size: 36))
+                        .foregroundColor(.secondary)
+                    Text("No available players")
+                        .foregroundColor(.secondary)
+                }.offset(y: -64)
             }
         }
         .navigationTitle("Add Player")

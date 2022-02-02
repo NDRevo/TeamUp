@@ -24,7 +24,7 @@ import SwiftUI
     @Published var isShowingAddTeam     = false
     @Published var teamName             = ""
 
-    @Published var isLoading: Bool = false
+    @Published var isLoading: Bool      = false
     @Published var isShowingAlert: Bool = false
 
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
@@ -37,6 +37,27 @@ import SwiftUI
 
     func isEventOwner() -> Bool{
         return event.eventOwners.contains(where: {$0.recordID == CloudKitManager.shared.userRecord?.recordID})
+    }
+
+    func getAvailablePlayers(){
+
+        checkedOffPlayers = []
+        availablePlayers = []
+
+        Task {
+            showLoadingView()
+            do {
+                for player in playersInEvent {
+                    if !teamsAndPlayer.values.contains(where: {$0.contains(where: {$0.id == player.id})}) && !availablePlayers.contains(where: {$0.id == player.id}) {
+                        availablePlayers.append(player)
+                    }
+                }
+                hideLoadingView()
+            } catch {
+                hideLoadingView()
+                //Alert
+            }
+        }
     }
 
     func shufflePlayers(){
