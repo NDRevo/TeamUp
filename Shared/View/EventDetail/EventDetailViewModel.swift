@@ -137,6 +137,9 @@ enum PresentingSheet {
                     }
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
+
+                    playersInEvent.append(player)
+                    playersInEvent = playersInEvent.sorted(by: {$0.firstName < $1.firstName})
                 }
             } catch {
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
@@ -168,19 +171,13 @@ enum PresentingSheet {
     }
 
     func getAvailablePlayers(from players: [TUPlayer]){
-        Task {
-            do{
-                availablePlayers = []
-                for player in players {
-                    let playerRecord    = try await CloudKitManager.shared.fetchRecord(with: player.id)
-                    let playerInEvents  = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
-                    if playerInEvents.contains(where: {$0.recordID != event.id}) || playerInEvents.isEmpty{
-                        availablePlayers.append(player)
-                    }
-                }
-            } catch {
-                alertItem = AlertContext.unableToGetAvailablePlayers
-                isShowingAlert = true
+
+        checkedOffPlayers = []
+        availablePlayers = []
+
+        for player in players {
+            if !playersInEvent.contains(where: {$0.id == player.id}){
+                availablePlayers.append(player)
             }
         }
     }

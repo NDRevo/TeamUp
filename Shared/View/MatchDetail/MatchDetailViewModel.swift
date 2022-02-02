@@ -44,18 +44,9 @@ import SwiftUI
         checkedOffPlayers = []
         availablePlayers = []
 
-        Task {
-            showLoadingView()
-            do {
-                for player in playersInEvent {
-                    if !teamsAndPlayer.values.contains(where: {$0.contains(where: {$0.id == player.id})}) && !availablePlayers.contains(where: {$0.id == player.id}) {
-                        availablePlayers.append(player)
-                    }
-                }
-                hideLoadingView()
-            } catch {
-                hideLoadingView()
-                //Alert
+        for player in playersInEvent {
+            if !teamsAndPlayer.values.contains(where: {$0.contains(where: {$0.id == player.id})}) && !availablePlayers.contains(where: {$0.id == player.id}) {
+                availablePlayers.append(player)
             }
         }
     }

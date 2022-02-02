@@ -56,7 +56,7 @@ struct AddEventPlayerSheet: View {
                 Button("Dismiss") { dismiss() }
             }
         }
-        .task {
+        .onAppear {
             viewModel.getAvailablePlayers()
         }
     }

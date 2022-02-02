@@ -55,10 +55,6 @@ struct AlertContext {
                                                              alertMessage: Text("Unable to create match.\n Check your internet connection and try again."),
                                                              button:Button.init("Ok", role: .none, action: {}))
     
-    static let unableToGetAvailablePlayers       = AlertItem(alertTitle: Text("Server Error"),
-                                                             alertMessage: Text("Unable to get available players.\n Check your internet connection and try again."),
-                                                             button: Button.init("Ok", role: .none, action: {}))
-    
     static let unableToGetMatchesForEvent        = AlertItem(alertTitle: Text("Server Error"),
                                                              alertMessage: Text("Unable to get matches for event.\n Check your internet connection and try again."),
                                                              button: Button.init("Ok", role: .none, action: {}))
