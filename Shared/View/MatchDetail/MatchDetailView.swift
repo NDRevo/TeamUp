@@ -15,7 +15,7 @@ struct MatchDetailView: View {
         VStack{
             List {
                 if viewModel.teams.count == 2 && viewModel.isEventOwner(){
-                    MatchOptionButtons()
+                    MatchOptionButtons(viewModel: viewModel)
                 }
 
                 ForEach(viewModel.teams) { team in
@@ -108,17 +108,20 @@ struct TeamButtons: View {
 }
 
 struct MatchOptionButtons: View {
+    
+    @ObservedObject var viewModel: MatchDetailViewModel
+    
     var body: some View {
         HStack(spacing: 20) {
             Button(action: {
-                //Something
+                viewModel.shufflePlayers()
             }, label: {
                 Text("Shuffle")
             })
             .modifier(MatchDetailButtonStyle(color: .yellow))
 
             Button(action: {
-                //Something
+                print("BALANCE")
             }, label: {
                 Text("Balance")
             })

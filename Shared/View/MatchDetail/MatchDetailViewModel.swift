@@ -38,6 +38,55 @@ import SwiftUI
         return event.eventOwners.contains(where: {$0.recordID == CloudKitManager.shared.userRecord?.recordID})
     }
 
+    func shufflePlayers(){
+        Task {
+            let teamOneRecordID = teams[0].id
+            let teamTwoRecordID = teams[1].id
+
+            var allPlayers: [TUPlayer] = []
+            for teams in teamsAndPlayer {
+                allPlayers += teams.value
+            }
+
+            allPlayers.shuffle()
+
+            let midpoint = allPlayers.count / 2
+
+            let teamOne = Array(allPlayers[..<midpoint])
+            let teamTwo = Array(allPlayers[midpoint...])
+
+            let teamOneRecord  = try await CloudKitManager.shared.fetchRecord(with: teamOneRecordID)
+            let teamTwoRecord  = try await CloudKitManager.shared.fetchRecord(with: teamTwoRecordID)
+
+            for player in teamOne + teamTwo {
+                //Fetch
+                let playerRecord   = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                var playerOnTeams = playerRecord[TUPlayer.kOnTeams]  as? [CKRecord.Reference] ?? []
+                
+                //Update
+                if playerOnTeams.contains(where: {$0.recordID == teams[1].id}) && teamOne.contains(where: {$0.id == player.id}){
+                    
+                    playerOnTeams.removeAll(where: {$0.recordID == teams[1].id})
+                    playerOnTeams.append(CKRecord.Reference(record: teamOneRecord, action: .none))
+                    
+                } else if playerOnTeams.contains(where: {$0.recordID == teams[0].id}) && teamTwo.contains(where: {$0.id == player.id}){
+                    
+                    playerOnTeams.removeAll(where: {$0.recordID == teams[0].id})
+                    playerOnTeams.append(CKRecord.Reference(record: teamTwoRecord, action: .none))
+
+                }
+
+                playerRecord[TUPlayer.kOnTeams] = playerOnTeams
+                
+                //Save
+                let _ = try await CloudKitManager.shared.save(record: playerRecord)
+            }
+            
+            teamsAndPlayer.updateValue(teamOne, forKey: teams[0].id)
+            teamsAndPlayer.updateValue(teamTwo, forKey: teams[1].id)
+        }
+    }
+
     func resetInput(){
         teamName = ""
     }
