@@ -40,9 +40,6 @@ import SwiftUI
 
     func shufflePlayers(){
         Task {
-            let teamOneRecordID = teams[0].id
-            let teamTwoRecordID = teams[1].id
-
             var allPlayers: [TUPlayer] = []
             for teams in teamsAndPlayer {
                 allPlayers += teams.value
@@ -52,24 +49,29 @@ import SwiftUI
 
             let midpoint = allPlayers.count / 2
 
-            let teamOne = Array(allPlayers[..<midpoint])
-            let teamTwo = Array(allPlayers[midpoint...])
+            let newTeamOne = Array(allPlayers[..<midpoint])
+            let newTeamTwo = Array(allPlayers[midpoint...])
+
+            let teamOneRecordID = teams[0].id
+            let teamTwoRecordID = teams[1].id
 
             let teamOneRecord  = try await CloudKitManager.shared.fetchRecord(with: teamOneRecordID)
             let teamTwoRecord  = try await CloudKitManager.shared.fetchRecord(with: teamTwoRecordID)
 
-            for player in teamOne + teamTwo {
+            var playersToSave: [CKRecord] = []
+
+            for player in newTeamOne + newTeamTwo {
                 //Fetch
                 let playerRecord   = try await CloudKitManager.shared.fetchRecord(with: player.id)
                 var playerOnTeams = playerRecord[TUPlayer.kOnTeams]  as? [CKRecord.Reference] ?? []
                 
                 //Update
-                if playerOnTeams.contains(where: {$0.recordID == teams[1].id}) && teamOne.contains(where: {$0.id == player.id}){
+                if playerOnTeams.contains(where: {$0.recordID == teams[1].id}) && newTeamOne.contains(where: {$0.id == player.id}){
                     
                     playerOnTeams.removeAll(where: {$0.recordID == teams[1].id})
                     playerOnTeams.append(CKRecord.Reference(record: teamOneRecord, action: .none))
                     
-                } else if playerOnTeams.contains(where: {$0.recordID == teams[0].id}) && teamTwo.contains(where: {$0.id == player.id}){
+                } else if playerOnTeams.contains(where: {$0.recordID == teams[0].id}) && newTeamTwo.contains(where: {$0.id == player.id}){
                     
                     playerOnTeams.removeAll(where: {$0.recordID == teams[0].id})
                     playerOnTeams.append(CKRecord.Reference(record: teamTwoRecord, action: .none))
@@ -78,12 +80,14 @@ import SwiftUI
 
                 playerRecord[TUPlayer.kOnTeams] = playerOnTeams
                 
-                //Save
-                let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                playersToSave.append(playerRecord)
             }
+            //Save
+            let _ = try await CloudKitManager.shared.batchSave(records: playersToSave)
             
-            teamsAndPlayer.updateValue(teamOne, forKey: teams[0].id)
-            teamsAndPlayer.updateValue(teamTwo, forKey: teams[1].id)
+            //Update locally and sort by first name
+            teamsAndPlayer.updateValue(newTeamOne.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[0].id)
+            teamsAndPlayer.updateValue(newTeamTwo.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[1].id)
         }
     }
 
