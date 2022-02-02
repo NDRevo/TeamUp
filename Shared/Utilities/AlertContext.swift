@@ -123,7 +123,11 @@ struct AlertContext {
     static let unableToGetTeamsForMatch         = AlertItem(alertTitle: Text("Server Error"),
                                                             alertMessage: Text("Unable to get teams for match.\n Check your internet connection and try again."),
                                                             button: Button.init("Ok", role: .none, action: {}))
-    
+
+    static let unableToShuffleTeams             = AlertItem(alertTitle: Text("Shuffle Error"),
+                                                            alertMessage: Text("Unable to shuffle teams.\n Check your internet connection and try again."),
+                                                            button: Button.init("Ok", role: .none, action: {}))
+
     static let unableToAddSelectedPlayersToTeam = AlertItem(alertTitle: Text("Server Error"),
                                                             alertMessage: Text("Unable to add selected players.\n Check your internet connection and try again."),
                                                             button: Button.init("Ok", role: .none, action: {}))

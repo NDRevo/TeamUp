@@ -24,6 +24,7 @@ import SwiftUI
     @Published var isShowingAddTeam     = false
     @Published var teamName             = ""
 
+    @Published var isLoading: Bool = false
     @Published var isShowingAlert: Bool = false
 
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
@@ -39,55 +40,64 @@ import SwiftUI
     }
 
     func shufflePlayers(){
+        var allPlayers: [TUPlayer] = []
+        for teams in teamsAndPlayer {
+            allPlayers += teams.value
+        }
+
+        allPlayers.shuffle()
+
+        let midpoint = allPlayers.count / 2
+
+        let newTeamOne = Array(allPlayers[..<midpoint])
+        let newTeamTwo = Array(allPlayers[midpoint...])
+
+        let teamOneRecordID = teams[0].id
+        let teamTwoRecordID = teams[1].id
+
+        showLoadingView()
         Task {
-            var allPlayers: [TUPlayer] = []
-            for teams in teamsAndPlayer {
-                allPlayers += teams.value
-            }
+            do {
+                let teamOneRecord  = try await CloudKitManager.shared.fetchRecord(with: teamOneRecordID)
+                let teamTwoRecord  = try await CloudKitManager.shared.fetchRecord(with: teamTwoRecordID)
 
-            allPlayers.shuffle()
+                var playersToSave: [CKRecord] = []
 
-            let midpoint = allPlayers.count / 2
-
-            let newTeamOne = Array(allPlayers[..<midpoint])
-            let newTeamTwo = Array(allPlayers[midpoint...])
-
-            let teamOneRecordID = teams[0].id
-            let teamTwoRecordID = teams[1].id
-
-            let teamOneRecord  = try await CloudKitManager.shared.fetchRecord(with: teamOneRecordID)
-            let teamTwoRecord  = try await CloudKitManager.shared.fetchRecord(with: teamTwoRecordID)
-
-            var playersToSave: [CKRecord] = []
-
-            for player in newTeamOne + newTeamTwo {
-                //Fetch
-                let playerRecord   = try await CloudKitManager.shared.fetchRecord(with: player.id)
-                var playerOnTeams = playerRecord[TUPlayer.kOnTeams]  as? [CKRecord.Reference] ?? []
-                
-                //Update
-                if playerOnTeams.contains(where: {$0.recordID == teams[1].id}) && newTeamOne.contains(where: {$0.id == player.id}){
+                for player in newTeamOne + newTeamTwo {
+                    //Fetch
+                    let playerRecord   = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                    var playerOnTeams = playerRecord[TUPlayer.kOnTeams]  as? [CKRecord.Reference] ?? []
                     
-                    playerOnTeams.removeAll(where: {$0.recordID == teams[1].id})
-                    playerOnTeams.append(CKRecord.Reference(record: teamOneRecord, action: .none))
-                    
-                } else if playerOnTeams.contains(where: {$0.recordID == teams[0].id}) && newTeamTwo.contains(where: {$0.id == player.id}){
-                    
-                    playerOnTeams.removeAll(where: {$0.recordID == teams[0].id})
-                    playerOnTeams.append(CKRecord.Reference(record: teamTwoRecord, action: .none))
+                    //Update
+                    if playerOnTeams.contains(where: {$0.recordID == teams[1].id}) && newTeamOne.contains(where: {$0.id == player.id}){
+                        
+                        playerOnTeams.removeAll(where: {$0.recordID == teams[1].id})
+                        playerOnTeams.append(CKRecord.Reference(record: teamOneRecord, action: .none))
+                        
+                    } else if playerOnTeams.contains(where: {$0.recordID == teams[0].id}) && newTeamTwo.contains(where: {$0.id == player.id}){
+                        
+                        playerOnTeams.removeAll(where: {$0.recordID == teams[0].id})
+                        playerOnTeams.append(CKRecord.Reference(record: teamTwoRecord, action: .none))
 
+                    }
+
+                    playerRecord[TUPlayer.kOnTeams] = playerOnTeams
+                    
+                    playersToSave.append(playerRecord)
                 }
-
-                playerRecord[TUPlayer.kOnTeams] = playerOnTeams
+                //Save
+                let _ = try await CloudKitManager.shared.batchSave(records: playersToSave)
                 
-                playersToSave.append(playerRecord)
+                //Update locally and sort by first name
+                teamsAndPlayer.updateValue(newTeamOne.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[0].id)
+                teamsAndPlayer.updateValue(newTeamTwo.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[1].id)
+                hideLoadingView()
+            } catch {
+                hideLoadingView()
+                alertItem = AlertContext.unableToShuffleTeams
+                isShowingAlert = true
             }
-            //Save
-            let _ = try await CloudKitManager.shared.batchSave(records: playersToSave)
-            
-            //Update locally and sort by first name
-            teamsAndPlayer.updateValue(newTeamOne.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[0].id)
-            teamsAndPlayer.updateValue(newTeamTwo.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[1].id)
+
         }
     }
 
@@ -227,5 +237,13 @@ import SwiftUI
                 isShowingAlert = true
             }
         }
+    }
+    
+    private func showLoadingView(){
+        isLoading = true
+    }
+
+    private func hideLoadingView(){
+        isLoading = false
     }
 }

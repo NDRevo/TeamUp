@@ -12,66 +12,70 @@ struct MatchDetailView: View {
     @ObservedObject var viewModel: MatchDetailViewModel
 
     var body: some View {
-        VStack{
-            List {
-                if viewModel.teams.count == 2 && viewModel.isEventOwner(){
-                    MatchOptionButtons(viewModel: viewModel)
-                }
+        ZStack {
+            VStack{
+                List {
+                    if viewModel.teams.count == 2 && viewModel.isEventOwner(){
+                        MatchOptionButtons(viewModel: viewModel)
+                    }
 
-                ForEach(viewModel.teams) { team in
-                    Section {
-                        ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
-                            HStack{
-                                VStack(alignment: .leading){
-                                    Text(player.firstName)
-                                        .bold()
-                                        .font(.title2)
+                    ForEach(viewModel.teams) { team in
+                        Section {
+                            ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
+                                HStack{
+                                    VStack(alignment: .leading){
+                                        Text(player.firstName)
+                                            .bold()
+                                            .font(.title2)
+                                    }
                                 }
-                            }
-                            .swipeActions(edge: .trailing) {
-                                if viewModel.isEventOwner() {
-                                    Button(role: .destructive){
-                                        viewModel.removePlayerFromTeam(player: player, teamRecordID: team.id)
-                                    } label: {
-                                        Label("Remove Player", systemImage: "minus.circle.fill")
+                                .swipeActions(edge: .trailing) {
+                                    if viewModel.isEventOwner() {
+                                        Button(role: .destructive){
+                                            viewModel.removePlayerFromTeam(player: player, teamRecordID: team.id)
+                                        } label: {
+                                            Label("Remove Player", systemImage: "minus.circle.fill")
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        if viewModel.isEventOwner(){
-                            TeamButtons(viewModel: viewModel, team: team)
+                            if viewModel.isEventOwner(){
+                                TeamButtons(viewModel: viewModel, team: team)
+                            }
+                        } header: {
+                            Text(team.teamName)
+                                .bold()
+                                .font(.subheadline)
                         }
-                    } header: {
-                        Text(team.teamName)
-                            .bold()
-                            .font(.subheadline)
                     }
-                }
-                if viewModel.teams.count < 2 && viewModel.isEventOwner(){
-                    Section {
-                        Button {
-                            viewModel.isShowingAddTeam = true
-                            viewModel.resetInput()
-                        } label: {
-                            Text("Add Team")
-                        }
-                        .sheet(isPresented: $viewModel.isShowingAddTeam) {
-                            NavigationView{
-                                AddTeamSheet(viewModel: viewModel)
+                    if viewModel.teams.count < 2 && viewModel.isEventOwner(){
+                        Section {
+                            Button {
+                                viewModel.isShowingAddTeam = true
+                                viewModel.resetInput()
+                            } label: {
+                                Text("Add Team")
+                            }
+                            .sheet(isPresented: $viewModel.isShowingAddTeam) {
+                                NavigationView{
+                                    AddTeamSheet(viewModel: viewModel)
+                                }
                             }
                         }
                     }
                 }
             }
+            .navigationTitle(viewModel.match.matchName)
+            .task {
+                viewModel.getTeamsForMatch()
+            }
+            .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+                viewModel.alertItem.alertMessage
+            })
+
+            if viewModel.isLoading {LoadingView()}
         }
-        .navigationTitle(viewModel.match.matchName)
-        .task {
-            viewModel.getTeamsForMatch()
-        }
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
-        })
     }
 }
 
