@@ -13,12 +13,12 @@ import CloudKit
 
     var player: TUPlayer
     @Published var playerProfiles: [TUPlayerGameProfile] = []
-    
+
     init(player: TUPlayer, playerProfiles: [TUPlayerGameProfile] = []){
         self.player          = player
         self.playerProfiles  = playerProfiles
     }
-    
+
     @Published var gameID: String           = ""
     @Published var selectedGame: Games      = .valorant
     @Published var playerGameRank: String   = ""

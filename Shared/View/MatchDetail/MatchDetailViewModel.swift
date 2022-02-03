@@ -39,6 +39,14 @@ import SwiftUI
         return event.eventOwners.contains(where: {$0.recordID == CloudKitManager.shared.userRecord?.recordID})
     }
 
+    func isAbleToChangeTeams() -> Bool {
+        return teams.count == 2 && isEventOwner()
+    }
+
+    func isAbleToAddTeam() -> Bool {
+        return teams.count < 2 && isEventOwner()
+    }
+
     func getAvailablePlayers(){
 
         checkedOffPlayers = []

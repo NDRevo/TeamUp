@@ -15,7 +15,7 @@ struct MatchDetailView: View {
         ZStack {
             VStack{
                 List {
-                    if viewModel.teams.count == 2 && viewModel.isEventOwner(){
+                    if viewModel.isAbleToChangeTeams(){
                         MatchOptionButtons(viewModel: viewModel)
                     }
 
@@ -49,7 +49,7 @@ struct MatchDetailView: View {
                                 .font(.subheadline)
                         }
                     }
-                    if viewModel.teams.count < 2 && viewModel.isEventOwner(){
+                    if viewModel.isAbleToAddTeam(){
                         Section {
                             Button {
                                 viewModel.isShowingAddTeam = true

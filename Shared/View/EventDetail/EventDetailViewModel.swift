@@ -37,11 +37,10 @@ enum PresentingSheet {
             isShowingSheet = true
         }
     }
-    
+
     @Published var isShowingAlert: Bool             = false
     @Published var alertItem: AlertItem             = AlertItem(alertTitle: Text("Unable To Show Alert"),
                                                                 alertMessage: Text("There was a problem showing the alert."))
-    
     @Environment(\.dismiss) var dismiss
 
     func isEventOwner() -> Bool{
