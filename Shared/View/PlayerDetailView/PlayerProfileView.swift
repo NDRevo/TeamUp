@@ -27,7 +27,9 @@ struct PlayerProfileView: View {
                     ForEach(viewModel.playerProfiles) { gameProfile in
                         PlayerGameProfileCell(viewModel: viewModel, gameProfile: gameProfile)
                             .onLongPressGesture {
-                                editMode?.wrappedValue = .active
+                                withAnimation {
+                                    editMode?.wrappedValue = .active
+                                }
                             }
                             .confirmationDialog("Delete Profile?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
                                 Button(role: .destructive) {
