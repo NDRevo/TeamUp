@@ -36,7 +36,7 @@ import SwiftUI
     }
 
     func isEventOwner() -> Bool{
-        return event.eventOwners.contains(where: {$0.recordID == CloudKitManager.shared.userRecord?.recordID})
+        return event.eventOwner.recordID == CloudKitManager.shared.userRecord?.recordID
     }
 
     func isAbleToChangeTeams() -> Bool {

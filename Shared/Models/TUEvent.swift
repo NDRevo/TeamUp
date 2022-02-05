@@ -15,7 +15,7 @@ struct TUEvent: Identifiable {
     static let kEventGame         = "eventGame"
     static let kEventDescription  = "eventDescription"
     static let kEventLocation     = "eventLocation"
-    static let kEventOwners        = "eventOwners"
+    static let kEventOwner        = "eventOwner"
 
     let id: CKRecord.ID
 
@@ -24,7 +24,7 @@ struct TUEvent: Identifiable {
     let eventGame: String
     let eventDescription: String
     let eventLocation: String
-    let eventOwners: [CKRecord.Reference]
+    let eventOwner: CKRecord.Reference
 
     init(record: CKRecord){
         id = record.recordID
@@ -35,7 +35,7 @@ struct TUEvent: Identifiable {
         eventDescription = record[TUEvent.kEventDescription] as? String ?? "N/A"
         eventLocation    = record[TUEvent.kEventLocation] as? String ?? "N/A"
         //Forced Unwrapped since this will never be nil
-        eventOwners       = record[TUEvent.kEventOwners] as! [CKRecord.Reference]
+        eventOwner       = record[TUEvent.kEventOwner] as! CKRecord.Reference
     }
 
     var getDateDetails: DateComponents {

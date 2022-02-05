@@ -43,8 +43,8 @@ enum PresentingSheet {
                                                                 alertMessage: Text("There was a problem showing the alert."))
     @Environment(\.dismiss) var dismiss
 
-    func isEventOwner() -> Bool{
-        return event.eventOwners.contains(where: {$0.recordID == CloudKitManager.shared.userRecord?.recordID})
+    func isEventOwner() -> Bool {
+        return event.eventOwner.recordID == CloudKitManager.shared.userRecord?.recordID
     }
 
     func dateRange() -> PartialRangeFrom<Date> {
