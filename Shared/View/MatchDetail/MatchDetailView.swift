@@ -21,24 +21,7 @@ struct MatchDetailView: View {
 
                     ForEach(viewModel.teams) { team in
                         Section {
-                            ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
-                                HStack{
-                                    VStack(alignment: .leading){
-                                        Text(player.firstName)
-                                            .bold()
-                                            .font(.title2)
-                                    }
-                                }
-                                .swipeActions(edge: .trailing) {
-                                    if viewModel.isEventOwner() {
-                                        Button(role: .destructive){
-                                            viewModel.removePlayerFromTeam(player: player, teamRecordID: team.id)
-                                        } label: {
-                                            Label("Remove Player", systemImage: "minus.circle.fill")
-                                        }
-                                    }
-                                }
-                            }
+                            PlayerListForTeam(viewModel: viewModel, team: team)
 
                             if viewModel.isEventOwner(){
                                 TeamButtons(viewModel: viewModel, team: team)
@@ -107,6 +90,33 @@ struct TeamButtons: View {
             viewModel.deleteTeam(teamID: team.id)
         } label: {
             Text("Delete Team")
+        }
+    }
+}
+
+struct PlayerListForTeam: View {
+    
+    @ObservedObject var viewModel: MatchDetailViewModel
+    var team: TUTeam
+    
+    var body: some View {
+        ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
+            HStack{
+                VStack(alignment: .leading){
+                    Text(player.firstName)
+                        .bold()
+                        .font(.title2)
+                }
+            }
+            .swipeActions(edge: .trailing) {
+                if viewModel.isEventOwner() {
+                    Button(role: .destructive){
+                        viewModel.removePlayerFromTeam(player: player, teamRecordID: team.id)
+                    } label: {
+                        Label("Remove Player", systemImage: "minus.circle.fill")
+                    }
+                }
+            }
         }
     }
 }
