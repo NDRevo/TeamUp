@@ -150,7 +150,8 @@ enum PresentingSheet {
     private func getMatchesForEvent(){
         Task {
             do {
-                matches = try await CloudKitManager.shared.getMatches(for: event.id)
+                let loadingMatches =  try await CloudKitManager.shared.getMatches(for: event.id)
+                matches = loadingMatches
             } catch{
                 alertItem = AlertContext.unableToGetMatchesForEvent
                 isShowingAlert = true
@@ -161,7 +162,8 @@ enum PresentingSheet {
     private func getPlayersInEvents(){
         Task {
             do {
-                playersInEvent = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
+                let loadingPlayers = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
+                playersInEvent = loadingPlayers
             } catch{
                 alertItem = AlertContext.unableToGetPlayersForEvent
                 isShowingAlert = true
