@@ -30,6 +30,7 @@ enum PresentingSheet {
 
     @Published var matchName: String                = ""
     @Published var matchDate: Date                  = Date()
+    @Published var onAppearHasFired                 = false
 
     @Published var isShowingSheet                   = false
     @Published var sheetToPresent: PresentingSheet? {
@@ -57,9 +58,17 @@ enum PresentingSheet {
         return calendar.date(from:startDate)!...
     }
 
-    func setUpEventDetail(with players: [TUPlayer]){
+    func refreshEventDetails(with players: [TUPlayer]){
         getMatchesForEvent()
         getPlayersInEvents()
+    }
+
+    func setUpEventDetails(with players: [TUPlayer]){
+        if !onAppearHasFired {
+            getMatchesForEvent()
+            getPlayersInEvents()
+        }
+        onAppearHasFired = true
     }
 
     @ViewBuilder func presentSheet() -> some View {
@@ -193,6 +202,20 @@ enum PresentingSheet {
                     
                     playerRecord[TUPlayer.kInEvents] = references
                     
+                    let teamsInEvents = try await CloudKitManager.shared.getTeamsFromEvent(for: event.id)
+
+                    var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
+
+                    if !teamsInEvents.isEmpty {
+                        for teamReference in teamReferences {
+                            //If team doesnt exist then remove from player's onTeams
+                            if teamsInEvents.contains(where: {$0.recordID == teamReference.recordID}){
+                                teamReferences.removeAll(where: {$0 == teamReference})
+                            }
+                        }
+                        playerRecord[TUPlayer.kOnTeams] = teamReferences
+                    }
+
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
                     
                     playersInEvent.removeAll(where: {$0.id == player.id})

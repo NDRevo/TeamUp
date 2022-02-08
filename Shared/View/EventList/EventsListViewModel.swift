@@ -162,23 +162,20 @@ import SwiftUI
         Task{
             do {
                 let playerRecordsInEvent = try await CloudKitManager.shared.getPlayerRecordsForEvent(for: eventID)
-                let teamsFromDeleteEvent = try await CloudKitManager.shared.getTeamsFromEvent(for: eventID)
+                let teamsFromDeletedEvent = try await CloudKitManager.shared.getTeamsFromEvent(for: eventID)
 
                 for playerRecord in playerRecordsInEvent {
                     var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
-                    if teamsFromDeleteEvent.isEmpty {
-                        teamReferences.removeAll()
-                        playerRecord[TUPlayer.kOnTeams] = teamReferences
-                    } else {
+                    if !teamsFromDeletedEvent.isEmpty {
                         for teamReference in teamReferences {
                             //If team doesnt exist then remove from player's onTeams
-                            if teamsFromDeleteEvent.contains(where: {$0.recordID == teamReference.recordID}){
+                            if teamsFromDeletedEvent.contains(where: {$0.recordID == teamReference.recordID}){
                                 teamReferences.removeAll(where: {$0 == teamReference})
                             }
                         }
                         playerRecord[TUPlayer.kOnTeams] = teamReferences
                     }
-                    
+
                     var eventReference = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
                     eventReference.removeAll(where: {$0.recordID == eventID})
                     playerRecord[TUPlayer.kInEvents] = eventReference

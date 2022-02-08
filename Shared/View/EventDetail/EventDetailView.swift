@@ -69,7 +69,7 @@ struct EventDetailView: View {
                         if viewModel.isEventOwner() {
                             Button(role: .destructive){
                                 viewModel.removePlayerFromEventWith(for: player)
-                                viewModel.setUpEventDetail(with: eventsManager.players)
+                                //viewModel.refreshEventDetails(with: eventsManager.players)
                             } label: {
                                 Label("Delete Player", systemImage: "minus.circle.fill")
                             }
@@ -88,17 +88,17 @@ struct EventDetailView: View {
         }
         .navigationTitle(viewModel.event.eventName)
         .refreshable {
-            viewModel.setUpEventDetail(with: eventsManager.players)
+            viewModel.refreshEventDetails(with: eventsManager.players)
         }
         .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
-            viewModel.setUpEventDetail(with: eventsManager.players)
+            viewModel.refreshEventDetails(with: eventsManager.players)
         }){
             NavigationView{
                 viewModel.presentSheet()
             }
         }
         .task {
-            viewModel.setUpEventDetail(with: eventsManager.players)
+            viewModel.setUpEventDetails(with: eventsManager.players)
         }
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage
