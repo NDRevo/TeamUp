@@ -19,13 +19,14 @@ struct EventsListView: View {
                     NavigationLink( destination: EventDetailView(viewModel: EventDetailViewModel(event: event))){
                         EventListCell(event: event)
                     }
-                }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        let recordID = eventsManager.events[index].id
-                        viewModel.deleteEvent(eventID: recordID)
+                    .swipeActions {
+                        Button(role: .destructive) {
+                            viewModel.deleteEvent(eventID: event.id)
+                            eventsManager.events.removeAll(where: {$0.id == event.id})
+                        } label: {
+                           Image(systemName: "minus.circle.fill")
+                        }
 
-                        eventsManager.events.remove(at: index)
                     }
                 }
             }
