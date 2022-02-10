@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		560E4269278E8A2A00408B4B /* EventListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E4268278E8A2A00408B4B /* EventListCell.swift */; };
 		560E426A278E8A2A00408B4B /* EventListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E4268278E8A2A00408B4B /* EventListCell.swift */; };
-		560E426C278E8F1500408B4B /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E426B278E8F1500408B4B /* View+Ext.swift */; };
-		560E426D278E8F1500408B4B /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E426B278E8F1500408B4B /* View+Ext.swift */; };
 		560E4270278F97EF00408B4B /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E426F278F97EF00408B4B /* EventDetailView.swift */; };
 		560E4271278F97EF00408B4B /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E426F278F97EF00408B4B /* EventDetailView.swift */; };
 		560E4274278FA68200408B4B /* MatchDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E4273278FA68200408B4B /* MatchDetailView.swift */; };
@@ -64,6 +62,8 @@
 		560E42C827960D8A00408B4B /* ExistingPlayerListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42C627960D8A00408B4B /* ExistingPlayerListCell.swift */; };
 		561D5D7227A3A8B00001F57F /* TeamUpUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561D5D7127A3A8B00001F57F /* TeamUpUITests.swift */; };
 		561D5D7427A3A8B00001F57F /* TeamUpUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561D5D7327A3A8B00001F57F /* TeamUpUITestsLaunchTests.swift */; };
+		5623DB4327B40F5F0015D59A /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623DB4227B40F5F0015D59A /* View+Ext.swift */; };
+		5623DB4427B40F5F0015D59A /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623DB4227B40F5F0015D59A /* View+Ext.swift */; };
 		563A46D9279D9DE4006A406B /* PlayerProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A46D8279D9DE4006A406B /* PlayerProfileView.swift */; };
 		563A46DA279D9DE4006A406B /* PlayerProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A46D8279D9DE4006A406B /* PlayerProfileView.swift */; };
 		563A46DC279DA14E006A406B /* PlayerGameProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A46DB279DA14E006A406B /* PlayerGameProfileCell.swift */; };
@@ -104,7 +104,6 @@
 
 /* Begin PBXFileReference section */
 		560E4268278E8A2A00408B4B /* EventListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListCell.swift; sourceTree = "<group>"; };
-		560E426B278E8F1500408B4B /* View+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Ext.swift"; sourceTree = "<group>"; };
 		560E426F278F97EF00408B4B /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		560E4273278FA68200408B4B /* MatchDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDetailView.swift; sourceTree = "<group>"; };
 		560E427827907E1200408B4B /* MatchDetailButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDetailButton.swift; sourceTree = "<group>"; };
@@ -135,6 +134,7 @@
 		561D5D6F27A3A8B00001F57F /* TeamUpUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TeamUpUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		561D5D7127A3A8B00001F57F /* TeamUpUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpUITests.swift; sourceTree = "<group>"; };
 		561D5D7327A3A8B00001F57F /* TeamUpUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5623DB4227B40F5F0015D59A /* View+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "View+Ext.swift"; path = "../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/View+Ext.swift"; sourceTree = "<group>"; };
 		563A46D8279D9DE4006A406B /* PlayerProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProfileView.swift; sourceTree = "<group>"; };
 		563A46DB279DA14E006A406B /* PlayerGameProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGameProfileCell.swift; sourceTree = "<group>"; };
 		563A46DF279EF86C006A406B /* AddPlayerGameProfileSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerGameProfileSheet.swift; sourceTree = "<group>"; };
@@ -206,7 +206,7 @@
 		560E427627906B1C00408B4B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				560E426B278E8F1500408B4B /* View+Ext.swift */,
+				5623DB4227B40F5F0015D59A /* View+Ext.swift */,
 				560E428B2790C0EE00408B4B /* Date+Ext.swift */,
 				563A46E6279F862C006A406B /* Color+Ext.swift */,
 			);
@@ -508,8 +508,8 @@
 				560E42832790B2C700408B4B /* AddPlayerSheet.swift in Sources */,
 				566AB2E8278D285000F4035C /* EventsListView.swift in Sources */,
 				563A46E4279F0FFC006A406B /* PlayerProfileViewModel.swift in Sources */,
-				560E426C278E8F1500408B4B /* View+Ext.swift in Sources */,
 				563A46D9279D9DE4006A406B /* PlayerProfileView.swift in Sources */,
+				5623DB4327B40F5F0015D59A /* View+Ext.swift in Sources */,
 				566AB2EC278D2DA700F4035C /* TUMatch.swift in Sources */,
 				560E42C127946E6100408B4B /* AlertContext.swift in Sources */,
 				566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */,
@@ -554,8 +554,8 @@
 				560E42842790B2C700408B4B /* AddPlayerSheet.swift in Sources */,
 				566AB2E9278D285000F4035C /* EventsListView.swift in Sources */,
 				563A46E5279F0FFC006A406B /* PlayerProfileViewModel.swift in Sources */,
-				560E426D278E8F1500408B4B /* View+Ext.swift in Sources */,
 				563A46DA279D9DE4006A406B /* PlayerProfileView.swift in Sources */,
+				5623DB4427B40F5F0015D59A /* View+Ext.swift in Sources */,
 				566AB2ED278D2DA700F4035C /* TUMatch.swift in Sources */,
 				560E42C227946E6100408B4B /* AlertContext.swift in Sources */,
 				566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */,

@@ -157,47 +157,4 @@ import SwiftUI
             }
         }
     }
-
-    private func removePlayersFromEvent(eventID: CKRecord.ID){
-        Task{
-            do {
-                let playerRecordsInEvent = try await CloudKitManager.shared.getPlayerRecordsForEvent(for: eventID)
-                let teamsFromDeletedEvent = try await CloudKitManager.shared.getTeamsFromEvent(for: eventID)
-
-                for playerRecord in playerRecordsInEvent {
-                    var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
-                    if !teamsFromDeletedEvent.isEmpty {
-                        for teamReference in teamReferences {
-                            //If team doesnt exist then remove from player's onTeams
-                            if teamsFromDeletedEvent.contains(where: {$0.recordID == teamReference.recordID}){
-                                teamReferences.removeAll(where: {$0 == teamReference})
-                            }
-                        }
-                        playerRecord[TUPlayer.kOnTeams] = teamReferences
-                    }
-
-                    var eventReference = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
-                    eventReference.removeAll(where: {$0.recordID == eventID})
-                    playerRecord[TUPlayer.kInEvents] = eventReference
-                    
-                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
-                }
-            } catch {
-                alertItem = AlertContext.unableToRemovePlayersFromEvent
-                isShowingAlert = true
-            }
-        }
-    }
-
-    func deleteEvent(eventID: CKRecord.ID){
-        Task{
-            do {
-                removePlayersFromEvent(eventID: eventID)
-                let _ = try await CloudKitManager.shared.remove(recordID: eventID)
-            } catch{
-                alertItem = AlertContext.unableToDeleteEvent
-                isShowingAlert = true
-            }
-        }
-    }
 }

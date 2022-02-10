@@ -85,6 +85,14 @@ struct EventDetailView: View {
                     }
                 }
             }
+            if viewModel.isEventOwner() {
+                Button(role: .destructive) {
+                    viewModel.deleteEvent(eventID: viewModel.event.id)
+                    eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
+                } label: {
+                    Text("Delete Event")
+                }
+            }
         }
         .navigationTitle(viewModel.event.eventName)
         .refreshable {

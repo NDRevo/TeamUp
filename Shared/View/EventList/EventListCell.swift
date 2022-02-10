@@ -15,67 +15,85 @@ struct EventListCell: View {
 
     var body: some View {
         HStack {
-           Rectangle()
-                .frame(width: 30, height: 120)
-                .foregroundColor(Color.getGameColor(gameName: event.eventGame))
-                .cornerRadius(8, corners: [.topLeft, .bottomLeft])
-                
-            VStack(spacing: 10){
-                HStack{
-                    VStack(alignment: .leading){
+            VStack(spacing: 30){
+                HStack(alignment:.top){
+                    
+                    VStack(alignment: .leading, spacing: 6){
                         Text(event.eventGame)
-                            .bold()
-                            .font(.body)
-                            .foregroundColor(.secondary)
+                            .font(.system(size: 18, weight: .heavy, design: .default))
+                            .foregroundColor(.appCell)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color.getGameColor(gameName: event.eventGame))
+                            }
                         Text(event.eventName)
-                            .bold()
-                            .font(.title2)
+                            .fontWeight(.bold)
+                            .font(.title)
                     }
+                    
                     Spacer()
-                    VStack(alignment: .trailing){
+                    
+                    VStack(alignment: .center){
                         Text("\(event.getMonth)")
-                            .bold()
+                            .fontWeight(.medium)
                             .font(.body)
                             .foregroundColor(.secondary)
+                            .textCase(.uppercase)
                         Text("\(event.getDateDetails.day!)")
                             .bold()
-                            .font(.title2)
+                            .font(.title)
                     }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 6)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(.appBackground)
+                    }
+                    
                 }
                 HStack{
                     VStack(alignment: .center,spacing: 5){
                         Text("Time")
-                            .bold()
-                            .font(.body)
+                            .fontWeight(.medium)
+                            .font(.subheadline)
                             .foregroundColor(.secondary)
                         Text("\(event.getTime)")
                             .bold()
-                            .font(.subheadline)
+                            .font(.body)
                     }
                     Spacer()
                     VStack(alignment: .center,spacing: 5){
                         Text("Location")
-                            .bold()
-                            .font(.body)
+                            .fontWeight(.medium)
+                            .font(.subheadline)
                             .foregroundColor(.secondary)
                         Text(event.eventLocation)
                             .bold()
-                            .font(.subheadline)
+                            .font(.body)
                             .lineLimit(1)
                     }
                     Spacer()
                     VStack(alignment: .center,spacing: 5){
                         Text("Players")
-                            .bold()
-                            .font(.body)
+                            .fontWeight(.medium)
+                            .font(.subheadline)
                             .foregroundColor(.secondary)
                         Text("\(eventsManager.playerCountPerEvent[event.id] ?? 0)")
                             .bold()
-                            .font(.subheadline)
+                            .font(.body)
                     }
                 }
             }
-            .padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 15))
+            .padding(.horizontal, 24)
+            .padding(.vertical, 12)
+            .background{
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.appCell)
+                    .padding(.horizontal, 12)
+            }
+            .tint(.primary)
         }
     }
 }
@@ -83,17 +101,5 @@ struct EventListCell: View {
 struct EventListCell_Previews: PreviewProvider {
     static var previews: some View {
         EventListCell(event: TUEvent(record: MockData.event))
-            .environment(\.sizeCategory, .large)
-    }
-}
-
-struct RoundedCorner: Shape {
-
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        return Path(path.cgPath)
     }
 }

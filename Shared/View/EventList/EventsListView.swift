@@ -14,23 +14,15 @@ struct EventsListView: View {
 
     var body: some View {
         NavigationView{
-            List {
-                ForEach(eventsManager.events){ event in
-                    NavigationLink( destination: EventDetailView(viewModel: EventDetailViewModel(event: event))){
-                        EventListCell(event: event)
-                    }
-                    .swipeActions {
-                        Button(role: .destructive) {
-                            viewModel.deleteEvent(eventID: event.id)
-                            eventsManager.events.removeAll(where: {$0.id == event.id})
-                        } label: {
-                           Image(systemName: "minus.circle.fill")
+            ScrollView{
+                LazyVStack(spacing: 18) {
+                    ForEach(eventsManager.events){ event in
+                        NavigationLink( destination: EventDetailView(viewModel: EventDetailViewModel(event: event))){
+                            EventListCell(event: event) 
                         }
-
                     }
                 }
             }
-            .listStyle(.plain)
             .navigationTitle("Events")
             .refreshable {
                 viewModel.refresh(for: eventsManager)
@@ -49,6 +41,7 @@ struct EventsListView: View {
                     AddEventSheet(viewModel: viewModel)
                 }
             }
+            .background(Color.appBackground)
         }
     }
 }
