@@ -20,7 +20,8 @@ struct EventListCell: View {
                     
                     VStack(alignment: .leading, spacing: 6){
                         Text(event.eventGame)
-                            .font(.system(size: 18, weight: .heavy, design: .default))
+                            .fontWeight(.heavy)
+                            .font(.body)
                             .foregroundColor(.appCell)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 2)
@@ -31,6 +32,8 @@ struct EventListCell: View {
                         Text(event.eventName)
                             .fontWeight(.bold)
                             .font(.title)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
                     }
                     
                     Spacer()
@@ -46,7 +49,7 @@ struct EventListCell: View {
                             .font(.title)
                     }
                     .padding(.horizontal, 8)
-                    .padding(.vertical, 6)
+                    .padding(.vertical, 2)
                     .background {
                         RoundedRectangle(cornerRadius: 10)
                             .foregroundColor(.appBackground)

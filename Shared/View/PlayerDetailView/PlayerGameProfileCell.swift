@@ -19,7 +19,7 @@ struct PlayerGameProfileCell: View {
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(Color(UIColor.systemBackground))
+                .foregroundColor(.appCell)
                 .shadow(color: .black.opacity(0.10), radius: 2, x: 0, y: 7)
                 .overlay(alignment: .top){
                     Rectangle()
