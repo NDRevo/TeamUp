@@ -77,6 +77,14 @@ import SwiftUI
         Task {
             do {
                 let _ = try await CloudKitManager.shared.remove(recordID: recordID)
+                
+                guard let userRecord = CloudKitManager.shared.userRecord else {
+                    alertItem = AlertContext.unableToGetPlayerList
+                    return
+                }
+
+                userRecord["userProfile"] = nil
+                let _ = try await CloudKitManager.shared.save(record: userRecord)
             } catch {
                 alertItem = AlertContext.unableToDeletePlayer
                 isShowingAlert = true

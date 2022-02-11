@@ -20,19 +20,12 @@ struct PlayerProfileView: View {
                 CreateProfileView(viewModel: viewModel)
             } else {
                 VStack(alignment: .leading){
-                    Button(role: .destructive) {
-                        viewModel.deleteProfile()
-                    } label: {
-                        Text("Delete Profile")
-                    }
-
                     Text("Game Profiles")
                         .bold()
                         .font(.title2)
                         .accessibilityAddTraits(.isHeader)
                         .padding(.horizontal)
                     ScrollView {
-                        Spacer(minLength: 12)
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),spacing: 25) {
                             ForEach(viewModel.playerGameProfiles) { gameProfile in
                                 PlayerGameProfileCell(viewModel: viewModel, gameProfile: gameProfile)
