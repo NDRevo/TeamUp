@@ -81,7 +81,7 @@ import CloudKit
         }
 
         //Create reference on UserRecord to TUPlayer we created
-        userRecord["userProfile"] = CKRecord.Reference(recordID: playerRecord.recordID, action: .deleteSelf)
+        userRecord["userProfile"] = CKRecord.Reference(recordID: playerRecord.recordID, action: .none)
 
         Task {
             do {

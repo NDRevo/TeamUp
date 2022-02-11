@@ -72,11 +72,10 @@ struct PlayerProfileView: View {
                 }
                 .toolbar { if !viewModel.playerGameProfiles.isEmpty { EditButton() } }
                 .onDisappear { editMode?.wrappedValue = .inactive }
-                .task {
-                    viewModel.getProfile()
-                    
-                }
             }
+        }
+        .task {
+            viewModel.getProfile()
         }
     }
 }
