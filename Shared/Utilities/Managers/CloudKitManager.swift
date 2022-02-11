@@ -14,15 +14,19 @@ final class CloudKitManager {
     static let shared = CloudKitManager()
 
     var userRecord: CKRecord?
+    var profileRecordID: CKRecord.ID?
     let container = CKContainer.default()
 
     private init(){}
 
-    func getUserRecord() async throws{
+    func getUserRecord() async throws {
         let recordID = try await container.userRecordID()
-        let record =  try await container.publicCloudDatabase.record(for: recordID)
-
+        let record = try await container.publicCloudDatabase.record(for: recordID)
         userRecord = record
+        
+        if let profileReference = record["userProfile"] as? CKRecord.Reference {
+            profileRecordID = profileReference.recordID
+       }
     }
 
     func getPlayers() async throws -> [TUPlayer] {
@@ -54,6 +58,23 @@ final class CloudKitManager {
         }
 
         return playersAndProfiles
+    }
+
+    func getPlayerGameProfiles() async throws -> [TUPlayerGameProfile] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayerGameProfile.kGameName, ascending: true)
+        
+        guard let profileRecordID = profileRecordID else {
+            return []
+        }
+        let reference = CKRecord.Reference(recordID: profileRecordID, action: .none)
+        let predicate = NSPredicate(format: "associatedToPlayer == %@", reference)
+        let query = CKQuery(recordType: RecordType.playerGameProfiles, predicate: predicate)
+        query.sortDescriptors = [sortDescriptor]
+
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap { _ , result in try? result.get()}
+
+        return records.map(TUPlayerGameProfile.init)
     }
     
     func getGamesForPlayer(for playerID: CKRecord.ID) async throws -> [TUPlayerGameProfile] {

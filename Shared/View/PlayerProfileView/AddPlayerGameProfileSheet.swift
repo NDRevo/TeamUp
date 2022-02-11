@@ -57,6 +57,6 @@ struct AddPlayerGameProfileSheet: View {
 
 struct AddPlayerGameProfileSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddPlayerGameProfileSheet(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)))
+        AddPlayerGameProfileSheet(viewModel: PlayerProfileViewModel())
     }
 }

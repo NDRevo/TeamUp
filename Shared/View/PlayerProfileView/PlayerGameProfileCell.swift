@@ -78,6 +78,6 @@ struct PlayerGameProfileCell: View {
 
 struct PlayerGameProfileCell_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerGameProfileCell(viewModel: PlayerProfileViewModel(player: TUPlayer(record: MockData.player)), gameProfile: TUPlayerGameProfile(record: MockData.playerGameProfile))
+        PlayerGameProfileCell(viewModel: PlayerProfileViewModel(), gameProfile: TUPlayerGameProfile(record: MockData.playerGameProfile))
     }
 }
