@@ -28,7 +28,7 @@ struct PlayerProfileView: View {
                     ScrollView {
                         Spacer(minLength: 12)
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),spacing: 25) {
-                            ForEach(viewModel.playerProfiles) { gameProfile in
+                            ForEach(viewModel.playerGameProfiles) { gameProfile in
                                 PlayerGameProfileCell(viewModel: viewModel, gameProfile: gameProfile)
                                     .onLongPressGesture {
                                         withAnimation {
@@ -64,7 +64,7 @@ struct PlayerProfileView: View {
                         AddPlayerGameProfileSheet(viewModel: viewModel)
                     }
                 }
-                .toolbar { if !viewModel.playerProfiles.isEmpty { EditButton() } }
+                .toolbar { if !viewModel.playerGameProfiles.isEmpty { EditButton() } }
                 .onDisappear { editMode?.wrappedValue = .inactive }
                 .task {
                     viewModel.getProfile()

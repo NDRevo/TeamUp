@@ -10,22 +10,16 @@ import CloudKit
 
 
 @MainActor final class PlayerProfileViewModel: ObservableObject {
-    
-    @Published var playerProfiles: [TUPlayerGameProfile] = []
 
-    init(playerProfiles: [TUPlayerGameProfile] = []){
-        self.playerProfiles  = playerProfiles
-    }
+    @Published var playerGameProfiles: [TUPlayerGameProfile] = []
 
     @Published var playerFirstName: String  = ""
     @Published var playerLastName: String   = ""
-    
-    private var existingProfileRecord: CKRecord?
 
     @Published var gameID: String           = ""
     @Published var selectedGame: Games      = .valorant
     @Published var playerGameRank: String   = ""
-    
+
     @Published var isPresentingSheet             = false
     @Published var isShowingAlert                = false
     @Published var isShowingConfirmationDialogue = false
@@ -35,7 +29,21 @@ import CloudKit
         gameID          = ""
         playerGameRank  = ""
     }
-    
+
+    private func isValidPlayer() -> Bool{
+        guard !playerFirstName.isEmpty && !playerLastName.isEmpty else {
+            return false
+        }
+        return true
+    }
+
+    private func isValidGameProfile() -> Bool {
+        guard !gameID.isEmpty, !playerGameRank.isEmpty else {
+            return false
+        }
+        return true
+    }
+
     func isLoggedIn() -> Bool {
         return CloudKitManager.shared.profileRecordID != nil
     }
@@ -57,13 +65,6 @@ import CloudKit
         return playerRecord
     }
 
-    private func isValidPlayer() -> Bool{
-        guard !playerFirstName.isEmpty && !playerLastName.isEmpty else {
-            return false
-        }
-        return true
-    }
-    
     func createProfile(){
         guard isValidPlayer() else {
             //Invalid Profiles
@@ -71,7 +72,7 @@ import CloudKit
             return
         }
         //Create CKRecord from profile view
-        let profileRecord = createPlayerRecord()
+        let playerRecord = createPlayerRecord()
         
         guard let userRecord = CloudKitManager.shared.userRecord else {
             //unable to get user record
@@ -79,14 +80,13 @@ import CloudKit
             return
         }
 
-        //Create reference on UserRecord to DDGProfile we created
-        userRecord["userProfile"] = CKRecord.Reference(recordID: profileRecord.recordID, action: .none)
+        //Create reference on UserRecord to TUPlayer we created
+        userRecord["userProfile"] = CKRecord.Reference(recordID: playerRecord.recordID, action: .none)
         
         Task {
             do {
-                let records = try await CloudKitManager.shared.batchSave(records: [userRecord,profileRecord])
+                let records = try await CloudKitManager.shared.batchSave(records: [userRecord,playerRecord])
                 for record in records where record.recordType == RecordType.player {
-                    existingProfileRecord = record
                     //Makes sure to update profileRecordID when first creating a profile
                     CloudKitManager.shared.profileRecordID = record.recordID
                 }
@@ -97,53 +97,6 @@ import CloudKit
                 alertItem = AlertContext.invalidPlayer
             }
         }
-    }
-
-    func getProfile(){
-
-        guard let userRecord = CloudKitManager.shared.userRecord else {
-            //No user record found
-            alertItem = AlertContext.unableToGetPlayerList
-            return
-        }
-
-        //Get reference, if none it means they havent created a profile
-        guard let profileReference = userRecord["userProfile"] as? CKRecord.Reference else { return }
-        let profileRecordID = profileReference.recordID
-
-        Task {
-            do{
-                let record = try await CloudKitManager.shared.fetchRecord(with: profileRecordID)
-                existingProfileRecord = record
-                let profile = TUPlayer(record: record)
-                playerFirstName   = profile.firstName
-                playerLastName    = profile.lastName
-
-                getGameProfiles()
-            } catch {
-                //Unable to get player profiles
-                alertItem = AlertContext.unableToGetPlayerList
-            }
-        }
-    }
-    
-    private func getGameProfiles(){
-        Task{
-            do {
-                playerProfiles = try await CloudKitManager.shared.getPlayerGameProfiles()
-            } catch {
-                //Unable to get player game profiles
-                alertItem = AlertContext.unableToGetPlayerList
-            }
-        }
-    }
-
-
-    func isValidGameProfile() -> Bool {
-        guard !gameID.isEmpty, !playerGameRank.isEmpty else {
-            return false
-        }
-        return true
     }
 
     func saveGameProfile(to eventsManager: EventsManager){
@@ -166,10 +119,47 @@ import CloudKit
                 let newPlayerProfile = TUPlayerGameProfile(record: playerGameProfile)
 
                 eventsManager.playerProfiles[playerProfileID]?.append(newPlayerProfile)
-                playerProfiles.sort(by: {$0.gameName < $1.gameName})
+                playerGameProfiles.sort(by: {$0.gameName < $1.gameName})
             } catch {
                 alertItem = AlertContext.unableToSaveGameProfile
                 isShowingAlert = true
+            }
+        }
+    }
+
+    func getProfile(){
+        guard let userRecord = CloudKitManager.shared.userRecord else {
+            //No user record found
+            alertItem = AlertContext.unableToGetPlayerList
+            return
+        }
+
+        //Get reference, if none it means they havent created a profile
+        guard let profileReference = userRecord["userProfile"] as? CKRecord.Reference else { return }
+        let profileRecordID = profileReference.recordID
+
+        Task {
+            do{
+                let record = try await CloudKitManager.shared.fetchRecord(with: profileRecordID)
+                let player = TUPlayer(record: record)
+                playerFirstName   = player.firstName
+                playerLastName    = player.lastName
+
+                getGameProfiles()
+            } catch {
+                //Unable to get player profiles
+                alertItem = AlertContext.unableToGetPlayerList
+            }
+        }
+    }
+
+    private func getGameProfiles(){
+        Task{
+            do {
+                playerGameProfiles = try await CloudKitManager.shared.getPlayerGameProfiles()
+            } catch {
+                //Unable to get player game profiles
+                alertItem = AlertContext.unableToGetPlayerList
             }
         }
     }
@@ -184,7 +174,7 @@ import CloudKit
                     //Alert
                 }
 
-                playerProfiles.removeAll(where: {$0.id == gameProfileRecordID})
+                playerGameProfiles.removeAll(where: {$0.id == gameProfileRecordID})
                 eventsManager.playerProfiles[playerProfileID]?.removeAll(where: {$0.id == gameProfileRecordID})
             } catch {
                 alertItem = AlertContext.unableToDeleteGameProfile
