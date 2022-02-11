@@ -81,8 +81,8 @@ import CloudKit
         }
 
         //Create reference on UserRecord to TUPlayer we created
-        userRecord["userProfile"] = CKRecord.Reference(recordID: playerRecord.recordID, action: .none)
-        
+        userRecord["userProfile"] = CKRecord.Reference(recordID: playerRecord.recordID, action: .deleteSelf)
+
         Task {
             do {
                 let records = try await CloudKitManager.shared.batchSave(records: [userRecord,playerRecord])
@@ -157,6 +157,27 @@ import CloudKit
         Task{
             do {
                 playerGameProfiles = try await CloudKitManager.shared.getPlayerGameProfiles()
+            } catch {
+                //Unable to get player game profiles
+                alertItem = AlertContext.unableToGetPlayerList
+            }
+        }
+    }
+
+    func deleteProfile(){
+        Task{
+            do {
+                guard let playerRecord = CloudKitManager.shared.profileRecordID else { return }
+                let _ = try await CloudKitManager.shared.remove(recordID: playerRecord)
+                
+                guard let userRecord = CloudKitManager.shared.userRecord else {
+                    alertItem = AlertContext.unableToGetPlayerList
+                    return
+                }
+
+                userRecord["userProfile"] = nil
+                let _ = try await CloudKitManager.shared.save(record: userRecord)
+
             } catch {
                 //Unable to get player game profiles
                 alertItem = AlertContext.unableToGetPlayerList

@@ -20,6 +20,12 @@ struct PlayerProfileView: View {
                 CreateProfileView(viewModel: viewModel)
             } else {
                 VStack(alignment: .leading){
+                    Button(role: .destructive) {
+                        viewModel.deleteProfile()
+                    } label: {
+                        Text("Delete Profile")
+                    }
+
                     Text("Game Profiles")
                         .bold()
                         .font(.title2)
@@ -68,6 +74,7 @@ struct PlayerProfileView: View {
                 .onDisappear { editMode?.wrappedValue = .inactive }
                 .task {
                     viewModel.getProfile()
+                    
                 }
             }
         }

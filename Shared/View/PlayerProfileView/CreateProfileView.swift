@@ -34,5 +34,6 @@ struct CreateProfileView: View {
                 }
             }
         }
+        .navigationTitle("Create Profile")
     }
 }
