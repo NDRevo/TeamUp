@@ -42,11 +42,11 @@ struct AddPlayerGameProfileSheet: View {
                         viewModel.saveGameProfile(to: eventsManager)
                     }
                 } label: {
-                    Text("Add Game")
+                    Text("Add Game Profile")
                 }
             }
         }
-        .navigationTitle("Add Game")
+        .navigationTitle("Add Game Profile")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Dismiss") { dismiss() }
