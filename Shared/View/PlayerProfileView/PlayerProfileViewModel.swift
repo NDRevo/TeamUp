@@ -8,7 +8,6 @@
 import SwiftUI
 import CloudKit
 
-
 @MainActor final class PlayerProfileViewModel: ObservableObject {
 
     @Published var playerGameProfiles: [TUPlayerGameProfile] = []
