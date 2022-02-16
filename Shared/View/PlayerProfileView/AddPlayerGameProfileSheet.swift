@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddPlayerGameProfileSheet: View {
-    
+
     @EnvironmentObject private var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
 
@@ -33,7 +33,7 @@ struct AddPlayerGameProfileSheet: View {
                     }
                 }
             }
-            
+
             Section {
                 Button {
                     Task {

@@ -12,12 +12,12 @@ import CloudKit
 
     @Published var playerGameProfiles: [TUPlayerGameProfile] = []
 
-    @Published var playerFirstName: String  = ""
-    @Published var playerLastName: String   = ""
+    @Published var playerFirstName: String       = ""
+    @Published var playerLastName: String        = ""
 
-    @Published var gameID: String           = ""
-    @Published var selectedGame: Games      = .valorant
-    @Published var playerGameRank: String   = ""
+    @Published var gameID: String                = ""
+    @Published var selectedGame: Games           = .valorant
+    @Published var playerGameRank: String        = ""
 
     @Published var isPresentingSheet             = false
     @Published var isShowingAlert                = false

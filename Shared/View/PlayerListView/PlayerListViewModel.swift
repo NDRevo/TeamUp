@@ -29,7 +29,7 @@ import SwiftUI
         let playerRecord = CKRecord(recordType: RecordType.player)
         playerRecord[TUPlayer.kFirstName]   = playerFirstName
         playerRecord[TUPlayer.kLastName]    = playerLastName
-        
+
         return playerRecord
     }
 

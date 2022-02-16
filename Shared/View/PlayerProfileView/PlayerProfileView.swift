@@ -13,7 +13,7 @@ struct PlayerProfileView: View {
     @StateObject var viewModel = PlayerProfileViewModel()
 
     @Environment(\.editMode) var editMode
-    
+
     var body: some View {
         NavigationView{
             if !viewModel.isLoggedIn() {
