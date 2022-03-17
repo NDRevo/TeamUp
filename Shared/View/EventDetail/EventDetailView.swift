@@ -13,104 +13,109 @@ struct EventDetailView: View {
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
-        List {
-            EventDescriptionAndLocationViewSection(viewModel: viewModel)
+        VStack {
+            EventDetailsViewSection(viewModel: viewModel)
+            EventDescriptionViewSection(viewModel: viewModel)
 
-            Section(header: Text("Matches")) {
-                ForEach(viewModel.matches) { match in
-                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent, event: viewModel.event))) {
-                        VStack(alignment: .leading){
-                            Text(match.matchName)
-                            Text(match.matchStartTime.convertDateToString())
-                                .font(.caption)
-                        }
-                    }
-                    .swipeActions(edge: .trailing) {
-                        if viewModel.isEventOwner() {
-                            Button(role: .destructive){
-                                viewModel.deleteMatch(matchID: match.id)
-                                viewModel.matches.removeAll(where: {$0.id == match.id})
-                            } label: {
-                                Label("Remove Player", systemImage: "minus.circle.fill")
+            List {
+               
+
+                Section(header: Text("Matches")) {
+                    ForEach(viewModel.matches) { match in
+                        NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent, event: viewModel.event))) {
+                            VStack(alignment: .leading){
+                                Text(match.matchName)
+                                Text(match.matchStartTime.convertDateToString())
+                                    .font(.caption)
                             }
                         }
-                    }
-                }
-
-                if viewModel.isEventOwner() {
-                    Button {
-                        viewModel.sheetToPresent = .addMatch
-                        viewModel.resetMatchInput()
-                    } label: {
-                        Text("Add Match")
-                            .foregroundColor(.blue)
-                    }
-                    
-                }
-            }
-
-            Section(header: Text("Players")) {
-                ForEach(viewModel.playersInEvent){ player in
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text(player.firstName)
-                                .bold()
-                                .font(.title2)
-                            ForEach(eventsManager.playerProfiles[player.id].flatMap({$0}) ?? []){ playerProfile in
-                                if playerProfile.gameName == viewModel.event.eventGame {
-                                    Text(playerProfile.gameID)
-                                        .font(.callout)
+                        .swipeActions(edge: .trailing) {
+                            if viewModel.isEventOwner() {
+                                Button(role: .destructive){
+                                    viewModel.deleteMatch(matchID: match.id)
+                                    viewModel.matches.removeAll(where: {$0.id == match.id})
+                                } label: {
+                                    Label("Remove Player", systemImage: "minus.circle.fill")
                                 }
                             }
                         }
-                        Spacer()
                     }
-                    .swipeActions(edge: .trailing) {
-                        if viewModel.isEventOwner() {
-                            Button(role: .destructive){
-                                viewModel.removePlayerFromEventWith(for: player)
-                                //viewModel.refreshEventDetails(with: eventsManager.players)
-                            } label: {
-                                Label("Delete Player", systemImage: "minus.circle.fill")
+
+                    if viewModel.isEventOwner() {
+                        Button {
+                            viewModel.sheetToPresent = .addMatch
+                            viewModel.resetMatchInput()
+                        } label: {
+                            Text("Add Match")
+                                .foregroundColor(.blue)
+                        }
+                        
+                    }
+                }
+
+                Section(header: Text("Players")) {
+                    ForEach(viewModel.playersInEvent){ player in
+                        HStack{
+                            VStack(alignment: .leading){
+                                Text(player.firstName)
+                                    .bold()
+                                    .font(.title2)
+                                ForEach(eventsManager.playerProfiles[player.id].flatMap({$0}) ?? []){ playerProfile in
+                                    if playerProfile.gameName == viewModel.event.eventGame {
+                                        Text(playerProfile.gameID)
+                                            .font(.callout)
+                                    }
+                                }
                             }
+                            Spacer()
+                        }
+                        .swipeActions(edge: .trailing) {
+                            if viewModel.isEventOwner() {
+                                Button(role: .destructive){
+                                    viewModel.removePlayerFromEventWith(for: player)
+                                    //viewModel.refreshEventDetails(with: eventsManager.players)
+                                } label: {
+                                    Label("Delete Player", systemImage: "minus.circle.fill")
+                                }
+                            }
+                        }
+                    }
+                    if viewModel.isEventOwner() {
+                        Button {
+                            viewModel.sheetToPresent = .addPlayer
+                        } label: {
+                            Text("Add Player")
+                                .foregroundColor(.blue)
                         }
                     }
                 }
                 if viewModel.isEventOwner() {
-                    Button {
-                        viewModel.sheetToPresent = .addPlayer
+                    Button(role: .destructive) {
+                        viewModel.deleteEvent(eventID: viewModel.event.id)
+                        eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
                     } label: {
-                        Text("Add Player")
-                            .foregroundColor(.blue)
+                        Text("Delete Event")
                     }
                 }
             }
-            if viewModel.isEventOwner() {
-                Button(role: .destructive) {
-                    viewModel.deleteEvent(eventID: viewModel.event.id)
-                    eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
-                } label: {
-                    Text("Delete Event")
+            .navigationTitle(viewModel.event.eventName)
+            .refreshable {
+                viewModel.refreshEventDetails(with: eventsManager.players)
+            }
+            .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
+                viewModel.refreshEventDetails(with: eventsManager.players)
+            }){
+                NavigationView{
+                    viewModel.presentSheet()
                 }
             }
-        }
-        .navigationTitle(viewModel.event.eventName)
-        .refreshable {
-            viewModel.refreshEventDetails(with: eventsManager.players)
-        }
-        .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
-            viewModel.refreshEventDetails(with: eventsManager.players)
-        }){
-            NavigationView{
-                viewModel.presentSheet()
+            .task {
+                viewModel.setUpEventDetails(with: eventsManager.players)
             }
+            .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+                viewModel.alertItem.alertMessage
+            })
         }
-        .task {
-            viewModel.setUpEventDetails(with: eventsManager.players)
-        }
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
-        })
     }
 }
 
@@ -120,30 +125,73 @@ struct EventDetailView_Previews: PreviewProvider {
     }
 }
 
-struct EventDescriptionAndLocationViewSection: View {
+struct EventDetailsViewSection: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
-        Section{
-            VStack(alignment: .leading, spacing: 5){
-                Text("Description")
-                    .bold()
-                    .font(.title3)
-                Text(viewModel.event.eventDescription)
-                    .padding(.leading, 10)
-            }
-            VStack(alignment: .leading, spacing: 5){
-                Text("Location")
-                    .bold()
-                    .font(.title3)
-                Text(viewModel.event.eventLocation)
-                    .padding(.leading, 10)
-            }
-            .padding(.top, 10)
+        HStack(spacing: 20){
+            descriptionItem(systemImageName: "calendar", textHeading: "Date", textContent: viewModel.event.getEventDetailDate)
+            Divider()
+                .foregroundColor(.black)
+                .frame(width: 2, height: 50)
+            descriptionItem(systemImageName: "clock", textHeading: "Time", textContent: viewModel.event.getTime)
+            Divider()
+                .foregroundColor(.black)
+                .frame(width: 2, height: 50)
+            descriptionItem(systemImageName: "map", textHeading: "Location", textContent: viewModel.event.eventLocation)
         }
-        .listRowInsets(EdgeInsets())
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
+        .padding()
+        .background(Color.appCell)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .padding(.horizontal)
     }
 }
+
+struct descriptionItem: View {
+    
+    var systemImageName: String
+    var textHeading: String
+    var textContent: String
+    
+    var body: some View {
+        VStack(alignment: .center, spacing: 5){
+            HStack(spacing: 4){
+                Image(systemName: systemImageName)
+                    .foregroundColor(.blue)
+                Text(textHeading)
+                    .font(.callout)
+            }
+            Text(textContent)
+                .bold()
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+        }
+    }
+}
+
+struct EventDescriptionViewSection: View {
+
+    @ObservedObject var viewModel: EventDetailViewModel
+
+    var body: some View {
+        
+        HStack{
+            VStack(alignment: .leading, spacing: 10){
+                HStack{
+                    Image(systemName: "doc.plaintext")
+                        .foregroundColor(.blue)
+                    Text("Description")
+                }
+                Text(viewModel.event.eventDescription)
+                    
+            }
+            Spacer()
+        }
+        .padding()
+        .background(Color.appCell)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .padding(.horizontal)
+    }
+}
+
