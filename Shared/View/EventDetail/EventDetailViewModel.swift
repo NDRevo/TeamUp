@@ -32,6 +32,7 @@ enum PresentingSheet {
     @Published var matchDate: Date                  = Date()
     @Published var onAppearHasFired                 = false
 
+    @Published var isLoading                        = false
     @Published var isShowingSheet                   = false
     @Published var sheetToPresent: PresentingSheet? {
         didSet{
@@ -157,11 +158,14 @@ enum PresentingSheet {
     }
 
     private func getMatchesForEvent(){
+        showLoadingView()
         Task {
             do {
                 let loadingMatches =  try await CloudKitManager.shared.getMatches(for: event.id)
                 matches = loadingMatches
+                hideLoadingView()
             } catch{
+                hideLoadingView()
                 alertItem = AlertContext.unableToGetMatchesForEvent
                 isShowingAlert = true
             }
@@ -169,11 +173,14 @@ enum PresentingSheet {
     }
 
     private func getPlayersInEvents(){
+        showLoadingView()
         Task {
             do {
                 let loadingPlayers = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
                 playersInEvent = loadingPlayers
+                hideLoadingView()
             } catch{
+                hideLoadingView()
                 alertItem = AlertContext.unableToGetPlayersForEvent
                 isShowingAlert = true
             }
@@ -308,5 +315,13 @@ enum PresentingSheet {
                 isShowingAlert = true
             }
         }
+    }
+
+    private func showLoadingView(){
+        isLoading = true
+    }
+
+    private func hideLoadingView(){
+        isLoading = false
     }
 }

@@ -35,7 +35,10 @@ struct EventDetailView: View {
                     }
                     .padding(.horizontal)
                     
-                    if viewModel.matches.isEmpty {
+                    if viewModel.isLoading {
+                        LoadingView()
+                            .padding(.top, 48)
+                    } else if viewModel.matches.isEmpty {
                         HStack{
                             Spacer()
                             Text("No Matches Found")
@@ -91,7 +94,10 @@ struct EventDetailView: View {
                         }
                     }
                     
-                    if viewModel.playersInEvent.isEmpty {
+                    if viewModel.isLoading {
+                        LoadingView()
+                            .padding(.top, 48)
+                    } else if viewModel.playersInEvent.isEmpty {
                         HStack{
                             Spacer()
                             Text("No Participants Yet!")
