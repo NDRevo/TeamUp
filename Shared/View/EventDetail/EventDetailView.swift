@@ -55,13 +55,6 @@ struct EventDetailView: View {
                                         EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
                                     }
                                     .buttonStyle(PlainButtonStyle())
-                                    .onLongPressGesture {
-                                        //Doesnt work
-                                        if viewModel.isEventOwner() {
-                                            viewModel.deleteMatch(matchID: match.id)
-                                            viewModel.matches.removeAll(where: {$0.id == match.id})
-                                        }
-                                    }
                                 }
                             }
                             .offset(x: 16) //Shifts start position of cells to the right 16pt
@@ -109,15 +102,14 @@ struct EventDetailView: View {
                     } else {
                         VStack {
                             ForEach(viewModel.playersInEvent){ player in
-                                EventParticipantCellView(participantName: player.firstName, participantGameID: player.lastName)
-                                //                            .swipeActions(edge: .trailing) {
-                                //                                    Button(role: .destructive){
-                                //                                        viewModel.removePlayerFromEventWith(for: player)
-                                //                                        //viewModel.refreshEventDetails(with: eventsManager.players)
-                                //                                    } label: {
-                                //                                        Label("Delete Player", systemImage: "minus.circle.fill")
-                                //                                    }
-                                //                            }
+                                EventParticipantCellView(viewModel: viewModel, player: player)
+                                    .onLongPressGesture {
+                                        //Doesnt work
+                                        if viewModel.isEventOwner() {
+                                            viewModel.removePlayerFromEventWith(for: player)
+                                            //viewModel.refreshEventDetails(with: eventsManager.players)
+                                        }
+                                    }
                             }
                         }
                     }
@@ -127,14 +119,14 @@ struct EventDetailView: View {
         }
         .navigationTitle(viewModel.event.eventName)
         .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
-            viewModel.refreshEventDetails(with: eventsManager.players)
+            viewModel.refreshEventDetails()
         }){
             NavigationView{
                 viewModel.presentSheet()
             }
         }
         .task {
-            viewModel.setUpEventDetails(with: eventsManager.players)
+            viewModel.setUpEventDetails()
         }
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage
@@ -142,7 +134,7 @@ struct EventDetailView: View {
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
-                        viewModel.refreshEventDetails(with: eventsManager.players)
+                        viewModel.refreshEventDetails()
                     } label: {
                         Image(systemName: "arrow.clockwise")
                             .foregroundColor(.blue)
@@ -271,22 +263,42 @@ struct EventMatchCellView: View {
 
 struct EventParticipantCellView: View {
     
-    var participantName: String
-    var participantGameID: String
+    @EnvironmentObject var manager: EventsManager
+    @ObservedObject var viewModel: EventDetailViewModel
     
+
+    var player: TUPlayer
+    var playerProfile: TUPlayerGameProfile? {
+        return manager.playerProfiles[player.id]?.first(where: {$0.gameName == viewModel.event.eventGame})
+    }
+
     var body: some View {
         HStack{
             VStack(alignment: .leading){
-                Text(participantName)
-                    .bold()
-                    .font(.title2)
-                Text(participantGameID)
+                HStack{
+                    if let playerProfile = playerProfile {
+                        Text(playerProfile.gameID)
+                            .bold()
+                            .font(.title2)
+                        Text("(\(player.firstName))")
+                            .bold()
+                            .font(.title2)
+                    } else {
+                        Text(player.firstName)
+                            .font(.title2)
+                    }
+                }
+                if let playerProfile = playerProfile {
+                    Text(playerProfile.gameRank)
+                        .fontWeight(.light)
+                }
             }
             Spacer()
             Image(systemName: "chevron.right")
+                .font(.system(size: 20))
         }
         .padding(.horizontal)
-        .padding(.vertical, 12)
+        .frame(height: 65)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }

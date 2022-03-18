@@ -59,12 +59,12 @@ enum PresentingSheet {
         return calendar.date(from:startDate)!...
     }
 
-    func refreshEventDetails(with players: [TUPlayer]){
+    func refreshEventDetails(){
         getMatchesForEvent()
         getPlayersInEvents()
     }
 
-    func setUpEventDetails(with players: [TUPlayer]){
+    func setUpEventDetails(){
         if !onAppearHasFired {
             getMatchesForEvent()
             getPlayersInEvents()
@@ -231,46 +231,6 @@ enum PresentingSheet {
                     isShowingAlert = true
                 }
             }
-    }
-
-    func removePlayersFromMatchTeam(matchID: CKRecord.ID){
-        Task{
-            do {
-                let teamsFromDeletedMatch = try await CloudKitManager.shared.getTeamsForMatch(for: matchID)
-
-                for team in teamsFromDeletedMatch{
-                    //For players in each team
-                    let playerRecordsInTeam = try await CloudKitManager.shared.getEventPlayersRecordForTeams(teamID: team.id)
-
-                    //For player in specific team
-                    for playerRecord in playerRecordsInTeam {
-                        var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
-
-                        teamReferences.removeAll(where: {$0.recordID == team.id})
-                        playerRecord[TUPlayer.kOnTeams] = teamReferences
-                        let _ = try await CloudKitManager.shared.save(record: playerRecord)
-                    }
-                }
-            } catch {
-                alertItem = AlertContext.unableToRemovePlayerFromTeam
-                isShowingAlert = true
-            }
-        }
-    }
-
-    func deleteMatch(matchID: CKRecord.ID){
-        Task {
-            do {
-                removePlayersFromMatchTeam(matchID: matchID)
-                let _ = try await CloudKitManager.shared.remove(recordID: matchID)
-
-                //Reloads view, locally adds player until another network call is made
-                matches.removeAll(where: {$0.id == matchID})
-            } catch {
-                alertItem = AlertContext.unableToDeleteMatch
-                isShowingAlert = true
-            }
-        }
     }
 
     func deleteEvent(eventID: CKRecord.ID){

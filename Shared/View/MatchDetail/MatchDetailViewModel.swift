@@ -259,6 +259,45 @@ import SwiftUI
         }
     }
     
+    func removePlayersFromMatchTeam(matchID: CKRecord.ID){
+        Task{
+            do {
+                let teamsFromDeletedMatch = try await CloudKitManager.shared.getTeamsForMatch(for: matchID)
+
+                for team in teamsFromDeletedMatch{
+                    //For players in each team
+                    let playerRecordsInTeam = try await CloudKitManager.shared.getEventPlayersRecordForTeams(teamID: team.id)
+
+                    //For player in specific team
+                    for playerRecord in playerRecordsInTeam {
+                        var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
+
+                        teamReferences.removeAll(where: {$0.recordID == team.id})
+                        playerRecord[TUPlayer.kOnTeams] = teamReferences
+                        let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                    }
+                }
+            } catch {
+                alertItem = AlertContext.unableToRemovePlayerFromTeam
+                isShowingAlert = true
+            }
+        }
+    }
+
+    func deleteMatch(){
+        Task {
+            do {
+                removePlayersFromMatchTeam(matchID: match.id)
+                let _ = try await CloudKitManager.shared.remove(recordID: match.id)
+                //Teams get deleted by deleteSelf
+
+            } catch {
+                alertItem = AlertContext.unableToDeleteMatch
+                isShowingAlert = true
+            }
+        }
+    }
+
     private func showLoadingView(){
         isLoading = true
     }

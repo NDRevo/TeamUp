@@ -49,15 +49,28 @@ struct MatchDetailView: View {
                     }
                 }
             }
-            .navigationTitle(viewModel.match.matchName)
-            .task {
-                viewModel.getTeamsForMatch()
+            if viewModel.isLoading{LoadingView()}
+        }
+        .navigationTitle(viewModel.match.matchName)
+        .task {
+            viewModel.getTeamsForMatch()
+        }
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(role: .destructive) {
+                        viewModel.deleteMatch()
+                        //matches.removeAll(where: {$0.id == viewModel.match.id})
+                    } label: {
+                        Text("Delete Match")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
             }
-            .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-                viewModel.alertItem.alertMessage
-            })
-
-            if viewModel.isLoading {LoadingView()}
         }
     }
 }
