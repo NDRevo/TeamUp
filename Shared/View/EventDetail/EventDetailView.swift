@@ -34,28 +34,40 @@ struct EventDetailView: View {
                         }
                     }
                     .padding(.horizontal)
-                    ScrollView(.horizontal, showsIndicators: false){
+                    
+                    if viewModel.matches.isEmpty {
                         HStack{
-                            ForEach(viewModel.matches) { match in
-                                NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent, event: viewModel.event))) {
-                                    EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                                //                            .swipeActions(edge: .trailing) {
-                                //                                if viewModel.isEventOwner() {
-                                //                                    Button(role: .destructive){
-                                //                                        viewModel.deleteMatch(matchID: match.id)
-                                //                                        viewModel.matches.removeAll(where: {$0.id == match.id})
-                                //                                    } label: {
-                                //                                        Label("Remove Player", systemImage: "minus.circle.fill")
-                                //                                    }
-                                //                                }
-                                //                            }
-                            }
+                            Spacer()
+                            Text("No Matches Found")
+                                .font(.title3)
+                                .foregroundColor(.gray)
+                            Spacer()
                         }
-                        .offset(x: 16) //Shifts start position of cells to the right 16pt
-                        .padding(.trailing, 24) //Makes last cell not cut off
-                        
+                        .padding()
+                    } else {
+                        ScrollView(.horizontal, showsIndicators: false){
+                            HStack{
+                                ForEach(viewModel.matches) { match in
+                                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent, event: viewModel.event))) {
+                                        EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    //                            .swipeActions(edge: .trailing) {
+                                    //                                if viewModel.isEventOwner() {
+                                    //                                    Button(role: .destructive){
+                                    //                                        viewModel.deleteMatch(matchID: match.id)
+                                    //                                        viewModel.matches.removeAll(where: {$0.id == match.id})
+                                    //                                    } label: {
+                                    //                                        Label("Remove Player", systemImage: "minus.circle.fill")
+                                    //                                    }
+                                    //                                }
+                                    //                            }
+                                }
+                            }
+                            .offset(x: 16) //Shifts start position of cells to the right 16pt
+                            .padding(.trailing, 24) //Makes last cell not cut off
+                            
+                        }
                     }
                 }
                 
@@ -73,17 +85,29 @@ struct EventDetailView: View {
                             }
                         }
                     }
-                    VStack {
-                        ForEach(viewModel.playersInEvent){ player in
-                            EventParticipantCellView(participantName: player.firstName, participantGameID: player.lastName)
-                            //                            .swipeActions(edge: .trailing) {
-                            //                                    Button(role: .destructive){
-                            //                                        viewModel.removePlayerFromEventWith(for: player)
-                            //                                        //viewModel.refreshEventDetails(with: eventsManager.players)
-                            //                                    } label: {
-                            //                                        Label("Delete Player", systemImage: "minus.circle.fill")
-                            //                                    }
-                            //                            }
+                    
+                    if viewModel.playersInEvent.isEmpty {
+                        HStack{
+                            Spacer()
+                            Text("No Participants Yet!")
+                                .font(.title3)
+                                .foregroundColor(.gray)
+                            Spacer()
+                        }
+                        .padding()
+                    } else {
+                        VStack {
+                            ForEach(viewModel.playersInEvent){ player in
+                                EventParticipantCellView(participantName: player.firstName, participantGameID: player.lastName)
+                                //                            .swipeActions(edge: .trailing) {
+                                //                                    Button(role: .destructive){
+                                //                                        viewModel.removePlayerFromEventWith(for: player)
+                                //                                        //viewModel.refreshEventDetails(with: eventsManager.players)
+                                //                                    } label: {
+                                //                                        Label("Delete Player", systemImage: "minus.circle.fill")
+                                //                                    }
+                                //                            }
+                            }
                         }
                     }
                 }
@@ -147,9 +171,9 @@ struct EventDetailsViewSection: View {
     var body: some View {
         HStack(spacing: 15){
             descriptionItem(systemImageName: "calendar", textHeading: "Date", textContent: viewModel.event.getEventDetailDate)
-            Divider()
+            Spacer()
             descriptionItem(systemImageName: "clock", textHeading: "Time", textContent: viewModel.event.getTime)
-            Divider()
+            Spacer()
             descriptionItem(systemImageName: "map", textHeading: "Location", textContent: viewModel.event.eventLocation)
         }
         .frame(maxWidth: .infinity)
