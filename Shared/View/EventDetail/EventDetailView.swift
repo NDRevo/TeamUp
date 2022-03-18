@@ -52,16 +52,13 @@ struct EventDetailView: View {
                                         EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
                                     }
                                     .buttonStyle(PlainButtonStyle())
-                                    //                            .swipeActions(edge: .trailing) {
-                                    //                                if viewModel.isEventOwner() {
-                                    //                                    Button(role: .destructive){
-                                    //                                        viewModel.deleteMatch(matchID: match.id)
-                                    //                                        viewModel.matches.removeAll(where: {$0.id == match.id})
-                                    //                                    } label: {
-                                    //                                        Label("Remove Player", systemImage: "minus.circle.fill")
-                                    //                                    }
-                                    //                                }
-                                    //                            }
+                                    .onLongPressGesture {
+                                        //Doesnt work
+                                        if viewModel.isEventOwner() {
+                                            viewModel.deleteMatch(matchID: match.id)
+                                            viewModel.matches.removeAll(where: {$0.id == match.id})
+                                        }
+                                    }
                                 }
                             }
                             .offset(x: 16) //Shifts start position of cells to the right 16pt
@@ -82,6 +79,14 @@ struct EventDetailView: View {
                             } label: {
                                 Image(systemName: "person.badge.plus")
                                     .font(.system(size: 24, design: .default))
+                            }
+                        } else {
+                            //Changes based on if already joined or not
+                            Button {
+                                
+                            } label: {
+                                Text("Join")
+                                    .font(.title3)
                             }
                         }
                     }
