@@ -25,6 +25,7 @@ struct EventsListView: View {
             }
             .navigationTitle("Events")
             .refreshable {
+                //Doesn't work
                 viewModel.refresh(for: eventsManager)
             }
             .task {
