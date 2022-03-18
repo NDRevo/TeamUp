@@ -14,118 +14,123 @@ struct EventDetailView: View {
 
     var body: some View {
         ScrollView {
-        VStack {
-            EventDetailsViewSection(viewModel: viewModel)
-            EventDescriptionViewSection(viewModel: viewModel)
+            VStack {
+                EventDetailsViewSection(viewModel: viewModel)
+                EventDescriptionViewSection(viewModel: viewModel)
 
-            VStack(alignment: .leading){
-                Text("Matches")
-                    .font(.title)
-                ScrollView(.horizontal, showsIndicators: false){
-                    HStack{
-                        ForEach(viewModel.matches) { match in
-                            NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent, event: viewModel.event))) {
-                                EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
-                            }
-                            .buttonStyle(PlainButtonStyle())
-//                            .swipeActions(edge: .trailing) {
-//                                if viewModel.isEventOwner() {
-//                                    Button(role: .destructive){
-//                                        viewModel.deleteMatch(matchID: match.id)
-//                                        viewModel.matches.removeAll(where: {$0.id == match.id})
-//                                    } label: {
-//                                        Label("Remove Player", systemImage: "minus.circle.fill")
-//                                    }
-//                                }
-//                            }
-                        }
+                VStack(alignment: .leading){
+                    HStack {
+                        Text("Matches")
+                            .font(.title)
+                        Spacer()
                         if viewModel.isEventOwner() {
                             Button {
                                 viewModel.sheetToPresent = .addMatch
                                 viewModel.resetMatchInput()
                             } label: {
-                                Image(systemName: "plus.rectangle.portrait")
-                                    .font(.title)
-                                    .foregroundColor(.blue)
-                                    .padding(.horizontal)
+                                Image(systemName: "rectangle.badge.plus")
+                                    .font(.system(size: 24, design: .default))
                             }
-                            
                         }
                     }
-                }
-            }
-            .padding(.horizontal)
-            
-            VStack(alignment: .leading){
-                Text("Participants")
-                    .font(.title)
-                VStack{
-                    ForEach(viewModel.playersInEvent){ player in
-                        EventParticipantCellView(participantName: player.firstName, participantGameID: player.lastName)
-//                            .swipeActions(edge: .trailing) {
-//                                    Button(role: .destructive){
-//                                        viewModel.removePlayerFromEventWith(for: player)
-//                                        //viewModel.refreshEventDetails(with: eventsManager.players)
-//                                    } label: {
-//                                        Label("Delete Player", systemImage: "minus.circle.fill")
-//                                    }
-//                            }
-                    }
-                    if viewModel.isEventOwner() {
-                        Button {
-                            viewModel.sheetToPresent = .addPlayer
-                        } label: {
-                            HStack{
-                                Text("Add Player")
-                                    .foregroundColor(.blue)
-                                Spacer()
+                    .padding(.horizontal)
+                    ScrollView(.horizontal, showsIndicators: false){
+                        HStack{
+                            ForEach(viewModel.matches) { match in
+                                NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent, event: viewModel.event))) {
+                                    EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                //                            .swipeActions(edge: .trailing) {
+                                //                                if viewModel.isEventOwner() {
+                                //                                    Button(role: .destructive){
+                                //                                        viewModel.deleteMatch(matchID: match.id)
+                                //                                        viewModel.matches.removeAll(where: {$0.id == match.id})
+                                //                                    } label: {
+                                //                                        Label("Remove Player", systemImage: "minus.circle.fill")
+                                //                                    }
+                                //                                }
+                                //                            }
                             }
-                            .padding(.horizontal)
-                            .padding(.vertical, 12)
-                            .background(Color.appCell)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
+                        .offset(x: 16) //Shifts start position of cells to the right 16pt
+                        .padding(.trailing, 24) //Makes last cell not cut off
+                        
                     }
                 }
-            }
-            .padding(.horizontal)
-            
-            if viewModel.isEventOwner() {
-                Button(role: .destructive) {
-                    viewModel.deleteEvent(eventID: viewModel.event.id)
-                    eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
-                } label: {
+                
+                VStack(alignment: .leading){
                     HStack{
-                        Text("Delete Event")
+                        Text("Participants")
+                            .font(.title)
                         Spacer()
+                        if viewModel.isEventOwner() {
+                            Button {
+                                viewModel.sheetToPresent = .addPlayer
+                            } label: {
+                                Image(systemName: "person.badge.plus")
+                                    .font(.system(size: 24, design: .default))
+                            }
+                        }
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical, 12)
-                    .background(Color.appCell)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .padding(.horizontal)
+                    VStack {
+                        ForEach(viewModel.playersInEvent){ player in
+                            EventParticipantCellView(participantName: player.firstName, participantGameID: player.lastName)
+                            //                            .swipeActions(edge: .trailing) {
+                            //                                    Button(role: .destructive){
+                            //                                        viewModel.removePlayerFromEventWith(for: player)
+                            //                                        //viewModel.refreshEventDetails(with: eventsManager.players)
+                            //                                    } label: {
+                            //                                        Label("Delete Player", systemImage: "minus.circle.fill")
+                            //                                    }
+                            //                            }
+                        }
+                    }
                 }
+                .padding(.horizontal)
             }
         }
-            .navigationTitle(viewModel.event.eventName)
-            .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
-                viewModel.refreshEventDetails(with: eventsManager.players)
-            }){
-                NavigationView{
-                    viewModel.presentSheet()
-                }
-            }
-            .task {
-                viewModel.setUpEventDetails(with: eventsManager.players)
-            }
-            .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-                viewModel.alertItem.alertMessage
-            })
-        }
-        .refreshable {
-            //Fix
+        .navigationTitle(viewModel.event.eventName)
+        .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
             viewModel.refreshEventDetails(with: eventsManager.players)
+        }){
+            NavigationView{
+                viewModel.presentSheet()
+            }
         }
+        .task {
+            viewModel.setUpEventDetails(with: eventsManager.players)
+        }
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button {
+                        viewModel.refreshEventDetails(with: eventsManager.players)
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                            .foregroundColor(.blue)
+                    }
+                if viewModel.isEventOwner() {
+                    Menu {
+                        Text("Edit")
+                        Text("Publish")
+                        Button(role: .destructive) {
+                            viewModel.deleteEvent(eventID: viewModel.event.id)
+                            eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
+                        } label: {
+                            Text("Delete Event")
+                        }
+
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
+        }
+        .background(Color.appBackground)
     }
 }
 
@@ -184,7 +189,7 @@ struct EventDescriptionViewSection: View {
     var body: some View {
         HStack{
             VStack(alignment: .leading, spacing: 10){
-                HStack{
+                HStack(spacing: 4){
                     Image(systemName: "doc.plaintext")
                         .foregroundColor(.blue)
                     Text("Description")
@@ -236,7 +241,7 @@ struct EventParticipantCellView: View {
     
     var body: some View {
         HStack{
-            VStack(alignment: .leading, spacing: 12){
+            VStack(alignment: .leading){
                 Text(participantName)
                     .bold()
                     .font(.title2)
