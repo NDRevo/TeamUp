@@ -9,7 +9,10 @@ import SwiftUI
 
 struct MatchDetailView: View {
 
+    @EnvironmentObject var eventDetailManager: EventDetailManager
     @ObservedObject var viewModel: MatchDetailViewModel
+
+    @Environment(\.presentationMode) var presentation
 
     var body: some View {
         ZStack {
@@ -60,15 +63,18 @@ struct MatchDetailView: View {
         })
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Button(role: .destructive) {
-                        viewModel.deleteMatch()
-                        //matches.removeAll(where: {$0.id == viewModel.match.id})
+                if viewModel.isEventOwner(){
+                    Menu {
+                        Button(role: .destructive) {
+                            viewModel.deleteMatch()
+                            eventDetailManager.matches.removeAll(where: {$0.id == viewModel.match.id})
+                            presentation.wrappedValue.dismiss()
+                        } label: {
+                            Text("Delete Match")
+                        }
                     } label: {
-                        Text("Delete Match")
+                        Image(systemName: "ellipsis.circle")
                     }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
                 }
             }
         }

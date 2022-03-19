@@ -9,6 +9,8 @@ import SwiftUI
 
 struct EventDetailView: View {
 
+    @StateObject var eventDetailManager = EventDetailManager()
+
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
@@ -17,124 +19,29 @@ struct EventDetailView: View {
             VStack {
                 EventDetailsViewSection(viewModel: viewModel)
                 EventDescriptionViewSection(viewModel: viewModel)
-
-                VStack(alignment: .leading){
-                    HStack {
-                        Text("Matches")
-                            .font(.title)
-                        Spacer()
-                        if viewModel.isEventOwner() {
-                            Button {
-                                viewModel.sheetToPresent = .addMatch
-                                viewModel.resetMatchInput()
-                            } label: {
-                                Image(systemName: "rectangle.badge.plus")
-                                    .font(.system(size: 24, design: .default))
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    if viewModel.isLoading {
-                        LoadingView()
-                            .padding(.top, 48)
-                    } else if viewModel.matches.isEmpty {
-                        HStack{
-                            Spacer()
-                            Text("No Matches Found")
-                                .font(.title3)
-                                .foregroundColor(.gray)
-                            Spacer()
-                        }
-                        .padding()
-                    } else {
-                        ScrollView(.horizontal, showsIndicators: false){
-                            HStack{
-                                ForEach(viewModel.matches) { match in
-                                    NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, playersInEvent: viewModel.playersInEvent, event: viewModel.event))) {
-                                        EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
-                                    }
-                                    .buttonStyle(PlainButtonStyle())
-                                }
-                            }
-                            .offset(x: 16) //Shifts start position of cells to the right 16pt
-                            .padding(.trailing, 24) //Makes last cell not cut off
-                            
-                        }
-                    }
-                }
-                
-                VStack(alignment: .leading){
-                    HStack{
-                        Text("Participants")
-                            .font(.title)
-                        Spacer()
-                        if viewModel.isEventOwner() {
-                            Button {
-                                viewModel.sheetToPresent = .addPlayer
-                            } label: {
-                                Image(systemName: "person.badge.plus")
-                                    .font(.system(size: 24, design: .default))
-                            }
-                        } else {
-                            //Changes based on if already joined or not
-                            Button {
-                                
-                            } label: {
-                                Text("Join")
-                                    .font(.title3)
-                            }
-                        }
-                    }
-                    
-                    if viewModel.isLoading {
-                        LoadingView()
-                            .padding(.top, 48)
-                    } else if viewModel.playersInEvent.isEmpty {
-                        HStack{
-                            Spacer()
-                            Text("No Participants Yet!")
-                                .font(.title3)
-                                .foregroundColor(.gray)
-                            Spacer()
-                        }
-                        .padding()
-                    } else {
-                        VStack {
-                            ForEach(viewModel.playersInEvent){ player in
-                                EventParticipantCellView(viewModel: viewModel, player: player)
-                                    .onLongPressGesture {
-                                        //Doesnt work
-                                        if viewModel.isEventOwner() {
-                                            viewModel.removePlayerFromEventWith(for: player)
-                                            //viewModel.refreshEventDetails(with: eventsManager.players)
-                                        }
-                                    }
-                            }
-                        }
-                    }
-                }
-                .padding(.horizontal)
+                MatchesView(viewModel: viewModel)
+                ParticipantsView(viewModel: viewModel)
             }
         }
         .navigationTitle(viewModel.event.eventName)
         .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
-            viewModel.refreshEventDetails()
+            viewModel.refreshEventDetails(eventDetailManager: eventDetailManager)
         }){
             NavigationView{
                 viewModel.presentSheet()
             }
         }
         .task {
-            viewModel.setUpEventDetails()
+            viewModel.setUpEventDetails(eventDetailManager: eventDetailManager)
         }
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage
         })
+        .environmentObject(eventDetailManager)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
-                        viewModel.refreshEventDetails()
+                        viewModel.refreshEventDetails(eventDetailManager: eventDetailManager)
                     } label: {
                         Image(systemName: "arrow.clockwise")
                             .foregroundColor(.blue)
@@ -144,7 +51,7 @@ struct EventDetailView: View {
                         Text("Edit")
                         Text("Publish")
                         Button(role: .destructive) {
-                            viewModel.deleteEvent(eventID: viewModel.event.id)
+                            viewModel.deleteEvent()
                             eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
                         } label: {
                             Text("Delete Event")
@@ -301,5 +208,118 @@ struct EventParticipantCellView: View {
         .frame(height: 65)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+}
+
+struct MatchesView: View {
+
+    @ObservedObject var viewModel: EventDetailViewModel
+    @EnvironmentObject var eventDetailManager: EventDetailManager
+
+    var body: some View {
+        VStack(alignment: .leading){
+            HStack {
+                Text("Matches")
+                    .font(.title)
+                Spacer()
+                if viewModel.isEventOwner() {
+                    Button {
+                        viewModel.sheetToPresent = .addMatch
+                        viewModel.resetMatchInput()
+                    } label: {
+                        Image(systemName: "rectangle.badge.plus")
+                            .font(.system(size: 24, design: .default))
+                    }
+                }
+            }
+            .padding(.horizontal)
+            
+            if viewModel.isLoading {
+                LoadingView()
+                    .padding(.top, 48)
+            } else if eventDetailManager.matches.isEmpty {
+                HStack{
+                    Spacer()
+                    Text("No Matches Found")
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
+                .padding()
+            } else {
+                ScrollView(.horizontal, showsIndicators: false){
+                    HStack{
+                        ForEach(eventDetailManager.matches) { match in
+                            NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, event: viewModel.event)).environmentObject(eventDetailManager)) {
+                                EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                    .offset(x: 16) //Shifts start position of cells to the right 16pt
+                    .padding(.trailing, 24) //Makes last cell not cut off
+                }
+            }
+        }
+    }
+}
+
+struct ParticipantsView: View {
+
+    @ObservedObject var viewModel: EventDetailViewModel
+    @EnvironmentObject var eventDetailManager: EventDetailManager
+
+    var body: some View {
+        VStack(alignment: .leading){
+            HStack{
+                Text("Participants")
+                    .font(.title)
+                Spacer()
+                if viewModel.isEventOwner() {
+                    Button {
+                        viewModel.sheetToPresent = .addPlayer
+                    } label: {
+                        Image(systemName: "person.badge.plus")
+                            .font(.system(size: 24, design: .default))
+                    }
+                } else {
+                    //Changes based on if already joined or not
+                    Button {
+                        
+                    } label: {
+                        Text("Join")
+                            .font(.title3)
+                    }
+                }
+            }
+
+            if viewModel.isLoading {
+                LoadingView()
+                    .padding(.top, 48)
+            } else if eventDetailManager.playersInEvent.isEmpty {
+                HStack{
+                    Spacer()
+                    Text("No Participants Yet!")
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
+                .padding()
+            } else {
+                VStack {
+                    ForEach(eventDetailManager.playersInEvent){ player in
+                        EventParticipantCellView(viewModel: viewModel, player: player)
+                            .onLongPressGesture {
+                                //Doesnt work
+                                if viewModel.isEventOwner() {
+                                    viewModel.removePlayerFromEventWith(for: player, eventDetailManager: eventDetailManager)
+                                    //viewModel.refreshEventDetails(with: eventsManager.players)
+                                }
+                            }
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
     }
 }

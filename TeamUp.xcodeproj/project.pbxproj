@@ -92,6 +92,8 @@
 		566AB2F3278D2DB300F4035C /* TUPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2F1278D2DB300F4035C /* TUPlayer.swift */; };
 		566AB2F5278D2DC200F4035C /* TUTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2F4278D2DC200F4035C /* TUTeam.swift */; };
 		566AB2F6278D2DC200F4035C /* TUTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2F4278D2DC200F4035C /* TUTeam.swift */; };
+		56EDBB4127E570B2001D68CF /* EventDetailManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4027E570B2001D68CF /* EventDetailManager.swift */; };
+		56EDBB4227E570B2001D68CF /* EventDetailManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4027E570B2001D68CF /* EventDetailManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +156,7 @@
 		566AB2EE278D2DAD00F4035C /* TUEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TUEvent.swift; sourceTree = "<group>"; };
 		566AB2F1278D2DB300F4035C /* TUPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TUPlayer.swift; sourceTree = "<group>"; };
 		566AB2F4278D2DC200F4035C /* TUTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TUTeam.swift; sourceTree = "<group>"; };
+		56EDBB4027E570B2001D68CF /* EventDetailManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,6 +269,7 @@
 			children = (
 				560E42AD2791DA2D00408B4B /* CloudKitManager.swift */,
 				560E42972790C84900408B4B /* EventsManager.swift */,
+				56EDBB4027E570B2001D68CF /* EventDetailManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -533,6 +537,7 @@
 				566AB2F2278D2DB300F4035C /* TUPlayer.swift in Sources */,
 				560E427C2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42982790C84900408B4B /* EventsManager.swift in Sources */,
+				56EDBB4127E570B2001D68CF /* EventDetailManager.swift in Sources */,
 				5623DB4627B4B14C0015D59A /* View+Ext.swift in Sources */,
 				560E42B52792443700408B4B /* PlayerListViewModel.swift in Sources */,
 				563A46DC279DA14E006A406B /* PlayerGameProfileCell.swift in Sources */,
@@ -580,6 +585,7 @@
 				566AB2F3278D2DB300F4035C /* TUPlayer.swift in Sources */,
 				560E427D2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42992790C84900408B4B /* EventsManager.swift in Sources */,
+				56EDBB4227E570B2001D68CF /* EventDetailManager.swift in Sources */,
 				5623DB4727B4B14C0015D59A /* View+Ext.swift in Sources */,
 				560E42B62792443700408B4B /* PlayerListViewModel.swift in Sources */,
 				563A46DD279DA14E006A406B /* PlayerGameProfileCell.swift in Sources */,

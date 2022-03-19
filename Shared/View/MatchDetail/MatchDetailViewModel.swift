@@ -12,7 +12,6 @@ import SwiftUI
 
     var match: TUMatch
     var event: TUEvent
-    var playersInEvent: [TUPlayer]
 
     @Published var teams: [TUTeam]                           = []
     @Published var teamsAndPlayer: [CKRecord.ID: [TUPlayer]] = [:]
@@ -29,9 +28,8 @@ import SwiftUI
 
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
-    init(match: TUMatch, playersInEvent: [TUPlayer], event: TUEvent){
+    init(match: TUMatch, event: TUEvent){
         self.match = match
-        self.playersInEvent = playersInEvent
         self.event = event
     }
 
@@ -47,12 +45,12 @@ import SwiftUI
         return teams.count < 2 && isEventOwner()
     }
 
-    func getAvailablePlayers(){
+    func getAvailablePlayers(eventDetailManager: EventDetailManager){
 
         checkedOffPlayers = []
         availablePlayers = []
 
-        for player in playersInEvent {
+        for player in eventDetailManager.playersInEvent {
             if !teamsAndPlayer.values.contains(where: {$0.contains(where: {$0.id == player.id})}) && !availablePlayers.contains(where: {$0.id == player.id}) {
                 availablePlayers.append(player)
             }

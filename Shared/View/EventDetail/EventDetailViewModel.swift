@@ -21,10 +21,6 @@ enum PresentingSheet {
         matchDate = event.eventDate
     }
 
-    //Players that join/added to the event from the players list
-    @Published var playersInEvent: [TUPlayer]       = []
-    @Published var matches: [TUMatch]               = []
-
     @Published var checkedOffPlayers: [TUPlayer]    = []
     @Published var availablePlayers: [TUPlayer]     = []
 
@@ -59,15 +55,15 @@ enum PresentingSheet {
         return calendar.date(from:startDate)!...
     }
 
-    func refreshEventDetails(){
-        getMatchesForEvent()
-        getPlayersInEvents()
+    func refreshEventDetails(eventDetailManager: EventDetailManager){
+        getMatchesForEvent(eventDetailManager: eventDetailManager)
+        getPlayersInEvents(eventDetailManager: eventDetailManager)
     }
 
-    func setUpEventDetails(){
+    func setUpEventDetails(eventDetailManager: EventDetailManager){
         if !onAppearHasFired {
-            getMatchesForEvent()
-            getPlayersInEvents()
+            getMatchesForEvent(eventDetailManager: eventDetailManager)
+            getPlayersInEvents(eventDetailManager: eventDetailManager)
         }
         onAppearHasFired = true
     }
@@ -108,7 +104,7 @@ enum PresentingSheet {
         return true
     }
 
-    func createMatchForEvent(){
+    func createMatchForEvent(eventDetailManager: EventDetailManager){
         guard isValidMatch() else {
             alertItem = AlertContext.invalidMatch
             isShowingAlert = true
@@ -121,8 +117,8 @@ enum PresentingSheet {
                 let _ = try await CloudKitManager.shared.save(record: matchRecord)
 
                 //Reloads view, locally adds player until another network call is made
-                matches.append(TUMatch(record: matchRecord))
-                matches.sort(by: {$0.matchStartTime < $1.matchStartTime})
+                eventDetailManager.matches.append(TUMatch(record: matchRecord))
+                eventDetailManager.matches.sort(by: {$0.matchStartTime < $1.matchStartTime})
             } catch {
                 alertItem = AlertContext.unableToCreateMatch
                 isShowingAlert = true
@@ -130,7 +126,7 @@ enum PresentingSheet {
         }
     }
 
-    func addCheckedPlayersToEvent(){
+    func addCheckedPlayersToEvent(eventDetailManager: EventDetailManager){
         Task {
             do {
                 for player in checkedOffPlayers {
@@ -147,8 +143,8 @@ enum PresentingSheet {
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
-                    playersInEvent.append(player)
-                    playersInEvent = playersInEvent.sorted(by: {$0.firstName < $1.firstName})
+                    eventDetailManager.playersInEvent.append(player)
+                    eventDetailManager.playersInEvent = eventDetailManager.playersInEvent.sorted(by: {$0.firstName < $1.firstName})
                 }
             } catch {
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
@@ -157,12 +153,12 @@ enum PresentingSheet {
         }
     }
 
-    private func getMatchesForEvent(){
+    private func getMatchesForEvent(eventDetailManager: EventDetailManager){
         showLoadingView()
         Task {
             do {
                 let loadingMatches =  try await CloudKitManager.shared.getMatches(for: event.id)
-                matches = loadingMatches
+                eventDetailManager.matches = loadingMatches
                 hideLoadingView()
             } catch{
                 hideLoadingView()
@@ -172,12 +168,12 @@ enum PresentingSheet {
         }
     }
 
-    private func getPlayersInEvents(){
+    private func getPlayersInEvents(eventDetailManager: EventDetailManager){
         showLoadingView()
         Task {
             do {
                 let loadingPlayers = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
-                playersInEvent = loadingPlayers
+                eventDetailManager.playersInEvent = loadingPlayers
                 hideLoadingView()
             } catch{
                 hideLoadingView()
@@ -187,19 +183,19 @@ enum PresentingSheet {
         }
     }
 
-    func getAvailablePlayers(from players: [TUPlayer]){
+    func getAvailablePlayers(from players: [TUPlayer], eventDetailManager: EventDetailManager){
 
         checkedOffPlayers = []
         availablePlayers = []
 
         for player in players {
-            if !playersInEvent.contains(where: {$0.id == player.id}){
+            if !eventDetailManager.playersInEvent.contains(where: {$0.id == player.id}){
                 availablePlayers.append(player)
             }
         }
     }
 
-    func removePlayerFromEventWith(for player: TUPlayer){
+    func removePlayerFromEventWith(for player: TUPlayer, eventDetailManager: EventDetailManager){
             Task {
                 do {
                     let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
@@ -225,7 +221,7 @@ enum PresentingSheet {
 
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
                     
-                    playersInEvent.removeAll(where: {$0.id == player.id})
+                    eventDetailManager.playersInEvent.removeAll(where: {$0.id == player.id})
                 } catch{
                     alertItem = AlertContext.unableToRemovePlayerFromTeam
                     isShowingAlert = true
@@ -233,11 +229,11 @@ enum PresentingSheet {
             }
     }
 
-    func deleteEvent(eventID: CKRecord.ID){
+    func deleteEvent(){
         Task{
             do {
-                removePlayersFromEvent(eventID: eventID)
-                let _ = try await CloudKitManager.shared.remove(recordID: eventID)
+                removePlayersFromEvent(eventID: event.id)
+                let _ = try await CloudKitManager.shared.remove(recordID: event.id)
             } catch{
                 alertItem = AlertContext.unableToDeleteEvent
                 isShowingAlert = true

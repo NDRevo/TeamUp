@@ -10,6 +10,7 @@ import CloudKit
 
 struct AddMatchSheet: View {
 
+    @EnvironmentObject var eventDetailManager: EventDetailManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     @Environment(\.dismiss) var dismiss
@@ -27,7 +28,7 @@ struct AddMatchSheet: View {
                     Task {
                         dismiss()
                         try await Task.sleep(nanoseconds: 50_000_000)
-                        viewModel.createMatchForEvent()
+                        viewModel.createMatchForEvent(eventDetailManager: eventDetailManager)
                     }
                 } label: {
                     Text("Create Match")

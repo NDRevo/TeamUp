@@ -10,6 +10,7 @@ import CloudKit
 
 struct AddExistingPlayerSheet: View {
 
+    @EnvironmentObject var eventDetailManager: EventDetailManager
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
@@ -22,7 +23,7 @@ struct AddExistingPlayerSheet: View {
                     if !viewModel.checkedOffPlayers.isEmpty {
                         Section{
                             Button {
-                                viewModel.addCheckedPlayersToEvent()
+                                viewModel.addCheckedPlayersToEvent(eventDetailManager: eventDetailManager)
                                 dismiss()
                             } label: {
                                 Text("Add Players")
@@ -58,7 +59,7 @@ struct AddExistingPlayerSheet: View {
             }
         }
         .task {
-            viewModel.getAvailablePlayers(from: eventsManager.players)
+            viewModel.getAvailablePlayers(from: eventsManager.players, eventDetailManager: eventDetailManager)
         }
     }
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddEventPlayerSheet: View {
 
+    @EnvironmentObject var eventDetailManager: EventDetailManager
     @ObservedObject var viewModel: MatchDetailViewModel
 
     @Environment(\.dismiss) var dismiss
@@ -57,7 +58,7 @@ struct AddEventPlayerSheet: View {
             }
         }
         .onAppear {
-            viewModel.getAvailablePlayers()
+            viewModel.getAvailablePlayers(eventDetailManager: eventDetailManager)
         }
     }
 }
