@@ -72,9 +72,7 @@ struct MatchDetailView: View {
                 if viewModel.isEventOwner(){
                     Menu {
                         Button(role: .destructive) {
-                            viewModel.deleteMatch()
-                            eventDetailManager.matches.removeAll(where: {$0.id == viewModel.match.id})
-                            presentation.wrappedValue.dismiss()
+                            viewModel.isShowingConfirmationDialogue = true
                         } label: {
                             Text("Delete Match")
                         }
@@ -84,6 +82,17 @@ struct MatchDetailView: View {
                 }
             }
         }
+        .confirmationDialog("Delete Match?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
+            Button(role: .destructive) {
+                viewModel.deleteMatch()
+                eventDetailManager.matches.removeAll(where: {$0.id == viewModel.match.id})
+                presentation.wrappedValue.dismiss()
+            } label: {
+                Text("Delete")
+            }
+        }, message: {
+            Text("Do you want to delete the match? You won't be able to recover it.")
+        })
     }
 }
 

@@ -13,18 +13,19 @@ import SwiftUI
     var match: TUMatch
     var event: TUEvent
 
-    @Published var teams: [TUTeam]                           = []
-    @Published var teamsAndPlayer: [CKRecord.ID: [TUPlayer]] = [:]
+    @Published var teams: [TUTeam]                              = []
+    @Published var teamsAndPlayer: [CKRecord.ID: [TUPlayer]]    = [:]
 
     @Published var availablePlayers: [TUPlayer]     = []
     @Published var checkedOffPlayers: [TUPlayer]    = []
 
-    @Published var isShowingAddPlayer   = false
-    @Published var isShowingAddTeam     = false
-    @Published var teamName             = ""
+    @Published var isShowingAddPlayer               = false
+    @Published var isShowingAddTeam                 = false
+    @Published var teamName                         = ""
 
-    @Published var isLoading: Bool      = false
-    @Published var isShowingAlert: Bool = false
+    @Published var isShowingConfirmationDialogue    = false
+    @Published var isLoading: Bool                  = false
+    @Published var isShowingAlert: Bool             = false
 
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 

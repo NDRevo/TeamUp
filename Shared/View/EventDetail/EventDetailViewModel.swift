@@ -28,6 +28,7 @@ enum PresentingSheet {
     @Published var matchDate: Date                  = Date()
     @Published var onAppearHasFired                 = false
 
+    @Published var isShowingConfirmationDialogue    = false
     @Published var isLoading                        = false
     @Published var isShowingSheet                   = false
     @Published var sheetToPresent: PresentingSheet? {

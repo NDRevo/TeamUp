@@ -51,8 +51,7 @@ struct EventDetailView: View {
                         Text("Edit")
                         Text("Publish")
                         Button(role: .destructive) {
-                            viewModel.deleteEvent()
-                            eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
+                            viewModel.isShowingConfirmationDialogue = true
                         } label: {
                             Text("Delete Event")
                         }
@@ -64,6 +63,16 @@ struct EventDetailView: View {
                 }
             }
         }
+        .confirmationDialog("Delete Event?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
+            Button(role: .destructive) {
+                viewModel.deleteEvent()
+                eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
+            } label: {
+                Text("Delete")
+            }
+        }, message: {
+            Text("Do you want to delete the event? You won't be able to recover it.")
+        })
         .background(Color.appBackground)
     }
 }
