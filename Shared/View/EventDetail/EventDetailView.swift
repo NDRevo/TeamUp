@@ -88,12 +88,12 @@ struct EventDetailsViewSection: View {
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
-        HStack(spacing: 15){
-            descriptionItem(systemImageName: "calendar", textHeading: "Date", textContent: viewModel.event.getEventDetailDate)
+        HStack(spacing: 10){
+            detailItem(systemImageName: "calendar", textHeading: "Date", textContent: viewModel.event.getEventDetailDate)
             Spacer()
-            descriptionItem(systemImageName: "clock", textHeading: "Time", textContent: viewModel.event.getTime)
+            detailItem(systemImageName: "clock", textHeading: "Time", textContent: viewModel.event.getTime)
             Spacer()
-            descriptionItem(systemImageName: "map", textHeading: "Location", textContent: viewModel.event.eventLocation)
+            detailItem(systemImageName: "map", textHeading: "Location", textContent: viewModel.event.eventLocation)
         }
         .frame(maxWidth: .infinity)
         .padding()
@@ -103,7 +103,7 @@ struct EventDetailsViewSection: View {
     }
 }
 
-struct descriptionItem: View {
+struct detailItem: View {
 
     var systemImageName: String
     var textHeading: String
@@ -145,35 +145,6 @@ struct EventDescriptionViewSection: View {
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
-    }
-}
-
-struct EventMatchCellView: View {
-
-    var matchName: String
-    var matchTime: String
-
-    var body: some View {
-        HStack(spacing: 32){
-            VStack(alignment: .leading, spacing: 12){
-                Text(matchName)
-                    .bold()
-                    .font(.title3)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(.red)
-                    .clipShape(Capsule())
-                HStack {
-                    Image(systemName: "clock.circle")
-                    Text(matchTime)
-                }
-            }
-            Image(systemName: "chevron.right")
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 12)
-        .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
 
@@ -230,6 +201,35 @@ struct MatchesView: View {
     }
 }
 
+struct EventMatchCellView: View {
+
+    var matchName: String
+    var matchTime: String
+
+    var body: some View {
+        HStack(spacing: 32){
+            VStack(alignment: .leading, spacing: 12){
+                Text(matchName)
+                    .bold()
+                    .font(.title3)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(.red)
+                    .clipShape(Capsule())
+                HStack {
+                    Image(systemName: "clock.circle")
+                    Text(matchTime)
+                }
+            }
+            Image(systemName: "chevron.right")
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 12)
+        .background(Color.appCell)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+}
+
 struct ParticipantsView: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
@@ -274,7 +274,7 @@ struct ParticipantsView: View {
             } else {
                 VStack {
                     ForEach(eventDetailManager.playersInEvent){ player in
-                        EventParticipantCellView(viewModel: viewModel, player: player)
+                        EventParticipantCell(viewModel: viewModel, player: player)
                             .onLongPressGesture {
                                 //This stops scrolling
                                 if viewModel.isEventOwner() {
@@ -287,48 +287,5 @@ struct ParticipantsView: View {
             }
         }
         .padding(.horizontal)
-    }
-}
-
-
-struct EventParticipantCellView: View {
-    
-    @EnvironmentObject var manager: EventsManager
-    @ObservedObject var viewModel: EventDetailViewModel
-    
-
-    var player: TUPlayer
-    var playerProfile: TUPlayerGameProfile? {
-        return manager.playerProfiles[player.id]?.first(where: {$0.gameName == viewModel.event.eventGame})
-    }
-
-    var body: some View {
-        HStack{
-            VStack(alignment: .leading){
-                HStack{
-                    if let playerProfile = playerProfile {
-                        Text(playerProfile.gameID)
-                            .bold()
-                            .font(.title2)
-                        Text("(\(player.firstName))")
-                            .bold()
-                            .font(.title2)
-                    } else {
-                        Text("\(player.firstName) \(player.lastName)")
-                            .bold()
-                            .font(.title2)
-                    }
-                }
-                if let playerProfile = playerProfile {
-                    Text(playerProfile.gameRank)
-                        .fontWeight(.light)
-                }
-            }
-            Spacer()
-        }
-        .padding(.horizontal)
-        .frame(height: 65)
-        .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }

@@ -20,24 +20,10 @@ struct AddEventPlayerSheet: View {
         VStack{
             if !viewModel.availablePlayers.isEmpty{
                 List {
-                    if !viewModel.checkedOffPlayers.isEmpty{
-                        Section{
-                            Button {
-                                viewModel.addCheckedPlayersToTeam(with: team.id)
-                                dismiss()
-                            } label: {
-                                Text("Add Players")
-                            }
-                            .frame(maxWidth: .infinity, alignment: .center)
-                        }
-                    }
-
                     Section{
                         ForEach(viewModel.availablePlayers) { player in
-                            ExistingPlayerListCell(viewModel: viewModel, player: player)
+                            PlayerListCell(checkedOffPlayers: $viewModel.checkedOffPlayers, eventGame: viewModel.event.eventGame, player: player)
                         }
-                    } header: {
-                        Text("Available Players")
                     }
                 }
                 
@@ -53,8 +39,18 @@ struct AddEventPlayerSheet: View {
         }
         .navigationTitle("Add Player")
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Dismiss") {
+                    dismiss()
+                }
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Dismiss") { dismiss() }
+                if !viewModel.checkedOffPlayers.isEmpty {
+                    Button("Add Players") {
+                        viewModel.addCheckedPlayersToTeam(with: team.id)
+                        dismiss()
+                    }
+                }
             }
         }
         .onAppear {
