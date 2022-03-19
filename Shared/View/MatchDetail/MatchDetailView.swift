@@ -62,7 +62,13 @@ struct MatchDetailView: View {
             viewModel.alertItem.alertMessage
         })
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button {
+                    viewModel.getTeamsForMatch()
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                        .foregroundColor(.blue)
+                }
                 if viewModel.isEventOwner(){
                     Menu {
                         Button(role: .destructive) {

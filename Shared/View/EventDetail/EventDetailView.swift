@@ -168,49 +168,6 @@ struct EventMatchCellView: View {
     }
 }
 
-struct EventParticipantCellView: View {
-    
-    @EnvironmentObject var manager: EventsManager
-    @ObservedObject var viewModel: EventDetailViewModel
-    
-
-    var player: TUPlayer
-    var playerProfile: TUPlayerGameProfile? {
-        return manager.playerProfiles[player.id]?.first(where: {$0.gameName == viewModel.event.eventGame})
-    }
-
-    var body: some View {
-        HStack{
-            VStack(alignment: .leading){
-                HStack{
-                    if let playerProfile = playerProfile {
-                        Text(playerProfile.gameID)
-                            .bold()
-                            .font(.title2)
-                        Text("(\(player.firstName))")
-                            .bold()
-                            .font(.title2)
-                    } else {
-                        Text(player.firstName)
-                            .font(.title2)
-                    }
-                }
-                if let playerProfile = playerProfile {
-                    Text(playerProfile.gameRank)
-                        .fontWeight(.light)
-                }
-            }
-            Spacer()
-            Image(systemName: "chevron.right")
-                .font(.system(size: 20))
-        }
-        .padding(.horizontal)
-        .frame(height: 65)
-        .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-    }
-}
-
 struct MatchesView: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
@@ -310,7 +267,7 @@ struct ParticipantsView: View {
                     ForEach(eventDetailManager.playersInEvent){ player in
                         EventParticipantCellView(viewModel: viewModel, player: player)
                             .onLongPressGesture {
-                                //Doesnt work
+                                //This stops scrolling
                                 if viewModel.isEventOwner() {
                                     viewModel.removePlayerFromEventWith(for: player, eventDetailManager: eventDetailManager)
                                     //viewModel.refreshEventDetails(with: eventsManager.players)
@@ -321,5 +278,48 @@ struct ParticipantsView: View {
             }
         }
         .padding(.horizontal)
+    }
+}
+
+
+struct EventParticipantCellView: View {
+    
+    @EnvironmentObject var manager: EventsManager
+    @ObservedObject var viewModel: EventDetailViewModel
+    
+
+    var player: TUPlayer
+    var playerProfile: TUPlayerGameProfile? {
+        return manager.playerProfiles[player.id]?.first(where: {$0.gameName == viewModel.event.eventGame})
+    }
+
+    var body: some View {
+        HStack{
+            VStack(alignment: .leading){
+                HStack{
+                    if let playerProfile = playerProfile {
+                        Text(playerProfile.gameID)
+                            .bold()
+                            .font(.title2)
+                        Text("(\(player.firstName))")
+                            .bold()
+                            .font(.title2)
+                    } else {
+                        Text("\(player.firstName) \(player.lastName)")
+                            .bold()
+                            .font(.title2)
+                    }
+                }
+                if let playerProfile = playerProfile {
+                    Text(playerProfile.gameRank)
+                        .fontWeight(.light)
+                }
+            }
+            Spacer()
+        }
+        .padding(.horizontal)
+        .frame(height: 65)
+        .background(Color.appCell)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }

@@ -51,6 +51,7 @@ struct PlayerProfileView: View {
                                     viewModel.resetInput()
                                 }
                         }
+                        .padding(.vertical)
                     }
                     .padding(.horizontal, 6)
                 }
