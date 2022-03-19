@@ -40,6 +40,7 @@ struct MatchDetailView: View {
                                             viewModel.deleteTeam(teamID: team.id)
                                         } label: {
                                             TeamIcon(color: .red, isAdding: false)
+                                                .font(.system(size: 25, weight: .regular, design: .default))
                                         }
                                     }
                                 }
@@ -66,34 +67,37 @@ struct MatchDetailView: View {
         })
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Button {
-                    viewModel.getTeamsForMatch()
-                } label: {
-                    Image(systemName: "arrow.clockwise")
-                        .foregroundColor(.blue)
-                }
-                if viewModel.isAbleToAddTeam(){
+                HStack(spacing: 20) {
                     Button {
-                        viewModel.isShowingAddTeam = true
-                        viewModel.resetInput()
+                        viewModel.getTeamsForMatch()
                     } label: {
-                        TeamIcon(color: .blue, isAdding: true)
+                        Image(systemName: "arrow.clockwise")
+                            .foregroundColor(.blue)
                     }
-                    .sheet(isPresented: $viewModel.isShowingAddTeam) {
-                        NavigationView{
-                            AddTeamSheet(viewModel: viewModel)
-                        }
-                    }
-                }
-                if viewModel.isEventOwner(){
-                    Menu {
-                        Button(role: .destructive) {
-                            viewModel.isShowingConfirmationDialogue = true
+                    if viewModel.isAbleToAddTeam(){
+                        Button {
+                            viewModel.isShowingAddTeam = true
+                            viewModel.resetInput()
                         } label: {
-                            Text("Delete Match")
+                            TeamIcon(color: .blue, isAdding: true)
+                                .frame(width: 10, height: 10)
                         }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
+                        .sheet(isPresented: $viewModel.isShowingAddTeam) {
+                            NavigationView{
+                                AddTeamSheet(viewModel: viewModel)
+                            }
+                        }
+                    }
+                    if viewModel.isEventOwner(){
+                        Menu {
+                            Button(role: .destructive) {
+                                viewModel.isShowingConfirmationDialogue = true
+                            } label: {
+                                Text("Delete Match")
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis.circle")
+                        }
                     }
                 }
             }

@@ -15,14 +15,23 @@ struct TeamIcon: View {
     var body: some View {
         ZStack(alignment: .bottomLeading){
             Image(systemName: "person.3")
-                .font(.title2)
-            Image(systemName: isAdding ? "plus.circle.fill" : "minus.circle.fill" )
-                .foregroundStyle(.background, color)
-                .offset(x: -8, y: 5)
-                .font(.caption)
+            
+            ZStack {
+                Circle()
+                    .strokeBorder(.background)
+                    .background {
+                        Circle().fill(color)
+                    }
+                    .frame(width: 14, height:  14)
+                Image(systemName: isAdding ? "plus" : "minus" )
+                    .foregroundStyle(.background, .background)
+                    .font(.system(size: 7, weight: .bold, design: .default))
+            }
+            .offset( y: 2)
         }
+        .frame(width: 48, height: 28)
         .foregroundColor(color)
-        .offset(y: -2)
+        .offset( y: -1)
     }
 }
 
