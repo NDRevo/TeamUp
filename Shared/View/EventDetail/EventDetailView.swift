@@ -274,7 +274,7 @@ struct ParticipantsView: View {
             } else {
                 VStack {
                     ForEach(eventDetailManager.playersInEvent){ player in
-                        EventParticipantCell(viewModel: viewModel, player: player)
+                        EventParticipantCell(eventGame: viewModel.event.eventGame, player: player)
                             .onLongPressGesture {
                                 //This stops scrolling
                                 if viewModel.isEventOwner() {

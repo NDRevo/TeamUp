@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PlayerListCell: View {
+struct AddPlayerListCell: View {
 
     @EnvironmentObject var manager: EventsManager
     @Binding var checkedOffPlayers: [TUPlayer]

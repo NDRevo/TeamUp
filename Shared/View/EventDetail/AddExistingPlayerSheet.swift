@@ -22,7 +22,7 @@ struct AddExistingPlayerSheet: View {
                 List {
                     Section{
                         ForEach(viewModel.availablePlayers) { player in
-                            PlayerListCell(checkedOffPlayers: $viewModel.checkedOffPlayers, eventGame: viewModel.event.eventGame, player: player)
+                            AddPlayerListCell(checkedOffPlayers: $viewModel.checkedOffPlayers, eventGame: viewModel.event.eventGame, player: player)
                         }
                     }
                 }

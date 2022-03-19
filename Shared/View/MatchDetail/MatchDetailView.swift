@@ -16,37 +16,40 @@ struct MatchDetailView: View {
 
     var body: some View {
         ZStack {
-            VStack{
-                List {
+            ScrollView(showsIndicators: false) {
+                VStack{
                     if viewModel.isAbleToChangeTeams(){
                         MatchOptionButtons(viewModel: viewModel)
                     }
-
+                    
                     ForEach(viewModel.teams) { team in
-                        Section {
-                            PlayerListForTeam(viewModel: viewModel, team: team)
-
-                            if viewModel.isEventOwner(){
-                                TeamButtons(viewModel: viewModel, team: team)
-                            }
-                        } header: {
-                            Text(team.teamName)
-                                .bold()
-                                .font(.subheadline)
-                        }
-                    }
-                    if viewModel.isAbleToAddTeam(){
-                        Section {
-                            Button {
-                                viewModel.isShowingAddTeam = true
-                                viewModel.resetInput()
-                            } label: {
-                                Text("Add Team")
-                            }
-                            .sheet(isPresented: $viewModel.isShowingAddTeam) {
-                                NavigationView{
-                                    AddTeamSheet(viewModel: viewModel)
+                        VStack{
+                            HStack {
+                                Text(team.teamName)
+                                    .font(.title)
+                                Spacer()
+                                HStack(spacing: 24){
+                                    if viewModel.isEventOwner() {
+                                        Button {
+                                            viewModel.isShowingAddPlayer = true
+                                        } label: {
+                                            Image(systemName: "person.badge.plus")
+                                                .font(.system(size: 24, design: .default))
+                                        }
+                                        Button {
+                                            viewModel.deleteTeam(teamID: team.id)
+                                        } label: {
+                                            TeamIcon(color: .red, isAdding: false)
+                                        }
+                                    }
                                 }
+                            }
+                            PlayerListForTeam(viewModel: viewModel, team: team)
+                        }
+                        .padding()
+                        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
+                            NavigationView{
+                                AddEventPlayerSheet(viewModel: viewModel, team: team)
                             }
                         }
                     }
@@ -68,6 +71,19 @@ struct MatchDetailView: View {
                 } label: {
                     Image(systemName: "arrow.clockwise")
                         .foregroundColor(.blue)
+                }
+                if viewModel.isAbleToAddTeam(){
+                    Button {
+                        viewModel.isShowingAddTeam = true
+                        viewModel.resetInput()
+                    } label: {
+                        TeamIcon(color: .blue, isAdding: true)
+                    }
+                    .sheet(isPresented: $viewModel.isShowingAddTeam) {
+                        NavigationView{
+                            AddTeamSheet(viewModel: viewModel)
+                        }
+                    }
                 }
                 if viewModel.isEventOwner(){
                     Menu {
@@ -102,32 +118,6 @@ struct MatchDetailView: View {
 //    }
 //}
 
-
-struct TeamButtons: View {
-    
-    @ObservedObject var viewModel: MatchDetailViewModel
-    var team: TUTeam
-    
-    var body: some View {
-        Button {
-            viewModel.isShowingAddPlayer = true
-        } label: {
-            Text("Add Player")
-                .foregroundColor(.blue)
-        }
-        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
-            NavigationView{
-                AddEventPlayerSheet(viewModel: viewModel, team: team)
-            }
-        }
-        Button(role: .destructive) {
-            viewModel.deleteTeam(teamID: team.id)
-        } label: {
-            Text("Delete Team")
-        }
-    }
-}
-
 struct PlayerListForTeam: View {
     
     @ObservedObject var viewModel: MatchDetailViewModel
@@ -135,13 +125,7 @@ struct PlayerListForTeam: View {
     
     var body: some View {
         ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
-            HStack{
-                VStack(alignment: .leading){
-                    Text(player.firstName)
-                        .bold()
-                        .font(.title2)
-                }
-            }
+            EventParticipantCell(eventGame: viewModel.event.eventGame, player: player)
             .swipeActions(edge: .trailing) {
                 if viewModel.isEventOwner() {
                     Button(role: .destructive){

@@ -10,12 +10,11 @@ import SwiftUI
 struct EventParticipantCell: View {
     
     @EnvironmentObject var manager: EventsManager
-    @ObservedObject var viewModel: EventDetailViewModel
-    
+    var eventGame: String
 
     var player: TUPlayer
     var playerProfile: TUPlayerGameProfile? {
-        return manager.playerProfiles[player.id]?.first(where: {$0.gameName == viewModel.event.eventGame})
+        return manager.playerProfiles[player.id]?.first(where: {$0.gameName == eventGame})
     }
 
     var body: some View {
