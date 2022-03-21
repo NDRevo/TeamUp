@@ -25,7 +25,13 @@ final class CloudKitManager {
         userRecord = record
         
         if let profileReference = record["userProfile"] as? CKRecord.Reference {
-            profileRecordID = profileReference.recordID
+            do {
+                let _ = try await fetchRecord(with: profileReference.recordID)
+                profileRecordID = profileReference.recordID
+            }
+            catch {
+                profileRecordID = nil
+           }
        }
     }
 
