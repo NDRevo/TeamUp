@@ -49,6 +49,7 @@ playground.xcworkspace
 .build/
 *.DS_Store
 *.UserInterfaceState.xcuserstate
+TeamUp.xcodeproj/project.xcworkspace/xcuserdata/noeduran.xcuserdatad/UserInterfaceState.xcuserstate
 
 # CocoaPods
 #
