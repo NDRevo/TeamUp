@@ -58,6 +58,7 @@ struct MatchDetailView: View {
             }
             if viewModel.isLoading{LoadingView()}
         }
+        .background(Color.appBackground)
         .navigationTitle(viewModel.match.matchName)
         .task {
             viewModel.getTeamsForMatch()
@@ -80,7 +81,7 @@ struct MatchDetailView: View {
                             viewModel.resetInput()
                         } label: {
                             TeamIcon(color: .blue, isAdding: true)
-                                .frame(width: 10, height: 10)
+                                .font(.system(size: 18, weight: .semibold, design: .default))
                         }
                     }
                     if viewModel.isEventOwner(){

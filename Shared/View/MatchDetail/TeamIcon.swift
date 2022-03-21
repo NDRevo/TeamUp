@@ -18,20 +18,22 @@ struct TeamIcon: View {
             
             ZStack {
                 Circle()
-                    .strokeBorder(.background)
+                    .stroke(Color.appBackground, lineWidth: 1.5)
                     .background {
-                        Circle().fill(color)
+                        Circle()
+                            .fill(color)
+                        
                     }
                     .frame(width: 14, height:  14)
                 Image(systemName: isAdding ? "plus" : "minus" )
                     .foregroundStyle(.background, .background)
                     .font(.system(size: 7, weight: .bold, design: .default))
             }
-            .offset( y: 2)
+            .offset( y: 3)
         }
-        .frame(width: 48, height: 28)
+        .frame(width: 36, height: 22)
         .foregroundColor(color)
-        .offset( y: -1)
+        .offset( y: -2)
     }
 }
 
