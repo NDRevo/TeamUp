@@ -13,6 +13,8 @@ import SwiftUI
     var match: TUMatch
     var event: TUEvent
 
+    @Published var selectedTeam: TUTeam?
+
     @Published var teams: [TUTeam]                              = []
     @Published var teamsAndPlayer: [CKRecord.ID: [TUPlayer]]    = [:]
 
@@ -162,7 +164,7 @@ import SwiftUI
         }
     }
 
-    func addCheckedPlayersToTeam(with teamID: CKRecord.ID){
+    func addCheckedPlayersToTeam(){
         Task {
             do {
                 for player in checkedOffPlayers {
@@ -171,14 +173,14 @@ import SwiftUI
                     var references: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
 
                     if references.isEmpty{
-                        playerRecord[TUPlayer.kOnTeams] = [CKRecord.Reference(recordID: teamID, action: .none)]
+                        playerRecord[TUPlayer.kOnTeams] = [CKRecord.Reference(recordID: selectedTeam!.id, action: .none)]
                     } else {
-                        references.append(CKRecord.Reference(recordID: teamID, action: .none))
+                        references.append(CKRecord.Reference(recordID: selectedTeam!.id, action: .none))
                         playerRecord[TUPlayer.kOnTeams] = references
                     }
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
-                    teamsAndPlayer[teamID]?.append(TUPlayer(record: playerRecord))
+                    teamsAndPlayer[selectedTeam!.id]?.append(TUPlayer(record: playerRecord))
                 }
             } catch {
                 alertItem = AlertContext.unableToAddSelectedPlayersToTeam

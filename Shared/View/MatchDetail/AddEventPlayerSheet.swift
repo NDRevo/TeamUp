@@ -14,8 +14,6 @@ struct AddEventPlayerSheet: View {
 
     @Environment(\.dismiss) var dismiss
 
-    var team: TUTeam
-
     var body: some View {
         VStack{
             if !viewModel.availablePlayers.isEmpty{
@@ -47,7 +45,7 @@ struct AddEventPlayerSheet: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 if !viewModel.checkedOffPlayers.isEmpty {
                     Button("Add Players") {
-                        viewModel.addCheckedPlayersToTeam(with: team.id)
+                        viewModel.addCheckedPlayersToTeam()
                         dismiss()
                     }
                 }

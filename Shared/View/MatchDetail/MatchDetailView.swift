@@ -32,6 +32,7 @@ struct MatchDetailView: View {
                                     if viewModel.isEventOwner() {
                                         Button {
                                             viewModel.isShowingAddPlayer = true
+                                            viewModel.selectedTeam = team
                                         } label: {
                                             Image(systemName: "person.badge.plus")
                                                 .font(.system(size: 24, design: .default))
@@ -48,17 +49,17 @@ struct MatchDetailView: View {
                             PlayerListForTeam(viewModel: viewModel, team: team)
                         }
                         .padding()
-                        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
-                            NavigationView{
-                                AddEventPlayerSheet(viewModel: viewModel, team: team)
-                            }
-                        }
                     }
                 }
             }
             if viewModel.isLoading{LoadingView()}
         }
         .background(Color.appBackground)
+        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
+            NavigationView{
+                AddEventPlayerSheet(viewModel: viewModel)
+            }
+        }
         .navigationTitle(viewModel.match.matchName)
         .task {
             viewModel.getTeamsForMatch()
