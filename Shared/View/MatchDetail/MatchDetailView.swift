@@ -12,7 +12,7 @@ struct MatchDetailView: View {
     @EnvironmentObject var eventDetailManager: EventDetailManager
     @ObservedObject var viewModel: MatchDetailViewModel
 
-    @Environment(\.presentationMode) var presentation
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         ZStack {
@@ -82,11 +82,6 @@ struct MatchDetailView: View {
                             TeamIcon(color: .blue, isAdding: true)
                                 .frame(width: 10, height: 10)
                         }
-                        .sheet(isPresented: $viewModel.isShowingAddTeam) {
-                            NavigationView{
-                                AddTeamSheet(viewModel: viewModel)
-                            }
-                        }
                     }
                     if viewModel.isEventOwner(){
                         Menu {
@@ -102,11 +97,16 @@ struct MatchDetailView: View {
                 }
             }
         }
+        .sheet(isPresented: $viewModel.isShowingAddTeam) {
+            NavigationView{
+                AddTeamSheet(viewModel: viewModel)
+            }
+        }
         .confirmationDialog("Delete Match?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {
                 viewModel.deleteMatch()
                 eventDetailManager.matches.removeAll(where: {$0.id == viewModel.match.id})
-                presentation.wrappedValue.dismiss()
+                dismiss()
             } label: {
                 Text("Delete")
             }
