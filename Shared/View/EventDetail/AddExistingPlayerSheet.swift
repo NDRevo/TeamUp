@@ -59,5 +59,7 @@ struct AddExistingPlayerSheet: View {
 struct AddExistingPlayerSheet_Previews: PreviewProvider {
     static var previews: some View {
         AddExistingPlayerSheet(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+            .environmentObject(EventsManager())
+            .environmentObject(EventDetailManager())
     }
 }

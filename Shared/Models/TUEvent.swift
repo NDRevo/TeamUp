@@ -35,7 +35,7 @@ struct TUEvent: Identifiable, Hashable {
         eventDescription = record[TUEvent.kEventDescription] as? String ?? "N/A"
         eventLocation    = record[TUEvent.kEventLocation] as? String ?? "N/A"
         //Forced Unwrapped since this will never be nil
-        eventOwner       = record[TUEvent.kEventOwner] as! CKRecord.Reference
+        eventOwner       = record[TUEvent.kEventOwner] as? CKRecord.Reference ?? CKRecord.Reference(recordID: CKRecord.ID(recordName: "31394CE3-68AD-4AC2-A125-59E665637500"), action: .deleteSelf)
     }
 
     var getDateDetails: DateComponents {

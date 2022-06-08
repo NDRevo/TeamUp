@@ -48,8 +48,9 @@ struct AddPlayerSheet: View {
     }
 }
 
-//struct AddPlayerSheet_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddPlayerSheet()
-//    }
-//}
+struct AddPlayerSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        AddPlayerSheet(viewModel: PlayerListViewModel())
+            .environmentObject(EventsManager())
+    }
+}

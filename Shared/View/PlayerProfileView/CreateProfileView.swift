@@ -37,3 +37,10 @@ struct CreateProfileView: View {
         .navigationTitle("Create Profile")
     }
 }
+
+struct CreateProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+       CreateProfileView(viewModel: PlayerProfileViewModel())
+            .environmentObject(EventsManager())
+    }
+}

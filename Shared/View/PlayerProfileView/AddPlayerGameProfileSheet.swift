@@ -58,5 +58,6 @@ struct AddPlayerGameProfileSheet: View {
 struct AddPlayerGameProfileSheet_Previews: PreviewProvider {
     static var previews: some View {
         AddPlayerGameProfileSheet(viewModel: PlayerProfileViewModel())
+            .environmentObject(EventsManager())
     }
 }

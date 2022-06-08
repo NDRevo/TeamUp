@@ -104,5 +104,6 @@ struct EventListCell: View {
 struct EventListCell_Previews: PreviewProvider {
     static var previews: some View {
         EventListCell(event: TUEvent(record: MockData.event))
+            .environmentObject(EventsManager())
     }
 }

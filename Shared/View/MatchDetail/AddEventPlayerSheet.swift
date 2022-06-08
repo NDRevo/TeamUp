@@ -55,8 +55,9 @@ struct AddEventPlayerSheet: View {
     }
 }
 
-//struct AddEventPlayerSheet_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddEventPlayerSheet(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), playersInEvent: [], event: TUEvent(record: MockData.event)), team: TUTeam(record: MockData.team))
-//    }
-//}
+struct AddEventPlayerSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        AddEventPlayerSheet(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event)))
+            .environmentObject(EventDetailManager())
+    }
+}

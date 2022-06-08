@@ -53,6 +53,7 @@ struct EventsListView: View {
 struct EventsListView_Previews: PreviewProvider {
     static var previews: some View {
         EventsListView()
+            .environmentObject(EventsManager())
     }
 }
 

@@ -226,7 +226,6 @@
 			children = (
 				560E42BA279386BF00408B4B /* MatchDetailViewModel.swift */,
 				560E4273278FA68200408B4B /* MatchDetailView.swift */,
-				56EDBB4627E59E93001D68CF /* TeamIcon.swift */,
 				560E428E2790C28300408B4B /* AddEventPlayerSheet.swift */,
 				560E429A2791009900408B4B /* AddTeamSheet.swift */,
 			);
@@ -264,6 +263,7 @@
 				56EDBB4327E58AAB001D68CF /* EventParticipantCell.swift */,
 				560E42C32794F22200408B4B /* AddPlayerListCell.swift */,
 				560E42BD2793C30900408B4B /* LoadingView.swift */,
+				56EDBB4627E59E93001D68CF /* TeamIcon.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
