@@ -15,7 +15,7 @@ struct PlayerProfileView: View {
     @Environment(\.editMode) var editMode
 
     var body: some View {
-        NavigationView{
+        NavigationStack{
             if !viewModel.isLoggedIn() {
                 CreateProfileView(viewModel: viewModel)
             } else {
@@ -60,7 +60,7 @@ struct PlayerProfileView: View {
                     viewModel.alertItem.alertMessage
                 })
                 .sheet(isPresented: $viewModel.isPresentingSheet) {
-                    NavigationView {
+                    NavigationStack {
                         AddPlayerGameProfileSheet(viewModel: viewModel)
                     }
                 }

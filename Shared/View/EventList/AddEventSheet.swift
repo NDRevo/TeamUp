@@ -38,16 +38,8 @@ struct AddEventSheet: View {
             }
 
             Section {
-                ZStack(alignment: .topLeading){
-                    TextEditor(text: $viewModel.eventDescription)
-                        .frame(height: 100)
-                    if viewModel.eventDescription.isEmpty {
-                        Text("Event Description")
-                            .foregroundColor(.gray)
-                            .opacity(0.50)
-                            .offset(y: 8)
-                    }
-                }
+                TextField("Event Description", text: $viewModel.eventDescription, axis: .vertical)
+                    .lineLimit(4, reservesSpace: true)
             }
 
             Section{
@@ -63,7 +55,11 @@ struct AddEventSheet: View {
             }
         }
         .navigationTitle("Create Event")
-        .toolbar { Button("Dismiss") { dismiss() } }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Dismiss") {dismiss()}
+            }
+        }
     }
 }
 

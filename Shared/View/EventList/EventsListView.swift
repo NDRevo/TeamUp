@@ -13,17 +13,20 @@ struct EventsListView: View {
     @StateObject private var viewModel = EventsListViewModel()
 
     var body: some View {
-        NavigationView{
-            ScrollView{
+        NavigationStack {
+            ScrollView {
                 LazyVStack(spacing: 18) {
                     ForEach(eventsManager.events){ event in
-                        NavigationLink(destination: EventDetailView(viewModel: EventDetailViewModel(event: event))){
+                        NavigationLink(value: event){
                             EventListCell(event: event) 
                         }
                     }
                 }
             }
             .navigationTitle("Events")
+            .navigationDestination(for: TUEvent.self, destination: { event in
+                    EventDetailView(viewModel: EventDetailViewModel(event: event))
+            })
             .refreshable {
                 //Doesn't work
                 viewModel.refresh(for: eventsManager)
@@ -38,7 +41,7 @@ struct EventsListView: View {
                 EventsListToolbarContent(viewModel: viewModel)
             }
             .sheet(isPresented: $viewModel.isPresentingAddEvent) {
-                NavigationView {
+                NavigationStack {
                     AddEventSheet(viewModel: viewModel)
                 }
             }

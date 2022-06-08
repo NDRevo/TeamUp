@@ -27,9 +27,10 @@ struct EventDetailView: View {
         .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
             viewModel.refreshEventDetails(eventDetailManager: eventDetailManager)
         }){
-            NavigationView{
+            NavigationStack{
                 viewModel.presentSheet()
             }
+            .presentationDetents([.medium, .large])
         }
         .task {
             viewModel.setUpEventDetails(eventDetailManager: eventDetailManager)
@@ -187,7 +188,7 @@ struct MatchesView: View {
                 ScrollView(.horizontal, showsIndicators: false){
                     HStack{
                         ForEach(eventDetailManager.matches) { match in
-                            NavigationLink(destination: MatchDetailView(viewModel: MatchDetailViewModel(match: match, event: viewModel.event)).environmentObject(eventDetailManager)) {
+                            NavigationLink(value: match) {
                                 EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
                             }
                             .buttonStyle(PlainButtonStyle())
@@ -195,6 +196,12 @@ struct MatchesView: View {
                     }
                     .offset(x: 16) //Shifts start position of cells to the right 16pt
                     .padding(.trailing, 24) //Makes last cell not cut off
+                }
+                .navigationDestination(for: TUMatch.self) { match in
+                    MatchDetailView(viewModel: MatchDetailViewModel(match: match, event: viewModel.event)).environmentObject(eventDetailManager)
+                        .onDisappear {
+                            viewModel.refreshEventDetails(eventDetailManager: eventDetailManager)
+                        }
                 }
             }
         }

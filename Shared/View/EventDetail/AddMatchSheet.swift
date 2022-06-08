@@ -37,7 +37,11 @@ struct AddMatchSheet: View {
             }
         }
         .navigationTitle("Create Match")
-        .toolbar { Button("Dismiss") { dismiss() } }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Dismiss") {dismiss()}
+            }
+        }
     }
 }
 

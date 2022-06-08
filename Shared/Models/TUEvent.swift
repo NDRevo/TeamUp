@@ -8,7 +8,7 @@
 import SwiftUI
 import CloudKit
 
-struct TUEvent: Identifiable {
+struct TUEvent: Identifiable, Hashable {
 
     static let kEventName         = "eventName"
     static let kEventDate         = "eventDate"

@@ -7,7 +7,7 @@
 
 import CloudKit
 import SwiftUI
-
+//MainActor exists so you dont have to do Dispatch.Main.async{}
 @MainActor final class EventsListViewModel: ObservableObject {
 
     @Published var eventName: String         = ""

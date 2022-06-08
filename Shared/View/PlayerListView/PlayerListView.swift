@@ -13,7 +13,7 @@ struct PlayerListView: View {
     @StateObject private var viewModel = PlayerListViewModel()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List{
                 ForEach(eventsManager.players){ player in
                         HStack{
@@ -51,7 +51,7 @@ struct PlayerListView: View {
                 PlayerListToolbarContent(viewModel: viewModel, playerList: eventsManager.players)
             }
             .sheet(isPresented: $viewModel.isShowingAddPlayerSheet){
-                NavigationView {
+                NavigationStack {
                     AddPlayerSheet(viewModel: viewModel)
                 }
             }

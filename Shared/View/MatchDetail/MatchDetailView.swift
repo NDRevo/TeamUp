@@ -56,7 +56,7 @@ struct MatchDetailView: View {
         }
         .background(Color.appBackground)
         .sheet(isPresented: $viewModel.isShowingAddPlayer) {
-            NavigationView{
+            NavigationStack{
                 AddEventPlayerSheet(viewModel: viewModel)
             }
         }
@@ -100,9 +100,10 @@ struct MatchDetailView: View {
             }
         }
         .sheet(isPresented: $viewModel.isShowingAddTeam) {
-            NavigationView{
+            NavigationStack{
                 AddTeamSheet(viewModel: viewModel)
             }
+            .presentationDetents([.medium])
         }
         .confirmationDialog("Delete Match?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {

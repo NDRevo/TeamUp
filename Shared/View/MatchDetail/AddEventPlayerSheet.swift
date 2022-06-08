@@ -38,9 +38,7 @@ struct AddEventPlayerSheet: View {
         .navigationTitle("Add Player")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("Dismiss") {
-                    dismiss()
-                }
+                Button("Dismiss") {dismiss()}
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 if !viewModel.checkedOffPlayers.isEmpty {

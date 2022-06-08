@@ -32,7 +32,11 @@ struct AddTeamSheet: View {
             }
         }
         .navigationTitle("Add Team")
-        .toolbar { Button("Dismiss") { dismiss() } }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Dismiss") {dismiss()}
+            }
+        }
     }
 }
 

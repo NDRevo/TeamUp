@@ -13,7 +13,11 @@ struct AddAdminSheet: View {
 
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            .toolbar { Button("Dismiss") { dismiss() } }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Dismiss") {dismiss()}
+                }
+            }
             .navigationTitle("Add Admin")
     }
 }

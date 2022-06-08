@@ -7,7 +7,7 @@
 
 import CloudKit
 
-struct TUMatch: Identifiable {
+struct TUMatch: Identifiable, Hashable {
     
     static let kMatchName = "matchName"
     static let kStartTime = "matchStartTime"
