@@ -154,6 +154,19 @@ enum PresentingSheet {
         }
     }
 
+    func publishEvent(){
+        Task {
+            do {
+                let eventRecord = try await CloudKitManager.shared.fetchRecord(with: event.id)
+                eventRecord[TUEvent.kIsPublished] = 1
+                let _ = try await CloudKitManager.shared.save(record: eventRecord)
+            } catch {
+                //Unable to publish evvent
+                isShowingAlert = true
+            }
+        }
+    }
+
     private func getMatchesForEvent(eventDetailManager: EventDetailManager){
         showLoadingView()
         Task {

@@ -16,6 +16,7 @@ struct TUEvent: Identifiable, Hashable {
     static let kEventDescription  = "eventDescription"
     static let kEventLocation     = "eventLocation"
     static let kEventOwner        = "eventOwner"
+    static let kIsPublished       = "isPublished"
 
     let id: CKRecord.ID
 
@@ -25,6 +26,7 @@ struct TUEvent: Identifiable, Hashable {
     let eventDescription: String
     let eventLocation: String
     let eventOwner: CKRecord.Reference
+    let isPublished: Int
 
     init(record: CKRecord){
         id = record.recordID
@@ -35,7 +37,9 @@ struct TUEvent: Identifiable, Hashable {
         eventDescription = record[TUEvent.kEventDescription] as? String ?? "N/A"
         eventLocation    = record[TUEvent.kEventLocation] as? String ?? "N/A"
         //Forced Unwrapped since this will never be nil
+        //Optional value to resolve canvas previews
         eventOwner       = record[TUEvent.kEventOwner] as? CKRecord.Reference ?? CKRecord.Reference(recordID: CKRecord.ID(recordName: "31394CE3-68AD-4AC2-A125-59E665637500"), action: .deleteSelf)
+        isPublished      = record[TUEvent.kIsPublished] as? Int ?? 0
     }
 
     var getDateDetails: DateComponents {

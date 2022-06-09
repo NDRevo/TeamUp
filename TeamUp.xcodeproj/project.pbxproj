@@ -90,6 +90,8 @@
 		566AB2F3278D2DB300F4035C /* TUPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2F1278D2DB300F4035C /* TUPlayer.swift */; };
 		566AB2F5278D2DC200F4035C /* TUTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2F4278D2DC200F4035C /* TUTeam.swift */; };
 		566AB2F6278D2DC200F4035C /* TUTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2F4278D2DC200F4035C /* TUTeam.swift */; };
+		569CAAB428518FB50081AB3B /* MyEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569CAAB328518FB50081AB3B /* MyEventsView.swift */; };
+		569CAAB6285192D10081AB3B /* MyEventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569CAAB5285192D10081AB3B /* MyEventsViewModel.swift */; };
 		56EDBB4127E570B2001D68CF /* EventDetailManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4027E570B2001D68CF /* EventDetailManager.swift */; };
 		56EDBB4227E570B2001D68CF /* EventDetailManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4027E570B2001D68CF /* EventDetailManager.swift */; };
 		56EDBB4427E58AAB001D68CF /* EventParticipantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4327E58AAB001D68CF /* EventParticipantCell.swift */; };
@@ -157,6 +159,8 @@
 		566AB2EE278D2DAD00F4035C /* TUEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TUEvent.swift; sourceTree = "<group>"; };
 		566AB2F1278D2DB300F4035C /* TUPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TUPlayer.swift; sourceTree = "<group>"; };
 		566AB2F4278D2DC200F4035C /* TUTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TUTeam.swift; sourceTree = "<group>"; };
+		569CAAB328518FB50081AB3B /* MyEventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventsView.swift; sourceTree = "<group>"; };
+		569CAAB5285192D10081AB3B /* MyEventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventsViewModel.swift; sourceTree = "<group>"; };
 		56EDBB4027E570B2001D68CF /* EventDetailManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailManager.swift; sourceTree = "<group>"; };
 		56EDBB4327E58AAB001D68CF /* EventParticipantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipantCell.swift; sourceTree = "<group>"; };
 		56EDBB4627E59E93001D68CF /* TeamIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamIcon.swift; sourceTree = "<group>"; };
@@ -239,6 +243,7 @@
 				560E426E278F94E600408B4B /* EventList */,
 				560E4272278F9EE600408B4B /* EventDetail */,
 				560E427727906B3A00408B4B /* MatchDetail */,
+				569CAAB228518F940081AB3B /* MyEventsView */,
 				563A46E2279F0407006A406B /* PlayerProfileView */,
 				560E42A627911AF400408B4B /* PlayerListView */,
 			);
@@ -371,6 +376,15 @@
 				560E42882790B6C900408B4B /* MockData.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		569CAAB228518F940081AB3B /* MyEventsView */ = {
+			isa = PBXGroup;
+			children = (
+				569CAAB5285192D10081AB3B /* MyEventsViewModel.swift */,
+				569CAAB328518FB50081AB3B /* MyEventsView.swift */,
+			);
+			path = MyEventsView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -535,6 +549,7 @@
 				560E42A42791100200408B4B /* EventDetailViewModel.swift in Sources */,
 				560E42A827911AFD00408B4B /* PlayerListView.swift in Sources */,
 				560E4269278E8A2A00408B4B /* EventListCell.swift in Sources */,
+				569CAAB6285192D10081AB3B /* MyEventsViewModel.swift in Sources */,
 				560E42B827926A3F00408B4B /* EventsListViewModel.swift in Sources */,
 				560E42A127910CF900408B4B /* TUPlayerGameProfile.swift in Sources */,
 				560E4270278F97EF00408B4B /* EventDetailView.swift in Sources */,
@@ -546,6 +561,7 @@
 				56EDBB4127E570B2001D68CF /* EventDetailManager.swift in Sources */,
 				5623DB4627B4B14C0015D59A /* View+Ext.swift in Sources */,
 				560E42B52792443700408B4B /* PlayerListViewModel.swift in Sources */,
+				569CAAB428518FB50081AB3B /* MyEventsView.swift in Sources */,
 				563A46DC279DA14E006A406B /* PlayerGameProfileCell.swift in Sources */,
 				5623DB4927B60A310015D59A /* CreateProfileView.swift in Sources */,
 				560E428F2790C28300408B4B /* AddEventPlayerSheet.swift in Sources */,

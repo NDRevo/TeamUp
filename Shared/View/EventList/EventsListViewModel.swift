@@ -67,7 +67,7 @@ import SwiftUI
     }
 
     func refresh(for eventsManager: EventsManager){
-        getEvents(for: eventsManager)
+        getPublishedEvents(for: eventsManager)
         getPlayers(for: eventsManager)
         getPlayersAndProfiles(for: eventsManager)
     }
@@ -76,7 +76,7 @@ import SwiftUI
         //Forces app to call this once, but would force user to pull to refresh to get new events
         //Fixed flashing list cell
         if !onAppearHasFired {
-            getEvents(for: eventsManager)
+            getPublishedEvents(for: eventsManager)
             getPlayers(for: eventsManager)
             getPlayersAndProfiles(for: eventsManager)
         }
@@ -120,10 +120,10 @@ import SwiftUI
         }
     }
 
-    private func getEvents(for eventsManager: EventsManager){
+    private func getPublishedEvents(for eventsManager: EventsManager){
         Task {
             do{
-                eventsManager.events  = try await CloudKitManager.shared.getEvents()
+                eventsManager.events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: false)
                 
                 //More efficient way of doing this?
                 for event in eventsManager.events {

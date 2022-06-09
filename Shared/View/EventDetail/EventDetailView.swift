@@ -13,6 +13,7 @@ struct EventDetailView: View {
 
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         ScrollView {
@@ -49,10 +50,19 @@ struct EventDetailView: View {
                     }
                 if viewModel.isEventOwner() {
                     Menu {
-                        Text("Edit")
-                        Text("Publish")
+                        if viewModel.event.isPublished == 0 {
+                            Button {
+                                viewModel.publishEvent()
+                            } label: {
+                                Text("Publish")
+                            }
+                        }
+
                         Button(role: .destructive) {
-                            viewModel.isShowingConfirmationDialogue = true
+                            //viewModel.isShowingConfirmationDialogue = true
+                            viewModel.deleteEvent()
+                            eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
+                            dismiss()
                         } label: {
                             Text("Delete Event")
                         }
@@ -64,16 +74,17 @@ struct EventDetailView: View {
                 }
             }
         }
-        .confirmationDialog("Delete Event?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
-            Button(role: .destructive) {
-                viewModel.deleteEvent()
-                eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
-            } label: {
-                Text("Delete")
-            }
-        }, message: {
-            Text("Do you want to delete the event? You won't be able to recover it.")
-        })
+        //BUG: Fails as of Xcode 14 beta 1: NavigationAuthority
+//        .confirmationDialog("Delete Event?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
+//            Button(role: .destructive) {
+//                viewModel.deleteEvent()
+//                eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
+//            } label: {
+//                Text("Delete")
+//            }
+//        }, message: {
+//            Text("Do you want to delete the event? You won't be able to recover it.")
+//        })
         .background(Color.appBackground)
     }
 }

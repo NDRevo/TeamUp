@@ -160,13 +160,20 @@ final class CloudKitManager {
         return records
     }
 
-    func getEvents() async throws -> [TUEvent] {
+    func getEvents(thatArePublished: Bool, withSpecificOwner: Bool) async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventDate, ascending: true)
-        let query = CKQuery(recordType: RecordType.event, predicate: NSPredicate(value: true))
+   
+        let query = CKQuery(recordType: RecordType.event, predicate: thatArePublished ? NSPredicate(format: "isPublished == 1") : NSPredicate(format: "isPublished == 0"))
         query.sortDescriptors = [sortDescriptor]
-        
+
         let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
         let records = matchResults.compactMap{_, result in try? result.get()}
+
+        if withSpecificOwner {
+            return records.filter{
+                $0[TUEvent.kEventOwner] == CKRecord.Reference(recordID: userRecord!.recordID, action: .none)
+            }.map(TUEvent.init)
+        }
 
         return records.map(TUEvent.init)
     }
