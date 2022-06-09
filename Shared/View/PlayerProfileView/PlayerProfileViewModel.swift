@@ -16,7 +16,7 @@ import CloudKit
     @Published var playerLastName: String        = ""
 
     @Published var gameID: String                = ""
-    @Published var selectedGame: Games           = .valorant
+    @Published var selectedGame: Games           = .apex
     @Published var playerGameRank: String        = ""
 
     @Published var isPresentingSheet             = false
@@ -29,7 +29,7 @@ import CloudKit
         playerGameRank  = ""
     }
 
-    private func isValidPlayer() -> Bool{
+    private func isValidPlayer() -> Bool {
         guard !playerFirstName.isEmpty && !playerLastName.isEmpty else {
             return false
         }

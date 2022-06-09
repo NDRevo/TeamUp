@@ -12,7 +12,7 @@ import SwiftUI
 
     @Published var eventName: String         = ""
     @Published var eventDate: Date           = Date()
-    @Published var eventGame: Games          = .valorant
+    @Published var eventGame: Games          = .apex
     @Published var eventDescription: String  = ""
     @Published var eventLocation: String     = ""
 
@@ -51,7 +51,7 @@ import SwiftUI
     func resetInput(){
         eventName = ""
         eventDate = currentDateAndHour
-        eventGame = .valorant
+        eventGame = .none
         eventDescription = ""
         eventLocation = ""
     }

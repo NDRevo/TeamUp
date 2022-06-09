@@ -217,14 +217,16 @@ struct EventMatchCellView: View {
         HStack(spacing: 32){
             VStack(alignment: .leading, spacing: 12){
                 Text(matchName)
+                    .foregroundColor(Color.appCell)
                     .bold()
                     .font(.title3)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
+                    //Adjust based on amount of events
                     .background(.red)
-                    .clipShape(Capsule())
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                 HStack {
-                    Image(systemName: "clock.circle")
+                    Image(systemName: "calendar.badge.clock")
                     Text(matchTime)
                 }
             }

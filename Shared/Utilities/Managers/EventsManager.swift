@@ -18,14 +18,10 @@ final class EventsManager: ObservableObject {
 
     func getRanksForGame(game: Games) -> [String]{
         switch game {
-            case .overwatch:
-                return ["None", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Grandmaster", "Top 500"]
-            case .apex:
-                return ["None", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Apex Predator"]
-            case .valorant:
-                return ["None", "Iron", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Immortal", "Radiant"]
-            case .none:
-                return []
+            case .overwatch:    return ["Unranked", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Grandmaster", "Top 500"]
+            case .apex:         return ["Unranked", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Apex Predator"]
+            case .valorant:     return ["Unranked", "Iron", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Immortal", "Radiant"]
+            case .none:         return []
         }
     }
 }

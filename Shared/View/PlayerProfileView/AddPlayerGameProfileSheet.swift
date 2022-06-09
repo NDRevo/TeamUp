@@ -18,15 +18,18 @@ struct AddPlayerGameProfileSheet: View {
         List {
             Section{
                 Picker("Game", selection: $viewModel.selectedGame) {
-                    ForEach(Games.allCases, id: \.self){ game in
+                    ForEach(Games.allCases[1...], id: \.self){ game in
                         Text(game.rawValue)
                     }
                 }
                 .pickerStyle(.menu)
+
                 TextField("Game ID", text: $viewModel.gameID)
                     .disableAutocorrection(true)
                     .keyboardType(.twitter)
                     .textInputAutocapitalization(.never)
+
+                //BUG: Currently doesnt display text
                 Picker("Rank", selection: $viewModel.playerGameRank) {
                     ForEach(eventsManager.getRanksForGame(game: viewModel.selectedGame), id: \.self){ rank in
                         Text(rank)
