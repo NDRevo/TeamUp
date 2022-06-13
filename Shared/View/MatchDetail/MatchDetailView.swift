@@ -56,7 +56,7 @@ struct MatchDetailView: View {
         }
         .background(Color.appBackground)
         .sheet(isPresented: $viewModel.isShowingAddPlayer) {
-            NavigationStack{
+            NavigationView{
                 AddEventPlayerSheet(viewModel: viewModel)
             }
         }
@@ -100,7 +100,7 @@ struct MatchDetailView: View {
             }
         }
         .sheet(isPresented: $viewModel.isShowingAddTeam) {
-            NavigationStack{
+            NavigationView{
                 AddTeamSheet(viewModel: viewModel)
             }
             .presentationDetents([.medium])

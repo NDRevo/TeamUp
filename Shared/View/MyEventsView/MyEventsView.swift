@@ -16,7 +16,7 @@ struct MyEventsView: View {
     @State private var myUnpublishedEvents: [TUEvent] = []
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ScrollView {
                 VStack(alignment: .leading){
                     if !myUnpublishedEvents.isEmpty {
@@ -25,7 +25,9 @@ struct MyEventsView: View {
                             .font(.title2)
                             .padding(.horizontal)
                         ForEach(myUnpublishedEvents) { event in
-                            NavigationLink(value: event){
+                            NavigationLink {
+                                EventDetailView(viewModel: EventDetailViewModel(event: event))
+                            } label: {
                                 EventListCell(event: event)
                             }
                         }
@@ -45,9 +47,6 @@ struct MyEventsView: View {
                     Spacer()
                 }
             }
-            .navigationDestination(for: TUEvent.self, destination: { event in
-                    EventDetailView(viewModel: EventDetailViewModel(event: event))
-            })
             .navigationTitle(Text("My Events"))
             .task {
                 getMyPublishedEvents()
