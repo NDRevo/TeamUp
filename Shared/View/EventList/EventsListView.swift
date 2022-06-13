@@ -27,10 +27,6 @@ struct EventsListView: View {
             .navigationDestination(for: TUEvent.self, destination: { event in
                     EventDetailView(viewModel: EventDetailViewModel(event: event))
             })
-            .refreshable {
-                //Doesn't work
-                viewModel.refresh(for: eventsManager)
-            }
             .task {
                 viewModel.startUp(for: eventsManager)
             }

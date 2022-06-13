@@ -23,9 +23,7 @@ struct PlayerGameProfileCell: View {
                 .shadow(color: .black.opacity(0.10), radius: 2, x: 0, y: 7)
                 .overlay(alignment: .top){
                     Rectangle()
-                        .overlay(
-                            LinearGradient(colors: [Color.getGameColor(gameName: gameProfile.gameName), Color.getGameColorGradient(gameName: gameProfile.gameName)], startPoint: .top, endPoint: .bottom)
-                        )
+                        .fill(Color.getGameColor(gameName: gameProfile.gameName).gradient)
                         .cornerRadius(10, corners: [.topLeft, .topRight])
                         .frame(height: 45)
                         .overlay(alignment: .center){
