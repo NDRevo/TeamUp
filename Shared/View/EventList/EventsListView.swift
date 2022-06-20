@@ -28,6 +28,7 @@ struct EventsListView: View {
             .navigationTitle("Events")
             .task {
                 viewModel.startUp(for: eventsManager)
+                eventsManager.getPublicEvents()
             }
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                 viewModel.alertItem.alertMessage

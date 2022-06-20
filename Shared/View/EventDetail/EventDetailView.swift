@@ -76,12 +76,7 @@ struct EventDetailView: View {
         //BUG: Fails as of Xcode 14 beta 1: NavigationAuthority
         .confirmationDialog("Delete Event?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {
-                viewModel.deleteEvent()
-                if viewModel.event.isPublished == 1 {
-                    eventsManager.myPublishedEvents.removeAll(where: {$0.id == viewModel.event.id})
-                } else {
-                    eventsManager.myUnpublishedEvents.removeAll(where: {$0.id == viewModel.event.id})
-                }
+                eventsManager.deleteEvent(for: viewModel.event)
             } label: {
                 Text("Delete")
             }

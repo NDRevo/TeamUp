@@ -17,7 +17,6 @@ import SwiftUI
     @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 
     func refresh(for eventsManager: EventsManager){
-        getPublishedEvents(for: eventsManager)
         getPlayers(for: eventsManager)
         getPlayersAndProfiles(for: eventsManager)
     }
@@ -26,28 +25,11 @@ import SwiftUI
         //FIX
         //Forces app to call this once, but would force user to pull to refresh to get new events
         //Fixed flashing list cell
-        //if !onAppearHasFired {
-            getPublishedEvents(for: eventsManager)
+        if !onAppearHasFired {
             getPlayers(for: eventsManager)
             getPlayersAndProfiles(for: eventsManager)
-       // }
-       // onAppearHasFired = true
-    }
-
-    private func getPublishedEvents(for eventsManager: EventsManager){
-        Task {
-            do{
-                eventsManager.events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: false)
-                
-                //More efficient way of doing this?
-                for event in eventsManager.events {
-                    eventsManager.playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id).count
-                }
-            } catch {
-                alertItem = AlertContext.unableToRetrieveEvents
-                isShowingAlert = true
-            }
         }
+        onAppearHasFired = true
     }
 
     private func getPlayers(for eventsManager: EventsManager){
