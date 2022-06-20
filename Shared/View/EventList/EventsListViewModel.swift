@@ -22,9 +22,8 @@ import SwiftUI
     }
 
     func startUp(for eventsManager: EventsManager){
-        //FIX
+        //FIX: Eventually this will have to be changed
         //Forces app to call this once, but would force user to pull to refresh to get new events
-        //Fixed flashing list cell
         if !onAppearHasFired {
             getPlayers(for: eventsManager)
             getPlayersAndProfiles(for: eventsManager)

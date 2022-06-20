@@ -45,6 +45,7 @@ import SwiftUI
                 } else {
                     myUnpublishedEvents.removeAll(where: {$0.id == event.id})
                 }
+                events.removeAll(where: {$0.id == event.id})
             } catch{
                 alertItem = AlertContext.unableToDeleteEvent
                 isShowingAlert = true
