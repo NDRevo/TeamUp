@@ -16,7 +16,6 @@
 		560E427927907E1200408B4B /* MatchDetailButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427827907E1200408B4B /* MatchDetailButton.swift */; };
 		560E427A27907E1200408B4B /* MatchDetailButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427827907E1200408B4B /* MatchDetailButton.swift */; };
 		560E427C2790825E00408B4B /* AddEventSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427B2790825E00408B4B /* AddEventSheet.swift */; };
-		560E427D2790825E00408B4B /* AddEventSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427B2790825E00408B4B /* AddEventSheet.swift */; };
 		560E42802790B2C000408B4B /* AddMatchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427F2790B2C000408B4B /* AddMatchSheet.swift */; };
 		560E42812790B2C000408B4B /* AddMatchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427F2790B2C000408B4B /* AddMatchSheet.swift */; };
 		560E42832790B2C700408B4B /* AddPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42822790B2C700408B4B /* AddPlayerSheet.swift */; };
@@ -198,7 +197,6 @@
 				560E42B727926A3F00408B4B /* EventsListViewModel.swift */,
 				566AB2E7278D285000F4035C /* EventsListView.swift */,
 				560E4268278E8A2A00408B4B /* EventListCell.swift */,
-				560E427B2790825E00408B4B /* AddEventSheet.swift */,
 			);
 			path = EventList;
 			sourceTree = "<group>";
@@ -383,6 +381,7 @@
 			children = (
 				569CAAB5285192D10081AB3B /* MyEventsViewModel.swift */,
 				569CAAB328518FB50081AB3B /* MyEventsView.swift */,
+				560E427B2790825E00408B4B /* AddEventSheet.swift */,
 			);
 			path = MyEventsView;
 			sourceTree = "<group>";
@@ -606,7 +605,6 @@
 				566AB2F0278D2DAD00F4035C /* TUEvent.swift in Sources */,
 				566AB2F6278D2DC200F4035C /* TUTeam.swift in Sources */,
 				566AB2F3278D2DB300F4035C /* TUPlayer.swift in Sources */,
-				560E427D2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42992790C84900408B4B /* EventsManager.swift in Sources */,
 				56EDBB4227E570B2001D68CF /* EventDetailManager.swift in Sources */,
 				5623DB4727B4B14C0015D59A /* View+Ext.swift in Sources */,

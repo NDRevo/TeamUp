@@ -10,7 +10,7 @@ import SwiftUI
 struct AddEventSheet: View {
 
     @EnvironmentObject var eventsManager: EventsManager
-    @ObservedObject var viewModel: EventsListViewModel
+    @ObservedObject var viewModel: MyEventsViewModel
 
     @Environment(\.dismiss) var dismiss
     @Environment(\.editMode) var editMode
@@ -65,6 +65,6 @@ struct AddEventSheet: View {
 
 struct AddEventSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddEventSheet(viewModel: EventsListViewModel())
+        AddEventSheet(viewModel: MyEventsViewModel())
     }
 }

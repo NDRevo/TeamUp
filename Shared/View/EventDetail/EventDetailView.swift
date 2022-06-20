@@ -52,17 +52,16 @@ struct EventDetailView: View {
                     Menu {
                         if viewModel.event.isPublished == 0 {
                             Button {
-                                viewModel.publishEvent()
+                                viewModel.publishEvent(eventsManager: eventsManager)
+                                eventsManager.getMyPublishedEvents()
+                                eventsManager.getMyUnpublishedEvents()
                             } label: {
                                 Text("Publish")
                             }
                         }
 
                         Button(role: .destructive) {
-                            //viewModel.isShowingConfirmationDialogue = true
-                            viewModel.deleteEvent()
-                            eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
-                            dismiss()
+                            viewModel.isShowingConfirmationDialogue = true
                         } label: {
                             Text("Delete Event")
                         }
@@ -75,16 +74,20 @@ struct EventDetailView: View {
             }
         }
         //BUG: Fails as of Xcode 14 beta 1: NavigationAuthority
-//        .confirmationDialog("Delete Event?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
-//            Button(role: .destructive) {
-//                viewModel.deleteEvent()
-//                eventsManager.events.removeAll(where: {$0.id == viewModel.event.id})
-//            } label: {
-//                Text("Delete")
-//            }
-//        }, message: {
-//            Text("Do you want to delete the event? You won't be able to recover it.")
-//        })
+        .confirmationDialog("Delete Event?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
+            Button(role: .destructive) {
+                viewModel.deleteEvent()
+                if viewModel.event.isPublished == 1 {
+                    eventsManager.myPublishedEvents.removeAll(where: {$0.id == viewModel.event.id})
+                } else {
+                    eventsManager.myUnpublishedEvents.removeAll(where: {$0.id == viewModel.event.id})
+                }
+            } label: {
+                Text("Delete")
+            }
+        }, message: {
+            Text("Do you want to delete the event? You won't be able to recover it.")
+        })
         .background(Color.appBackground)
     }
 }

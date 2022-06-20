@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct TeamUpApp: App {
 
-    let eventsManager = EventsManager()
+    @StateObject var eventsManager = EventsManager()
 
     var body: some Scene {
         WindowGroup {

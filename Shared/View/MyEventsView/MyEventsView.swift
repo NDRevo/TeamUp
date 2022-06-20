@@ -8,23 +8,20 @@
 import SwiftUI
 
 struct MyEventsView: View {
-    
-//    @StateObject private var viewModel = MyEventsViewModel()
+
+    @StateObject private var viewModel = MyEventsViewModel()
     @EnvironmentObject private var eventsManager: EventsManager
-    
-    @State private var myPublishedEvents: [TUEvent] = []
-    @State private var myUnpublishedEvents: [TUEvent] = []
-    
+
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading){
-                    if !myUnpublishedEvents.isEmpty {
+                    if !eventsManager.myUnpublishedEvents.isEmpty {
                         Text("Unpublished Events")
                             .bold()
                             .font(.title2)
                             .padding(.horizontal)
-                        ForEach(myUnpublishedEvents) { event in
+                        ForEach(eventsManager.myUnpublishedEvents) { event in
                             NavigationLink {
                                 EventDetailView(viewModel: EventDetailViewModel(event: event))
                             } label: {
@@ -33,13 +30,15 @@ struct MyEventsView: View {
                         }
                     }
                     
-                    if !myPublishedEvents.isEmpty {
+                    if !eventsManager.myPublishedEvents.isEmpty {
                         Text("Published Events")
                             .bold()
                             .font(.title2)
                             .padding(.horizontal)
-                        ForEach(myPublishedEvents) { event in
-                            NavigationLink(value: event){
+                        ForEach(eventsManager.myPublishedEvents) { event in
+                            NavigationLink {
+                                EventDetailView(viewModel: EventDetailViewModel(event: event))
+                            } label: {
                                 EventListCell(event: event)
                             }
                         }
@@ -49,42 +48,41 @@ struct MyEventsView: View {
             }
             .navigationTitle(Text("My Events"))
             .task {
-                getMyPublishedEvents()
-                getMyUnpublishedEvents()
+                eventsManager.getMyPublishedEvents()
+                eventsManager.getMyUnpublishedEvents()
             }
-            .refreshable {
-                getMyPublishedEvents()
-                getMyUnpublishedEvents()
+            .toolbar {
+                EventsListToolbarContent(viewModel: viewModel)
+            }
+            .sheet(isPresented: $viewModel.isPresentingAddEvent) {
+                NavigationView {
+                    AddEventSheet(viewModel: viewModel)
+                }
             }
         }
 
-    }
-    
-    func getMyPublishedEvents(){
-        Task {
-            do{
-                myPublishedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: true)
-            } catch {
-//                alertItem = AlertContext.unableToRetrieveEvents
-//                isShowingAlert = true
-            }
-        }
-    }
-    
-    func getMyUnpublishedEvents(){
-        Task {
-            do{
-               myUnpublishedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: false, withSpecificOwner: true)
-            } catch {
-//                alertItem = AlertContext.unableToRetrieveEvents
-//                isShowingAlert = true
-            }
-        }
     }
 }
 
 struct MyEventsView_Previews: PreviewProvider {
     static var previews: some View {
         MyEventsView()
+    }
+}
+
+struct EventsListToolbarContent: ToolbarContent {
+    @ObservedObject var viewModel: MyEventsViewModel
+
+    var body: some ToolbarContent {
+        ToolbarItemGroup(placement: .primaryAction) {
+            Button {
+                viewModel.isPresentingAddEvent = true
+                viewModel.resetInput()
+            } label: {
+                Image(systemName: "plus.rectangle")
+                    .tint(.blue)
+            }
+            .accessibilityLabel("Create Player")
+        }
     }
 }
