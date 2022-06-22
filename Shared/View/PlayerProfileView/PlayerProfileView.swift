@@ -21,23 +21,8 @@ struct PlayerProfileView: View {
             } else {
                 ScrollView {
                     VStack(alignment: .leading){
-                        RoundedRectangle(cornerRadius: 8)
-                            .frame(height: 100)
-                            .foregroundColor(.appCell)
-                            .overlay(alignment: .center) {
-                                HStack(spacing: 12){
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .frame(width: 80,height: 80)
-                                        .foregroundColor(.appBackground)
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text("\(viewModel.playerFirstName) \(viewModel.playerLastName)")
-                                            .font(.title)
-                                            .bold()
-                                    }
-                                    Spacer()
-                                }
-                                .padding(.horizontal)
-                            }
+                        ProfileNameBar(viewModel: viewModel)
+
                         HStack {
                             Text("Game Profiles")
                                 .bold()
@@ -55,6 +40,7 @@ struct PlayerProfileView: View {
                                     .frame(width:20)
                             }
                         }
+
                         ScrollView(.horizontal) {
                             LazyHStack(alignment: .top, spacing: 10) {
                                 ForEach(viewModel.playerGameProfiles) { gameProfile in
@@ -66,20 +52,18 @@ struct PlayerProfileView: View {
                             }
                         }
                         .frame(height: viewModel.playerGameProfiles.isEmpty ? 20 : 180)
-                        .scrollIndicators(.hidden)
-                        
-                        VStack{
-                            HStack {
-                                Text("Events Participating")
-                                    .bold()
-                                    .font(.title2)
-                                    .accessibilityAddTraits(.isHeader)
-                                Spacer()
-                            }
-                            LazyVStack(alignment: .center){
-                                ForEach(viewModel.eventsParticipating) { event in
-                                    EventListCell(event: event)
-                                }
+
+                        HStack {
+                            Text("Events Participating")
+                                .bold()
+                                .font(.title2)
+                                .accessibilityAddTraits(.isHeader)
+                            Spacer()
+                        }
+
+                        LazyVStack(alignment: .center){
+                            ForEach(viewModel.eventsParticipating) { event in
+                                EventListCell(event: event)
                             }
                         }
                     }
@@ -110,5 +94,30 @@ struct PlayerProfileView: View {
 struct PlayerProfileView_Previews: PreviewProvider {
     static var previews: some View {
         PlayerProfileView(viewModel: PlayerProfileViewModel())
+    }
+}
+
+struct ProfileNameBar: View {
+
+    @ObservedObject var viewModel: PlayerProfileViewModel
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .frame(height: 100)
+            .foregroundColor(.appCell)
+            .overlay(alignment: .center) {
+                HStack(spacing: 12){
+                    RoundedRectangle(cornerRadius: 8)
+                        .frame(width: 80,height: 80)
+                        .foregroundColor(.appBackground)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("\(viewModel.playerFirstName) \(viewModel.playerLastName)")
+                            .font(.title)
+                            .bold()
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal)
+            }
     }
 }
