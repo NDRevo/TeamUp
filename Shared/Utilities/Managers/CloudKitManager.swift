@@ -260,4 +260,8 @@ final class CloudKitManager {
     func fetchRecord(with id: CKRecord.ID) async throws -> CKRecord {
         return try await container.publicCloudDatabase.record(for: id)
     }
+
+    func fetchRecords(with ids: [CKRecord.ID]) async throws -> [CKRecord.ID : Result<CKRecord, any Error>] {
+        return try await container.publicCloudDatabase.records(for: ids)
+    }
 }

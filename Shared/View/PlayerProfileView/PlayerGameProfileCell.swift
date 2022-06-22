@@ -17,60 +17,43 @@ struct PlayerGameProfileCell: View {
     var gameProfile: TUPlayerGameProfile
 
     var body: some View {
-        VStack {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(.appCell)
-                .shadow(color: .black.opacity(0.10), radius: 2, x: 0, y: 7)
-                .overlay(alignment: .top){
-                    Rectangle()
-                        .fill(Color.getGameColor(gameName: gameProfile.gameName).gradient)
-                        .cornerRadius(10, corners: [.topLeft, .topRight])
-                        .frame(height: 45)
-                        .overlay(alignment: .center){
-                            Text("\(gameProfile.gameName)")
-                                .font(.system(size: 20, weight: .heavy))
-                                .foregroundColor(.white)
-                        }
-                }
-                .overlay(alignment: .topTrailing){
-                    if editMode?.wrappedValue == .active{
-                        Button(role: .destructive) {
-                            viewModel.isShowingConfirmationDialogue = true
-                        } label: {
-                            Image(systemName: "minus.circle.fill")
-                                .renderingMode(.original)
-                        }
-                        .font(.system(size: 24, weight: .regular, design: .default))
-                        .offset(x: 9, y: -12)
+        RoundedRectangle(cornerRadius: 8)
+            .frame(width: 205, height: 180)
+            .foregroundColor(.appCell)
+            .overlay(alignment: .topLeading) {
+                VStack(alignment: .leading, spacing: 4){
+                    HStack {
+                        Text(gameProfile.gameName)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 4)
+                            .foregroundColor(Color.appCell)
+                            .bold()
+                            .font(.title3)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
+                        //Adjust based on amount of events
+                            .background(Color.getGameColor(gameName: gameProfile.gameName))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .padding(EdgeInsets(top: 8, leading: 8, bottom: 0, trailing: 0))
+                        Spacer()
+                        Image(systemName: "square.and.pencil")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20)
+                            .padding(.trailing, 8)
+                            .foregroundColor(.blue)
                     }
-                }
-                .overlay(alignment: .bottomLeading) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack(alignment: .firstTextBaseline) {
-                            Text("ID:")
-                                .bold()
-                                .font(.subheadline)
-                            Text("\(gameProfile.gameID)")
-                                .font(.callout)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.65)
-                                .textSelection(.enabled)
-                            Spacer()
-                        }
-                        HStack {
-                            Text("Rank:")
-                                .bold()
-                                .font(.subheadline)
-                            Text("\(gameProfile.gameRank)")
-                                .font(.callout)
-                                .minimumScaleFactor(0.75)
-                        }
+                    VStack(alignment: .leading) {
+                        Text(gameProfile.gameID)
+                            .bold()
+                            .font(.title)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.35)
+                        Text(gameProfile.gameRank)
                     }
-                    .frame(width: 155, height: 60)
-                    .padding(.horizontal, 8)
+                    .padding(.leading, 8)
                 }
-                .frame(width: 170, height: 110)
-        }
+            }
     }
 }
 

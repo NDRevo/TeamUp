@@ -20,7 +20,6 @@ struct MyEventsView: View {
                         Text("Unpublished Events")
                             .bold()
                             .font(.title2)
-                            .padding(.horizontal)
                         ForEach(eventsManager.myUnpublishedEvents) { event in
                             NavigationLink {
                                 EventDetailView(viewModel: EventDetailViewModel(event: event))
@@ -34,7 +33,6 @@ struct MyEventsView: View {
                         Text("Published Events")
                             .bold()
                             .font(.title2)
-                            .padding(.horizontal)
                         ForEach(eventsManager.myPublishedEvents) { event in
                             NavigationLink {
                                 EventDetailView(viewModel: EventDetailViewModel(event: event))
@@ -46,6 +44,8 @@ struct MyEventsView: View {
                     Spacer()
                 }
             }
+            .padding(.horizontal, 12)
+            .background(Color.appBackground)
             .navigationTitle(Text("My Events"))
             .task {
                 eventsManager.getMyPublishedEvents()

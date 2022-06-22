@@ -11,6 +11,7 @@ import CloudKit
 @MainActor final class PlayerProfileViewModel: ObservableObject {
 
     @Published var playerGameProfiles: [TUPlayerGameProfile] = []
+    @Published var eventsParticipating: [TUEvent] = []
 
     @Published var playerFirstName: String       = ""
     @Published var playerLastName: String        = ""
@@ -126,6 +127,32 @@ import CloudKit
         }
     }
 
+    func getEventsParticipating(){
+        Task {
+            do {
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: CloudKitManager.shared.profileRecordID!)
+                let references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
+                let recordIDFromReference = references.map({$0.recordID})
+
+                let records = try await CloudKitManager.shared.fetchRecords(with: recordIDFromReference)
+                let mappedRecords = records.values.compactMap { result in
+                    switch result {
+                    case .success(let data):
+                        return data
+                    case .failure(_):
+                        return nil
+                    }
+                }
+
+                eventsParticipating = mappedRecords.map(TUEvent.init).sorted(by: {$0.eventDate < $1.eventDate})
+
+            } catch {
+                //ALERT: Unable to get events participating
+                isShowingAlert = true
+            }
+        }
+    }
+
     func getProfile(){
         guard let userRecord = CloudKitManager.shared.userRecord else {
             //No user record found
@@ -157,7 +184,7 @@ import CloudKit
             do {
                 playerGameProfiles = try await CloudKitManager.shared.getPlayerGameProfiles()
             } catch {
-                //Unable to get player game profiles
+                //ALERT: Unable to get player game profiles
                 alertItem = AlertContext.unableToGetPlayerList
             }
         }
@@ -178,7 +205,7 @@ import CloudKit
                 let _ = try await CloudKitManager.shared.save(record: userRecord)
 
             } catch {
-                //Unable to get player game profiles
+                //ALERT: Unable to delete profiles
                 alertItem = AlertContext.unableToGetPlayerList
             }
         }

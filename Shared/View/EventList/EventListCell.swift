@@ -89,12 +89,11 @@ struct EventListCell: View {
                     }
                 }
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 12)
             .padding(.vertical, 12)
             .background{
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(.appCell)
-                    .padding(.horizontal, 12)
             }
             .tint(.primary)
         }

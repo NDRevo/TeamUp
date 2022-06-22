@@ -25,6 +25,7 @@ struct EventsListView: View {
                     }
                 }
             }
+            .padding(.horizontal, 12)
             .navigationTitle("Events")
             .task {
                 viewModel.startUp(for: eventsManager)
