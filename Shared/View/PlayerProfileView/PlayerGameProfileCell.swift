@@ -24,16 +24,17 @@ struct PlayerGameProfileCell: View {
                 VStack(alignment: .leading, spacing: 4){
                     HStack {
                         Text(gameProfile.gameName)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 4)
                             .foregroundColor(Color.appCell)
-                            .bold()
-                            .font(.title3)
+                            .fontWeight(.heavy)
+                            .font(.body)
                             .lineLimit(1)
                             .minimumScaleFactor(0.75)
-                        //Adjust based on amount of events
-                            .background(Color.getGameColor(gameName: gameProfile.gameName))
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color.getGameColor(gameName: gameProfile.gameName))
+                            }
                             .padding(EdgeInsets(top: 8, leading: 8, bottom: 0, trailing: 0))
                         Spacer()
                         Image(systemName: "square.and.pencil")
@@ -42,6 +43,9 @@ struct PlayerGameProfileCell: View {
                             .frame(width: 20)
                             .padding(.trailing, 8)
                             .foregroundColor(.blue)
+                            .onTapGesture {
+                                viewModel.isEditingGameProfile.toggle()
+                            }
                     }
                     VStack(alignment: .leading) {
                         Text(gameProfile.gameID)
@@ -51,7 +55,7 @@ struct PlayerGameProfileCell: View {
                             .minimumScaleFactor(0.35)
                         Text(gameProfile.gameRank)
                     }
-                    .padding(.leading, 8)
+                    .padding(.horizontal, 8)
                 }
             }
     }

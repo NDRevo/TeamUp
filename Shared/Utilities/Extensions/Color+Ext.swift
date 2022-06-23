@@ -12,7 +12,7 @@ extension Color {
     static let appBackground = Color("appBackground")
     static let appCell       = Color("appCell")
 
-    static let apex                     = Color(red: 164 / 255, green: 55 / 255, blue: 61 / 255)
+    static let apexlegend               = Color(red: 164 / 255, green: 55 / 255, blue: 61 / 255)
     static let apexBottomGradient       = Color(red: 219 / 255, green: 72 / 255, blue: 81 / 255)
     
     static let overwatch                = Color(red: 249 / 255, green: 158 / 255, blue: 26 / 255)
@@ -26,7 +26,7 @@ extension Color {
             case "Overwatch":
                 return .overwatch
             case "Apex Legends":
-                return .apex
+                return .apexlegend
             case "VALORANT":
                 return .valorant
             default:

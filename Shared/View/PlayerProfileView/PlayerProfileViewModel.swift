@@ -17,12 +17,13 @@ import CloudKit
     @Published var playerLastName: String        = ""
 
     @Published var gameID: String                = ""
-    @Published var selectedGame: Games           = .apex
+    @Published var selectedGame: Games           = .apexlegends
     @Published var playerGameRank: String        = ""
 
     @Published var isPresentingSheet             = false
     @Published var isShowingAlert                = false
     @Published var isShowingConfirmationDialogue = false
+    @Published var isEditingGameProfile          = false
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
     func resetInput(){
@@ -123,6 +124,24 @@ import CloudKit
             } catch {
                 alertItem = AlertContext.unableToSaveGameProfile
                 isShowingAlert = true
+            }
+        }
+    }
+
+    func saveEditGameProfile(of gameProfile: TUPlayerGameProfile.ID, gameID: String, gameRank: String){
+        Task{
+            do {
+                let gameProfileRecord = try await CloudKitManager.shared.fetchRecord(with: gameProfile)
+                
+                gameProfileRecord[TUPlayerGameProfile.kGameID] = gameID
+                gameProfileRecord[TUPlayerGameProfile.kGameRank] = gameRank
+                let _ = try await CloudKitManager.shared.save(record: gameProfileRecord)
+                
+                getGameProfiles()
+
+            } catch {
+//                alertItem = AlertContext.unableToSaveGameProfile
+//                isShowingAlert = true
             }
         }
     }

@@ -20,11 +20,13 @@ struct MyEventsView: View {
                         Text("Unpublished Events")
                             .bold()
                             .font(.title2)
-                        ForEach(eventsManager.myUnpublishedEvents) { event in
-                            NavigationLink {
-                                EventDetailView(viewModel: EventDetailViewModel(event: event))
-                            } label: {
-                                EventListCell(event: event)
+                        VStack(spacing: 12){
+                            ForEach(eventsManager.myUnpublishedEvents) { event in
+                                NavigationLink {
+                                    EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                } label: {
+                                    EventListCell(event: event)
+                                }
                             }
                         }
                     }
@@ -33,11 +35,13 @@ struct MyEventsView: View {
                         Text("Published Events")
                             .bold()
                             .font(.title2)
-                        ForEach(eventsManager.myPublishedEvents) { event in
-                            NavigationLink {
-                                EventDetailView(viewModel: EventDetailViewModel(event: event))
-                            } label: {
-                                EventListCell(event: event)
+                        VStack(spacing: 12){
+                            ForEach(eventsManager.myPublishedEvents) { event in
+                                NavigationLink {
+                                    EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                } label: {
+                                    EventListCell(event: event)
+                                }
                             }
                         }
                     }
@@ -45,7 +49,6 @@ struct MyEventsView: View {
                 }
             }
             .padding(.horizontal, 12)
-            .background(Color.appBackground)
             .navigationTitle(Text("My Events"))
             .task {
                 eventsManager.getMyPublishedEvents()
@@ -59,8 +62,8 @@ struct MyEventsView: View {
                     AddEventSheet(viewModel: viewModel)
                 }
             }
+            .background(Color.appBackground)
         }
-
     }
 }
 

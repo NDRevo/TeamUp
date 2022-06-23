@@ -12,7 +12,7 @@ import SwiftUI
 
     @Published var eventName: String         = ""
     @Published var eventDate: Date           = Date()
-    @Published var eventGame: Games          = .apex
+    @Published var eventGame: Games          = .apexlegends
     @Published var eventDescription: String  = ""
     @Published var eventLocation: String     = ""
     

@@ -48,6 +48,12 @@ struct PlayerProfileView: View {
                                         .onLongPressGesture {
                                             viewModel.deleteGameProfile(for: gameProfile.id, eventsManager: eventsManager)
                                         }
+                                        .sheet(isPresented: $viewModel.isEditingGameProfile){
+                                            NavigationView {
+                                                EditGameProfileView(viewModel: viewModel, gameProfile: gameProfile)
+                                            }
+                                            .presentationDetents([.medium])
+                                        }
                                 }
                             }
                         }
@@ -61,13 +67,13 @@ struct PlayerProfileView: View {
                             Spacer()
                         }
 
-                        LazyVStack(alignment: .center){
+                        LazyVStack(alignment: .center, spacing: 12){
                             ForEach(viewModel.eventsParticipating) { event in
                                 EventListCell(event: event)
                             }
                         }
+                        .padding(.bottom, 12)
                     }
-                    Spacer()
                 }
                 .scrollIndicators(.hidden)
                 .padding(.horizontal, 12)

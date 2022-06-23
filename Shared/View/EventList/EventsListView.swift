@@ -15,7 +15,7 @@ struct EventsListView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVStack(spacing: 18) {
+                LazyVStack(spacing: 12) {
                     ForEach(eventsManager.events){ event in
                         NavigationLink {
                             EventDetailView(viewModel: EventDetailViewModel(event: event))
