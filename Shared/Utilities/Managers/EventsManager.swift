@@ -28,7 +28,7 @@ import SwiftUI
     func getRanksForGame(game: Games) -> [String]{
         switch game {
             case .overwatch:    return ["Unranked", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Grandmaster", "Top 500"]
-            case .apexlegends:         return ["Unranked", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Apex Predator"]
+            case .apexlegends:  return ["Unranked", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Apex Predator"]
             case .valorant:     return ["Unranked", "Iron", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Immortal", "Radiant"]
             case .none:         return []
         }
@@ -88,7 +88,7 @@ import SwiftUI
         Task {
             do{
                 events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: false)
-                
+
                 //More efficient way of doing this?
                 for event in events {
                     playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id).count
