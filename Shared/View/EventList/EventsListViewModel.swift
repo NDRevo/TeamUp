@@ -16,40 +16,4 @@ import SwiftUI
 
     @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 
-    func refresh(for eventsManager: EventsManager){
-        getPlayers(for: eventsManager)
-        getPlayersAndProfiles(for: eventsManager)
-    }
-
-    func startUp(for eventsManager: EventsManager){
-        //FIX: Eventually this will have to be changed
-        //Forces app to call this once, but would force user to pull to refresh to get new events
-        if !onAppearHasFired {
-            getPlayers(for: eventsManager)
-            getPlayersAndProfiles(for: eventsManager)
-        }
-        onAppearHasFired = true
-    }
-
-    private func getPlayers(for eventsManager: EventsManager){
-        Task {
-            do {
-                eventsManager.players = try await CloudKitManager.shared.getPlayers()
-            } catch {
-                alertItem = AlertContext.unableToGetPlayerList
-                isShowingAlert = true
-            }
-        }
-    }
-
-    private func getPlayersAndProfiles(for eventsManager: EventsManager){
-        Task {
-            do {
-                eventsManager.playerProfiles = try await CloudKitManager.shared.getPlayersAndProfiles()
-            } catch {
-                alertItem = AlertContext.unableToGetPlayerProfiles
-                isShowingAlert = true
-            }
-        }
-    }
 }
