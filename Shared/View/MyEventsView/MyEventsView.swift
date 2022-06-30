@@ -48,6 +48,7 @@ struct MyEventsView: View {
                     Spacer()
                 }
             }
+            .background(Color.appBackground)
             .padding(.horizontal, 12)
             .navigationTitle(Text("My Events"))
             .task {
@@ -62,7 +63,6 @@ struct MyEventsView: View {
                     AddEventSheet(viewModel: viewModel)
                 }
             }
-            .background(Color.appBackground)
         }
     }
 }
