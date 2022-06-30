@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct PlayerListView: View {
+struct DebugView: View {
 
     @EnvironmentObject private var eventsManager: EventsManager
-    @StateObject private var viewModel = PlayerListViewModel()
+    @StateObject private var viewModel = DebugViewModel()
 
     var body: some View {
         NavigationView {
@@ -61,14 +61,14 @@ struct PlayerListView: View {
 
 struct PlayerListView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerListView()
+        DebugView()
             .environmentObject(EventsManager())
     }
 }
 
 struct PlayerListToolbarContent: ToolbarContent {
 
-    @ObservedObject var viewModel: PlayerListViewModel
+    @ObservedObject var viewModel: DebugViewModel
     var playerList: [TUPlayer]
 
     var body: some ToolbarContent {

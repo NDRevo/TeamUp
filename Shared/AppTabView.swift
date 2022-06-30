@@ -25,7 +25,7 @@ struct AppTabView: View {
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
                 }
-            PlayerListView()
+            DebugView()
                 .tabItem {
                     Label("Players", systemImage: "person.3.fill")
                 }

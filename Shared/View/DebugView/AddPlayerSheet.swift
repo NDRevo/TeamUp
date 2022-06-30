@@ -11,7 +11,7 @@ import CloudKit
 struct AddPlayerSheet: View {
 
     @EnvironmentObject var eventsManager: EventsManager
-    @ObservedObject var viewModel: PlayerListViewModel
+    @ObservedObject var viewModel: DebugViewModel
 
     @Environment(\.dismiss) var dismiss
 
@@ -50,7 +50,7 @@ struct AddPlayerSheet: View {
 
 struct AddPlayerSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddPlayerSheet(viewModel: PlayerListViewModel())
+        AddPlayerSheet(viewModel: DebugViewModel())
             .environmentObject(EventsManager())
     }
 }

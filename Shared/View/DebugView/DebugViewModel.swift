@@ -8,7 +8,7 @@
 import CloudKit
 import SwiftUI
 
-@MainActor final class PlayerListViewModel: ObservableObject {
+@MainActor final class DebugViewModel: ObservableObject {
 
     @Published var playerFirstName: String  = ""
     @Published var playerLastName: String   = ""
