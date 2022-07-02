@@ -24,6 +24,10 @@ final class TeamUpUnitTests: XCTestCase {
         let events = try await cloudKitManager.getEvents(thatArePublished: true, withSpecificOwner: false)
         XCTAssert(!events.isEmpty)
     }
+    
+    func testFetchSearchPlayers() throws {
+        //New Tests
+    }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.

@@ -23,6 +23,7 @@ enum PresentingSheet {
 
     @Published var checkedOffPlayers: [TUPlayer]    = []
     @Published var availablePlayers: [TUPlayer]     = []
+    @Published var searchedPlayers: [TUPlayer]      = []
 
     @Published var matchName: String                = ""
     @Published var matchDate: Date                  = Date()
@@ -206,6 +207,17 @@ enum PresentingSheet {
         for player in players {
             if !eventDetailManager.playersInEvent.contains(where: {$0.id == player.id}){
                 availablePlayers.append(player)
+            }
+        }
+    }
+    
+    func getSearchedPlayers(with searchString: String) {
+        Task {
+            do {
+                availablePlayers =  try await CloudKitManager.shared.getPlayers(with: searchString)
+            } catch {
+                print(error)
+                //Unable to search for players
             }
         }
     }

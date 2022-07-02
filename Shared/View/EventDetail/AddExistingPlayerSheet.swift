@@ -14,6 +14,8 @@ struct AddExistingPlayerSheet: View {
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
+    @State var searchString: String = ""
+
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
@@ -26,15 +28,19 @@ struct AddExistingPlayerSheet: View {
                         }
                     }
                 }
-            } else {
-                VStack(spacing: 12) {
-                    Image(systemName: "person.3")
-                        .font(.system(size: 36))
-                        .foregroundColor(.secondary)
-                    Text("No available players")
-                        .foregroundColor(.secondary)
-                }.offset(y: -64)
             }
+//                VStack(spacing: 12) {
+//                    Image(systemName: "person.3")
+//                        .font(.system(size: 36))
+//                        .foregroundColor(.secondary)
+//                    Text("No available players")
+//                        .foregroundColor(.secondary)
+//                }.offset(y: -64)
+    
+        }
+        .searchable(text: $searchString)
+        .onSubmit(of: .search){
+            viewModel.getSearchedPlayers(with: searchString)
         }
         .navigationTitle("Add Player")
         .toolbar {
@@ -49,9 +55,6 @@ struct AddExistingPlayerSheet: View {
                     }
                 }
             }
-        }
-        .task {
-            viewModel.getAvailablePlayers(from: eventsManager.players, eventDetailManager: eventDetailManager)
         }
     }
 }
