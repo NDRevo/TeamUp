@@ -93,17 +93,19 @@ struct EventDetailView_Previews: PreviewProvider {
     }
 }
 
+//MARK: EventDetailsViewSection
+
 struct EventDetailsViewSection: View {
-
+    
     @ObservedObject var viewModel: EventDetailViewModel
-
+    
     var body: some View {
         HStack(spacing: 10){
-            detailItem(systemImageName: "calendar", textHeading: "Date", textContent: viewModel.event.getEventDetailDate)
+            DetailItemView(systemImageName: "calendar", textHeading: "Date", textContent: viewModel.event.getEventDetailDate)
             Spacer()
-            detailItem(systemImageName: "clock", textHeading: "Time", textContent: viewModel.event.getTime)
+            DetailItemView(systemImageName: "clock", textHeading: "Time", textContent: viewModel.event.getTime)
             Spacer()
-            detailItem(systemImageName: "map", textHeading: "Location", textContent: viewModel.event.eventLocation)
+            DetailItemView(systemImageName: "map", textHeading: "Location", textContent: viewModel.event.eventLocation)
         }
         .frame(maxWidth: .infinity)
         .padding()
@@ -113,7 +115,9 @@ struct EventDetailsViewSection: View {
     }
 }
 
-struct detailItem: View {
+//MARK: DetailItemView
+
+struct DetailItemView: View {
 
     var systemImageName: String
     var textHeading: String
@@ -136,9 +140,9 @@ struct detailItem: View {
 }
 
 struct EventDescriptionViewSection: View {
-
+    
     @ObservedObject var viewModel: EventDetailViewModel
-
+    
     var body: some View {
         HStack{
             VStack(alignment: .leading, spacing: 10){
@@ -157,6 +161,8 @@ struct EventDescriptionViewSection: View {
         .padding(.horizontal)
     }
 }
+
+//MARK: MatchesView
 
 struct MatchesView: View {
 
@@ -216,6 +222,8 @@ struct MatchesView: View {
     }
 }
 
+//MARK: EventMatchCellView
+
 struct EventMatchCellView: View {
 
     var matchName: String
@@ -247,6 +255,8 @@ struct EventMatchCellView: View {
     }
 }
 
+//MARK: ParticipantsView
+
 struct ParticipantsView: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
@@ -259,12 +269,13 @@ struct ParticipantsView: View {
                     .font(.title)
                 Spacer()
                 if viewModel.isEventOwner() {
-                    Button {
-                        viewModel.sheetToPresent = .addPlayer
+                    NavigationLink {
+                        AddExistingPlayerSheet(viewModel: viewModel)
                     } label: {
                         Image(systemName: "person.badge.plus")
                             .font(.system(size: 24, design: .default))
                     }
+
                 } else {
                     //Changes based on if already joined or not
                     Button {

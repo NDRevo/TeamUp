@@ -212,6 +212,7 @@ final class CloudKitManager {
 
         if withSpecificOwner {
             return records.filter{
+                //MARK: ERROR - Unexpectedly found nil (Cause: No/Slow internet connection)
                 $0[TUEvent.kEventOwner] == CKRecord.Reference(recordID: userRecord!.recordID, action: .none)
             }.map(TUEvent.init)
         }

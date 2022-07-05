@@ -149,6 +149,7 @@ import CloudKit
     func getEventsParticipating(){
         Task {
             do {
+                //MARK: ERROR - Unexpectedly found nil (Cause: No/Slow internet connection)
                 let playerRecord = try await CloudKitManager.shared.fetchRecord(with: CloudKitManager.shared.profileRecordID!)
                 let references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
                 let recordIDFromReference = references.map({$0.recordID})
