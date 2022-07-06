@@ -271,6 +271,7 @@ struct ParticipantsView: View {
                 if viewModel.isEventOwner() {
                     NavigationLink {
                         AddExistingPlayerSheet(viewModel: viewModel)
+                            .environmentObject(eventDetailManager)
                     } label: {
                         Image(systemName: "person.badge.plus")
                             .font(.system(size: 24, design: .default))

@@ -11,7 +11,6 @@ import CloudKit
 struct AddExistingPlayerSheet: View {
 
     @EnvironmentObject var eventDetailManager: EventDetailManager
-    @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     @State var searchString: String = ""
@@ -42,11 +41,18 @@ struct AddExistingPlayerSheet: View {
         .onSubmit(of: .search){
             viewModel.getSearchedPlayers(with: searchString)
         }
-        .navigationTitle("Add Player")
+        .onAppear {
+            viewModel.checkedOffPlayers = []
+            viewModel.availablePlayers = []
+        }
+        .onDisappear{
+            //When user tabs out of this view, it will return to EventDetailView
+            //Users may not be happy, idc for now
+            dismiss()
+        }
+        .submitLabel(.search)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Dismiss") {dismiss()}
-            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 if !viewModel.checkedOffPlayers.isEmpty {
                     Button("Add Players") {

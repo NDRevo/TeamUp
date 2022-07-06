@@ -19,6 +19,8 @@ struct AddPlayerListCell: View {
         return manager.playerProfiles[player.id]?.first(where: {$0.gameName == eventGame})
     }
 
+    @Environment(\.dismissSearch) var dismissSearch
+
     var body: some View {
         HStack{
             VStack(alignment: .leading){
@@ -49,6 +51,7 @@ struct AddPlayerListCell: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
+            dismissSearch()
             isChecked.toggle()
             if isChecked {
                 checkedOffPlayers.append(player)
