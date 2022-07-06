@@ -121,6 +121,7 @@ import CloudKit
 
                 let newPlayerProfile = TUPlayerGameProfile(record: playerGameProfile)
 
+                //MARK: BUG - Added the first gameProfile doesn't appear until tabbing in and out of view
                 eventsManager.playerProfiles[playerProfileID]?.append(newPlayerProfile)
                 playerGameProfiles.sort(by: {$0.gameName < $1.gameName})
             } catch {
