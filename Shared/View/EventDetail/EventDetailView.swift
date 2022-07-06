@@ -9,8 +9,6 @@ import SwiftUI
 
 struct EventDetailView: View {
 
-    @StateObject var eventDetailManager = EventDetailManager()
-
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
     @Environment(\.dismiss) var dismiss
@@ -26,7 +24,7 @@ struct EventDetailView: View {
         }
         .navigationTitle(viewModel.event.eventName)
         .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
-            viewModel.refreshEventDetails(eventDetailManager: eventDetailManager)
+            viewModel.refreshEventDetails()
         }){
             NavigationView {
                 viewModel.presentSheet()
@@ -34,16 +32,15 @@ struct EventDetailView: View {
             .presentationDetents([.medium, .large])
         }
         .task {
-            viewModel.setUpEventDetails(eventDetailManager: eventDetailManager)
+            viewModel.setUpEventDetails()
         }
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage
         })
-        .environmentObject(eventDetailManager)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
-                        viewModel.refreshEventDetails(eventDetailManager: eventDetailManager)
+                        viewModel.refreshEventDetails()
                     } label: {
                         Image(systemName: "arrow.clockwise")
                             .foregroundColor(.blue)
@@ -86,6 +83,8 @@ struct EventDetailView: View {
         .background(Color.appBackground)
     }
 }
+
+//MARK: EventDetailView_Preview
 
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
@@ -169,7 +168,6 @@ struct EventDescriptionViewSection: View {
 struct MatchesView: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
-    @EnvironmentObject var eventDetailManager: EventDetailManager
 
     var body: some View {
         VStack(alignment: .leading){
@@ -192,7 +190,7 @@ struct MatchesView: View {
             if viewModel.isLoading {
                 LoadingView()
                     .padding(.top, 48)
-            } else if eventDetailManager.matches.isEmpty {
+            } else if viewModel.matches.isEmpty {
                 HStack{
                     Spacer()
                     Text("No Matches Found")
@@ -204,11 +202,12 @@ struct MatchesView: View {
             } else {
                 ScrollView(.horizontal, showsIndicators: false){
                     HStack{
-                        ForEach(eventDetailManager.matches) { match in
+                        ForEach(viewModel.matches) { match in
                             NavigationLink {
-                                MatchDetailView(viewModel: MatchDetailViewModel(match: match, event: viewModel.event)).environmentObject(eventDetailManager)
+                                MatchDetailView(viewModel: MatchDetailViewModel(match: match, event: viewModel.event))
+                                    .environmentObject(viewModel)
                                     .onDisappear {
-                                        viewModel.refreshEventDetails(eventDetailManager: eventDetailManager)
+                                        viewModel.refreshEventDetails()
                                     }
                             } label: {
                                 EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
@@ -262,7 +261,6 @@ struct EventMatchCellView: View {
 struct ParticipantsView: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
-    @EnvironmentObject var eventDetailManager: EventDetailManager
 
     var body: some View {
         VStack(alignment: .leading){
@@ -273,7 +271,6 @@ struct ParticipantsView: View {
                 if viewModel.isEventOwner() {
                     NavigationLink {
                         AddExistingPlayerSheet(viewModel: viewModel)
-                            .environmentObject(eventDetailManager)
                     } label: {
                         Image(systemName: "person.badge.plus")
                             .font(.system(size: 24, design: .default))
@@ -293,7 +290,7 @@ struct ParticipantsView: View {
             if viewModel.isLoading {
                 LoadingView()
                     .padding(.top, 48)
-            } else if eventDetailManager.playersInEvent.isEmpty {
+            } else if viewModel.playersInEvent.isEmpty {
                 HStack{
                     Spacer()
                     Text("No Participants Yet!")
@@ -304,12 +301,12 @@ struct ParticipantsView: View {
                 .padding()
             } else {
                 LazyVStack {
-                    ForEach(eventDetailManager.playersInEvent){ player in
+                    ForEach(viewModel.playersInEvent){ player in
                         EventParticipantCell(eventGame: viewModel.event.eventGame, player: player)
                             .onLongPressGesture {
                                 //This stops scrolling
                                 if viewModel.isEventOwner() {
-                                    viewModel.removePlayerFromEventWith(for: player, eventDetailManager: eventDetailManager)
+                                    viewModel.removePlayerFromEventWith(for: player)
                                     //viewModel.refreshEventDetails(with: eventsManager.players)
                                 }
                             }

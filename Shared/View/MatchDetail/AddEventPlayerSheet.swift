@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddEventPlayerSheet: View {
 
-    @EnvironmentObject var eventDetailManager: EventDetailManager
+    @EnvironmentObject var eventDetailViewModel: EventDetailViewModel
     @ObservedObject var viewModel: MatchDetailViewModel
 
     @Environment(\.dismiss) var dismiss
@@ -50,14 +50,14 @@ struct AddEventPlayerSheet: View {
             }
         }
         .onAppear {
-            viewModel.getAvailablePlayers(eventDetailManager: eventDetailManager)
+            viewModel.getAvailablePlayers(eventDetailViewModel: eventDetailViewModel)
         }
     }
 }
 
 struct AddEventPlayerSheet_Previews: PreviewProvider {
     static var previews: some View {
+        //EventDetailViewModel not implemented
         AddEventPlayerSheet(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event)))
-            .environmentObject(EventDetailManager())
     }
 }

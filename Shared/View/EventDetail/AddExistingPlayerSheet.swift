@@ -10,7 +10,6 @@ import CloudKit
 
 struct AddExistingPlayerSheet: View {
 
-    @EnvironmentObject var eventDetailManager: EventDetailManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     @State var searchString: String = ""
@@ -56,7 +55,7 @@ struct AddExistingPlayerSheet: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 if !viewModel.checkedOffPlayers.isEmpty {
                     Button("Add Players") {
-                        viewModel.addCheckedPlayersToEvent(eventDetailManager: eventDetailManager)
+                        viewModel.addCheckedPlayersToEvent()
                         dismiss()
                     }
                 }
@@ -69,6 +68,5 @@ struct AddExistingPlayerSheet_Previews: PreviewProvider {
     static var previews: some View {
         AddExistingPlayerSheet(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
             .environmentObject(EventsManager())
-            .environmentObject(EventDetailManager())
     }
 }

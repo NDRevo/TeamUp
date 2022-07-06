@@ -48,12 +48,12 @@ import SwiftUI
         return teams.count < 2 && isEventOwner()
     }
 
-    func getAvailablePlayers(eventDetailManager: EventDetailManager){
+    func getAvailablePlayers(eventDetailViewModel: EventDetailViewModel){
 
         checkedOffPlayers = []
         availablePlayers = []
 
-        for player in eventDetailManager.playersInEvent {
+        for player in eventDetailViewModel.playersInEvent {
             if !teamsAndPlayer.values.contains(where: {$0.contains(where: {$0.id == player.id})}) && !availablePlayers.contains(where: {$0.id == player.id}) {
                 availablePlayers.append(player)
             }

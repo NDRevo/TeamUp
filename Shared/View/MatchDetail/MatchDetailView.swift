@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MatchDetailView: View {
 
-    @EnvironmentObject var eventDetailManager: EventDetailManager
+    @EnvironmentObject var eventDetailViewModel: EventDetailViewModel
     @ObservedObject var viewModel: MatchDetailViewModel
 
     @Environment(\.dismiss) var dismiss
@@ -108,7 +108,7 @@ struct MatchDetailView: View {
         .confirmationDialog("Delete Match?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {
                 viewModel.deleteMatch()
-                eventDetailManager.matches.removeAll(where: {$0.id == viewModel.match.id})
+                eventDetailViewModel.matches.removeAll(where: {$0.id == viewModel.match.id})
                 dismiss()
             } label: {
                 Text("Delete")
@@ -121,8 +121,8 @@ struct MatchDetailView: View {
 
 struct MatchDetailView_Previews: PreviewProvider {
     static var previews: some View {
+        //EventDetailViewModel not implemented
         MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event)))
-            .environmentObject(EventDetailManager())
     }
 }
 
