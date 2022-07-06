@@ -56,7 +56,7 @@ struct AddEventSheet: View {
         }
         .navigationTitle("Create Event")
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Dismiss") {dismiss()}
             }
         }

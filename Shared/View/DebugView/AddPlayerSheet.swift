@@ -41,7 +41,7 @@ struct AddPlayerSheet: View {
         }
         .navigationTitle("Create Player")
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Dismiss") {dismiss()}
             }
         }

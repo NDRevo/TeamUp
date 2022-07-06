@@ -45,9 +45,6 @@ struct PlayerProfileView: View {
                             LazyHStack(alignment: .top, spacing: 10) {
                                 ForEach(viewModel.playerGameProfiles) { gameProfile in
                                     PlayerGameProfileCell(viewModel: viewModel, gameProfile: gameProfile)
-                                        .onLongPressGesture {
-                                            viewModel.deleteGameProfile(for: gameProfile.id, eventsManager: eventsManager)
-                                        }
                                         .sheet(isPresented: $viewModel.isEditingGameProfile){
                                             NavigationView {
                                                 EditGameProfileView(viewModel: viewModel, gameProfile: gameProfile)

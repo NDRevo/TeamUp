@@ -67,6 +67,7 @@ struct EditGameProfileView: View {
             gameID = gameProfile.gameID
             gameRank = gameProfile.gameRank
         }
+        .navigationTitle("Edit")
     }
 }
 

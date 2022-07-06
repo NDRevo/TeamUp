@@ -29,7 +29,6 @@ struct AddPlayerGameProfileSheet: View {
                     .keyboardType(.twitter)
                     .textInputAutocapitalization(.never)
 
-                //BUG: Currently doesnt display text
                 Picker("Rank", selection: $viewModel.playerGameRank) {
                     ForEach(eventsManager.getRanksForGame(game: viewModel.selectedGame), id: \.self){ rank in
                         Text(rank)

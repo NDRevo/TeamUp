@@ -33,7 +33,7 @@ struct AddTeamSheet: View {
         }
         .navigationTitle("Add Team")
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Dismiss") {dismiss()}
             }
         }

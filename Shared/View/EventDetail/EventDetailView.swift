@@ -73,7 +73,7 @@ struct EventDetailView: View {
                 }
             }
         }
-        //BUG: Fails as of Xcode 14 beta 1: NavigationAuthority
+        //MARK: BUG: Fails as of Xcode 14 beta 1: NavigationAuthority
         .confirmationDialog("Delete Event?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {
                 eventsManager.deleteEvent(for: viewModel.event)
@@ -138,6 +138,8 @@ struct DetailItemView: View {
         }
     }
 }
+
+//MARK: EventDescriptionViewSection
 
 struct EventDescriptionViewSection: View {
     
@@ -301,7 +303,7 @@ struct ParticipantsView: View {
                 }
                 .padding()
             } else {
-                VStack {
+                LazyVStack {
                     ForEach(eventDetailManager.playersInEvent){ player in
                         EventParticipantCell(eventGame: viewModel.event.eventGame, player: player)
                             .onLongPressGesture {
