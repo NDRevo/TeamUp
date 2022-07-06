@@ -24,9 +24,10 @@ import CloudKit
     @Published var isShowingAlert                = false
     @Published var isShowingConfirmationDialogue = false
     @Published var isEditingGameProfile          = false
-    @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
+    @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert.")) //MARK: DidSet
 
     func resetInput(){
+        selectedGame    = Games.apexlegends //First game alphabetically
         gameID          = ""
         playerGameRank  = ""
     }
@@ -54,6 +55,7 @@ import CloudKit
         playerGameProfile[TUPlayerGameProfile.kGameName]    = selectedGame.rawValue
         playerGameProfile[TUPlayerGameProfile.kGameRank]    = playerGameRank
         playerGameProfile[TUPlayerGameProfile.kGameID]      = gameID
+        playerGameProfile[TUPlayerGameProfile.kGameAliases]   = ["",""]
 
         return playerGameProfile
     }
@@ -128,20 +130,20 @@ import CloudKit
         }
     }
 
-    func saveEditGameProfile(of gameProfile: TUPlayerGameProfile.ID, gameID: String, gameRank: String){
+    func saveEditGameProfile(of gameProfile: TUPlayerGameProfile.ID, gameID: String, gameRank: String, gameAliases: [String]){
         Task{
             do {
                 let gameProfileRecord = try await CloudKitManager.shared.fetchRecord(with: gameProfile)
                 
                 gameProfileRecord[TUPlayerGameProfile.kGameID] = gameID
                 gameProfileRecord[TUPlayerGameProfile.kGameRank] = gameRank
+                gameProfileRecord[TUPlayerGameProfile.kGameAliases] = gameAliases
                 let _ = try await CloudKitManager.shared.save(record: gameProfileRecord)
                 
                 getGameProfiles()
 
             } catch {
-//                alertItem = AlertContext.unableToSaveGameProfile
-//                isShowingAlert = true
+                //MARK: Make Alert
             }
         }
     }
@@ -167,8 +169,7 @@ import CloudKit
                 eventsParticipating = mappedRecords.map(TUEvent.init).sorted(by: {$0.eventDate < $1.eventDate})
 
             } catch {
-                //ALERT: Unable to get events participating
-                isShowingAlert = true
+                //MARK: Make Alert
             }
         }
     }
@@ -193,8 +194,7 @@ import CloudKit
 
                 getGameProfiles()
             } catch {
-                //Unable to get player profiles
-                alertItem = AlertContext.unableToGetPlayerList
+                //MARK: Make Alert
             }
         }
     }
@@ -204,8 +204,7 @@ import CloudKit
             do {
                 playerGameProfiles = try await CloudKitManager.shared.getPlayerGameProfiles()
             } catch {
-                //ALERT: Unable to get player game profiles
-                alertItem = AlertContext.unableToGetPlayerList
+                //MARK: Make Alert
             }
         }
     }
@@ -225,8 +224,7 @@ import CloudKit
                 let _ = try await CloudKitManager.shared.save(record: userRecord)
 
             } catch {
-                //ALERT: Unable to delete profiles
-                alertItem = AlertContext.unableToGetPlayerList
+                //MARK: Make Alert
             }
         }
     }

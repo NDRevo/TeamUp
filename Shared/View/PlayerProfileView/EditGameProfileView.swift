@@ -15,22 +15,30 @@ struct EditGameProfileView: View {
     var gameProfile: TUPlayerGameProfile
     @State var gameID: String = ""
     @State var gameRank: String = ""
+    @State var gameAliases: [String] = ["",""]
+
     @State var isSavable: Bool = false
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack{
             Form {
-                TextField("Game ID", text: $gameID)
-                Picker("Rank", selection: $gameRank) {
+                TextField("Game ID", text: $gameID.onChange(perform: checkSavable))
+                Picker("Rank", selection: $gameRank.onChange(perform: checkSavable)) {
                     ForEach(eventsManager.getRanksForGame(game: Games(rawValue: gameProfile.gameName)!), id: \.self){ rank in
                         Text(rank)
                     }
                 }
+
+                Section {
+                    TextField("Alias #1", text: $gameAliases[0].onChange(perform: checkSavable))
+                    TextField("Alias #2", text: $gameAliases[1].onChange(perform: checkSavable))
+                }
+
                 Section {
                     if isSavable {
                         Button {
-                            viewModel.saveEditGameProfile(of: gameProfile.id, gameID: gameID, gameRank: gameRank)
+                            viewModel.saveEditGameProfile(of: gameProfile.id, gameID: gameID, gameRank: gameRank, gameAliases: gameAliases)
                             dismiss()
                         } label: {
                             Text("Save Game Profile")
@@ -44,20 +52,9 @@ struct EditGameProfileView: View {
                 }
             }
         }
-        .onChange(of: gameRank, perform: { newValue in
-            if gameRank != gameProfile.gameRank {
-                isSavable = true
-            } else {
-                isSavable = false
-            }
-        })
-        .onChange(of: gameID, perform: { newValue in
-            if gameID != gameProfile.gameID {
-                isSavable = true
-            } else {
-                isSavable = false
-            }
-        })
+        .keyboardType(.twitter)
+        .disableAutocorrection(true)
+        .replaceDisabled()
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Dismiss") {dismiss()}
@@ -66,8 +63,24 @@ struct EditGameProfileView: View {
         .onAppear {
             gameID = gameProfile.gameID
             gameRank = gameProfile.gameRank
+            gameAliases = gameProfile.gameAliases
         }
         .navigationTitle("Edit")
+    }
+    
+    //MARK: Move to a view model
+    func checkSavable() {
+        if gameRank != gameProfile.gameRank {
+            isSavable = true
+        } else if gameID != gameProfile.gameID {
+            isSavable = true
+        } else if gameProfile.gameAliases[0] != gameAliases[0] {
+            isSavable = true
+        } else if gameProfile.gameAliases[1] != gameAliases[1] {
+            isSavable = true
+        } else {
+            isSavable = false
+        }
     }
 }
 

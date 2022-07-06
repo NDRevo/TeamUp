@@ -54,8 +54,17 @@ struct PlayerGameProfileCell: View {
                             .lineLimit(1)
                             .minimumScaleFactor(0.35)
                         Text(gameProfile.gameRank)
+                        Spacer()
+                        
+                        ForEach(gameProfile.gameAliases, id: \.self){ alias in
+                            if alias != "" {
+                                Text(alias)
+                                    .foregroundColor(.gray)
+                            }
+                        }
                     }
                     .padding(.horizontal, 8)
+                    .padding(.bottom, 6) //Matches top padding of game title rectangle (8-2 = 6)
                 }
             }
     }
