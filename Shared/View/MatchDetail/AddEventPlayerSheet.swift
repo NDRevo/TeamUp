@@ -32,6 +32,7 @@ struct AddEventPlayerSheet: View {
                         .foregroundColor(.secondary)
                     Text("No available players")
                         .foregroundColor(.secondary)
+                        .bold()
                 }.offset(y: -64)
             }
         }

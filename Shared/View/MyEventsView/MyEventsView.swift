@@ -14,42 +14,44 @@ struct MyEventsView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(alignment: .leading){
-                    if !eventsManager.myUnpublishedEvents.isEmpty {
-                        Text("Unpublished Events")
-                            .bold()
-                            .font(.title2)
-                        VStack(spacing: 12){
-                            ForEach(eventsManager.myUnpublishedEvents) { event in
-                                NavigationLink {
-                                    EventDetailView(viewModel: EventDetailViewModel(event: event))
-                                } label: {
-                                    EventListCell(event: event)
+            ZStack{
+                Color.appBackground.edgesIgnoringSafeArea(.all)
+                ScrollView {
+                    VStack(alignment: .leading){
+                        if !eventsManager.myUnpublishedEvents.isEmpty {
+                            Text("Unpublished Events")
+                                .bold()
+                                .font(.title2)
+                            VStack(spacing: 12){
+                                ForEach(eventsManager.myUnpublishedEvents) { event in
+                                    NavigationLink {
+                                        EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                    } label: {
+                                        EventListCell(event: event)
+                                    }
                                 }
                             }
                         }
-                    }
-                    
-                    if !eventsManager.myPublishedEvents.isEmpty {
-                        Text("Published Events")
-                            .bold()
-                            .font(.title2)
-                        VStack(spacing: 12){
-                            ForEach(eventsManager.myPublishedEvents) { event in
-                                NavigationLink {
-                                    EventDetailView(viewModel: EventDetailViewModel(event: event))
-                                } label: {
-                                    EventListCell(event: event)
+
+                        if !eventsManager.myPublishedEvents.isEmpty {
+                            Text("Published Events")
+                                .bold()
+                                .font(.title2)
+                            VStack(spacing: 12){
+                                ForEach(eventsManager.myPublishedEvents) { event in
+                                    NavigationLink {
+                                        EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                    } label: {
+                                        EventListCell(event: event)
+                                    }
                                 }
                             }
                         }
+                        Spacer()
                     }
-                    Spacer()
+                    .padding(.horizontal, 12)
                 }
             }
-            .background(Color.appBackground)
-            .padding(.horizontal, 12)
             .navigationTitle(Text("My Events"))
             .task {
                 eventsManager.getMyPublishedEvents()

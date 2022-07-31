@@ -193,9 +193,10 @@ struct MatchesView: View {
             } else if viewModel.matches.isEmpty {
                 HStack{
                     Spacer()
-                    Text("No Matches Found")
+                    Text("No matches found")
                         .font(.title3)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.secondary)
+                        .bold()
                     Spacer()
                 }
                 .padding()
@@ -293,9 +294,10 @@ struct ParticipantsView: View {
             } else if viewModel.playersInEvent.isEmpty {
                 HStack{
                     Spacer()
-                    Text("No Participants Yet!")
+                    Text("No participants, yet")
                         .font(.title3)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.secondary)
+                        .bold()
                     Spacer()
                 }
                 .padding()
