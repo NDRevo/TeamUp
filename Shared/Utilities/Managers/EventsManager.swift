@@ -19,7 +19,6 @@ import SwiftUI
     @Published var myPublishedEvents: [TUEvent] = []
     @Published var myUnpublishedEvents: [TUEvent] = []
 
-    @Published var playerProfiles: [CKRecord.ID:[TUPlayerGameProfile]] = [:]
     @Published var playerCountPerEvent: [CKRecord.ID:Int]              = [:]
 
     @Published var isShowingAlert            = false

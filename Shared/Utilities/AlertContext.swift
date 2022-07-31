@@ -91,7 +91,7 @@ struct AlertContext {
     //MARK: - PlayerProfileView
 
     static let invalidGameProfile           = AlertItem(alertTitle: Text("Invalid Game Profile"),
-                                                        alertMessage: Text("A game profile but have an ID and rank."),
+                                                        alertMessage: Text("A game profile must have an ID and rank."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToSaveGameProfile      = AlertItem(alertTitle: Text("Server Error"),

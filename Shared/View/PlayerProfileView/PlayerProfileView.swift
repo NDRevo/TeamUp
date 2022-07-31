@@ -31,7 +31,7 @@ struct PlayerProfileView: View {
                             Spacer()
                             Button {
                                 viewModel.isPresentingSheet = true
-                                editMode?.wrappedValue = .inactive
+                                editMode?.wrappedValue = .inactive //FIX: Not needed?
                                 viewModel.resetInput()
                             } label: {
                                 Image(systemName: "plus.rectangle.portrait")

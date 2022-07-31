@@ -18,18 +18,20 @@ import CloudKit
 
     @Published var gameID: String                = ""
     @Published var selectedGame: Games           = .apexlegends
-    @Published var playerGameRank: String        = ""
+    @Published var playerGameRank: String        = "Unranked"
 
     @Published var isPresentingSheet             = false
     @Published var isShowingAlert                = false
     @Published var isShowingConfirmationDialogue = false
     @Published var isEditingGameProfile          = false
-    @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert.")) //MARK: DidSet
+    @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
+    @Environment(\.dismiss) var dismiss
+    
     func resetInput(){
         selectedGame    = Games.apexlegends //First game alphabetically
         gameID          = ""
-        playerGameRank  = ""
+        playerGameRank  = "Unranked"
     }
 
     private func isValidPlayer() -> Bool {
@@ -121,8 +123,7 @@ import CloudKit
 
                 let newPlayerProfile = TUPlayerGameProfile(record: playerGameProfile)
 
-                //MARK: BUG - Added the first gameProfile doesn't appear until tabbing in and out of view
-                eventsManager.playerProfiles[playerProfileID]?.append(newPlayerProfile)
+                playerGameProfiles.append(newPlayerProfile)
                 playerGameProfiles.sort(by: {$0.gameName < $1.gameName})
             } catch {
                 alertItem = AlertContext.unableToSaveGameProfile
@@ -234,14 +235,8 @@ import CloudKit
         Task {
             do {
                 let _ = try await CloudKitManager.shared.remove(recordID: gameProfileRecordID)
-               
-                guard let playerProfileID = CloudKitManager.shared.profileRecordID else {
-                    return
-                    //Alert
-                }
 
                 playerGameProfiles.removeAll(where: {$0.id == gameProfileRecordID})
-                eventsManager.playerProfiles[playerProfileID]?.removeAll(where: {$0.id == gameProfileRecordID})
             } catch {
                 alertItem = AlertContext.unableToDeleteGameProfile
                 isShowingAlert = true

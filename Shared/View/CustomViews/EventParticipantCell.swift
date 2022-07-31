@@ -13,9 +13,8 @@ struct EventParticipantCell: View {
     var eventGame: String
 
     var player: TUPlayer
-    var playerProfile: TUPlayerGameProfile? {
-        return manager.playerProfiles[player.id]?.first(where: {$0.gameName == eventGame})
-    }
+    //FIX: Grab playerprofile when going into event detail
+    var playerProfile: TUPlayerGameProfile?
 
     var body: some View {
         HStack{

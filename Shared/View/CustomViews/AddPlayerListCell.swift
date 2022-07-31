@@ -15,9 +15,8 @@ struct AddPlayerListCell: View {
 
     @State var isChecked = false
     var player: TUPlayer
-    var playerProfile: TUPlayerGameProfile? {
-        return manager.playerProfiles[player.id]?.first(where: {$0.gameName == eventGame})
-    }
+    //FIX: Grab playerprofile when fetching players
+    var playerProfile: TUPlayerGameProfile? 
 
     @Environment(\.dismissSearch) var dismissSearch
 
