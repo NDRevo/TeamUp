@@ -16,34 +16,47 @@ struct EventsListView: View {
         NavigationView {
             ZStack{
                 Color.appBackground.edgesIgnoringSafeArea(.all)
-                if eventsManager.events.isEmpty {
-                    VStack(spacing: 12){
-                        Image(systemName: "calendar")
-                            .font(.system(size: 36))
-                            .foregroundColor(.secondary)
-                        Text("No events found")
-                            .foregroundColor(.secondary)
-                            .bold()
-                    }
-                    .offset(y: -128)
-                } else{
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
-                            ForEach(eventsManager.events){ event in
-                                NavigationLink {
-                                    EventDetailView(viewModel: EventDetailViewModel(event: event))
-                                } label: {
-                                    EventListCell(event: event)
-                                }
+                VStack {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack{
+                            ForEach(Games.allCases) { game in
+                                GameCell(viewModel: viewModel, game: game)
                             }
                         }
-                        .padding(12)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
                     }
+
+                    if eventsManager.events.isEmpty {
+                        VStack(spacing: 12){
+                            Image(systemName: "calendar")
+                                .font(.system(size: 36))
+                                .foregroundColor(.secondary)
+                            Text("No events found")
+                                .foregroundColor(.secondary)
+                                .bold()
+                        }
+                        .offset(y: 120)
+                    } else {
+                        ScrollView {
+                            LazyVStack(spacing: 12) {
+                                ForEach(eventsManager.events){ event in
+                                    NavigationLink {
+                                        EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                    } label: {
+                                        EventListCell(event: event)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 12)
+                        }
+                    }
+                    Spacer()
                 }
             }
             .navigationTitle("Events")
             .task {
-                eventsManager.getPublicEvents()
+                eventsManager.getPublicEvents(forGame: viewModel.currentGameSelected)
             }
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                 viewModel.alertItem.alertMessage

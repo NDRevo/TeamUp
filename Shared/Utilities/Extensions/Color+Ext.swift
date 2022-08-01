@@ -9,8 +9,9 @@ import SwiftUI
 
 extension Color {
 
-    static let appBackground = Color("appBackground")
-    static let appCell       = Color("appCell")
+    static let appPrimaryInverse    = Color("inversePrimary")
+    static let appBackground        = Color("appBackground")
+    static let appCell              = Color("appCell")
 
     static let apexlegend               = Color(red: 164 / 255, green: 55 / 255, blue: 61 / 255)
     static let apexBottomGradient       = Color(red: 219 / 255, green: 72 / 255, blue: 81 / 255)

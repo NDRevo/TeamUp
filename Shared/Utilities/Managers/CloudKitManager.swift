@@ -201,10 +201,21 @@ final class CloudKitManager {
         return records
     }
 
-    func getEvents(thatArePublished: Bool, withSpecificOwner: Bool) async throws -> [TUEvent] {
+    func getEvents(thatArePublished: Bool, withSpecificOwner: Bool, forGame: Games = .all) async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventDate, ascending: true)
-   
-        let query = CKQuery(recordType: RecordType.event, predicate: thatArePublished ? NSPredicate(format: "isPublished == 1") : NSPredicate(format: "isPublished == 0"))
+        let publishPredicate   = thatArePublished ? NSPredicate(format: "isPublished == 1") : NSPredicate(format: "isPublished == 0")
+        let eventGamePredicate = NSPredicate(format: "eventGame == %@", forGame.rawValue)
+
+        var predicate = NSPredicate()
+        
+        if forGame == .all {
+            predicate = publishPredicate
+        } else {
+            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [publishPredicate, eventGamePredicate])
+        }
+
+        let query = CKQuery(recordType: RecordType.event, predicate: predicate)
+
         query.sortDescriptors = [sortDescriptor]
 
         let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)

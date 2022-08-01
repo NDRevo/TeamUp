@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-enum Games: String, CaseIterable{
+enum Games: String, CaseIterable, Identifiable{
+    var id: String {
+        return self.rawValue
+    }
+
+    case all          = "All"
     case none         = "None"
     case apexlegends  = "Apex Legends"
     case overwatch    = "Overwatch"

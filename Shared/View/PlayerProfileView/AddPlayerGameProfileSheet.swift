@@ -18,7 +18,7 @@ struct AddPlayerGameProfileSheet: View {
         List {
             Section{
                 Picker("Game", selection: $viewModel.selectedGame) {
-                    ForEach(Games.allCases[1...], id: \.self){ game in
+                    ForEach(Games.allCases.filter({$0 != .all && $0 != .none})){ game in
                         Text(game.rawValue)
                     }
                 }

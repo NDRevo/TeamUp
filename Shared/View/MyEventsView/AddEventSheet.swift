@@ -26,7 +26,7 @@ struct AddEventSheet: View {
                 DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
 
                 Picker("Game", selection: $viewModel.eventGame) {
-                    ForEach(Games.allCases, id: \.self){game in
+                    ForEach(Games.allCases.filter({$0 != .all})){game in
                         Text(game.rawValue)
                     }
                 }

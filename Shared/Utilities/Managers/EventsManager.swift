@@ -30,6 +30,7 @@ import SwiftUI
             case .apexlegends:  return ["Unranked", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Apex Predator"]
             case .valorant:     return ["Unranked", "Iron", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Immortal", "Radiant"]
             case .none:         return []
+            case .all:          return []
         }
     }
 
@@ -83,16 +84,17 @@ import SwiftUI
         }
     }
 
-    func getPublicEvents(){
+    func getPublicEvents(forGame: Games = .all){
         Task {
             do{
-                events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: false)
+                events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: false, forGame: forGame)
 
                 //More efficient way of doing this?
                 for event in events {
                     playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id).count
                 }
             } catch {
+                print(error)
                 alertItem = AlertContext.unableToRetrieveEvents
                 isShowingAlert = true
             }

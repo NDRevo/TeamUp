@@ -29,7 +29,7 @@ import CloudKit
     @Environment(\.dismiss) var dismiss
     
     func resetInput(){
-        selectedGame    = Games.apexlegends //First game alphabetically
+        selectedGame    = .apexlegends
         gameID          = ""
         playerGameRank  = "Unranked"
     }
