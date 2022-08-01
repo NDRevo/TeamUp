@@ -28,7 +28,7 @@ final class CloudKitManager {
     static let shared = CloudKitManager()
 
     var userRecord: CKRecord?
-    var profileRecordID: CKRecord.ID?
+    var playerProfile: TUPlayer?
     let container = CKContainer.default()
 
     private init(){}
@@ -40,11 +40,11 @@ final class CloudKitManager {
         
         if let profileReference = record["userProfile"] as? CKRecord.Reference {
             do {
-                let _ = try await fetchRecord(with: profileReference.recordID)
-                profileRecordID = profileReference.recordID
+                let playerProfileRecord = try await fetchRecord(with: profileReference.recordID)
+                playerProfile = TUPlayer(record: playerProfileRecord)
             }
             catch {
-                profileRecordID = nil
+                playerProfile = nil
            }
        }
     }
@@ -110,10 +110,10 @@ final class CloudKitManager {
     func getPlayerGameProfiles() async throws -> [TUPlayerGameProfile] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayerGameProfile.kGameName, ascending: true)
         
-        guard let profileRecordID = profileRecordID else {
+        guard let profileRecordID = playerProfile else {
             return []
         }
-        let reference = CKRecord.Reference(recordID: profileRecordID, action: .none)
+        let reference = CKRecord.Reference(recordID: profileRecordID.id, action: .none)
         let predicate = NSPredicate(format: "associatedToPlayer == %@", reference)
         let query = CKQuery(recordType: RecordType.playerGameProfiles, predicate: predicate)
         query.sortDescriptors = [sortDescriptor]

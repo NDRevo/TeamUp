@@ -27,7 +27,7 @@ import CloudKit
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
     @Environment(\.dismiss) var dismiss
-    
+
     func resetInput(){
         selectedGame    = .apexlegends
         gameID          = ""
@@ -49,7 +49,7 @@ import CloudKit
     }
 
     func isLoggedIn() -> Bool {
-        return CloudKitManager.shared.profileRecordID != nil
+        return CloudKitManager.shared.playerProfile != nil
     }
 
     private func createPlayerGameProfile() -> CKRecord {
@@ -64,9 +64,10 @@ import CloudKit
 
     private func createPlayerRecord() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
-        playerRecord[TUPlayer.kFirstName]   = playerFirstName
-        playerRecord[TUPlayer.kLastName]    = playerLastName
-        
+        playerRecord[TUPlayer.kFirstName]       = playerFirstName
+        playerRecord[TUPlayer.kLastName]        = playerLastName
+        playerRecord[TUPlayer.kIsGameLeader]    = 0
+
         return playerRecord
     }
 
@@ -90,13 +91,8 @@ import CloudKit
 
         Task {
             do {
-                let records = try await CloudKitManager.shared.batchSave(records: [userRecord,playerRecord])
-                for record in records where record.recordType == RecordType.player {
-                    //Makes sure to update profileRecordID when first creating a profile
-                    CloudKitManager.shared.profileRecordID = record.recordID
-                }
-                //Successfully
-                alertItem = AlertContext.invalidGameProfile
+                let _ = try await CloudKitManager.shared.batchSave(records: [userRecord,playerRecord])
+                CloudKitManager.shared.playerProfile = TUPlayer(record: playerRecord)
             } catch {
                 //Unsuccessful
                 alertItem = AlertContext.invalidPlayer
@@ -113,12 +109,12 @@ import CloudKit
 
         Task{
             do {
-                guard let playerProfileID = CloudKitManager.shared.profileRecordID else {
+                guard let playerProfileID = CloudKitManager.shared.playerProfile else {
                     return
                     //Alert
                 }
                 let playerGameProfile = createPlayerGameProfile()
-                playerGameProfile[TUPlayerGameProfile.kAssociatedToPlayer] = CKRecord.Reference(recordID: playerProfileID, action: .deleteSelf)
+                playerGameProfile[TUPlayerGameProfile.kAssociatedToPlayer] = CKRecord.Reference(recordID: playerProfileID.id, action: .deleteSelf)
                 let _ = try await CloudKitManager.shared.save(record: playerGameProfile)
 
                 let newPlayerProfile = TUPlayerGameProfile(record: playerGameProfile)
@@ -154,7 +150,11 @@ import CloudKit
         Task {
             do {
                 //MARK: ERROR - Unexpectedly found nil (Cause: No/Slow internet connection)
-                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: CloudKitManager.shared.profileRecordID!)
+                guard let record = CloudKitManager.shared.playerProfile else {
+                    return
+                }
+
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: record.id)
                 let references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
                 let recordIDFromReference = references.map({$0.recordID})
 
@@ -214,8 +214,8 @@ import CloudKit
     func deleteProfile(){
         Task{
             do {
-                guard let playerRecord = CloudKitManager.shared.profileRecordID else { return }
-                let _ = try await CloudKitManager.shared.remove(recordID: playerRecord)
+                guard let playerRecord = CloudKitManager.shared.playerProfile else { return }
+                let _ = try await CloudKitManager.shared.remove(recordID: playerRecord.id)
                 
                 guard let userRecord = CloudKitManager.shared.userRecord else {
                     alertItem = AlertContext.unableToGetPlayerList

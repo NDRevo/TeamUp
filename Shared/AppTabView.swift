@@ -17,10 +17,14 @@ struct AppTabView: View {
                 .tabItem {
                     Label("Events", systemImage: "calendar")
                 }
-            MyEventsView()
-                .tabItem {
-                    Label("My Events", systemImage: "slider.horizontal.2.square.on.square")
+            if let record = CloudKitManager.shared.playerProfile {
+                if record.isGameLeader == 1{
+                    MyEventsView()
+                        .tabItem {
+                            Label("My Events", systemImage: "slider.horizontal.2.square.on.square")
+                        }
                 }
+            }
             PlayerProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")

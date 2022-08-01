@@ -26,8 +26,9 @@ import SwiftUI
 
     private func createPlayer() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
-        playerRecord[TUPlayer.kFirstName]   = playerFirstName
-        playerRecord[TUPlayer.kLastName]    = playerLastName
+        playerRecord[TUPlayer.kFirstName]       = playerFirstName
+        playerRecord[TUPlayer.kLastName]        = playerLastName
+        playerRecord[TUPlayer.kIsGameLeader]    = 0
 
         return playerRecord
     }
