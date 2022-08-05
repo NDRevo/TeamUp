@@ -33,20 +33,29 @@ final class CloudKitManager {
 
     private init(){}
 
-    func getUserRecord() async throws {
+    func checkUsernameExists(for username: String) async throws -> Bool {
+        let predicate = NSPredicate(format: "userName == %@", username)
+        let query = CKQuery(recordType: RecordType.player, predicate: predicate)
+        
+        let (results, _) = try await container.publicCloudDatabase.records(matching: query)
+        if !results.isEmpty {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    func getUserRecord() async throws -> TUPlayer? {
         let recordID = try await container.userRecordID()
         let record = try await container.publicCloudDatabase.record(for: recordID)
         userRecord = record
-        
+
         if let profileReference = record["userProfile"] as? CKRecord.Reference {
-            do {
-                let playerProfileRecord = try await fetchRecord(with: profileReference.recordID)
-                playerProfile = TUPlayer(record: playerProfileRecord)
-            }
-            catch {
-                playerProfile = nil
-           }
+            let playerProfileRecord = try await fetchRecord(with: profileReference.recordID)
+            playerProfile = TUPlayer(record: playerProfileRecord)
+            return playerProfile! //Will return a player or nil, either is fine
        }
+        return nil
     }
 
     func getPlayers() async throws -> [TUPlayer] {
@@ -66,7 +75,7 @@ final class CloudKitManager {
         let firstNamePredicate  = NSPredicate(format: "firstName BEGINSWITH %@", searchString)
         let lastNamePredicate   = NSPredicate(format: "lastName BEGINSWITH %@", searchString)
 
-     //   let compoundPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [firstNamePredicate,])
+        //let compoundPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [firstNamePredicate,])
         let firstNameQuery = CKQuery(recordType: RecordType.player, predicate: firstNamePredicate)
         firstNameQuery.sortDescriptors = [sortDescriptor]
         
@@ -83,7 +92,6 @@ final class CloudKitManager {
         let newRecords = records.map(TUPlayer.init)
         
         //DUPLICATES
-
         return newRecords
     }
 

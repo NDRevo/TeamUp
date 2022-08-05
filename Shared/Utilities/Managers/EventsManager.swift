@@ -12,14 +12,14 @@ import SwiftUI
 
     init(){}
 
-    @Published var userRecord: CKRecord?
-    @Published var events: [TUEvent]    = []
-    @Published var players: [TUPlayer]  = []
+    @Published var userProfile: TUPlayer?
+    @Published var events: [TUEvent]        = []
+    @Published var players: [TUPlayer]      = []
 
-    @Published var myPublishedEvents: [TUEvent] = []
-    @Published var myUnpublishedEvents: [TUEvent] = []
+    @Published var myPublishedEvents: [TUEvent]             = []
+    @Published var myUnpublishedEvents: [TUEvent]           = []
 
-    @Published var playerCountPerEvent: [CKRecord.ID:Int]              = [:]
+    @Published var playerCountPerEvent: [CKRecord.ID:Int]   = [:]
 
     @Published var isShowingAlert            = false
     @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))

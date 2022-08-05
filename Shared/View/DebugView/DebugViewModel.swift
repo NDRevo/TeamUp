@@ -10,6 +10,7 @@ import SwiftUI
 
 @MainActor final class DebugViewModel: ObservableObject {
 
+    @Published var playerUsername: String   = ""
     @Published var playerFirstName: String  = ""
     @Published var playerLastName: String   = ""
 
@@ -26,6 +27,7 @@ import SwiftUI
 
     private func createPlayer() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
+        playerRecord[TUPlayer.kUsername]        = playerUsername
         playerRecord[TUPlayer.kFirstName]       = playerFirstName
         playerRecord[TUPlayer.kLastName]        = playerLastName
         playerRecord[TUPlayer.kIsGameLeader]    = 0

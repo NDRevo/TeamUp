@@ -13,6 +13,9 @@ import CloudKit
     @Published var playerGameProfiles: [TUPlayerGameProfile] = []
     @Published var eventsParticipating: [TUEvent] = []
 
+    @Published var playerProfile:TUPlayer?
+
+    @Published var playerUsername: String        = ""
     @Published var playerFirstName: String       = ""
     @Published var playerLastName: String        = ""
 
@@ -34,10 +37,20 @@ import CloudKit
         playerGameRank  = "Unranked"
     }
 
-    private func isValidPlayer() -> Bool {
-        guard !playerFirstName.isEmpty && !playerLastName.isEmpty else {
+    private func isValidPlayer() async throws -> Bool {
+        let userExists = try await CloudKitManager.shared.checkUsernameExists(for: playerUsername)
+
+        if userExists {
+            //Username already exists alert
+            alertItem = AlertContext.invalidPlayer
             return false
         }
+
+        guard !playerFirstName.isEmpty && !playerLastName.isEmpty else {
+            //first and last name must be entered
+            return false
+        }
+
         return true
     }
 
@@ -64,6 +77,7 @@ import CloudKit
 
     private func createPlayerRecord() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
+        playerRecord[TUPlayer.kUsername]        = playerUsername
         playerRecord[TUPlayer.kFirstName]       = playerFirstName
         playerRecord[TUPlayer.kLastName]        = playerLastName
         playerRecord[TUPlayer.kIsGameLeader]    = 0
@@ -71,18 +85,24 @@ import CloudKit
         return playerRecord
     }
 
-    func createProfile(){
-        guard isValidPlayer() else {
-            //Invalid Profiles
-            alertItem = AlertContext.invalidPlayer
-            return
+    func createProfile() async {
+        do {
+            guard try await isValidPlayer() else {
+                //Invalid Profiles alert
+                isShowingAlert = true
+                return
+            }
+        } catch {
+            //Unable to check if player is valid
         }
+
         //Create CKRecord from profile view
         let playerRecord = createPlayerRecord()
         
         guard let userRecord = CloudKitManager.shared.userRecord else {
             //unable to get user record
             alertItem = AlertContext.unableToGetPlayerProfiles
+            isShowingAlert = true
             return
         }
 
@@ -92,10 +112,14 @@ import CloudKit
         Task {
             do {
                 let _ = try await CloudKitManager.shared.batchSave(records: [userRecord,playerRecord])
+
+                let playerProfile = TUPlayer(record: playerRecord)
                 CloudKitManager.shared.playerProfile = TUPlayer(record: playerRecord)
+                self.playerProfile = playerProfile 
             } catch {
                 //Unsuccessful
                 alertItem = AlertContext.invalidPlayer
+                isShowingAlert = true
             }
         }
     }
@@ -180,6 +204,7 @@ import CloudKit
         guard let userRecord = CloudKitManager.shared.userRecord else {
             //No user record found
             alertItem = AlertContext.unableToGetPlayerList
+            isShowingAlert = true
             return
         }
 
@@ -191,6 +216,7 @@ import CloudKit
             do{
                 let record = try await CloudKitManager.shared.fetchRecord(with: profileRecordID)
                 let player = TUPlayer(record: record)
+                playerUsername    = player.username
                 playerFirstName   = player.firstName
                 playerLastName    = player.lastName
 

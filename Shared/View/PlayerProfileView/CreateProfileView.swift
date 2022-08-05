@@ -16,6 +16,9 @@ struct CreateProfileView: View {
     var body: some View {
         List{
             Section{
+                TextField("Username", text: $viewModel.playerUsername)
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.words)
                 TextField("First Name", text: $viewModel.playerFirstName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
@@ -26,7 +29,7 @@ struct CreateProfileView: View {
             Section {
                 Button {
                     Task{
-                        viewModel.createProfile()
+                        await viewModel.createProfile()
                     }
                 } label: {
                     Text("Create Profile")
@@ -35,6 +38,9 @@ struct CreateProfileView: View {
             }
         }
         .navigationTitle("Create Profile")
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
     }
 }
 

@@ -28,6 +28,7 @@ struct AddEventSheet: View {
                 Picker("Game", selection: $viewModel.eventGame) {
                     ForEach(Games.allCases.filter({$0 != .all})){game in
                         Text(game.rawValue)
+                            .tag(game)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())

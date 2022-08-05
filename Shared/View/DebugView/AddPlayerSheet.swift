@@ -18,6 +18,9 @@ struct AddPlayerSheet: View {
     var body: some View {
         List{
             Section{
+                TextField("Username", text: $viewModel.playerUsername)
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.words)
                 TextField("First Name", text: $viewModel.playerFirstName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)

@@ -20,6 +20,7 @@ struct AddPlayerGameProfileSheet: View {
                 Picker("Game", selection: $viewModel.selectedGame) {
                     ForEach(Games.allCases.filter({$0 != .all && $0 != .none})){ game in
                         Text(game.rawValue)
+                            .tag(game)
                     }
                 }
                 .pickerStyle(.menu)

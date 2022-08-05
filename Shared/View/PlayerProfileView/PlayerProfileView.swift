@@ -114,9 +114,11 @@ struct ProfileNameBar: View {
                         .frame(width: 80,height: 80)
                         .foregroundColor(.appBackground)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("\(viewModel.playerFirstName) \(viewModel.playerLastName)")
+                        Text("\(viewModel.playerUsername)")
                             .font(.title)
                             .bold()
+                        Text("\(viewModel.playerFirstName) \(viewModel.playerLastName)")
+                            .font(.title2)
                     }
                     Spacer()
                 }

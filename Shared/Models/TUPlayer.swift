@@ -9,6 +9,7 @@ import CloudKit
 
 struct TUPlayer: Identifiable, Hashable {
 
+    static let kUsername        = "userName"
     static let kFirstName       = "firstName"
     static let kLastName        = "lastName"
     static let kInEvents        = "inEvents"
@@ -17,6 +18,7 @@ struct TUPlayer: Identifiable, Hashable {
 
     let id: CKRecord.ID
 
+    let username: String
     let firstName: String
     let lastName: String
     let isGameLeader: Int
@@ -24,6 +26,7 @@ struct TUPlayer: Identifiable, Hashable {
     init(record: CKRecord){
         id  = record.recordID
 
+        username        = record[TUPlayer.kUsername]      as? String ?? "N/A"
         firstName       = record[TUPlayer.kFirstName]     as? String ?? "N/A"
         lastName        = record[TUPlayer.kLastName]      as? String ?? "N/A"
         isGameLeader    = record[TUPlayer.kIsGameLeader]  as? Int    ?? 0
