@@ -15,16 +15,22 @@ struct CreateProfileView: View {
 
     var body: some View {
         List{
-            Section{
+            Section {
                 TextField("Username", text: $viewModel.playerUsername)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
+            } footer: {
+                Text("Your username will be used for search and display purposes.")
+            }
+            Section{
                 TextField("First Name", text: $viewModel.playerFirstName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
                 TextField("Last Name", text: $viewModel.playerLastName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
+            } footer: {
+                Text("Your name will not be viewable to anyone unless you want to display your name by changing your settings.")
             }
             Section {
                 Button {
