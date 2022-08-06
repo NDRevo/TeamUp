@@ -74,6 +74,24 @@ import SwiftUI
             }
         }
     }
+    
+    func giveGameLeader(to player: TUPlayer){
+        Task{
+            do {
+                guard let playerProfileID = CloudKitManager.shared.playerProfile else {
+                    return
+                    //Alert
+                }
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: playerProfileID.id)
+                playerRecord[TUPlayer.kIsGameLeader] = 1
+                let _ = try await CloudKitManager.shared.save(record: playerRecord)
+
+            } catch {
+                //alertItem = AlertContext.unableToSaveGameProfile
+                //isShowingAlert = true
+            }
+        }
+    }
 
     func deletePlayer(recordID: CKRecord.ID){
         Task {

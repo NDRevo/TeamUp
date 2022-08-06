@@ -88,6 +88,21 @@ struct PlayerProfileView: View {
                         AddPlayerGameProfileSheet(viewModel: viewModel)
                     }
                 }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink {
+                            SettingsView()
+                        } label: {
+                            Image(systemName: "gearshape.fill")
+                        }
+
+                    }
+                }
+                .refreshable {
+                    do {
+                        eventsManager.userProfile = try await CloudKitManager.shared.getUserRecord()
+                    } catch {}
+                }
                 .onDisappear { editMode?.wrappedValue = .inactive }
                 .background(Color.appBackground)
             }

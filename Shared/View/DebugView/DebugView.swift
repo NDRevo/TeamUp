@@ -21,6 +21,19 @@ struct DebugView: View {
                                 Text(player.firstName)
                                     .bold()
                                     .font(.title2)
+                                
+                                Spacer()
+                                
+                                if player.isGameLeader == 2 {
+                                    Button {
+                                        viewModel.giveGameLeader(to: player)
+                                    } label: {
+                                        Text("Give Leader")
+                                    }
+
+                                }
+                                
+                                
                             }
                         }
                 }
