@@ -25,7 +25,7 @@ struct EditGameProfileView: View {
             Form {
                 TextField("Game ID", text: $gameID.onChange(perform: checkSavable))
                 Picker("Rank", selection: $gameRank.onChange(perform: checkSavable)) {
-                    ForEach(eventsManager.getRanksForGame(game: Games(rawValue: gameProfile.gameName)!), id: \.self){ rank in
+                    ForEach(Games(rawValue: gameProfile.gameName)!.getRanksForGame(), id: \.self){ rank in
                         Text(rank)
                     }
                 }

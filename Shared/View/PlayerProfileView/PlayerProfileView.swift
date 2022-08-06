@@ -22,6 +22,7 @@ struct PlayerProfileView: View {
                 ScrollView {
                     VStack(alignment: .leading){
                         ProfileNameBar(viewModel: viewModel)
+                            .padding(.horizontal, 12)
 
                         HStack {
                             Text("Game Profiles")
@@ -40,6 +41,7 @@ struct PlayerProfileView: View {
                                     .frame(width:20)
                             }
                         }
+                        .padding(.horizontal, 12)
 
                         ScrollView(.horizontal) {
                             LazyHStack(alignment: .top, spacing: 10) {
@@ -53,27 +55,30 @@ struct PlayerProfileView: View {
                                         }
                                 }
                             }
+                            .padding(.horizontal, 12)
                         }
                         .frame(height: viewModel.playerGameProfiles.isEmpty ? 20 : 180)
 
-                        HStack {
-                            Text("Events Participating")
-                                .bold()
-                                .font(.title2)
-                                .accessibilityAddTraits(.isHeader)
-                            Spacer()
-                        }
-
-                        LazyVStack(alignment: .center, spacing: 12){
-                            ForEach(viewModel.eventsParticipating) { event in
-                                EventListCell(event: event)
+                        VStack {
+                            HStack {
+                                Text("Events Participating")
+                                    .bold()
+                                    .font(.title2)
+                                    .accessibilityAddTraits(.isHeader)
+                                Spacer()
                             }
+
+                            LazyVStack(alignment: .center, spacing: 12){
+                                ForEach(viewModel.eventsParticipating) { event in
+                                    EventListCell(event: event)
+                                }
+                            }
+                            .padding(.bottom, 12)
                         }
-                        .padding(.bottom, 12)
+                        .padding(.horizontal, 12)
                     }
                 }
                 .scrollIndicators(.hidden)
-                .padding(.horizontal, 12)
                 .navigationTitle("Profile")
                 .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                     viewModel.alertItem.alertMessage

@@ -22,6 +22,9 @@ struct EventDetailView: View {
                 ParticipantsView(viewModel: viewModel)
             }
         }
+        .refreshable {
+            viewModel.refreshEventDetails()
+        }
         .navigationTitle(viewModel.event.eventName)
         .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
             viewModel.refreshEventDetails()
@@ -39,12 +42,6 @@ struct EventDetailView: View {
         })
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button {
-                        viewModel.refreshEventDetails()
-                    } label: {
-                        Image(systemName: "arrow.clockwise")
-                            .foregroundColor(.blue)
-                    }
                 if viewModel.isEventOwner() {
                     Menu {
                         if viewModel.event.isPublished == 0 {

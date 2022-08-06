@@ -30,9 +30,11 @@ struct AddPlayerGameProfileSheet: View {
                     .keyboardType(.twitter)
                     .textInputAutocapitalization(.never)
 
-                Picker("Rank", selection: $viewModel.playerGameRank) {
-                    ForEach(eventsManager.getRanksForGame(game: viewModel.selectedGame), id: \.self){ rank in
-                        Text(rank)
+                if !viewModel.selectedGame.getRanksForGame().isEmpty {
+                    Picker("Rank", selection: $viewModel.playerGameRank) {
+                        ForEach(viewModel.selectedGame.getRanksForGame(), id: \.self){ rank in
+                            Text(rank)
+                        }
                     }
                 }
             }
