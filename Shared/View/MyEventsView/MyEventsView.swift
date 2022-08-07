@@ -16,40 +16,52 @@ struct MyEventsView: View {
         NavigationView {
             ZStack{
                 Color.appBackground.edgesIgnoringSafeArea(.all)
-                ScrollView {
-                    VStack(alignment: .leading){
-                        if !eventsManager.myUnpublishedEvents.isEmpty {
-                            Text("Unpublished Events")
-                                .bold()
-                                .font(.title2)
-                            VStack(spacing: 12){
-                                ForEach(eventsManager.myUnpublishedEvents) { event in
-                                    NavigationLink {
-                                        EventDetailView(viewModel: EventDetailViewModel(event: event))
-                                    } label: {
-                                        EventListCell(event: event)
+                if !eventsManager.myUnpublishedEvents.isEmpty || !eventsManager.myPublishedEvents.isEmpty {
+                    ScrollView {
+                        VStack(alignment: .leading){
+                            if !eventsManager.myUnpublishedEvents.isEmpty {
+                                Text("Unpublished Events")
+                                    .bold()
+                                    .font(.title2)
+                                VStack(spacing: 12){
+                                    ForEach(eventsManager.myUnpublishedEvents) { event in
+                                        NavigationLink {
+                                            EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                        } label: {
+                                            EventListCell(event: event)
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        if !eventsManager.myPublishedEvents.isEmpty {
-                            Text("Published Events")
-                                .bold()
-                                .font(.title2)
-                            VStack(spacing: 12){
-                                ForEach(eventsManager.myPublishedEvents) { event in
-                                    NavigationLink {
-                                        EventDetailView(viewModel: EventDetailViewModel(event: event))
-                                    } label: {
-                                        EventListCell(event: event)
+                            if !eventsManager.myPublishedEvents.isEmpty {
+                                Text("Published Events")
+                                    .bold()
+                                    .font(.title2)
+                                VStack(spacing: 12){
+                                    ForEach(eventsManager.myPublishedEvents) { event in
+                                        NavigationLink {
+                                            EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                        } label: {
+                                            EventListCell(event: event)
+                                        }
                                     }
                                 }
                             }
+                            Spacer()
                         }
-                        Spacer()
+                        .padding(.horizontal, 12)
                     }
-                    .padding(.horizontal, 12)
+                } else {
+                    VStack(spacing: 12){
+                        Image(systemName: "calendar.badge.plus")
+                            .font(.system(size: 36))
+                            .foregroundColor(.secondary)
+                        Text("You have no events")
+                            .foregroundColor(.secondary)
+                            .bold()
+                    }
+                    .offset(y: -90)
                 }
             }
             .navigationTitle(Text("My Events"))

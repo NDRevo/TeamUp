@@ -68,12 +68,24 @@ struct PlayerProfileView: View {
                                 Spacer()
                             }
 
-                            LazyVStack(alignment: .center, spacing: 12){
-                                ForEach(viewModel.eventsParticipating) { event in
-                                    EventListCell(event: event)
+                            if !viewModel.eventsParticipating.isEmpty {
+                                LazyVStack(alignment: .center, spacing: 12){
+                                    ForEach(viewModel.eventsParticipating) { event in
+                                        EventListCell(event: event)
+                                    }
                                 }
+                                .padding(.bottom, 12)
+                            } else {
+                                VStack(alignment: .center, spacing: 12){
+                                    Image(systemName: "rectangle.dashed")
+                                        .font(.system(size: 36))
+                                        .foregroundColor(.secondary)
+                                    Text("You're not part of any events")
+                                        .foregroundColor(.secondary)
+                                        .bold()
+                                }
+                                .offset(y: 60)
                             }
-                            .padding(.bottom, 12)
                         }
                         .padding(.horizontal, 12)
                     }
@@ -87,6 +99,7 @@ struct PlayerProfileView: View {
                     NavigationView {
                         AddPlayerGameProfileSheet(viewModel: viewModel)
                     }
+                    .presentationDetents([.fraction(0.60)])
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
