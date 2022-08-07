@@ -51,7 +51,7 @@ struct PlayerProfileView: View {
                                             NavigationView {
                                                 EditGameProfileView(viewModel: viewModel, gameProfile: gameProfile)
                                             }
-                                            .presentationDetents([.medium])
+                                            .presentationDetents([.fraction(0.75)])
                                         }
                                 }
                             }

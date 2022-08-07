@@ -46,6 +46,7 @@ struct EditGameProfileView: View {
                     }
                     Button(role: .destructive) {
                         viewModel.deleteGameProfile(for: gameProfile.id, eventsManager: eventsManager)
+                        dismiss()
                     } label: {
                         Text("Delete Game Profile")
                     }
