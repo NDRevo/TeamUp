@@ -51,6 +51,10 @@ struct AlertContext {
 
     //MARK: - EventsDetailView
 
+    static let unableToAccessCalendar            = AlertItem(alertTitle: Text("Calendar Access"),
+                                                             alertMessage: Text("Unable to access calendar. Make sure you give calendar access to this app."),
+                                                             button: Button.init("Ok", role: .none, action: {}))
+    
     static let invalidMatch                      = AlertItem(alertTitle: Text("Invalid Match"),
                                                              alertMessage: Text("Match must have a title and starte date past event."),
                                                              button: Button.init("Ok", role: .none, action: {}))

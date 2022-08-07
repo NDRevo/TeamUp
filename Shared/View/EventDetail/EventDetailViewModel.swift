@@ -7,6 +7,7 @@
 
 import CloudKit
 import SwiftUI
+import EventKit
 
 enum PresentingSheet {
     case addMatch, addPlayer, addAdmin
@@ -21,6 +22,7 @@ enum PresentingSheet {
         matchDate = event.eventDate
     }
 
+    var store = EKEventStore()
     @Published var checkedOffPlayers: [TUPlayer]    = []
     @Published var availablePlayers: [TUPlayer]     = []
     @Published var searchedPlayers: [TUPlayer]      = []
@@ -35,6 +37,7 @@ enum PresentingSheet {
     @Published var isShowingConfirmationDialogue    = false
     @Published var isLoading                        = false
     @Published var isShowingSheet                   = false
+    @Published var isShowingCalendarView               = false
     @Published var sheetToPresent: PresentingSheet? {
         didSet{
             isShowingSheet = true
@@ -58,6 +61,23 @@ enum PresentingSheet {
             day: calendar.component(.day, from: event.eventDate)
         )
         return calendar.date(from:startDate)!...
+    }
+
+    nonisolated func checkCalendarAcces() async {
+        do {
+            let hasGivenAccess = try await store.requestAccess(to: .event)
+            if hasGivenAccess {
+                await MainActor.run{
+                    isShowingCalendarView = true
+                }
+            } else {
+               
+                await MainActor.run{
+                    alertItem = AlertContext.unableToAccessCalendar
+                    isShowingAlert = true
+                }
+            }
+        } catch {}
     }
 
     func refreshEventDetails(){

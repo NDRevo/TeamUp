@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import EventKit
 
 struct EventDetailView: View {
 
@@ -89,19 +90,41 @@ struct EventDetailView_Previews: PreviewProvider {
     }
 }
 
+enum DetailItem {
+    case date,time,location
+    
+    func getSystemImage() -> String {
+        switch self {
+        case .date: return "calendar"
+        case .time: return "clock"
+        case .location: return "map"
+        }
+    }
+
+    func getTextHeading() -> String {
+        switch self {
+        case .date: return "Date"
+        case .time: return "Time"
+        case .location: return "Location"
+        }
+    }
+}
+
 //MARK: EventDetailsViewSection
 
 struct EventDetailsViewSection: View {
-    
+
     @ObservedObject var viewModel: EventDetailViewModel
-    
+
     var body: some View {
         HStack(spacing: 10){
-            DetailItemView(systemImageName: "calendar", textHeading: "Date", textContent: viewModel.event.getEventDetailDate)
+            DetailItemView(textContent: viewModel.event.getEventDetailDate, detailType: .date)
+                .allowToPresentCalendar(with: viewModel)
             Spacer()
-            DetailItemView(systemImageName: "clock", textHeading: "Time", textContent: viewModel.event.getTime)
+            DetailItemView(textContent: viewModel.event.getTime,detailType: .time)
+                .allowToPresentCalendar(with: viewModel)
             Spacer()
-            DetailItemView(systemImageName: "map", textHeading: "Location", textContent: viewModel.event.eventLocation)
+            DetailItemView(textContent: viewModel.event.eventLocation,detailType: .location)
         }
         .frame(maxWidth: .infinity)
         .padding()
@@ -115,16 +138,15 @@ struct EventDetailsViewSection: View {
 
 struct DetailItemView: View {
 
-    var systemImageName: String
-    var textHeading: String
     var textContent: String
+    var detailType: DetailItem
 
     var body: some View {
         VStack(alignment: .center, spacing: 5){
             HStack(spacing: 4){
-                Image(systemName: systemImageName)
+                Image(systemName: detailType.getSystemImage())
                     .foregroundColor(.blue)
-                Text(textHeading)
+                Text(detailType.getTextHeading())
                     .font(.callout)
             }
             Text(textContent)
@@ -132,6 +154,7 @@ struct DetailItemView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
         }
+        
     }
 }
 
