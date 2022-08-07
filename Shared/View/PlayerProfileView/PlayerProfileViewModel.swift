@@ -41,13 +41,12 @@ import CloudKit
         let userExists = try await CloudKitManager.shared.checkUsernameExists(for: playerUsername)
 
         if userExists {
-            //Username already exists alert
-            alertItem = AlertContext.invalidPlayer
+            alertItem = AlertContext.invalidUsername
             return false
         }
 
         guard !playerFirstName.isEmpty && !playerLastName.isEmpty else {
-            //first and last name must be entered
+            alertItem = AlertContext.emptyNamePlayerProfile
             return false
         }
 
@@ -88,25 +87,24 @@ import CloudKit
     func createProfile() async {
         do {
             guard try await isValidPlayer() else {
-                //Invalid Profiles alert
                 isShowingAlert = true
                 return
             }
         } catch {
-            //Unable to check if player is valid
+            alertItem = AlertContext.unableToCheckIfValidPlayer
+            isShowingAlert = true
         }
 
-        //Create CKRecord from profile view
+        //TIP: Create CKRecord from profile view
         let playerRecord = createPlayerRecord()
         
         guard let userRecord = CloudKitManager.shared.userRecord else {
-            //unable to get user record
-            alertItem = AlertContext.unableToGetPlayerProfiles
+            alertItem = AlertContext.unableToGetUserRecord
             isShowingAlert = true
             return
         }
 
-        //Create reference on UserRecord to TUPlayer we created
+        //TIP: Create reference on UserRecord to TUPlayer we created
         userRecord["userProfile"] = CKRecord.Reference(recordID: playerRecord.recordID, action: .none)
 
         Task {
@@ -117,8 +115,7 @@ import CloudKit
                 CloudKitManager.shared.playerProfile = TUPlayer(record: playerRecord)
                 self.playerProfile = playerProfile 
             } catch {
-                //Unsuccessful
-                alertItem = AlertContext.invalidPlayer
+                alertItem = AlertContext.unableToCreatePlayer
                 isShowingAlert = true
             }
         }
@@ -134,8 +131,9 @@ import CloudKit
         Task{
             do {
                 guard let playerProfileID = CloudKitManager.shared.playerProfile else {
+                    alertItem = AlertContext.unableToGetUserProfile
+                    isShowingAlert = true
                     return
-                    //Alert
                 }
                 let playerGameProfile = createPlayerGameProfile()
                 playerGameProfile[TUPlayerGameProfile.kAssociatedToPlayer] = CKRecord.Reference(recordID: playerProfileID.id, action: .deleteSelf)
@@ -165,7 +163,8 @@ import CloudKit
                 getGameProfiles()
 
             } catch {
-                //MARK: Make Alert
+                alertItem = AlertContext.unableToSaveGameProfile
+                isShowingAlert = true
             }
         }
     }
@@ -195,15 +194,15 @@ import CloudKit
                 eventsParticipating = mappedRecords.map(TUEvent.init).sorted(by: {$0.eventDate < $1.eventDate})
 
             } catch {
-                //MARK: Make Alert
+                alertItem = AlertContext.unableToFetchEventsParticipating
+                isShowingAlert = true
             }
         }
     }
 
     func getProfile(){
         guard let userRecord = CloudKitManager.shared.userRecord else {
-            //No user record found
-            alertItem = AlertContext.unableToGetPlayerList
+            alertItem = AlertContext.unableToGetUserRecord
             isShowingAlert = true
             return
         }
@@ -222,7 +221,8 @@ import CloudKit
 
                 getGameProfiles()
             } catch {
-                //MARK: Make Alert
+                alertItem = AlertContext.unableToGetUserProfile
+                isShowingAlert = true
             }
         }
     }
@@ -232,7 +232,8 @@ import CloudKit
             do {
                 playerGameProfiles = try await CloudKitManager.shared.getPlayerGameProfiles()
             } catch {
-                //MARK: Make Alert
+                alertItem = AlertContext.unableToGetUserGameProfiles
+                isShowingAlert = true
             }
         }
     }
@@ -252,7 +253,8 @@ import CloudKit
                 let _ = try await CloudKitManager.shared.save(record: userRecord)
 
             } catch {
-                //MARK: Make Alert
+                alertItem = AlertContext.failedToDeleteProfile
+                isShowingAlert = true
             }
         }
     }

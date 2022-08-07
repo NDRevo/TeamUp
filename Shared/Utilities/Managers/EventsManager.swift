@@ -80,7 +80,7 @@ import SwiftUI
             do{
                 events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: false, forGame: forGame)
 
-                //More efficient way of doing this?
+                //TIP: More efficient way of doing this?
                 for event in events {
                     playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id).count
                 }
@@ -97,8 +97,8 @@ import SwiftUI
             do{
                 myPublishedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: true)
             } catch {
-                //alertItem = AlertContext.unableToRetrieveEvents
-                //isShowingAlert = true
+                alertItem = AlertContext.unableToRetrieveEvents
+                isShowingAlert = true
             }
         }
     }
@@ -108,8 +108,8 @@ import SwiftUI
             do{
                myUnpublishedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: false, withSpecificOwner: true)
             } catch {
-                //alertItem = AlertContext.unableToRetrieveEvents
-                //isShowingAlert = true
+                alertItem = AlertContext.unableToRetrieveEvents
+                isShowingAlert = true
             }
         }
     }

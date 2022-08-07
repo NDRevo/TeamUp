@@ -33,8 +33,12 @@ struct AlertContext {
                                                         alertMessage: Text("Unable to delete event.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
-    static let unableToGetPlayerProfiles        = AlertItem(alertTitle: Text("Server Error"),
-                                                        alertMessage: Text("Unable to get player profiles.\n Check your internet connection and try again."),
+    static let unableToGetUserRecord            = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Unable to get your user record.\n Check your internet connection and try again."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+    
+    static let unableToGetUserProfile           = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Unable to retrieve your profile.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToRemovePlayersFromEvent   = AlertItem(alertTitle: Text("Server Error"),
@@ -71,10 +75,18 @@ struct AlertContext {
                                                              alertMessage: Text("Unable to delete match.\n Check your internet connection and try again."),
                                                              button: Button.init("Ok", role: .none, action: {}))
 
+    static let unableToPublishEvent              = AlertItem(alertTitle: Text("Server Error"),
+                                                             alertMessage: Text("Unable to publish event.\n Check your internet connection and try again."),
+                                                             button: Button.init("Ok", role: .none, action: {}))
+
+    static let unableToSearchForPlayers          = AlertItem(alertTitle: Text("Server Error"),
+                                                             alertMessage: Text("Unable to search for players.\n Check your internet connection and try again."),
+                                                             button: Button.init("Ok", role: .none, action: {}))
+
     //MARK: - PlayersListView
 
     static let invalidPlayer                = AlertItem(alertTitle: Text("Invalid Player"),
-                                                        alertMessage: Text("Player must have a first name."),
+                                                        alertMessage: Text("You must fill out all player details."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToCreatePlayer         = AlertItem(alertTitle: Text("Server Error"),
@@ -90,8 +102,16 @@ struct AlertContext {
                                                         button: Button.init("Ok", role: .none, action: {}))
     //MARK: - PlayerProfileView
 
+    static let invalidUsername              = AlertItem(alertTitle: Text("Invalid Username"),
+                                                        alertMessage: Text("Username already exists. Try something more unique!"),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
+    static let emptyNamePlayerProfile       = AlertItem(alertTitle: Text("Invalid Username"),
+                                                        alertMessage: Text("First and last name must be filled out."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
     static let invalidGameProfile           = AlertItem(alertTitle: Text("Invalid Game Profile"),
-                                                        alertMessage: Text("A game profile must have an ID and rank."),
+                                                        alertMessage: Text("A game profile must have an ID."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToSaveGameProfile      = AlertItem(alertTitle: Text("Server Error"),
@@ -100,6 +120,21 @@ struct AlertContext {
 
     static let unableToDeleteGameProfile    = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to delete game profile. \n Check your internet connection and try again."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+    
+    static let unableToCheckIfValidPlayer        = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Unable to get verify your profile.\n Check your internet connection and try again."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
+    static let unableToFetchEventsParticipating  = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Unable to get list of events participating.\n Check your internet connection and try again."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+    
+    static let unableToGetUserGameProfiles       = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Unable to retrieve your game profiles.\n Check your internet connection and try again."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+    static let failedToDeleteProfile             = AlertItem(alertTitle: Text("Server Error"),
+                                                        alertMessage: Text("Failed to delete profile.\n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
     //MARK: - MatchDetailView
@@ -134,5 +169,10 @@ struct AlertContext {
 
     static let unableToRemovePlayerFromTeam     = AlertItem(alertTitle: Text("Server Error"),
                                                             alertMessage: Text("Unable to delete player from team.\n Check your internet connection and try again."),
+                                                            button: Button.init("Ok", role: .none, action: {}))
+    //MARK: - SettingsView
+    
+    static let unableToChangeGameLeaderPosition     = AlertItem(alertTitle: Text("Server Error"),
+                                                            alertMessage: Text("Failed to make game leader.\n Check your internet connection and try again."),
                                                             button: Button.init("Ok", role: .none, action: {}))
 }

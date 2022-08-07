@@ -85,11 +85,11 @@ import SwiftUI
                 var playersToSave: [CKRecord] = []
 
                 for player in newTeamOne + newTeamTwo {
-                    //Fetch
+                    //TIP: Fetch
                     let playerRecord   = try await CloudKitManager.shared.fetchRecord(with: player.id)
                     var playerOnTeams = playerRecord[TUPlayer.kOnTeams]  as? [CKRecord.Reference] ?? []
                     
-                    //Update
+                    //TIP:Update
                     if playerOnTeams.contains(where: {$0.recordID == teams[1].id}) && newTeamOne.contains(where: {$0.id == player.id}){
                         
                         playerOnTeams.removeAll(where: {$0.recordID == teams[1].id})
@@ -106,10 +106,10 @@ import SwiftUI
                     
                     playersToSave.append(playerRecord)
                 }
-                //Save
+                //TIP:Save
                 let _ = try await CloudKitManager.shared.batchSave(records: playersToSave)
                 
-                //Update locally and sort by first name
+                //TIP:Update locally and sort by first name
                 teamsAndPlayer.updateValue(newTeamOne.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[0].id)
                 teamsAndPlayer.updateValue(newTeamTwo.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[1].id)
                 hideLoadingView()
@@ -154,7 +154,7 @@ import SwiftUI
                 let teamRecord = createTeamRecord()
                 let _ = try await CloudKitManager.shared.save(record: teamRecord)
 
-                //Reloads view, locally adds player until another network call is made
+                //TIP: Reloads view, locally adds player until another network call is made
                 teams.append(TUTeam(record: teamRecord))
                 teamsAndPlayer[teamRecord.recordID] = []
             } catch {

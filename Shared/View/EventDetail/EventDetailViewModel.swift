@@ -66,7 +66,7 @@ enum PresentingSheet {
     }
 
     func setUpEventDetails(){
-        //Prevents from running twice
+        //TIP: Prevents from running twice
         if !onAppearHasFired {
             getMatchesForEvent()
             getPlayersInEvents()
@@ -122,7 +122,7 @@ enum PresentingSheet {
                 let matchRecord = createMatchRecord()
                 let _ = try await CloudKitManager.shared.save(record: matchRecord)
 
-                //Reloads view, locally adds player until another network call is made
+                //TIP: Reloads view, locally adds player until another network call is made
                 matches.append(TUMatch(record: matchRecord))
                 matches.sort(by: {$0.matchStartTime < $1.matchStartTime})
             } catch {
@@ -167,7 +167,7 @@ enum PresentingSheet {
                 let _ = try await CloudKitManager.shared.save(record: eventRecord)
 
             } catch {
-                //Unable to publish evvent
+                alertItem = AlertContext.unableToPublishEvent
                 isShowingAlert = true
             }
         }
@@ -220,8 +220,8 @@ enum PresentingSheet {
             do {
                 availablePlayers =  try await CloudKitManager.shared.getPlayers(with: searchString)
             } catch {
-                print(error)
-                //Unable to search for players
+                alertItem = AlertContext.unableToSearchForPlayers
+                isShowingAlert = true
             }
         }
     }
@@ -242,7 +242,7 @@ enum PresentingSheet {
 
                     if !teamsInEvents.isEmpty {
                         for teamReference in teamReferences {
-                            //If team doesnt exist then remove from player's onTeams
+                            //TIP: If team doesnt exist then remove from player's onTeams
                             if teamsInEvents.contains(where: {$0.recordID == teamReference.recordID}){
                                 teamReferences.removeAll(where: {$0 == teamReference})
                             }

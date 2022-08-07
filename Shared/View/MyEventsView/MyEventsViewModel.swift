@@ -93,7 +93,7 @@ import SwiftUI
                 let event = createEventRecord()
                 let _ = try await CloudKitManager.shared.save(record: event)
 
-                //Reloads view, locally adds player until another network call is made
+                //TIP: Reloads view, locally adds player until another network call is made
                 eventsManager.myUnpublishedEvents.append(TUEvent(record: event))
                 eventsManager.myUnpublishedEvents.sort(by: {$0.eventDate < $1.eventDate})
             } catch {
