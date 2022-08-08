@@ -18,6 +18,7 @@ struct EventDetailView: View {
         ScrollView {
             VStack {
                 EventDetailsViewSection(viewModel: viewModel)
+                EventLocationDetailViewSection(viewModel: viewModel)
                 EventDescriptionViewSection(viewModel: viewModel)
                 MatchesView(viewModel: viewModel)
                 ParticipantsView(viewModel: viewModel)
@@ -91,22 +92,41 @@ struct EventDetailView_Previews: PreviewProvider {
 }
 
 enum DetailItem {
-    case date,time,location
-    
+    case date,time,endTime,location
+
     func getSystemImage() -> String {
         switch self {
         case .date: return "calendar"
         case .time: return "clock"
         case .location: return "map"
+        case .endTime: return "clock.badge.exclamationmark"
         }
     }
 
     func getTextHeading() -> String {
         switch self {
         case .date: return "Date"
-        case .time: return "Time"
+        case .time: return "Start Time"
         case .location: return "Location"
+        case .endTime: return "End Time"
         }
+    }
+}
+
+struct EventLocationDetailViewSection: View {
+
+    @ObservedObject var viewModel: EventDetailViewModel
+
+    var body: some View {
+        HStack(spacing: 10){
+            LocationDetailItemView(textContent: viewModel.event.eventLocation, detailType: .location)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.appCell)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .padding(.horizontal)
     }
 }
 
@@ -117,17 +137,16 @@ struct EventDetailsViewSection: View {
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
-        HStack(spacing: 10){
+        HStack(spacing: 5){
             DetailItemView(textContent: viewModel.event.getEventDetailDate, detailType: .date)
-                .allowToPresentCalendar(with: viewModel)
             Spacer()
-            DetailItemView(textContent: viewModel.event.getTime,detailType: .time)
-                .allowToPresentCalendar(with: viewModel)
+            DetailItemView(textContent: viewModel.event.getTime, detailType: .time)
             Spacer()
-            DetailItemView(textContent: viewModel.event.eventLocation,detailType: .location)
+            DetailItemView(textContent: viewModel.event.getEndTime, detailType: .endTime)
         }
         .frame(maxWidth: .infinity)
         .padding()
+        .allowToPresentCalendar(with: viewModel)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
@@ -154,7 +173,29 @@ struct DetailItemView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
         }
-        
+    }
+}
+
+//MARK: LocationDetailItemView
+
+struct LocationDetailItemView: View {
+
+    var textContent: String
+    var detailType: DetailItem
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5){
+            HStack(spacing: 4){
+                Image(systemName: detailType.getSystemImage())
+                    .foregroundColor(.blue)
+                Text(detailType.getTextHeading())
+                    .font(.callout)
+            }
+            Text(textContent)
+                .bold()
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+        }
     }
 }
 

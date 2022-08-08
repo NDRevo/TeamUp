@@ -12,9 +12,6 @@ struct AddEventSheet: View {
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: MyEventsViewModel
 
-    @Environment(\.dismiss) var dismiss
-    @Environment(\.editMode) var editMode
-
     var body: some View {
         List{
 
@@ -24,6 +21,12 @@ struct AddEventSheet: View {
                     .textInputAutocapitalization(.words)
 
                 DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
+                DatePicker("Event End Date", selection: $viewModel.eventEndDate, in: viewModel.dateRange)
+                    .onChange(of: viewModel.eventDate) { newValue in
+                        if viewModel.eventEndDate <= newValue {
+                            viewModel.eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: newValue)!
+                        }
+                    }
 
                 Picker("Game", selection: $viewModel.eventGame) {
                     ForEach(Games.allCases.filter({$0 != .all})){game in
@@ -45,9 +48,14 @@ struct AddEventSheet: View {
 
             Section{
                 Button {
-                    dismiss()
                     Task {
-                        viewModel.createEvent(for: eventsManager)
+                        do {
+                            try viewModel.createEvent(for: eventsManager)
+                        } catch {
+                            viewModel.isPresentingAddEvent = false
+                            try await Task.sleep(nanoseconds: 50_000_000)
+                            viewModel.isShowingAlert = true
+                        }
                     }
                 } label: {
                     Text("Create Event")
@@ -57,10 +65,11 @@ struct AddEventSheet: View {
         }
         .navigationTitle("Create Event")
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Dismiss") {dismiss()}
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Cancel") {viewModel.isPresentingAddEvent = false}
             }
         }
+        //TIP: Adding alert doesn't allow cancel button / dismissmal of sheet to work
     }
 }
 

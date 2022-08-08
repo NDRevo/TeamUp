@@ -12,6 +12,7 @@ import SwiftUI
 
     @Published var eventName: String         = ""
     @Published var eventDate: Date           = Date()
+    @Published var eventEndDate: Date        = Date()
     @Published var eventGame: Games          = .apexlegends
     @Published var eventDescription: String  = ""
     @Published var eventLocation: String     = ""
@@ -36,6 +37,7 @@ import SwiftUI
     func resetInput(){
         eventName = ""
         eventDate = currentDateAndHour
+        eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDateAndHour)!
         eventGame = .none
         eventDescription = ""
         eventLocation = ""
@@ -55,11 +57,13 @@ import SwiftUI
         return calendar.date(from: mock)!
     }()
 
-    private func isValidEvent() -> Bool{
+    private func isValidEvent() -> Bool {
         guard !eventName.isEmpty,
               eventDate >= Date(),
               !eventDescription.isEmpty,
-              !eventLocation.isEmpty else{
+              !eventLocation.isEmpty,
+              eventEndDate >= eventDate
+        else {
             return false
         }
         return true
@@ -69,6 +73,7 @@ import SwiftUI
         let record = CKRecord(recordType: RecordType.event)
         record[TUEvent.kEventName]          = eventName
         record[TUEvent.kEventDate]          = eventDate
+        record[TUEvent.kEventEndDate]       = eventEndDate
         record[TUEvent.kEventGame]          = eventGame.rawValue
         record[TUEvent.kEventDescription]   = eventDescription
         record[TUEvent.kEventLocation]      = eventLocation
@@ -81,11 +86,10 @@ import SwiftUI
         return record
     }
 
-    func createEvent(for eventsManager: EventsManager) {
+    func createEvent(for eventsManager: EventsManager) throws {
         guard isValidEvent() else {
             alertItem = AlertContext.invalidEvent
-            isShowingAlert = true
-            return
+            throw EventError.InvalidEvent
         }
 
         Task {
@@ -98,8 +102,13 @@ import SwiftUI
                 eventsManager.myUnpublishedEvents.sort(by: {$0.eventDate < $1.eventDate})
             } catch {
                 alertItem = AlertContext.unableToCreateEvent
-                isShowingAlert = true
+                throw EventError.unableToCreateEvent
             }
         }
+    }
+    
+    enum EventError: Error {
+        case InvalidEvent
+        case unableToCreateEvent
     }
 }

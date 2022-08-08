@@ -28,9 +28,9 @@ struct RoundedCorner: Shape {
 }
 
 struct onTapPresentCalendar: ViewModifier {
-    
+
     @ObservedObject var viewModel: EventDetailViewModel
-    
+
     func body(content: Content) -> some View {
         content
             .onTapGesture {
@@ -40,7 +40,6 @@ struct onTapPresentCalendar: ViewModifier {
             }
             .sheet(isPresented: $viewModel.isShowingCalendarView) {
                 CalendarViewController(event: viewModel.event, store: viewModel.store, isShowingCalendarView: $viewModel.isShowingCalendarView)
-                
             }
     }
 }

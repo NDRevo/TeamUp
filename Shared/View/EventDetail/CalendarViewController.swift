@@ -23,7 +23,7 @@ struct CalendarViewController: UIViewControllerRepresentable {
         eventViewController.eventStore = store
 
         eventViewController.event!.startDate = event.eventDate
-        eventViewController.event!.endDate = Calendar.current.date(byAdding: .hour, value: 1, to: event.eventDate)
+        eventViewController.event!.endDate = event.eventEndDate
         eventViewController.event!.location = event.eventLocation
         eventViewController.event!.title = event.eventName
         eventViewController.event!.notes = event.eventDescription

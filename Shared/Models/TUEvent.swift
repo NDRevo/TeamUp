@@ -12,6 +12,7 @@ struct TUEvent: Identifiable, Hashable {
 
     static let kEventName         = "eventName"
     static let kEventDate         = "eventDate"
+    static let kEventEndDate      = "eventEndDate"
     static let kEventGame         = "eventGame"
     static let kEventDescription  = "eventDescription"
     static let kEventLocation     = "eventLocation"
@@ -22,6 +23,7 @@ struct TUEvent: Identifiable, Hashable {
 
     let eventName: String
     let eventDate: Date
+    let eventEndDate: Date
     let eventGame: String
     let eventDescription: String
     let eventLocation: String
@@ -33,6 +35,7 @@ struct TUEvent: Identifiable, Hashable {
 
         eventName        = record[TUEvent.kEventName] as? String ?? "N/A"
         eventDate        = record[TUEvent.kEventDate] as? Date ?? Date()
+        eventEndDate     = record[TUEvent.kEventEndDate] as? Date ?? Date()
         eventGame        = record[TUEvent.kEventGame] as? String ?? "N/A"
         eventDescription = record[TUEvent.kEventDescription] as? String ?? "N/A"
         eventLocation    = record[TUEvent.kEventLocation] as? String ?? "N/A"
@@ -63,6 +66,12 @@ struct TUEvent: Identifiable, Hashable {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
         return dateFormatter.string(from: eventDate)
+    }
+
+    var getEndTime: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        return dateFormatter.string(from: eventEndDate)
     }
 
     var getEventDetailDate: String {
