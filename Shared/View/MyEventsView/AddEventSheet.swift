@@ -66,6 +66,7 @@ struct AddEventSheet: View {
         .navigationTitle("Create Event")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
+                //TIP: Publishing changes from within view updates is not allowed, this will cause undefined behavior.
                 Button("Cancel") {viewModel.isPresentingAddEvent = false}
             }
         }

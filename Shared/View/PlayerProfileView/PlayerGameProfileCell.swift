@@ -56,6 +56,8 @@ struct PlayerGameProfileCell: View {
                         Text(gameProfile.gameRank)
                         Spacer()
                         
+                        //TIP: ForEach<Array<String>, String, Optional<Text>>: the ID  occurs multiple times within the collection, this will give undefined results!
+                        //This will be resolved when made an optional
                         ForEach(gameProfile.gameAliases, id: \.self){ alias in
                             if alias != "" {
                                 Text(alias)

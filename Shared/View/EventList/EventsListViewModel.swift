@@ -11,7 +11,6 @@ import SwiftUI
 @MainActor final class EventsListViewModel: ObservableObject {
 
     @Published var onAppearHasFired             = false
-    @Published var isPresentingAddEvent         = false
     @Published var isShowingAlert               = false
     @Published var currentGameSelected: Games   = .all
 

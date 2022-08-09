@@ -49,6 +49,7 @@ struct CalendarViewController: UIViewControllerRepresentable {
         func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
             switch action {
             case .canceled:
+                //TIP: Publishing changes from within view updates is not allowed, this will cause undefined behavior.
                 isShowingCalendarView = false
             case .saved:
                 do {
