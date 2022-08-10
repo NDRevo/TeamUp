@@ -11,24 +11,24 @@ struct GameCell: View {
 
     @EnvironmentObject private var eventsManager: EventsManager
     @ObservedObject var viewModel: EventsListViewModel
-    var game: Games
+    var game: Game
 
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
             .foregroundStyle(
-                Color.getGameColor(gameName: game.rawValue)
+                Color.getGameColor(gameName: game.name)
             )
             .overlay{
-                if game == .all {
+                if game.name == GameNames.all {
                     Image(systemName: "rectangle.stack")
                         .font(.title)
                         .bold()
                 } else {
-                    Text(game.rawValue.prefix(1))
+                    Text(game.name.prefix(1))
                         .font(.title)
                         .bold()
                 }
-                if game == viewModel.currentGameSelected {
+                if game.name == viewModel.currentGameSelected.name {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.appPrimaryInverse, lineWidth: 4)
                 }
@@ -43,6 +43,6 @@ struct GameCell: View {
 
 struct GameCell_Previews: PreviewProvider {
     static var previews: some View {
-        GameCell(viewModel: EventsListViewModel(), game: .none)
+        GameCell(viewModel: EventsListViewModel(), game: Game(name: "None", ranks: []))
     }
 }

@@ -12,7 +12,7 @@ import SwiftUI
 
     @Published var onAppearHasFired             = false
     @Published var isShowingAlert               = false
-    @Published var currentGameSelected: Games   = .all
+    @Published var currentGameSelected: Game    = Game(name: GameNames.all, ranks: [])
 
     @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 

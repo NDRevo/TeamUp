@@ -49,7 +49,7 @@ struct PlayerProfileView: View {
                                     PlayerGameProfileCell(viewModel: viewModel, gameProfile: gameProfile)
                                         .sheet(isPresented: $viewModel.isEditingGameProfile){
                                             NavigationView {
-                                                EditGameProfileView(viewModel: viewModel, gameProfile: gameProfile)
+                                                EditGameProfileView(viewModel: viewModel, gameProfile: viewModel.tappedGameProfile!)
                                             }
                                             .presentationDetents([.fraction(0.75)])
                                         }

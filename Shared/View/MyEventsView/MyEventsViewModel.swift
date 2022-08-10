@@ -13,7 +13,7 @@ import SwiftUI
     @Published var eventName: String         = ""
     @Published var eventDate: Date           = Date()
     @Published var eventEndDate: Date        = Date()
-    @Published var eventGame: Games          = .apexlegends
+    @Published var eventGameName: String     = GameNames.none
     @Published var eventDescription: String  = ""
     @Published var eventLocation: String     = ""
     
@@ -38,7 +38,7 @@ import SwiftUI
         eventName = ""
         eventDate = currentDateAndHour
         eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDateAndHour)!
-        eventGame = .none
+        eventGameName = GameNames.none
         eventDescription = ""
         eventLocation = ""
     }
@@ -74,7 +74,7 @@ import SwiftUI
         record[TUEvent.kEventName]          = eventName
         record[TUEvent.kEventDate]          = eventDate
         record[TUEvent.kEventEndDate]       = eventEndDate
-        record[TUEvent.kEventGame]          = eventGame.rawValue
+        record[TUEvent.kEventGame]          = eventGameName
         record[TUEvent.kEventDescription]   = eventDescription
         record[TUEvent.kEventLocation]      = eventLocation
         record[TUEvent.kIsPublished]        = 0
@@ -89,7 +89,8 @@ import SwiftUI
     func createEvent(for eventsManager: EventsManager) throws {
         guard isValidEvent() else {
             alertItem = AlertContext.invalidEvent
-            throw EventError.InvalidEvent
+            isShowingAlert = true
+            return
         }
 
         Task {
@@ -100,9 +101,10 @@ import SwiftUI
                 //TIP: Reloads view, locally adds player until another network call is made
                 eventsManager.myUnpublishedEvents.append(TUEvent(record: event))
                 eventsManager.myUnpublishedEvents.sort(by: {$0.eventDate < $1.eventDate})
+                
             } catch {
                 alertItem = AlertContext.unableToCreateEvent
-                throw EventError.unableToCreateEvent
+                isShowingAlert = true
             }
         }
     }

@@ -7,20 +7,6 @@
 
 import CloudKit
 
-extension Array where Element: Hashable {
-    func removingDuplicates() -> [Element] {
-        var addedDict = [Element: Bool]()
-
-        return filter {
-            addedDict.updateValue(true, forKey: $0) == nil
-        }
-    }
-
-    mutating func removeDuplicates() {
-        self = self.removingDuplicates()
-    }
-}
-
 //Needs to be singleton instead of struct because we need to save user record
 //Singleton is like global variable, but can be hard to debug
 final class CloudKitManager {
@@ -209,14 +195,14 @@ final class CloudKitManager {
         return records
     }
 
-    func getEvents(thatArePublished: Bool, withSpecificOwner: Bool, forGame: Games = .all) async throws -> [TUEvent] {
+    func getEvents(thatArePublished: Bool, withSpecificOwner: Bool, forGame: Game = Game(name: GameNames.all, ranks: [])) async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventDate, ascending: true)
         let publishPredicate   = thatArePublished ? NSPredicate(format: "isPublished == 1") : NSPredicate(format: "isPublished == 0")
-        let eventGamePredicate = NSPredicate(format: "eventGame == %@", forGame.rawValue)
+        let eventGamePredicate = NSPredicate(format: "eventGame == %@", forGame.name)
 
         var predicate = NSPredicate()
         
-        if forGame == .all {
+        if forGame.name == GameNames.all {
             predicate = publishPredicate
         } else {
             predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [publishPredicate, eventGamePredicate])

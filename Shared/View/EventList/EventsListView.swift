@@ -19,7 +19,7 @@ struct EventsListView: View {
                 VStack {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack{
-                            ForEach(Games.allCases) { game in
+                            ForEach(GameLibrary.data.games) { game in
                                 GameCell(viewModel: viewModel, game: game)
                             }
                         }

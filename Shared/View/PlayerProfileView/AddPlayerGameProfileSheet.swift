@@ -18,12 +18,15 @@ struct AddPlayerGameProfileSheet: View {
         List {
             Section{
                 Picker("Game", selection: $viewModel.selectedGame) {
-                    ForEach(Games.allCases.filter({$0 != .all && $0 != .none})){ game in
-                        Text(game.rawValue)
-                            .tag(game)
+                    ForEach(GameLibrary.data.games[2...]){ game in
+                        Text(game.name)
+                            .tag(game.self)
                     }
                 }
                 .pickerStyle(.menu)
+                .onChange(of: viewModel.selectedGame) { newValue in
+                    viewModel.resetRankList(for: newValue)
+                }
 
                 TextField("Game ID", text: $viewModel.gameID)
                     .disableAutocorrection(true)
@@ -31,9 +34,10 @@ struct AddPlayerGameProfileSheet: View {
                     .textInputAutocapitalization(.never)
 
                 if !viewModel.selectedGame.getRanksForGame().isEmpty {
-                    Picker("Rank", selection: $viewModel.playerGameRank) {
-                        ForEach(viewModel.selectedGame.getRanksForGame(), id: \.self){ rank in
-                            Text(rank)
+                    Picker("Rank", selection: $viewModel.selectedGameRank) {
+                        ForEach(viewModel.selectedGame.getRanksForGame()){ rank in
+                            Text(rank.rankName)
+                                .tag(rank.self)
                         }
                     }
                 }

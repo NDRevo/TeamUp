@@ -22,7 +22,7 @@ extension Binding {
             }
         )
     }
-    
+
     public func onChange(perform action: @escaping (_ newValue: Value) -> Void) -> Self where Value : Equatable {
         .init(
             get: {

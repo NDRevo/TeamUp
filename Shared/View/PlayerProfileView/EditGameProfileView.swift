@@ -24,9 +24,12 @@ struct EditGameProfileView: View {
         VStack{
             Form {
                 TextField("Game ID", text: $gameID.onChange(perform: checkSavable))
-                Picker("Rank", selection: $gameRank.onChange(perform: checkSavable)) {
-                    ForEach(Games(rawValue: gameProfile.gameName)!.getRanksForGame(), id: \.self){ rank in
-                        Text(rank)
+                
+                if !gameProfile.gameRank.isEmpty {
+                    Picker("Rank", selection: $gameRank.onChange(perform: checkSavable)) {
+                        ForEach(GameLibrary.data.getRanksForGame(for: gameProfile.gameName)){ rank in
+                            Text(rank.rankName)
+                        }
                     }
                 }
 
@@ -69,16 +72,20 @@ struct EditGameProfileView: View {
         .navigationTitle("Edit")
     }
     
-    //MARK: Move to a view model
+    //TIP: Move to a view model... eventually?
     func checkSavable() {
-        if gameRank != gameProfile.gameRank {
-            isSavable = true
-        } else if gameID != gameProfile.gameID {
-            isSavable = true
-        } else if gameProfile.gameAliases[0] != gameAliases[0] {
-            isSavable = true
-        } else if gameProfile.gameAliases[1] != gameAliases[1] {
-            isSavable = true
+        if !gameID.isEmpty {
+            if gameRank != gameProfile.gameRank {
+                isSavable = true
+            } else if gameID != gameProfile.gameID {
+                isSavable = true
+            } else if gameProfile.gameAliases[0] != gameAliases[0] {
+                isSavable = true
+            } else if gameProfile.gameAliases[1] != gameAliases[1] {
+                isSavable = true
+            } else {
+                isSavable = false
+            }
         } else {
             isSavable = false
         }

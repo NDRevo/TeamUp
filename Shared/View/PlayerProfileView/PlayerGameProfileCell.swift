@@ -45,6 +45,7 @@ struct PlayerGameProfileCell: View {
                             .foregroundColor(.blue)
                             .onTapGesture {
                                 viewModel.isEditingGameProfile.toggle()
+                                viewModel.tappedGameProfile = gameProfile
                             }
                     }
                     VStack(alignment: .leading) {

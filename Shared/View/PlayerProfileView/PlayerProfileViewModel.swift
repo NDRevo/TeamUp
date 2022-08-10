@@ -19,9 +19,11 @@ import CloudKit
     @Published var playerFirstName: String       = ""
     @Published var playerLastName: String        = ""
 
+    @Published var tappedGameProfile: TUPlayerGameProfile?
+
     @Published var gameID: String                = ""
-    @Published var selectedGame: Games           = .apexlegends
-    @Published var playerGameRank: String        = "Unranked"
+    @Published var selectedGame: Game            = GameLibrary.data.games[2]
+    @Published var selectedGameRank: Rank        = Rank(rankName: "", rankWeight: 0)
 
     @Published var isPresentingSheet             = false
     @Published var isShowingAlert                = false
@@ -32,9 +34,20 @@ import CloudKit
     @Environment(\.dismiss) var dismiss
 
     func resetInput(){
-        selectedGame    = .apexlegends
-        gameID          = ""
-        playerGameRank  = "Unranked"
+        gameID           = ""
+        selectedGame     = GameLibrary.data.games[2]
+
+        if !selectedGame.getRanksForGame().isEmpty {
+            selectedGameRank = Rank(rankName: "Unranked", rankWeight: 0)
+        }
+    }
+    
+    func resetRankList(for value: Game){
+        if !value.getRanksForGame().isEmpty {
+            selectedGameRank = value.getRanksForGame()[0]
+        } else {
+            selectedGameRank = Rank(rankName: "", rankWeight: 0)
+        }
     }
 
     private func isValidPlayer() async throws -> Bool {
@@ -54,7 +67,7 @@ import CloudKit
     }
 
     private func isValidGameProfile() -> Bool {
-        guard !gameID.isEmpty, !playerGameRank.isEmpty else {
+        guard !gameID.isEmpty else {
             return false
         }
         return true
@@ -66,8 +79,8 @@ import CloudKit
 
     private func createPlayerGameProfile() -> CKRecord {
         let playerGameProfile = CKRecord(recordType: RecordType.playerGameProfiles)
-        playerGameProfile[TUPlayerGameProfile.kGameName]    = selectedGame.rawValue
-        playerGameProfile[TUPlayerGameProfile.kGameRank]    = playerGameRank
+        playerGameProfile[TUPlayerGameProfile.kGameName]    = selectedGame.name
+        playerGameProfile[TUPlayerGameProfile.kGameRank]    = selectedGameRank.rankName
         playerGameProfile[TUPlayerGameProfile.kGameID]      = gameID
         playerGameProfile[TUPlayerGameProfile.kGameAliases]   = ["",""]
 
@@ -97,7 +110,7 @@ import CloudKit
 
         //TIP: Create CKRecord from profile view
         let playerRecord = createPlayerRecord()
-        
+
         guard let userRecord = CloudKitManager.shared.userRecord else {
             alertItem = AlertContext.unableToGetUserRecord
             isShowingAlert = true
@@ -192,7 +205,6 @@ import CloudKit
                 }
 
                 eventsParticipating = mappedRecords.map(TUEvent.init).sorted(by: {$0.eventDate < $1.eventDate})
-
             } catch {
                 alertItem = AlertContext.unableToFetchEventsParticipating
                 isShowingAlert = true
@@ -207,7 +219,7 @@ import CloudKit
             return
         }
 
-        //Get reference, if none it means they havent created a profile
+        //TIP: Get reference, if none it means they havent created a profile
         guard let profileReference = userRecord["userProfile"] as? CKRecord.Reference else { return }
         let profileRecordID = profileReference.recordID
 

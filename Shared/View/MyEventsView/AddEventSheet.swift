@@ -28,10 +28,10 @@ struct AddEventSheet: View {
                         }
                     }
 
-                Picker("Game", selection: $viewModel.eventGame) {
-                    ForEach(Games.allCases.filter({$0 != .all})){game in
-                        Text(game.rawValue)
-                            .tag(game)
+                Picker("Game", selection: $viewModel.eventGameName) {
+                    //TIP: Starts from 1 to remove "All" case
+                    ForEach(GameLibrary.data.games[1...]){game in
+                        Text(game.name)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
@@ -49,13 +49,8 @@ struct AddEventSheet: View {
             Section{
                 Button {
                     Task {
-                        do {
-                            try viewModel.createEvent(for: eventsManager)
-                        } catch {
-                            viewModel.isPresentingAddEvent = false
-                            try await Task.sleep(nanoseconds: 50_000_000)
-                            viewModel.isShowingAlert = true
-                        }
+                        try viewModel.createEvent(for: eventsManager)
+                        viewModel.isPresentingAddEvent = false
                     }
                 } label: {
                     Text("Create Event")
