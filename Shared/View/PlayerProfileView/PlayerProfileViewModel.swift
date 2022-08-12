@@ -23,6 +23,7 @@ import CloudKit
 
     @Published var gameID: String                = ""
     @Published var selectedGame: Game            = GameLibrary.data.games[2]
+    @Published var selectedGameVariant: Game     = Game(name: "", ranks: [])
     @Published var selectedGameRank: Rank        = Rank(rankName: "", rankWeight: 0)
 
     @Published var isPresentingSheet             = false
@@ -39,6 +40,8 @@ import CloudKit
 
         if !selectedGame.getRanksForGame().isEmpty {
             selectedGameRank = Rank(rankName: "Unranked", rankWeight: 0)
+        } else {
+            selectedGameRank = Rank(rankName: "", rankWeight: 0)
         }
     }
     
@@ -79,6 +82,9 @@ import CloudKit
 
     private func createPlayerGameProfile() -> CKRecord {
         let playerGameProfile = CKRecord(recordType: RecordType.playerGameProfiles)
+        if !selectedGameVariant.name.isEmpty {
+            playerGameProfile[TUPlayerGameProfile.kGameVariantName] = selectedGameVariant.name
+        }
         playerGameProfile[TUPlayerGameProfile.kGameName]    = selectedGame.name
         playerGameProfile[TUPlayerGameProfile.kGameRank]    = selectedGameRank.rankName
         playerGameProfile[TUPlayerGameProfile.kGameID]      = gameID

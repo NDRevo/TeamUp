@@ -12,13 +12,15 @@ struct TUPlayerGameProfile: Identifiable {
 
     static let kAssociatedToPlayer  = "associatedToPlayer"
     static let kGameName            = "gameName"
+    static let kGameVariantName     = "gameVariantName"
     static let kGameID              = "gameID"
     static let kGameRank            = "gameRank"
-    static let kGameAliases         = "gameAlias" //TIP: Change to "gameAliases in CloudKit"
+    static let kGameAliases         = "gameAliases"
 
     let id: CKRecord.ID
 
     let gameName: String
+    let gameVariantName: String
     let gameID: String
     let gameRank: String
     let gameAliases: [String] //TIP: Make optional
@@ -26,9 +28,10 @@ struct TUPlayerGameProfile: Identifiable {
     init(record: CKRecord){
         id  = record.recordID
 
-        gameName    = record[TUPlayerGameProfile.kGameName]  as? String ?? "N/A"
-        gameID      = record[TUPlayerGameProfile.kGameID]    as? String ?? "N/A"
-        gameRank    = record[TUPlayerGameProfile.kGameRank]  as? String ?? "N/A"
-        gameAliases   = record[TUPlayerGameProfile.kGameAliases] as? [String] ?? []
+        gameName        = record[TUPlayerGameProfile.kGameName]  as? String ?? "N/A"
+        gameVariantName = record[TUPlayerGameProfile.kGameVariantName]  as? String ?? ""
+        gameID          = record[TUPlayerGameProfile.kGameID]    as? String ?? "N/A"
+        gameRank        = record[TUPlayerGameProfile.kGameRank]  as? String ?? "N/A"
+        gameAliases     = record[TUPlayerGameProfile.kGameAliases] as? [String] ?? []
     }
 }

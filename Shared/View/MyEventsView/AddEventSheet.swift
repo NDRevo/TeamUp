@@ -28,14 +28,25 @@ struct AddEventSheet: View {
                         }
                     }
 
-                Picker("Game", selection: $viewModel.eventGameName) {
+                Picker("Game", selection: $viewModel.eventGame) {
                     //TIP: Starts from 1 to remove "All" case
                     ForEach(GameLibrary.data.games[1...]){game in
                         Text(game.name)
+                            .tag(game.self)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
                 
+                if !viewModel.eventGame.gameVariants.isEmpty {
+                        Picker("Variant", selection: $viewModel.eventGameVariant) {
+                            ForEach(viewModel.eventGame.gameVariants){game in
+                                Text(game.name)
+                                    .tag(game.self)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                }
+
                 TextField("Event Location", text: $viewModel.eventLocation)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)

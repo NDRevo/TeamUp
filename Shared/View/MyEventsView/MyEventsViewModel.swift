@@ -13,7 +13,8 @@ import SwiftUI
     @Published var eventName: String         = ""
     @Published var eventDate: Date           = Date()
     @Published var eventEndDate: Date        = Date()
-    @Published var eventGameName: String     = GameNames.none
+    @Published var eventGame: Game           = Game(name: GameNames.none, ranks: [])
+    @Published var eventGameVariant: Game    = Game(name: GameNames.empty, ranks: [])
     @Published var eventDescription: String  = ""
     @Published var eventLocation: String     = ""
     
@@ -38,7 +39,8 @@ import SwiftUI
         eventName = ""
         eventDate = currentDateAndHour
         eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDateAndHour)!
-        eventGameName = GameNames.none
+        eventGame = Game(name: GameNames.none, ranks: [])
+        eventGameVariant = Game(name: GameNames.empty, ranks: [])
         eventDescription = ""
         eventLocation = ""
     }
@@ -71,13 +73,14 @@ import SwiftUI
 
     private func createEventRecord() -> CKRecord{
         let record = CKRecord(recordType: RecordType.event)
-        record[TUEvent.kEventName]          = eventName
-        record[TUEvent.kEventDate]          = eventDate
-        record[TUEvent.kEventEndDate]       = eventEndDate
-        record[TUEvent.kEventGame]          = eventGameName
-        record[TUEvent.kEventDescription]   = eventDescription
-        record[TUEvent.kEventLocation]      = eventLocation
-        record[TUEvent.kIsPublished]        = 0
+        record[TUEvent.kEventName]              = eventName
+        record[TUEvent.kEventDate]              = eventDate
+        record[TUEvent.kEventEndDate]           = eventEndDate
+        record[TUEvent.kEventGameName]          = eventGame.name
+        record[TUEvent.kEventGameVariantName]   = eventGameVariant.name
+        record[TUEvent.kEventDescription]       = eventDescription
+        record[TUEvent.kEventLocation]          = eventLocation
+        record[TUEvent.kIsPublished]            = 0
         
         if let userRecord = CloudKitManager.shared.userRecord {
             record[TUEvent.kEventOwner] = CKRecord.Reference(record: userRecord, action: .none)

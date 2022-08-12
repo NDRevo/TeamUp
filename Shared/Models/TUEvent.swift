@@ -10,21 +10,23 @@ import CloudKit
 
 struct TUEvent: Identifiable, Hashable {
 
-    static let kEventName         = "eventName"
-    static let kEventDate         = "eventDate"
-    static let kEventEndDate      = "eventEndDate"
-    static let kEventGame         = "eventGame"
-    static let kEventDescription  = "eventDescription"
-    static let kEventLocation     = "eventLocation"
-    static let kEventOwner        = "eventOwner"
-    static let kIsPublished       = "isPublished"
+    static let kEventName               = "eventName"
+    static let kEventDate               = "eventDate"
+    static let kEventEndDate            = "eventEndDate"
+    static let kEventGameName           = "eventGameName"
+    static let kEventGameVariantName    = "eventGameVariantName"
+    static let kEventDescription        = "eventDescription"
+    static let kEventLocation           = "eventLocation"
+    static let kEventOwner              = "eventOwner"
+    static let kIsPublished             = "isPublished"
 
     let id: CKRecord.ID
 
     let eventName: String
     let eventDate: Date
     let eventEndDate: Date
-    let eventGame: String
+    let eventGameName: String
+    let eventGameVariantName: String
     let eventDescription: String
     let eventLocation: String
     let eventOwner: CKRecord.Reference
@@ -33,16 +35,17 @@ struct TUEvent: Identifiable, Hashable {
     init(record: CKRecord){
         id = record.recordID
 
-        eventName        = record[TUEvent.kEventName] as? String ?? "N/A"
-        eventDate        = record[TUEvent.kEventDate] as? Date ?? Date()
-        eventEndDate     = record[TUEvent.kEventEndDate] as? Date ?? Date()
-        eventGame        = record[TUEvent.kEventGame] as? String ?? "N/A"
-        eventDescription = record[TUEvent.kEventDescription] as? String ?? "N/A"
-        eventLocation    = record[TUEvent.kEventLocation] as? String ?? "N/A"
-        //Forced Unwrapped since this will never be nil
-        //Optional value to resolve canvas previews
-        eventOwner       = record[TUEvent.kEventOwner] as? CKRecord.Reference ?? CKRecord.Reference(recordID: CKRecord.ID(recordName: "31394CE3-68AD-4AC2-A125-59E665637500"), action: .deleteSelf)
-        isPublished      = record[TUEvent.kIsPublished] as? Int ?? 0
+        eventName               = record[TUEvent.kEventName] as? String ?? "N/A"
+        eventDate               = record[TUEvent.kEventDate] as? Date ?? Date()
+        eventEndDate            = record[TUEvent.kEventEndDate] as? Date ?? Date()
+        eventGameName           = record[TUEvent.kEventGameName] as? String ?? "N/A"
+        eventGameVariantName    = record[TUEvent.kEventGameVariantName] as? String ?? ""
+        eventDescription        = record[TUEvent.kEventDescription] as? String ?? "N/A"
+        eventLocation           = record[TUEvent.kEventLocation] as? String ?? "N/A"
+        //MARK: Forced Unwrapped since this will never be nil
+        //MARK: Optional value to resolve canvas previews
+        eventOwner              = record[TUEvent.kEventOwner] as? CKRecord.Reference ?? CKRecord.Reference(recordID: CKRecord.ID(recordName: "31394CE3-68AD-4AC2-A125-59E665637500"), action: .deleteSelf)
+        isPublished             = record[TUEvent.kIsPublished] as? Int ?? 0
     }
 
     var getDateDetails: DateComponents {

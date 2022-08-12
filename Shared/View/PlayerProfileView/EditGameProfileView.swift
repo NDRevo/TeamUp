@@ -12,7 +12,7 @@ struct EditGameProfileView: View {
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
     
-    var gameProfile: TUPlayerGameProfile
+    var gameProfile: TUPlayerGameProfile // Add gameName and gameVariant
     @State var gameID: String = ""
     @State var gameRank: String = ""
     @State var gameAliases: [String] = ["",""]
@@ -27,7 +27,7 @@ struct EditGameProfileView: View {
                 
                 if !gameProfile.gameRank.isEmpty {
                     Picker("Rank", selection: $gameRank.onChange(perform: checkSavable)) {
-                        ForEach(GameLibrary.data.getRanksForGame(for: gameProfile.gameName)){ rank in
+                        ForEach(GameLibrary.data.getRanksForGame(for: gameProfile.gameName, with: gameProfile.gameVariantName)){ rank in
                             Text(rank.rankName)
                         }
                     }

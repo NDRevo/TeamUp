@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Rank: Identifiable, Hashable {
     var id: String {
@@ -22,17 +23,31 @@ struct Game: Identifiable, Hashable {
     }
 
     let name: String
+    let gameColor: Color
     private let ranks: [Rank]
-    let gameVariants: [Game]?
+    var gameVariants: [Game] = []
 
-    init(name: String, ranks: [Rank], gameVariants: [Game]? = nil) {
+    init(name: String,gameColor: Color = .gray, ranks: [Rank], gameVariants: [Game] = []) {
         self.name = name
+        self.gameColor = gameColor
         self.ranks = ranks
         self.gameVariants = gameVariants
     }
 
-    func getRanksForGame() -> [Rank]{
-        return ranks
+    func getRanksForGame(for variant: Game? = nil) -> [Rank]{
+        if let variant = variant {
+            return gameVariants.first(where: {$0.self == variant})!.ranks
+        } else {
+            return ranks
+        }
+    }
+    
+    func hasVariants() -> Bool {
+        return !gameVariants.isEmpty
+    }
+
+    func hasRanks() -> Bool {
+        return !ranks.isEmpty
     }
 }
 
@@ -42,8 +57,9 @@ final class GameLibrary {
     let games: [Game] = [
         Game(name: GameNames.all, ranks: []),
         Game(name: GameNames.none, ranks: []),
-        Game(name: GameNames.amongus,ranks: []),
+        Game(name: GameNames.amongus, gameColor: .amongus, ranks: []),
         Game(name: GameNames.apexlegends,
+             gameColor: .apexlegend,
              ranks: [
                 Rank(rankName: "Unranked",      rankWeight: 0),
                 Rank(rankName: "Bronze",        rankWeight: 1),
@@ -55,7 +71,39 @@ final class GameLibrary {
                 Rank(rankName: "Apex Predator", rankWeight: 7)
              ]
         ),
+
+        Game(name: GameNames.counterstrike,
+             gameColor: .counterstrike,
+             ranks: [],
+             gameVariants: [
+                Game(name: "1.6", ranks: []),
+                Game(name: "Source", ranks: []),
+                Game(name: "Global Offensive", ranks: [
+                    Rank(rankName: "Unranked",                      rankWeight: 0),
+                    Rank(rankName: "Silver I",                      rankWeight: 1),
+                    Rank(rankName: "Silver II",                     rankWeight: 1),
+                    Rank(rankName: "Silver III",                    rankWeight: 1),
+                    Rank(rankName: "Silver IIII",                   rankWeight: 2),
+                    Rank(rankName: "Silver IV",                     rankWeight: 2),
+                    Rank(rankName: "Silver Elite",                  rankWeight: 2),
+                    Rank(rankName: "Silver Elite Master",           rankWeight: 3),
+                    Rank(rankName: "Gold Nova I",                   rankWeight: 3),
+                    Rank(rankName: "Gold Nova II",                  rankWeight: 3),
+                    Rank(rankName: "Gold Nova III",                 rankWeight: 4),
+                    Rank(rankName: "Gold Nova Master",              rankWeight: 4),
+                    Rank(rankName: "Master Guardian I",             rankWeight: 5),
+                    Rank(rankName: "Master Guardian II",            rankWeight: 5),
+                    Rank(rankName: "Master Guardian Elite",         rankWeight: 6),
+                    Rank(rankName: "Distinguished Master Guardian", rankWeight: 6),
+                    Rank(rankName: "Legendary Eagle",               rankWeight: 7),
+                    Rank(rankName: "Legendary Eagle Master",        rankWeight: 7),
+                    Rank(rankName: "Supreme Master First Class",    rankWeight: 8),
+                    Rank(rankName: "The Global Elite",              rankWeight: 9),
+                 ])
+             ]
+        ),
         Game(name: GameNames.overwatch,
+             gameColor: .overwatch,
              ranks: [
                 Rank(rankName: "Unranked",      rankWeight: 0),
                 Rank(rankName: "Bronze",        rankWeight: 1),
@@ -70,6 +118,7 @@ final class GameLibrary {
              ]
             ),
         Game(name: GameNames.valorant,
+             gameColor: .valorant,
              ranks: [
                 Rank(rankName: "Unranked",  rankWeight: 0),
                 Rank(rankName: "Iron",      rankWeight: 1),
@@ -85,7 +134,10 @@ final class GameLibrary {
         )
     ]
 
-    func getRanksForGame(for gameName: String) -> [Rank]{
+    func getRanksForGame(for gameName: String, with gameVariant: String) -> [Rank]{
+        if  !gameVariant.isEmpty {
+            return games.first(where: {$0.name == gameName})!.gameVariants.first(where: {$0.name == gameVariant})!.getRanksForGame()
+        }
         return games.first(where: {$0.name == gameName})!.getRanksForGame()
     }
 }

@@ -19,7 +19,7 @@ struct EventListCell: View {
                 HStack(alignment:.top){
                     
                     VStack(alignment: .leading, spacing: 6){
-                        Text(event.eventGame)
+                        Text(event.eventGameName + event.eventGameVariantName)
                             .fontWeight(.heavy)
                             .font(.body)
                             .foregroundColor(.appCell)
@@ -27,8 +27,9 @@ struct EventListCell: View {
                             .padding(.vertical, 2)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(Color.getGameColor(gameName: event.eventGame))
+                                    .foregroundColor(Color.getGameColor(gameName: event.eventGameName))
                             }
+                            .multilineTextAlignment(.leading)
                         Text(event.eventName)
                             .fontWeight(.bold)
                             .font(.title)

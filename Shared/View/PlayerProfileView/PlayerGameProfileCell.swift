@@ -23,12 +23,11 @@ struct PlayerGameProfileCell: View {
             .overlay(alignment: .topLeading) {
                 VStack(alignment: .leading, spacing: 4){
                     HStack {
-                        Text(gameProfile.gameName)
+                        Text(gameProfile.gameName + gameProfile.gameVariantName)
                             .foregroundColor(Color.appCell)
                             .fontWeight(.heavy)
                             .font(.body)
                             .lineLimit(1)
-                            .minimumScaleFactor(0.75)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 2)
                             .background {

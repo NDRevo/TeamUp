@@ -365,7 +365,7 @@ struct ParticipantsView: View {
             } else {
                 LazyVStack {
                     ForEach(viewModel.playersInEvent){ player in
-                        EventParticipantCell(eventGame: viewModel.event.eventGame, player: player)
+                        EventParticipantCell(eventGame: viewModel.event.eventGameName, player: player)
                             .onLongPressGesture {
                                 //This stops scrolling
                                 if viewModel.isEventOwner() {

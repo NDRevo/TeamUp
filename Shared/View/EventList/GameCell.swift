@@ -16,7 +16,7 @@ struct GameCell: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
             .foregroundStyle(
-                Color.getGameColor(gameName: game.name)
+                game.gameColor
             )
             .overlay{
                 if game.name == GameNames.all {

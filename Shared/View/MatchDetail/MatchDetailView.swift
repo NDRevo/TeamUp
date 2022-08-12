@@ -133,7 +133,7 @@ struct PlayerListForTeam: View {
     
     var body: some View {
         ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
-            EventParticipantCell(eventGame: viewModel.event.eventGame, player: player)
+            EventParticipantCell(eventGame: viewModel.event.eventGameName, player: player)
             .swipeActions(edge: .trailing) {
                 if viewModel.isEventOwner() {
                     Button(role: .destructive){

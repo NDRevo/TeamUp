@@ -28,12 +28,16 @@ struct AddPlayerGameProfileSheet: View {
                     viewModel.resetRankList(for: newValue)
                 }
 
-                TextField("Game ID", text: $viewModel.gameID)
-                    .disableAutocorrection(true)
-                    .keyboardType(.twitter)
-                    .textInputAutocapitalization(.never)
-
-                if !viewModel.selectedGame.getRanksForGame().isEmpty {
+                if viewModel.selectedGame.hasVariants() {
+                    Picker("Variant", selection: $viewModel.selectedGameVariant) {
+                        ForEach(viewModel.selectedGame.gameVariants){game in
+                            Text(game.name)
+                                .tag(game.self)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    
+                } else if viewModel.selectedGame.hasRanks() {
                     Picker("Rank", selection: $viewModel.selectedGameRank) {
                         ForEach(viewModel.selectedGame.getRanksForGame()){ rank in
                             Text(rank.rankName)
@@ -41,6 +45,20 @@ struct AddPlayerGameProfileSheet: View {
                         }
                     }
                 }
+                
+                if viewModel.selectedGameVariant.hasRanks() && !viewModel.selectedGameVariant.name.isEmpty {
+                    Picker("Rank", selection: $viewModel.selectedGameRank) {
+                        ForEach(viewModel.selectedGameVariant.getRanksForGame()){ rank in
+                            Text(rank.rankName)
+                                .tag(rank.self)
+                        }
+                    }
+                }
+    
+                TextField("Game ID", text: $viewModel.gameID)
+                    .disableAutocorrection(true)
+                    .keyboardType(.twitter)
+                    .textInputAutocapitalization(.never)
             }
 
             Section {
