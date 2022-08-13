@@ -203,6 +203,17 @@ struct LocationDetailItemView: View {
                 .bold()
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
+                .onTapGesture {
+                    var url = URL(string: textContent)
+                    if textContent.starts(with: "discord.gg") {
+                        url = URL(string: "https://\(textContent)")
+                        UIApplication.shared.open(url!)
+                    } else{
+                        url = URL(string: "maps://?q=\(textContent.replacingOccurrences(of: " ", with: "+"))")
+                        UIApplication.shared.open(url!)
+                    }
+                    
+                }
         }
     }
 }

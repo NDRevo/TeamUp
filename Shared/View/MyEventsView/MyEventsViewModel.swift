@@ -20,6 +20,7 @@ import SwiftUI
     
     @Published var isPresentingAddEvent      = false
     @Published var isShowingAlert            = false
+    @Published var isDiscordLink             = false
 
     @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 

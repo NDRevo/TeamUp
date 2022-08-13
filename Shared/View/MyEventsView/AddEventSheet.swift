@@ -50,6 +50,12 @@ struct AddEventSheet: View {
                 TextField("Event Location", text: $viewModel.eventLocation)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
+                    .foregroundColor(viewModel.isDiscordLink ? .blue : .none)
+                    .onChange(of: viewModel.eventLocation) { text in
+                        if text.starts(with: "discord.gg"){
+                            viewModel.isDiscordLink = true
+                        }
+                    }
             }
 
             Section {
