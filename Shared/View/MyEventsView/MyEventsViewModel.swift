@@ -11,6 +11,7 @@ import SwiftUI
 @MainActor final class MyEventsViewModel: ObservableObject {
 
     @Published var eventName: String         = ""
+    @Published var eventSchool: String        = ""
     @Published var eventDate: Date           = Date()
     @Published var eventEndDate: Date        = Date()
     @Published var eventGame: Game           = Game(name: GameNames.none, ranks: [])
@@ -84,9 +85,10 @@ import SwiftUI
         record[TUEvent.kIsPublished]            = 0
         
         if let userRecord = CloudKitManager.shared.userRecord {
-            record[TUEvent.kEventOwner] = CKRecord.Reference(record: userRecord, action: .none)
+            record[TUEvent.kEventOwner]         = CKRecord.Reference(record: userRecord, action: .none)
+            record[TUEvent.kEventOwnerName]     = CloudKitManager.shared.playerProfile?.username
+            record[TUEvent.kEventSchool]        = CloudKitManager.shared.playerProfile?.inSchool
         }
-
         return record
     }
 

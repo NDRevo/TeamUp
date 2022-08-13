@@ -93,7 +93,7 @@ struct MatchDetailView: View {
                                 Text("Delete Match")
                             }
                         } label: {
-                            Image(systemName: "ellipsis.circle")
+                            Image(systemName: "ellipsis")
                         }
                     }
                 }

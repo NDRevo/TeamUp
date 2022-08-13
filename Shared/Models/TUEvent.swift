@@ -17,7 +17,9 @@ struct TUEvent: Identifiable, Hashable {
     static let kEventGameVariantName    = "eventGameVariantName"
     static let kEventDescription        = "eventDescription"
     static let kEventLocation           = "eventLocation"
+    static let kEventSchool             = "eventSchool"
     static let kEventOwner              = "eventOwner"
+    static let kEventOwnerName          = "eventOwnerName"
     static let kIsPublished             = "isPublished"
 
     let id: CKRecord.ID
@@ -30,6 +32,8 @@ struct TUEvent: Identifiable, Hashable {
     let eventDescription: String
     let eventLocation: String
     let eventOwner: CKRecord.Reference
+    let eventOwnerName: String
+    let eventSchool: String
     let isPublished: Int
 
     init(record: CKRecord){
@@ -45,6 +49,8 @@ struct TUEvent: Identifiable, Hashable {
         //MARK: Forced Unwrapped since this will never be nil
         //MARK: Optional value to resolve canvas previews
         eventOwner              = record[TUEvent.kEventOwner] as? CKRecord.Reference ?? CKRecord.Reference(recordID: CKRecord.ID(recordName: "31394CE3-68AD-4AC2-A125-59E665637500"), action: .deleteSelf)
+        eventOwnerName          = record[TUEvent.kEventOwnerName] as? String ?? "N/A"
+        eventSchool             = record[TUEvent.kEventSchool] as? String ?? "N/A"
         isPublished             = record[TUEvent.kIsPublished] as? Int ?? 0
     }
 

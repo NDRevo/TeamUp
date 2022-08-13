@@ -75,6 +75,10 @@
 		563A46E8279F862C006A406B /* Color+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A46E6279F862C006A406B /* Color+Ext.swift */; };
 		56664C6028A22B3000418AA4 /* GameConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56664C5F28A22B3000418AA4 /* GameConstants.swift */; };
 		56664C6128A22B3000418AA4 /* GameConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56664C5F28A22B3000418AA4 /* GameConstants.swift */; };
+		56664C6628A82FA100418AA4 /* EventMoreDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56664C6528A82FA100418AA4 /* EventMoreDetailSheet.swift */; };
+		56664C6728A82FA100418AA4 /* EventMoreDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56664C6528A82FA100418AA4 /* EventMoreDetailSheet.swift */; };
+		56664C6928A8390000418AA4 /* SchoolConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56664C6828A8390000418AA4 /* SchoolConstants.swift */; };
+		56664C6A28A8390000418AA4 /* SchoolConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56664C6828A8390000418AA4 /* SchoolConstants.swift */; };
 		566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AB2C6278D27EE00F4035C /* TeamUpApp.swift */; };
 		566AB2DA278D27F000F4035C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 566AB2C8278D27F000F4035C /* Assets.xcassets */; };
@@ -157,6 +161,8 @@
 		563A46E3279F0FFC006A406B /* PlayerProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProfileViewModel.swift; sourceTree = "<group>"; };
 		563A46E6279F862C006A406B /* Color+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Ext.swift"; sourceTree = "<group>"; };
 		56664C5F28A22B3000418AA4 /* GameConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConstants.swift; sourceTree = "<group>"; };
+		56664C6528A82FA100418AA4 /* EventMoreDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMoreDetailSheet.swift; sourceTree = "<group>"; };
+		56664C6828A8390000418AA4 /* SchoolConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolConstants.swift; sourceTree = "<group>"; };
 		566AB2C6278D27EE00F4035C /* TeamUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpApp.swift; sourceTree = "<group>"; };
 		566AB2C8278D27F000F4035C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		566AB2CD278D27F000F4035C /* TeamUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,6 +232,7 @@
 				560E426F278F97EF00408B4B /* EventDetailView.swift */,
 				56A0791028A01723001852A5 /* CalendarViewController.swift */,
 				560E427F2790B2C000408B4B /* AddMatchSheet.swift */,
+				56664C6528A82FA100418AA4 /* EventMoreDetailSheet.swift */,
 				560E42AA2791B40800408B4B /* AddExistingPlayerSheet.swift */,
 				560E42852790B2CC00408B4B /* AddAdminSheet.swift */,
 			);
@@ -276,6 +283,7 @@
 				560E427627906B1C00408B4B /* Extensions */,
 				560E429D279103BB00408B4B /* Constants.swift */,
 				56664C5F28A22B3000418AA4 /* GameConstants.swift */,
+				56664C6828A8390000418AA4 /* SchoolConstants.swift */,
 				560E42C027946E6100408B4B /* AlertContext.swift */,
 			);
 			path = Utilities;
@@ -574,12 +582,14 @@
 				560E42A827911AFD00408B4B /* DebugView.swift in Sources */,
 				56A0790B289E359D001852A5 /* SettingsView.swift in Sources */,
 				560E4269278E8A2A00408B4B /* EventListCell.swift in Sources */,
+				56664C6928A8390000418AA4 /* SchoolConstants.swift in Sources */,
 				569CAAB6285192D10081AB3B /* MyEventsViewModel.swift in Sources */,
 				560E42B827926A3F00408B4B /* EventsListViewModel.swift in Sources */,
 				560E42A127910CF900408B4B /* TUPlayerGameProfile.swift in Sources */,
 				560E4270278F97EF00408B4B /* EventDetailView.swift in Sources */,
 				566AB2EF278D2DAD00F4035C /* TUEvent.swift in Sources */,
 				566AB2F5278D2DC200F4035C /* TUTeam.swift in Sources */,
+				56664C6628A82FA100418AA4 /* EventMoreDetailSheet.swift in Sources */,
 				566AB2F2278D2DB300F4035C /* TUPlayer.swift in Sources */,
 				560E427C2790825E00408B4B /* AddEventSheet.swift in Sources */,
 				560E42982790C84900408B4B /* EventsManager.swift in Sources */,
@@ -604,6 +614,7 @@
 			files = (
 				566AB2E6278D280D00F4035C /* AppTabView.swift in Sources */,
 				560E429F279103BB00408B4B /* Constants.swift in Sources */,
+				56664C6A28A8390000418AA4 /* SchoolConstants.swift in Sources */,
 				560E4275278FA68200408B4B /* MatchDetailView.swift in Sources */,
 				560E42BC279386BF00408B4B /* MatchDetailViewModel.swift in Sources */,
 				56A0791228A01723001852A5 /* CalendarViewController.swift in Sources */,
@@ -640,6 +651,7 @@
 				566AB2F3278D2DB300F4035C /* TUPlayer.swift in Sources */,
 				560E42992790C84900408B4B /* EventsManager.swift in Sources */,
 				56A0790F289E3700001852A5 /* SettingsViewModel.swift in Sources */,
+				56664C6728A82FA100418AA4 /* EventMoreDetailSheet.swift in Sources */,
 				5623DB4727B4B14C0015D59A /* View+Ext.swift in Sources */,
 				560E42B62792443700408B4B /* DebugViewModel.swift in Sources */,
 				563A46DD279DA14E006A406B /* PlayerGameProfileCell.swift in Sources */,

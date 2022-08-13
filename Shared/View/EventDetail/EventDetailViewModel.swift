@@ -10,7 +10,35 @@ import SwiftUI
 import EventKit
 
 enum PresentingSheet {
-    case addMatch, addPlayer, addAdmin
+    case addMatch, addPlayer, addAdmin, eventMoreDetail
+}
+
+enum DetailItem {
+    case date,time,endTime,location,owner,game,school
+
+    func getSystemImage() -> String {
+        switch self {
+        case .date:     return "calendar"
+        case .time:     return "clock"
+        case .location: return "map"
+        case .endTime:  return "clock.badge.exclamationmark"
+        case .owner:    return "person.text.rectangle"
+        case .game:     return "gamecontroller.fill"
+        case .school:   return "graduationcap.fill"
+        }
+    }
+
+    func getTextHeading() -> String {
+        switch self {
+        case .date:     return "Date"
+        case .time:     return "Start Time"
+        case .location: return "Location"
+        case .endTime:  return "End Time"
+        case .owner:    return "Event Owner"
+        case .game:     return "Event Game"
+        case .school:   return "School"
+        }
+    }
 }
 
 @MainActor final class EventDetailViewModel: ObservableObject {
@@ -96,6 +124,8 @@ enum PresentingSheet {
 
     @ViewBuilder func presentSheet() -> some View {
         switch sheetToPresent {
+            case .eventMoreDetail:
+                EventMoreDetailSheet(viewModel: self)
             case .addMatch:
                 AddMatchSheet(viewModel: self)
             case .addPlayer:

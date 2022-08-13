@@ -11,9 +11,8 @@ import CloudKit
 struct AddMatchSheet: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
-
     @Environment(\.dismiss) var dismiss
-  
+
     var body: some View {
         List{
             TextField("Match Name", text: $viewModel.matchName)

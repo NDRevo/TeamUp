@@ -18,7 +18,7 @@ struct CreateProfileView: View {
     @FocusState private var currentFocus: FormFields?
 
     var body: some View {
-        Form {
+        List {
             Section {
                 TextField("Username", text: $viewModel.playerUsername)
                     .disableAutocorrection(true)
@@ -28,6 +28,17 @@ struct CreateProfileView: View {
             } footer: {
                 Text("Your username will be used for search and display purposes.")
             }
+            
+            Section {
+                Picker("School", selection: $viewModel.playerSchool) {
+                    ForEach(SchoolLibrary.data.schools, id: \.self){school in
+                        Text(school)
+                            .tag(school.self)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+            }
+            
             Section{
                 TextField("First Name", text: $viewModel.playerFirstName)
                     .disableAutocorrection(true)

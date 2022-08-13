@@ -52,6 +52,13 @@ struct EventDetailView: View {
         })
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button {
+                    viewModel.sheetToPresent = .eventMoreDetail
+                } label: {
+                    Image(systemName: "info.square")
+                        .foregroundColor(.blue)
+                }
+
                 if viewModel.isEventOwner() {
                     Menu {
                         if viewModel.event.isPublished == 0 {
@@ -71,7 +78,7 @@ struct EventDetailView: View {
                         }
 
                     } label: {
-                        Image(systemName: "ellipsis.circle")
+                        Image(systemName: "ellipsis")
                             .foregroundColor(.blue)
                     }
                 }
@@ -96,28 +103,6 @@ struct EventDetailView: View {
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
         EventDetailView(event: TUEvent(record: MockData.event))
-    }
-}
-
-enum DetailItem {
-    case date,time,endTime,location
-
-    func getSystemImage() -> String {
-        switch self {
-        case .date: return "calendar"
-        case .time: return "clock"
-        case .location: return "map"
-        case .endTime: return "clock.badge.exclamationmark"
-        }
-    }
-
-    func getTextHeading() -> String {
-        switch self {
-        case .date: return "Date"
-        case .time: return "Start Time"
-        case .location: return "Location"
-        case .endTime: return "End Time"
-        }
     }
 }
 

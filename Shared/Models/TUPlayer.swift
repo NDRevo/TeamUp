@@ -13,6 +13,7 @@ struct TUPlayer: Identifiable, Hashable {
     static let kFirstName       = "firstName"
     static let kLastName        = "lastName"
     static let kInEvents        = "inEvents"
+    static let kInSchool        = "inSchool"
     static let kOnTeams         = "onTeams"
     static let kIsGameLeader    = "isGameLeader"
 
@@ -23,6 +24,7 @@ struct TUPlayer: Identifiable, Hashable {
     let lastName: String
     let isGameLeader: Int
     let inEvents: [CKRecord.Reference]
+    let inSchool: String
 
     init(record: CKRecord){
         id  = record.recordID
@@ -32,5 +34,6 @@ struct TUPlayer: Identifiable, Hashable {
         lastName        = record[TUPlayer.kLastName]      as? String ?? "N/A"
         isGameLeader    = record[TUPlayer.kIsGameLeader]  as? Int    ?? 0
         inEvents        = record[TUPlayer.kInEvents]      as? [CKRecord.Reference] ?? []
+        inSchool        = record[TUPlayer.kInSchool]      as? String ?? "N/A"
     }
 }

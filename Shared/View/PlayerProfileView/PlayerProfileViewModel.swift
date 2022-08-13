@@ -16,6 +16,7 @@ import CloudKit
     @Published var playerProfile:TUPlayer?
 
     @Published var playerUsername: String        = ""
+    @Published var playerSchool: String          = SchoolLibrary.data.schools.first!
     @Published var playerFirstName: String       = ""
     @Published var playerLastName: String        = ""
 
@@ -96,6 +97,7 @@ import CloudKit
     private func createPlayerRecord() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
         playerRecord[TUPlayer.kUsername]        = playerUsername
+        playerRecord[TUPlayer.kInSchool]        = playerSchool
         playerRecord[TUPlayer.kFirstName]       = playerFirstName
         playerRecord[TUPlayer.kLastName]        = playerLastName
         playerRecord[TUPlayer.kIsGameLeader]    = 0
@@ -239,8 +241,9 @@ import CloudKit
 
                 getGameProfiles()
             } catch {
-                alertItem = AlertContext.unableToGetUserProfile
-                isShowingAlert = true
+                //Two Issues
+                //If CloudKit issue or internet issue with an existing profile, there should be an alert
+                // If there is no profile found for the icloud user than dont show alert
             }
         }
     }
