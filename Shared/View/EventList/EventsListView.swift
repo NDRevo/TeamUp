@@ -61,6 +61,9 @@ struct EventsListView: View {
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                 viewModel.alertItem.alertMessage
             })
+            .alert(eventsManager.alertItem.alertTitle, isPresented: $eventsManager.isShowingAlert, actions: {}, message: {
+                eventsManager.alertItem.alertMessage
+            })
         }
     }
 }

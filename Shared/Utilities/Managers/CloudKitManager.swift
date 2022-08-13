@@ -198,10 +198,10 @@ final class CloudKitManager {
     func getEvents(thatArePublished: Bool, withSpecificOwner: Bool, forGame: Game = Game(name: GameNames.all, ranks: [])) async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventDate, ascending: true)
         let publishPredicate   = thatArePublished ? NSPredicate(format: "isPublished == 1") : NSPredicate(format: "isPublished == 0")
-        let eventGamePredicate = NSPredicate(format: "eventGame == %@", forGame.name)
+        let eventGamePredicate = NSPredicate(format: "eventGameName == %@", forGame.name)
 
         var predicate = NSPredicate()
-        
+
         if forGame.name == GameNames.all {
             predicate = publishPredicate
         } else {
