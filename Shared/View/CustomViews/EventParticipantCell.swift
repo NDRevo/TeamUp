@@ -40,7 +40,7 @@ struct EventParticipantCell: View {
             }
             Spacer()
         }
-        .padding(.horizontal)
+        .padding(.horizontal, 10)
         .frame(height: 65)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))

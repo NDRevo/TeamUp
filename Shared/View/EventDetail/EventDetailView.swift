@@ -22,10 +22,14 @@ struct EventDetailView: View {
         ScrollView {
             VStack {
                 EventDetailsViewSection(viewModel: viewModel)
+                    .padding(.horizontal, 12)
                 EventLocationDetailViewSection(viewModel: viewModel)
+                    .padding(.horizontal, 12)
                 EventDescriptionViewSection(viewModel: viewModel)
+                    .padding(.horizontal, 12)
                 MatchesView(viewModel: viewModel)
                 ParticipantsView(viewModel: viewModel)
+                    .padding(.horizontal, 12)
             }
         }
         .refreshable {
@@ -127,10 +131,10 @@ struct EventLocationDetailViewSection: View {
             Spacer()
         }
         .frame(maxWidth: .infinity)
-        .padding()
+        .padding(.vertical)
+        .padding(.horizontal, 10)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .padding(.horizontal)
     }
 }
 
@@ -149,11 +153,11 @@ struct EventDetailsViewSection: View {
             DetailItemView(textContent: viewModel.event.getEndTime, detailType: .endTime)
         }
         .frame(maxWidth: .infinity)
-        .padding()
+        .padding(.vertical)
+        .padding(.horizontal, 10)
         .allowToPresentCalendar(with: viewModel)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .padding(.horizontal)
     }
 }
 
@@ -221,10 +225,10 @@ struct EventDescriptionViewSection: View {
             }
             Spacer()
         }
-        .padding()
+        .padding(.vertical)
+        .padding(.horizontal, 10)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .padding(.horizontal)
     }
 }
 
@@ -250,7 +254,7 @@ struct MatchesView: View {
                     }
                 }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 12)
             
             if viewModel.isLoading {
                 LoadingView()
@@ -281,7 +285,7 @@ struct MatchesView: View {
                             .buttonStyle(PlainButtonStyle()) //Removes blue highlight from MatchCell
                         }
                     }
-                    .offset(x: 16) //Shifts start position of cells to the right 16pt
+                    .offset(x: 12) //Shifts start position of cells to the right 16pt
                     .padding(.trailing, 24) //Makes last cell not cut off
                 }
             }
@@ -315,8 +319,8 @@ struct EventMatchCellView: View {
             }
             Image(systemName: "chevron.right")
         }
-        .padding(.horizontal)
-        .padding(.vertical, 12)
+        .padding(.horizontal, 10)
+        .padding(.vertical)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
@@ -343,7 +347,7 @@ struct ParticipantsView: View {
                     }
 
                 } else {
-                    //Changes based on if already joined or not
+                    //MARK: Changes based on if already joined or not
                     Button {
                         
                     } label: {
@@ -381,6 +385,5 @@ struct ParticipantsView: View {
                 }
             }
         }
-        .padding(.horizontal)
     }
 }
