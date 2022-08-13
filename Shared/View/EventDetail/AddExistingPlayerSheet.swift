@@ -27,6 +27,7 @@ struct AddExistingPlayerSheet: View {
                     }
                 }
             }
+//MARK: Fix
 //                VStack(spacing: 12) {
 //                    Image(systemName: "person.3")
 //                        .font(.system(size: 36))
@@ -45,8 +46,8 @@ struct AddExistingPlayerSheet: View {
             viewModel.availablePlayers = []
         }
         .onDisappear{
-            //When user tabs out of this view, it will return to EventDetailView
-            //Users may not be happy, idc for now
+            //MARK: When user tabs out of this view, it will return to EventDetailView
+            //MARK: Users may not be happy, idc for now
             dismiss()
         }
         .submitLabel(.search)

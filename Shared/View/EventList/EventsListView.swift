@@ -42,7 +42,7 @@ struct EventsListView: View {
                             LazyVStack(spacing: 12) {
                                 ForEach(eventsManager.events){ event in
                                     NavigationLink {
-                                        EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                        EventDetailView(event: event)
                                     } label: {
                                         EventListCell(event: event)
                                     }

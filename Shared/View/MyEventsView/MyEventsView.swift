@@ -26,7 +26,7 @@ struct MyEventsView: View {
                                 VStack(spacing: 12){
                                     ForEach(eventsManager.myUnpublishedEvents) { event in
                                         NavigationLink {
-                                            EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                            EventDetailView(event: event)
                                         } label: {
                                             EventListCell(event: event)
                                         }
@@ -41,7 +41,7 @@ struct MyEventsView: View {
                                 VStack(spacing: 12){
                                     ForEach(eventsManager.myPublishedEvents) { event in
                                         NavigationLink {
-                                            EventDetailView(viewModel: EventDetailViewModel(event: event))
+                                            EventDetailView(event: event)
                                         } label: {
                                             EventListCell(event: event)
                                         }

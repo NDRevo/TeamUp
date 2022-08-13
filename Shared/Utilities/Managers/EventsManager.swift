@@ -84,7 +84,6 @@ import SwiftUI
                     playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id).count
                 }
             } catch {
-                print(error)
                 alertItem = AlertContext.unableToRetrieveEvents
                 isShowingAlert = true
             }

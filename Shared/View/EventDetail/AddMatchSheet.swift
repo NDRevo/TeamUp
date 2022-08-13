@@ -25,9 +25,9 @@ struct AddMatchSheet: View {
             Section{
                 Button {
                     Task {
-                        dismiss()
-                        try await Task.sleep(nanoseconds: 50_000_000)
                         viewModel.createMatchForEvent()
+                        try await Task.sleep(nanoseconds: 50_000_000)
+                        dismiss()
                     }
                 } label: {
                     Text("Create Match")

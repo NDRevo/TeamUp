@@ -11,8 +11,12 @@ import EventKit
 struct EventDetailView: View {
 
     @EnvironmentObject var eventsManager: EventsManager
-    @ObservedObject var viewModel: EventDetailViewModel
     @Environment(\.dismiss) var dismiss
+    @ObservedObject private var viewModel: EventDetailViewModel
+    
+    init(event: TUEvent){
+        _viewModel = ObservedObject(wrappedValue: EventDetailViewModel(event: event))
+    }
 
     var body: some View {
         ScrollView {
@@ -87,7 +91,7 @@ struct EventDetailView: View {
 
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailView(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+        EventDetailView(event: TUEvent(record: MockData.event))
     }
 }
 

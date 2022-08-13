@@ -57,7 +57,9 @@ final class GameLibrary {
     let games: [Game] = [
         Game(name: GameNames.all, ranks: []),
         Game(name: GameNames.none, ranks: []),
+        Game(name: GameNames.other, ranks: []),
         Game(name: GameNames.amongus, gameColor: .amongus, ranks: []),
+        //MARK: Apex Legends
         Game(name: GameNames.apexlegends,
              gameColor: .apexlegend,
              ranks: [
@@ -71,7 +73,7 @@ final class GameLibrary {
                 Rank(rankName: "Apex Predator", rankWeight: 7)
              ]
         ),
-
+        //MARK: Counter Strike
         Game(name: GameNames.counterstrike,
              gameColor: .counterstrike,
              ranks: [],
@@ -102,6 +104,7 @@ final class GameLibrary {
                  ])
              ]
         ),
+        //MARK: Overwatch
         Game(name: GameNames.overwatch,
              gameColor: .overwatch,
              ranks: [
@@ -117,6 +120,7 @@ final class GameLibrary {
                 
              ]
             ),
+        //MARK: VALORANT
         Game(name: GameNames.valorant,
              gameColor: .valorant,
              ranks: [
