@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct EventParticipantCell: View {
-    
-    @EnvironmentObject var manager: EventsManager
-    var eventGame: String
 
+    var eventGame: String
     var player: TUPlayer
     //FIX: Grab playerprofile when going into event detail
     var playerProfile: TUPlayerGameProfile?

@@ -22,6 +22,7 @@ struct TUPlayer: Identifiable, Hashable {
     let firstName: String
     let lastName: String
     let isGameLeader: Int
+    let inEvents: [CKRecord.Reference]
 
     init(record: CKRecord){
         id  = record.recordID
@@ -30,5 +31,6 @@ struct TUPlayer: Identifiable, Hashable {
         firstName       = record[TUPlayer.kFirstName]     as? String ?? "N/A"
         lastName        = record[TUPlayer.kLastName]      as? String ?? "N/A"
         isGameLeader    = record[TUPlayer.kIsGameLeader]  as? Int    ?? 0
+        inEvents        = record[TUPlayer.kInEvents]      as? [CKRecord.Reference] ?? []
     }
 }

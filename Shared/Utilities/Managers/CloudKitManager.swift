@@ -43,6 +43,17 @@ final class CloudKitManager {
        }
         return nil
     }
+    
+    func fetchUserRecord() async throws {
+        let recordID = try await container.userRecordID()
+        let record = try await container.publicCloudDatabase.record(for: recordID)
+        userRecord = record
+
+        if let profileReference = record["userProfile"] as? CKRecord.Reference {
+            let playerProfileRecord = try await fetchRecord(with: profileReference.recordID)
+            playerProfile = TUPlayer(record: playerProfileRecord)
+       }
+    }
 
     func getPlayers() async throws -> [TUPlayer] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)

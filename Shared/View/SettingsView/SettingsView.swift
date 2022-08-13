@@ -8,19 +8,17 @@
 import SwiftUI
 
 struct SettingsView: View {
-    
+
     @StateObject var viewModel = SettingsViewModel()
-    @EnvironmentObject var eventsManager: EventsManager
-    
 
     var body: some View {
         List {
             Button {
                 viewModel.changeGameLeaderPosition(to: 2)
             } label: {
-                Text(eventsManager.userProfile?.isGameLeader == 2 ? "Requested Game Leader" : "Request Game Leader")
+                Text(CloudKitManager.shared.playerProfile?.isGameLeader == 2 ? "Requested Game Leader" : "Request Game Leader")
             }
-            .disabled(eventsManager.userProfile?.isGameLeader == 2 || eventsManager.userProfile?.isGameLeader == 1)
+            .disabled(CloudKitManager.shared.playerProfile?.isGameLeader == 2 || CloudKitManager.shared.playerProfile?.isGameLeader == 1)
             
             
             Button(role: .destructive) {

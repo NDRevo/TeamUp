@@ -152,6 +152,57 @@ enum PresentingSheet {
         }
     }
 
+    func addPlayerToEvent(for player: TUPlayer, manager: EventsManager){
+        Task {
+            do {
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                
+                var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
+
+                if references.isEmpty{
+                    playerRecord[TUPlayer.kInEvents] = [CKRecord.Reference(recordID: event.id, action: .none)]
+                } else {
+                    references.append(CKRecord.Reference(recordID: event.id, action: .none))
+                    playerRecord[TUPlayer.kInEvents] = references
+                }
+
+                let _ = try await CloudKitManager.shared.save(record: playerRecord)
+
+                playersInEvent.append(player)
+                playersInEvent = playersInEvent.sorted(by: {$0.firstName < $1.firstName})
+                manager.userProfile = try await CloudKitManager.shared.getUserRecord()
+            } catch {
+                //MARK: Unable to add you to event
+                alertItem = AlertContext.unableToAddSelectedPlayersToEvent
+                isShowingAlert = true
+            }
+        }
+    }
+
+    func leaveEvent(for player: TUPlayer, manager: EventsManager){
+        Task {
+            do {
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                
+                var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
+
+                if !references.isEmpty{
+                    references.removeAll(where: {$0.recordID == event.id})
+                    playerRecord[TUPlayer.kInEvents] = references
+                }
+
+                let _ = try await CloudKitManager.shared.save(record: playerRecord)
+
+                playersInEvent.removeAll(where: {$0.id == player.id})
+                manager.userProfile = try await CloudKitManager.shared.getUserRecord()
+            } catch {
+                //MARK: Unable to add leave event
+                alertItem = AlertContext.unableToAddSelectedPlayersToEvent
+                isShowingAlert = true
+            }
+        }
+    }
+
     func addCheckedPlayersToEvent(){
         Task {
             do {

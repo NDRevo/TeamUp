@@ -17,7 +17,7 @@ struct AppTabView: View {
                 .tabItem {
                     Label("Events", systemImage: "calendar")
                 }
-            if let record = eventsManager.userProfile {
+            if let record = CloudKitManager.shared.playerProfile {
                 if record.isGameLeader == 1{
                     MyEventsView()
                         .tabItem {

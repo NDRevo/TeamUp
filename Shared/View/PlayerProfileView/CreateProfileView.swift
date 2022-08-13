@@ -14,7 +14,6 @@ enum FormFields {
 
 struct CreateProfileView: View {
 
-    @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
     @FocusState private var currentFocus: FormFields?
 

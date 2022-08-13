@@ -12,10 +12,10 @@ struct EventDetailView: View {
 
     @EnvironmentObject var eventsManager: EventsManager
     @Environment(\.dismiss) var dismiss
-    @ObservedObject private var viewModel: EventDetailViewModel
-    
+    @StateObject private var viewModel: EventDetailViewModel
+
     init(event: TUEvent){
-        _viewModel = ObservedObject(wrappedValue: EventDetailViewModel(event: event))
+        _viewModel = StateObject(wrappedValue: EventDetailViewModel(event: event))
     }
 
     var body: some View {
@@ -329,7 +329,7 @@ struct EventMatchCellView: View {
 //MARK: ParticipantsView
 
 struct ParticipantsView: View {
-
+    @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
@@ -347,12 +347,22 @@ struct ParticipantsView: View {
                     }
 
                 } else {
-                    //MARK: Changes based on if already joined or not
-                    Button {
-                        
-                    } label: {
-                        Text("Join")
-                            .font(.title3)
+                    if let playerProfile = eventsManager.userProfile {
+                        if playerProfile.inEvents.contains(where: {$0.recordID == viewModel.event.id}) {
+                            Button {
+                                viewModel.leaveEvent(for: playerProfile, manager: eventsManager)
+                            } label: {
+                                Text("Leave")
+                                    .font(.title3)
+                            }
+                        } else {
+                            Button {
+                                viewModel.addPlayerToEvent(for: playerProfile, manager: eventsManager)
+                            } label: {
+                                Text("Join")
+                                    .font(.title3)
+                            }
+                        }
                     }
                 }
             }

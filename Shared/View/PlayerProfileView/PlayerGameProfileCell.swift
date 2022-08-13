@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PlayerGameProfileCell: View {
-
-    @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
 
     @Environment(\.editMode) var editMode
