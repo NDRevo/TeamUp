@@ -7,8 +7,8 @@
 
 import CloudKit
 
-//Needs to be singleton instead of struct because we need to save user record
-//Singleton is like global variable, but can be hard to debug
+//MARK: CloudKitManager
+//INFO: Singleton handling all things CloudKit related
 final class CloudKitManager {
 
     static let shared = CloudKitManager()
@@ -16,8 +16,6 @@ final class CloudKitManager {
     var userRecord: CKRecord?
     var playerProfile: TUPlayer?
     let container = CKContainer.default()
-
-    private init(){}
 
     func checkUsernameExists(for username: String) async throws -> Bool {
         let predicate = NSPredicate(format: "userName == %@", username)

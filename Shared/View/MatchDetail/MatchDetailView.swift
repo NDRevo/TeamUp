@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+//MARK: MatchDetailView
+//INFO: View that displays teams for the match, you can shuffle and balance the teams, and add players from the list of participants
+//INFO: You can only have two teams per match and can shuffle/balance once there are two teams
 struct MatchDetailView: View {
 
     @EnvironmentObject var eventDetailViewModel: EventDetailViewModel
@@ -21,7 +24,7 @@ struct MatchDetailView: View {
                     if viewModel.isAbleToChangeTeams(){
                         MatchOptionButtons(viewModel: viewModel)
                     }
-                    
+
                     ForEach(viewModel.teams) { team in
                         VStack{
                             HStack {
@@ -48,7 +51,7 @@ struct MatchDetailView: View {
                             }
                             PlayerListForTeam(viewModel: viewModel, team: team)
                         }
-                        .padding()
+                        .padding(12)
                     }
                 }
             }
@@ -100,9 +103,7 @@ struct MatchDetailView: View {
             }
         }
         .sheet(isPresented: $viewModel.isShowingAddTeam) {
-            NavigationView{
-                AddTeamSheet(viewModel: viewModel)
-            }
+            NavigationView{ AddTeamSheet(viewModel: viewModel) }
             .presentationDetents([.medium])
         }
         .confirmationDialog("Delete Match?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
@@ -110,12 +111,9 @@ struct MatchDetailView: View {
                 viewModel.deleteMatch()
                 eventDetailViewModel.matches.removeAll(where: {$0.id == viewModel.match.id})
                 dismiss()
-            } label: {
-                Text("Delete")
-            }
-        }, message: {
-            Text("Do you want to delete the match? You won't be able to recover it.")
-        })
+            } label: { Text("Delete") }
+        }, message: { Text("Do you want to delete the match? You won't be able to recover it.")}
+        )
     }
 }
 
@@ -126,11 +124,12 @@ struct MatchDetailView_Previews: PreviewProvider {
     }
 }
 
+
 struct PlayerListForTeam: View {
-    
+
     @ObservedObject var viewModel: MatchDetailViewModel
     var team: TUTeam
-    
+
     var body: some View {
         ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
             EventParticipantCell(eventGame: viewModel.event.eventGameName, player: player)
@@ -147,6 +146,8 @@ struct PlayerListForTeam: View {
     }
 }
 
+//MARK: MatchOptionButtons
+//INFO: Two buttons in an HStack that allow you to either shuffle or balance the teams
 struct MatchOptionButtons: View {
     
     @ObservedObject var viewModel: MatchDetailViewModel

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+//MARK: AddEventPlayerSheet
+//INFO: Displays a sheet with a list of players participating in the event that owners can pick and choose to add to a team
 struct AddEventPlayerSheet: View {
 
     @EnvironmentObject var eventDetailViewModel: EventDetailViewModel
@@ -24,7 +26,6 @@ struct AddEventPlayerSheet: View {
                         }
                     }
                 }
-                
             } else {
                 VStack(spacing: 12) {
                     Image(systemName: "person.3")

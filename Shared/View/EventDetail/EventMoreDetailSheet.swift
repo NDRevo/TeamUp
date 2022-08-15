@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+//MARK: EventMoreDetailSheet
+//INFO: Displays a sheet with more details about the event: Owner Name, Event Game Name, School associated to Event
 struct EventMoreDetailSheet: View {
     
     @ObservedObject var viewModel: EventDetailViewModel

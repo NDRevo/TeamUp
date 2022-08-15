@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+//MARK: AddTeamSheet
+//INFO: Displays a sheet allowing you to name and add a team to the match
 struct AddTeamSheet: View {
 
     @ObservedObject var viewModel: MatchDetailViewModel

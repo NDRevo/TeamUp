@@ -1,5 +1,5 @@
 //
-//  GameCell.swift
+//  MenuBarGameCell.swift
 //  TeamUp
 //
 //  Created by Noé Duran on 7/31/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GameCell: View {
+struct MenuBarGameCell: View {
 
     @EnvironmentObject private var eventsManager: EventsManager
     @ObservedObject var viewModel: EventsListViewModel
@@ -43,6 +43,6 @@ struct GameCell: View {
 
 struct GameCell_Previews: PreviewProvider {
     static var previews: some View {
-        GameCell(viewModel: EventsListViewModel(), game: Game(name: "None", ranks: []))
+        MenuBarGameCell(viewModel: EventsListViewModel(), game: Game(name: "None", ranks: []))
     }
 }

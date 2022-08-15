@@ -7,15 +7,17 @@
 
 import SwiftUI
 
+//MARK: AddPlayerListCell
+//INFO: View that displays players name and game profile details with circle to checkmark within search
 struct AddPlayerListCell: View {
 
     @Binding var checkedOffPlayers: [TUPlayer]
     var eventGame: String
+    var player: TUPlayer
+    //MARK: Grab playerprofile when fetching players
+    var playerProfile: TUPlayerGameProfile?
 
     @State var isChecked = false
-    var player: TUPlayer
-    //FIX: Grab playerprofile when fetching players
-    var playerProfile: TUPlayerGameProfile? 
 
     @Environment(\.dismissSearch) var dismissSearch
 

@@ -7,12 +7,12 @@
 
 import SwiftUI
 
+//MARK: PlayerProfileView
+//INFO: Displays players name, game profiles, and events they're participating in
 struct PlayerProfileView: View {
 
     @EnvironmentObject var eventsManager: EventsManager
     @StateObject var viewModel = PlayerProfileViewModel()
-
-    @Environment(\.editMode) var editMode
 
     var body: some View {
         NavigationView{
@@ -22,72 +22,8 @@ struct PlayerProfileView: View {
                 ScrollView {
                     VStack(alignment: .leading){
                         ProfileNameBar(viewModel: viewModel)
-                            .padding(.horizontal, 12)
-
-                        HStack {
-                            Text("Game Profiles")
-                                .bold()
-                                .font(.title2)
-                                .accessibilityAddTraits(.isHeader)
-                            Spacer()
-                            Button {
-                                viewModel.isPresentingSheet = true
-                                editMode?.wrappedValue = .inactive //FIX: Not needed?
-                                viewModel.resetInput()
-                            } label: {
-                                Image(systemName: "plus.rectangle.portrait")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width:20)
-                            }
-                        }
-                        .padding(.horizontal, 12)
-
-                        ScrollView(.horizontal) {
-                            LazyHStack(alignment: .top, spacing: 10) {
-                                ForEach(viewModel.playerGameProfiles) { gameProfile in
-                                    PlayerGameProfileCell(viewModel: viewModel, gameProfile: gameProfile)
-                                        .sheet(isPresented: $viewModel.isEditingGameProfile){
-                                            NavigationView {
-                                                EditGameProfileView(viewModel: viewModel, gameProfile: viewModel.tappedGameProfile!)
-                                            }
-                                            .presentationDetents([.fraction(0.75)])
-                                        }
-                                }
-                            }
-                            .padding(.horizontal, 12)
-                        }
-                        .frame(height: viewModel.playerGameProfiles.isEmpty ? 20 : 180)
-
-                        VStack {
-                            HStack {
-                                Text("Events Participating")
-                                    .bold()
-                                    .font(.title2)
-                                    .accessibilityAddTraits(.isHeader)
-                                Spacer()
-                            }
-
-                            if !viewModel.eventsParticipating.isEmpty {
-                                LazyVStack(alignment: .center, spacing: 12){
-                                    ForEach(viewModel.eventsParticipating) { event in
-                                        EventListCell(event: event)
-                                    }
-                                }
-                                .padding(.bottom, 12)
-                            } else {
-                                VStack(alignment: .center, spacing: 12){
-                                    Image(systemName: "rectangle.dashed")
-                                        .font(.system(size: 36))
-                                        .foregroundColor(.secondary)
-                                    Text("You're not part of any events")
-                                        .foregroundColor(.secondary)
-                                        .bold()
-                                }
-                                .offset(y: 60)
-                            }
-                        }
-                        .padding(.horizontal, 12)
+                        PlayerGameProfilesList(viewModel: viewModel)
+                        ParticipatingInEventsList(viewModel: viewModel)
                     }
                 }
                 .scrollIndicators(.hidden)
@@ -116,7 +52,6 @@ struct PlayerProfileView: View {
                         eventsManager.userProfile = try await CloudKitManager.shared.getUserRecord()
                     } catch {}
                 }
-                .onDisappear { editMode?.wrappedValue = .inactive }
                 .background(Color.appBackground)
             }
         }
@@ -133,8 +68,9 @@ struct PlayerProfileView_Previews: PreviewProvider {
     }
 }
 
+//MARK: ProfileNameBar
+//INFO: Displays username and first and last name of player
 struct ProfileNameBar: View {
-
     @ObservedObject var viewModel: PlayerProfileViewModel
 
     var body: some View {
@@ -157,5 +93,88 @@ struct ProfileNameBar: View {
                 }
                 .padding(.horizontal)
             }
+            .padding(.horizontal, 12)
+    }
+}
+
+//MARK: ParticipatingInEventsList
+//INFO: Displays list of events player is participating in shown via a verticle stack view below a Events Participating header
+struct ParticipatingInEventsList: View {
+    @ObservedObject var viewModel: PlayerProfileViewModel
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Events Participating")
+                    .bold()
+                    .font(.title2)
+                    .accessibilityAddTraits(.isHeader)
+                Spacer()
+            }
+            
+            if !viewModel.eventsParticipating.isEmpty {
+                LazyVStack(alignment: .center, spacing: 12){
+                    ForEach(viewModel.eventsParticipating) { event in
+                        EventListCell(event: event)
+                    }
+                }
+                .padding(.bottom, 12)
+            } else {
+                VStack(alignment: .center, spacing: 12){
+                    Image(systemName: "rectangle.dashed")
+                        .font(.system(size: 36))
+                        .foregroundColor(.secondary)
+                    Text("You're not part of any events")
+                        .foregroundColor(.secondary)
+                        .bold()
+                }
+                .offset(y: 60)
+            }
+        }
+        .padding(.horizontal, 12)
+    }
+}
+
+//MARK: PlayerGameProfilesList
+//INFO: Displays list of game profiles in a horizontal scroll view below a Game Profiles header
+struct PlayerGameProfilesList: View {
+    @ObservedObject var viewModel: PlayerProfileViewModel
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Game Profiles")
+                    .bold()
+                    .font(.title2)
+                    .accessibilityAddTraits(.isHeader)
+                Spacer()
+                Button {
+                    viewModel.isPresentingSheet = true
+                    viewModel.resetInput()
+                } label: {
+                    Image(systemName: "plus.rectangle.portrait")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width:20)
+                }
+            }
+            .padding(.horizontal, 12)
+            
+            ScrollView(.horizontal) {
+                LazyHStack(alignment: .top, spacing: 10) {
+                    ForEach(viewModel.playerGameProfiles) { gameProfile in
+                        PlayerGameProfileCell(viewModel: viewModel, gameProfile: gameProfile)
+                            .sheet(isPresented: $viewModel.isEditingGameProfile){
+                                NavigationView {
+                                    EditGameProfileView(viewModel: viewModel, gameProfile: viewModel.tappedGameProfile!)
+                                }
+                                .presentationDetents([.fraction(0.75)])
+                            }
+                    }
+                }
+                .padding(.horizontal, 12)
+            }
+            .frame(height: viewModel.playerGameProfiles.isEmpty ? 20 : 180)
+        }
     }
 }

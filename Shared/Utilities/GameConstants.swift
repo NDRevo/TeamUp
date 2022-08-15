@@ -51,6 +51,8 @@ struct Game: Identifiable, Hashable {
     }
 }
 
+//MARK: GameLibrary
+//INFO: Singleton containing list of supported games
 final class GameLibrary {
     static let data = GameLibrary()
 

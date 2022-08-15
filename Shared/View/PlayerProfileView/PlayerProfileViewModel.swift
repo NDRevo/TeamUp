@@ -116,7 +116,7 @@ import CloudKit
             isShowingAlert = true
         }
 
-        //TIP: Create CKRecord from profile view
+        //Creates CKRecord from profile view
         let playerRecord = createPlayerRecord()
 
         guard let userRecord = CloudKitManager.shared.userRecord else {
@@ -125,7 +125,7 @@ import CloudKit
             return
         }
 
-        //TIP: Create reference on UserRecord to TUPlayer we created
+        //Creates reference on UserRecord to TUPlayer we created
         userRecord["userProfile"] = CKRecord.Reference(recordID: playerRecord.recordID, action: .none)
 
         Task {
@@ -227,7 +227,7 @@ import CloudKit
             return
         }
 
-        //TIP: Get reference, if none it means they havent created a profile
+        //Get reference, if none it means they havent created a profile
         guard let profileReference = userRecord["userProfile"] as? CKRecord.Reference else { return }
         let profileRecordID = profileReference.recordID
 
@@ -243,7 +243,7 @@ import CloudKit
             } catch {
                 //Two Issues
                 //If CloudKit issue or internet issue with an existing profile, there should be an alert
-                // If there is no profile found for the icloud user than dont show alert
+                //If there is no profile found for the icloud user than dont show alert
             }
         }
     }

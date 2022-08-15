@@ -15,7 +15,7 @@ struct MockData {
         event[TUEvent.kEventDate]      = Date()
         event[TUEvent.kEventGameName]  = "Overwatch"
         event[TUEvent.kEventLocation]  = "BSC 122A"
-    
+
         return event
     }
 
@@ -23,14 +23,14 @@ struct MockData {
         let match = CKRecord(recordType: RecordType.match)
         match[TUMatch.kMatchName] = "Immortal"
         match[TUMatch.kStartTime] = Date()
-        
+
         return match
     }
 
     static var team: CKRecord {
         let team = CKRecord(recordType: RecordType.team)
         team[TUTeam.kTeamName] = "Team One"
-        
+
         return match
     }
     
@@ -38,7 +38,7 @@ struct MockData {
         let player = CKRecord(recordType: RecordType.player)
         player[TUPlayer.kFirstName]     = "Bob"
         player[TUPlayer.kLastName]      = "Ross"
-    
+
         return player
     }
     static var playerGameProfile: CKRecord {
@@ -46,7 +46,7 @@ struct MockData {
         playerGameProfile[TUPlayerGameProfile.kGameName]    = "VALORANT"
         playerGameProfile[TUPlayerGameProfile.kGameID]      = "Bob#ross"
         playerGameProfile[TUPlayerGameProfile.kGameRank]    = "Radiant"
-    
+
         return playerGameProfile
     }
 }

@@ -7,22 +7,23 @@
 
 import SwiftUI
 
+//MARK: TeamIcon
+//INFO: Custom icon to display a plus or minus sign in front of the three people system image
 struct TeamIcon: View {
-    
+
     var color: Color
     var isAdding: Bool
-    
+
     var body: some View {
         ZStack(alignment: .bottomLeading){
             Image(systemName: "person.3")
-            
+
             ZStack {
                 Circle()
                     .stroke(Color.appBackground, lineWidth: 1.5)
                     .background {
                         Circle()
                             .fill(color)
-                        
                     }
                     .frame(width: 14, height:  14)
                 Image(systemName: isAdding ? "plus" : "minus" )

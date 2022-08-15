@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+//MARK: MyEventsView
+//INFO: View to display a club leader's unpublished and published events.
+//INFO: Owners can only add new events in this view
 struct MyEventsView: View {
 
     @StateObject private var viewModel = MyEventsViewModel()
@@ -90,6 +93,8 @@ struct MyEventsView_Previews: PreviewProvider {
     }
 }
 
+//MARK: EventsListToolbarContent
+//INFO: Refactored out ToolBarContent for create event button
 struct EventsListToolbarContent: ToolbarContent {
     @ObservedObject var viewModel: MyEventsViewModel
 

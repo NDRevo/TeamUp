@@ -7,12 +7,14 @@
 
 import SwiftUI
 
+//MARK: EditGameProfileView
+//INFO: Sheet that is presented to edit player game profile and to add alias
 struct EditGameProfileView: View {
     
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: PlayerProfileViewModel
     
-    var gameProfile: TUPlayerGameProfile // Add gameName and gameVariant
+    var gameProfile: TUPlayerGameProfile
     @State var gameID: String = ""
     @State var gameRank: String = ""
     @State var gameAliases: [String] = ["",""]

@@ -8,15 +8,15 @@
 import SwiftUI
 import EventKit
 
+//MARK: EventDetailView
+//INFO: View that shows all details of the events: General Info, Matches, Participants
 struct EventDetailView: View {
 
     @EnvironmentObject var eventsManager: EventsManager
-    @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: EventDetailViewModel
+    @Environment(\.dismiss) var dismiss
 
-    init(event: TUEvent){
-        _viewModel = StateObject(wrappedValue: EventDetailViewModel(event: event))
-    }
+    init(event: TUEvent){ _viewModel = StateObject(wrappedValue: EventDetailViewModel(event: event)) }
 
     var body: some View {
         ScrollView {
@@ -84,7 +84,6 @@ struct EventDetailView: View {
                 }
             }
         }
-        //MARK: BUG: Fails as of Xcode 14 beta 1: NavigationAuthority
         .confirmationDialog("Delete Event?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {
                 eventsManager.deleteEvent(for: viewModel.event)
@@ -98,21 +97,36 @@ struct EventDetailView: View {
     }
 }
 
-//MARK: EventDetailView_Preview
-
-struct EventDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        EventDetailView(event: TUEvent(record: MockData.event))
-    }
-}
-
+//MARK: EventLocationDetailViewSection
+//INFO: Section that displays the location of event. On tap leads to Apple Maps or Discord
 struct EventLocationDetailViewSection: View {
-
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
         HStack(spacing: 10){
-            LocationDetailItemView(textContent: viewModel.event.eventLocation, detailType: .location)
+            VStack(alignment: .leading, spacing: 5){
+                HStack(spacing: 4){
+                    Image(systemName: DetailItem.location.getSystemImage())
+                        .foregroundColor(.blue)
+                    Text(DetailItem.location.getTextHeading())
+                        .font(.callout)
+                }
+                Text(viewModel.event.eventLocation)
+                    .bold()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+                    .onTapGesture {
+                        var url = URL(string: viewModel.event.eventLocation)
+                        if viewModel.event.eventLocation.starts(with: "discord.gg") {
+                            url = URL(string: "https://\(viewModel.event.eventLocation)")
+                            UIApplication.shared.open(url!)
+                        } else{
+                            url = URL(string: "maps://?q=\(viewModel.event.eventLocation.replacingOccurrences(of: " ", with: "+"))")
+                            UIApplication.shared.open(url!)
+                        }
+                        
+                    }
+            }
             Spacer()
         }
         .frame(maxWidth: .infinity)
@@ -124,7 +138,7 @@ struct EventLocationDetailViewSection: View {
 }
 
 //MARK: EventDetailsViewSection
-
+//INFO: Displays DetailItemViews for date, start time, and end time.
 struct EventDetailsViewSection: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
@@ -147,7 +161,7 @@ struct EventDetailsViewSection: View {
 }
 
 //MARK: DetailItemView
-
+//INFO: Reused view to display Image and Title on top of the detail item text
 struct DetailItemView: View {
 
     var textContent: String
@@ -169,42 +183,8 @@ struct DetailItemView: View {
     }
 }
 
-//MARK: LocationDetailItemView
-
-struct LocationDetailItemView: View {
-
-    var textContent: String
-    var detailType: DetailItem
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 5){
-            HStack(spacing: 4){
-                Image(systemName: detailType.getSystemImage())
-                    .foregroundColor(.blue)
-                Text(detailType.getTextHeading())
-                    .font(.callout)
-            }
-            Text(textContent)
-                .bold()
-                .lineLimit(1)
-                .minimumScaleFactor(0.75)
-                .onTapGesture {
-                    var url = URL(string: textContent)
-                    if textContent.starts(with: "discord.gg") {
-                        url = URL(string: "https://\(textContent)")
-                        UIApplication.shared.open(url!)
-                    } else{
-                        url = URL(string: "maps://?q=\(textContent.replacingOccurrences(of: " ", with: "+"))")
-                        UIApplication.shared.open(url!)
-                    }
-                    
-                }
-        }
-    }
-}
-
 //MARK: EventDescriptionViewSection
-
+//INFO: Displays the description of the event
 struct EventDescriptionViewSection: View {
     
     @ObservedObject var viewModel: EventDetailViewModel
@@ -229,7 +209,7 @@ struct EventDescriptionViewSection: View {
 }
 
 //MARK: MatchesView
-
+//INFO: Displays a horizontal scroll view of EventMatchCells below the Matches title. Tapping on the cell leads to MatchDetailView
 struct MatchesView: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
@@ -290,7 +270,7 @@ struct MatchesView: View {
 }
 
 //MARK: EventMatchCellView
-
+//INFO: Event Match cell view
 struct EventMatchCellView: View {
 
     var matchName: String
@@ -323,7 +303,7 @@ struct EventMatchCellView: View {
 }
 
 //MARK: ParticipantsView
-
+//INFO: Displays list of players in the event with the ability for a player to join or leave event. Owners can search and add players.
 struct ParticipantsView: View {
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: EventDetailViewModel

@@ -18,7 +18,7 @@ struct CalendarViewController: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> EKEventEditViewController {
         let eventViewController = EKEventEditViewController()
-        
+
         eventViewController.event = EKEvent(eventStore: store)
         eventViewController.eventStore = store
 
@@ -33,7 +33,7 @@ struct CalendarViewController: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: EKEventEditViewController, context: Context) {}
-    
+
     func makeCoordinator() -> CalendarViewController.Coordinator {
         return Coordinator(isShowingCalendarView: $isShowingCalendarView)
     }

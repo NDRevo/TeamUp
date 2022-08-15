@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct MatchDetailButtonStyle: ViewModifier {
     var color: Color
 

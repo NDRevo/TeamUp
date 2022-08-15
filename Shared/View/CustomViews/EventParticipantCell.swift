@@ -7,11 +7,13 @@
 
 import SwiftUI
 
+//MARK: EventParticipantCell
+//INFO: View that displays players name and game profile details
 struct EventParticipantCell: View {
 
     var eventGame: String
     var player: TUPlayer
-    //FIX: Grab playerprofile when going into event detail
+    //MARK: Grab playerprofile when going into event detail
     var playerProfile: TUPlayerGameProfile?
 
     var body: some View {

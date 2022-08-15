@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+//MARK: AddPlayerGameProfileSheet
+//INFO: Sheet to add game profile with Game+Variant, rank, and game ID
 struct AddPlayerGameProfileSheet: View {
 
     @EnvironmentObject private var eventsManager: EventsManager

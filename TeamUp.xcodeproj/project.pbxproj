@@ -99,8 +99,8 @@
 		569CAAB6285192D10081AB3B /* MyEventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569CAAB5285192D10081AB3B /* MyEventsViewModel.swift */; };
 		569D688F2863B85000D824FC /* EditGameProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569D688E2863B85000D824FC /* EditGameProfileView.swift */; };
 		569D68902863B85000D824FC /* EditGameProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569D688E2863B85000D824FC /* EditGameProfileView.swift */; };
-		56A0790728972652001852A5 /* GameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0790628972652001852A5 /* GameCell.swift */; };
-		56A0790828972652001852A5 /* GameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0790628972652001852A5 /* GameCell.swift */; };
+		56A0790728972652001852A5 /* MenuBarGameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0790628972652001852A5 /* MenuBarGameCell.swift */; };
+		56A0790828972652001852A5 /* MenuBarGameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0790628972652001852A5 /* MenuBarGameCell.swift */; };
 		56A0790B289E359D001852A5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0790A289E359D001852A5 /* SettingsView.swift */; };
 		56A0790C289E359D001852A5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0790A289E359D001852A5 /* SettingsView.swift */; };
 		56A0790E289E3700001852A5 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0790D289E3700001852A5 /* SettingsViewModel.swift */; };
@@ -177,7 +177,7 @@
 		569CAAB328518FB50081AB3B /* MyEventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventsView.swift; sourceTree = "<group>"; };
 		569CAAB5285192D10081AB3B /* MyEventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventsViewModel.swift; sourceTree = "<group>"; };
 		569D688E2863B85000D824FC /* EditGameProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGameProfileView.swift; sourceTree = "<group>"; };
-		56A0790628972652001852A5 /* GameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCell.swift; sourceTree = "<group>"; };
+		56A0790628972652001852A5 /* MenuBarGameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarGameCell.swift; sourceTree = "<group>"; };
 		56A0790A289E359D001852A5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		56A0790D289E3700001852A5 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		56A0791028A01723001852A5 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -219,8 +219,8 @@
 			children = (
 				560E42B727926A3F00408B4B /* EventsListViewModel.swift */,
 				566AB2E7278D285000F4035C /* EventsListView.swift */,
-				56A0790628972652001852A5 /* GameCell.swift */,
 				560E4268278E8A2A00408B4B /* EventListCell.swift */,
+				56A0790628972652001852A5 /* MenuBarGameCell.swift */,
 			);
 			path = EventList;
 			sourceTree = "<group>";
@@ -572,7 +572,7 @@
 				566AB2D6278D27F000F4035C /* TeamUpApp.swift in Sources */,
 				560E429B2791009900408B4B /* AddTeamSheet.swift in Sources */,
 				560E42AB2791B40800408B4B /* AddExistingPlayerSheet.swift in Sources */,
-				56A0790728972652001852A5 /* GameCell.swift in Sources */,
+				56A0790728972652001852A5 /* MenuBarGameCell.swift in Sources */,
 				569D688F2863B85000D824FC /* EditGameProfileView.swift in Sources */,
 				563A46E7279F862C006A406B /* Color+Ext.swift in Sources */,
 				560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */,
@@ -618,7 +618,7 @@
 				560E4275278FA68200408B4B /* MatchDetailView.swift in Sources */,
 				560E42BC279386BF00408B4B /* MatchDetailViewModel.swift in Sources */,
 				56A0791228A01723001852A5 /* CalendarViewController.swift in Sources */,
-				56A0790828972652001852A5 /* GameCell.swift in Sources */,
+				56A0790828972652001852A5 /* MenuBarGameCell.swift in Sources */,
 				560E427A27907E1200408B4B /* MatchDetailButton.swift in Sources */,
 				56EDBB4827E59E93001D68CF /* TeamIcon.swift in Sources */,
 				560E428A2790B6C900408B4B /* MockData.swift in Sources */,

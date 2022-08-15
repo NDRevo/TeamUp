@@ -23,7 +23,9 @@ struct TUPlayerGameProfile: Identifiable {
     let gameVariantName: String
     let gameID: String
     let gameRank: String
-    let gameAliases: [String] //TIP: Make optional
+
+    //MARK: Make Optional
+    let gameAliases: [String]
 
     init(record: CKRecord){
         id  = record.recordID

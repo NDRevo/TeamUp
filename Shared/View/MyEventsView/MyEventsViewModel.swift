@@ -8,16 +8,21 @@
 import CloudKit
 import SwiftUI
 
+enum EventError: Error {
+    case InvalidEvent
+    case unableToCreateEvent
+}
+
 @MainActor final class MyEventsViewModel: ObservableObject {
 
     @Published var eventName: String         = ""
-    @Published var eventSchool: String        = ""
+    @Published var eventSchool: String       = ""
+    @Published var eventDescription: String  = ""
+    @Published var eventLocation: String     = ""
     @Published var eventDate: Date           = Date()
     @Published var eventEndDate: Date        = Date()
     @Published var eventGame: Game           = Game(name: GameNames.none, ranks: [])
     @Published var eventGameVariant: Game    = Game(name: GameNames.empty, ranks: [])
-    @Published var eventDescription: String  = ""
-    @Published var eventLocation: String     = ""
     
     @Published var isPresentingAddEvent      = false
     @Published var isShowingAlert            = false
@@ -38,15 +43,16 @@ import SwiftUI
     }()
 
     func resetInput(){
-        eventName = ""
-        eventDate = currentDateAndHour
-        eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDateAndHour)!
-        eventGame = Game(name: GameNames.none, ranks: [])
+        eventName        = ""
+        eventDate        = currentDateAndHour
+        eventEndDate     = Calendar.current.date(byAdding: .hour, value: 1, to: currentDateAndHour)!
+        eventGame        = Game(name: GameNames.none, ranks: [])
         eventGameVariant = Game(name: GameNames.empty, ranks: [])
         eventDescription = ""
-        eventLocation = ""
+        eventLocation    = ""
     }
 
+    //INFO: Used to set default date and hour for creating an event
     var currentDateAndHour: Date = {
         let date = Date()
         let calendar = Calendar.current
@@ -57,7 +63,7 @@ import SwiftUI
             hour: calendar.component(.hour, from: date) + 1,
             minute: 00
         )
-        
+
         return calendar.date(from: mock)!
     }()
 
@@ -113,10 +119,5 @@ import SwiftUI
                 isShowingAlert = true
             }
         }
-    }
-    
-    enum EventError: Error {
-        case InvalidEvent
-        case unableToCreateEvent
     }
 }

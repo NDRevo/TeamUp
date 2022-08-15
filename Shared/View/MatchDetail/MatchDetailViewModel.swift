@@ -85,11 +85,11 @@ import SwiftUI
                 var playersToSave: [CKRecord] = []
 
                 for player in newTeamOne + newTeamTwo {
-                    //TIP: Fetch
+                    //Fetches player records
                     let playerRecord   = try await CloudKitManager.shared.fetchRecord(with: player.id)
                     var playerOnTeams = playerRecord[TUPlayer.kOnTeams]  as? [CKRecord.Reference] ?? []
                     
-                    //TIP:Update
+                    //Updates player to correct team
                     if playerOnTeams.contains(where: {$0.recordID == teams[1].id}) && newTeamOne.contains(where: {$0.id == player.id}){
                         
                         playerOnTeams.removeAll(where: {$0.recordID == teams[1].id})
@@ -102,14 +102,15 @@ import SwiftUI
 
                     }
 
+                    //Assigns reference of team to player
                     playerRecord[TUPlayer.kOnTeams] = playerOnTeams
-                    
+                    //Adds to list of records to save
                     playersToSave.append(playerRecord)
                 }
-                //TIP:Save
+                //Saves all the records
                 let _ = try await CloudKitManager.shared.batchSave(records: playersToSave)
                 
-                //TIP:Update locally and sort by first name
+                //Updates locally and sort by first name after successfully saving records
                 teamsAndPlayer.updateValue(newTeamOne.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[0].id)
                 teamsAndPlayer.updateValue(newTeamTwo.sorted(by: {$0.firstName < $1.firstName}), forKey: teams[1].id)
                 hideLoadingView()
@@ -118,7 +119,6 @@ import SwiftUI
                 alertItem = AlertContext.unableToShuffleTeams
                 isShowingAlert = true
             }
-
         }
     }
 
@@ -299,11 +299,6 @@ import SwiftUI
         }
     }
 
-    private func showLoadingView(){
-        isLoading = true
-    }
-
-    private func hideLoadingView(){
-        isLoading = false
-    }
+    private func showLoadingView(){ isLoading = true }
+    private func hideLoadingView(){ isLoading = false }
 }

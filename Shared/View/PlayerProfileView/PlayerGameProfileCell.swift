@@ -7,12 +7,14 @@
 
 import SwiftUI
 
+//MARK: PlayerGameProfileCell
+//INFO: View to display game profile
 struct PlayerGameProfileCell: View {
+
     @ObservedObject var viewModel: PlayerProfileViewModel
+    var gameProfile: TUPlayerGameProfile
 
     @Environment(\.editMode) var editMode
-
-    var gameProfile: TUPlayerGameProfile
 
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
@@ -54,7 +56,7 @@ struct PlayerGameProfileCell: View {
                         Text(gameProfile.gameRank)
                         Spacer()
                         
-                        //TIP: ForEach<Array<String>, String, Optional<Text>>: the ID  occurs multiple times within the collection, this will give undefined results!
+                        //ForEach<Array<String>, String, Optional<Text>>: the ID  occurs multiple times within the collection, this will give undefined results!
                         //This will be resolved when made an optional
                         ForEach(gameProfile.gameAliases, id: \.self){ alias in
                             if alias != "" {

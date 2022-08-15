@@ -60,12 +60,14 @@ enum DetailItem {
 
     @Published var matchName: String                = ""
     @Published var matchDate: Date                  = Date()
-    @Published var onAppearHasFired                 = false
 
+    @Published var searchString: String              = ""
+
+    @Published var onAppearHasFired                 = false
     @Published var isShowingConfirmationDialogue    = false
     @Published var isLoading                        = false
     @Published var isShowingSheet                   = false
-    @Published var isShowingCalendarView               = false
+    @Published var isShowingCalendarView            = false
     @Published var sheetToPresent: PresentingSheet? {
         didSet{
             isShowingSheet = true
@@ -81,6 +83,7 @@ enum DetailItem {
         return event.eventOwner.recordID == CloudKitManager.shared.userRecord?.recordID
     }
 
+    //INFO: Returns range of dates from the event date onwards
     func dateRange() -> PartialRangeFrom<Date> {
         let calendar = Calendar.current
         let startDate = DateComponents(
@@ -91,6 +94,7 @@ enum DetailItem {
         return calendar.date(from:startDate)!...
     }
 
+    //INFO: Checks whether user has calendar access, alerts if doesn't
     nonisolated func checkCalendarAcces() async {
         do {
             let hasGivenAccess = try await store.requestAccess(to: .event)
@@ -114,7 +118,7 @@ enum DetailItem {
     }
 
     func setUpEventDetails(){
-        //TIP: Prevents from running twice
+        //MARK: Prevents from being called twice. Bug in SwiftUI
         if !onAppearHasFired {
             getMatchesForEvent()
             getPlayersInEvents()
@@ -122,6 +126,7 @@ enum DetailItem {
         }
     }
 
+    //INFO: Presents a sheet based on PresentingSheet enumerator
     @ViewBuilder func presentSheet() -> some View {
         switch sheetToPresent {
             case .eventMoreDetail:
@@ -142,6 +147,7 @@ enum DetailItem {
         matchDate = event.eventDate
     }
 
+    //INFO: Creates Match CKRecord with match: Name, Date, & Reference to event
     private func createMatchRecord() -> CKRecord{
         let record = CKRecord(recordType: RecordType.match)
 
@@ -152,6 +158,7 @@ enum DetailItem {
         return record
     }
 
+    //INFO: Returns T/F if creating match is valid based on if name is empty and match date is ahead of event date
     private func isValidMatch() -> Bool{
         guard !matchName.isEmpty, matchDate >= event.eventDate else {
             return false
@@ -186,7 +193,7 @@ enum DetailItem {
         Task {
             do {
                 let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
-                
+
                 var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
 
                 if references.isEmpty{
@@ -233,6 +240,7 @@ enum DetailItem {
         }
     }
 
+    //INFO: For Event owners to search players and manually add them to their event
     func addCheckedPlayersToEvent(){
         Task {
             do {
@@ -274,6 +282,7 @@ enum DetailItem {
         }
     }
 
+    //INFO: Gets called on appearance of event detail view
     private func getMatchesForEvent(){
         showLoadingView()
         Task {
@@ -289,6 +298,7 @@ enum DetailItem {
         }
     }
 
+    //INFO: Gets called on appearance of event detail view
     private func getPlayersInEvents(){
         showLoadingView()
         Task {
@@ -304,18 +314,7 @@ enum DetailItem {
         }
     }
 
-    func getAvailablePlayers(from players: [TUPlayer]){
-
-        checkedOffPlayers = []
-        availablePlayers = []
-
-        for player in players {
-            if !playersInEvent.contains(where: {$0.id == player.id}){
-                availablePlayers.append(player)
-            }
-        }
-    }
-
+    //INFO: Fetches list of players based of search
     func getSearchedPlayers(with searchString: String) {
         Task {
             do {
@@ -327,6 +326,7 @@ enum DetailItem {
         }
     }
 
+    //INFO: Removes player's reference to event and any references of a team within event
     func removePlayerFromEventWith(for player: TUPlayer){
             Task {
                 do {
@@ -341,9 +341,10 @@ enum DetailItem {
 
                     var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
 
+                    //TIP: Make into dictionary?
                     if !teamsInEvents.isEmpty {
                         for teamReference in teamReferences {
-                            //TIP: If team doesnt exist then remove from player's onTeams
+                            //INFO: If team doesnt exist then remove from player's onTeams
                             if teamsInEvents.contains(where: {$0.recordID == teamReference.recordID}){
                                 teamReferences.removeAll(where: {$0 == teamReference})
                             }

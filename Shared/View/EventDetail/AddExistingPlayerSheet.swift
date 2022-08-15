@@ -8,12 +8,11 @@
 import SwiftUI
 import CloudKit
 
+//MARK: AddExistingPlayerSheet
+//INFO: Displays a sheet for event owners to search for a player and add them to the event
 struct AddExistingPlayerSheet: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
-
-    @State var searchString: String = ""
-
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
@@ -37,9 +36,9 @@ struct AddExistingPlayerSheet: View {
 //                }.offset(y: -64)
     
         }
-        .searchable(text: $searchString)
+        .searchable(text: $viewModel.searchString)
         .onSubmit(of: .search){
-            viewModel.getSearchedPlayers(with: searchString)
+            viewModel.getSearchedPlayers(with: viewModel.searchString)
         }
         .onAppear {
             viewModel.checkedOffPlayers = []

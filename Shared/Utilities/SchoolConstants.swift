@@ -7,6 +7,8 @@
 
 import Foundation
 
+//MARK: SchoolLibrary
+//INFO: Singleton containing list of supported schools
 final class SchoolLibrary {
     static let data = SchoolLibrary()
     

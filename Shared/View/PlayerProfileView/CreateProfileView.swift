@@ -12,6 +12,8 @@ enum FormFields {
     case username,firstName,lastName
 }
 
+//MARK: CreateProfileView
+//INFO: First view seen when creating a profile. Username, School,and  First and Last Name are needed to create profile
 struct CreateProfileView: View {
 
     @ObservedObject var viewModel: PlayerProfileViewModel
@@ -25,10 +27,8 @@ struct CreateProfileView: View {
                     .textInputAutocapitalization(.words)
                     .submitLabel(.next)
                     .focused($currentFocus, equals: .username)
-            } footer: {
-                Text("Your username will be used for search and display purposes.")
-            }
-            
+            } footer: { Text("Your username will be used for search and display purposes.") }
+
             Section {
                 Picker("School", selection: $viewModel.playerSchool) {
                     ForEach(SchoolLibrary.data.schools, id: \.self){school in
@@ -38,7 +38,7 @@ struct CreateProfileView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
             }
-            
+
             Section{
                 TextField("First Name", text: $viewModel.playerFirstName)
                     .disableAutocorrection(true)

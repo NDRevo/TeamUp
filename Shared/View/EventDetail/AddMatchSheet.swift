@@ -8,6 +8,8 @@
 import SwiftUI
 import CloudKit
 
+//MARK: AddMatchSheet
+//INFO: Displays a sheet to input a match name and date and create the match
 struct AddMatchSheet: View {
 
     @ObservedObject var viewModel: EventDetailViewModel

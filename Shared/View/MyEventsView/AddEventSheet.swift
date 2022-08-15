@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
-
+//MARK: AddEventSheet
+//INFO: Sheet displayed to add an event. Is set to unpublished by default
+//INFO: Add Event: Name, Start Date, End Date, Game, Game Variant, Location, and Description
 struct AddEventSheet: View {
 
     @EnvironmentObject var eventsManager: EventsManager
@@ -29,7 +31,7 @@ struct AddEventSheet: View {
                     }
 
                 Picker("Game", selection: $viewModel.eventGame) {
-                    //TIP: Starts from 1 to remove "All" case
+                    //Starts from 1 to remove "All" case
                     ForEach(GameLibrary.data.games[1...]){game in
                         Text(game.name)
                             .tag(game.self)
@@ -78,11 +80,11 @@ struct AddEventSheet: View {
         .navigationTitle("Create Event")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                //TIP: Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+                //MARK: Publishing changes from within view updates is not allowed, this will cause undefined behavior.
                 Button("Cancel") {viewModel.isPresentingAddEvent = false}
             }
         }
-        //TIP: Adding alert doesn't allow cancel button / dismissmal of sheet to work
+        //MARK: Adding alert doesn't allow cancel button / dismissmal of sheet to work
     }
 }
 
