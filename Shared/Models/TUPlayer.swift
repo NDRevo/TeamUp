@@ -9,13 +9,14 @@ import CloudKit
 
 struct TUPlayer: Identifiable, Hashable {
 
-    static let kUsername        = "userName"
-    static let kFirstName       = "firstName"
-    static let kLastName        = "lastName"
-    static let kInEvents        = "inEvents"
-    static let kInSchool        = "inSchool"
-    static let kOnTeams         = "onTeams"
-    static let kIsGameLeader    = "isGameLeader"
+    static let kUsername            = "userName"
+    static let kFirstName           = "firstName"
+    static let kLastName            = "lastName"
+    static let kInEvents            = "inEvents"
+    static let kInSchool            = "inSchool"
+    static let kOnTeams             = "onTeams"
+    static let kIsGameLeader        = "isGameLeader"
+    static let kIsVerfiedStudent    = "isVerifiedStudent"
 
     let id: CKRecord.ID
 
@@ -25,15 +26,17 @@ struct TUPlayer: Identifiable, Hashable {
     let isGameLeader: Int
     let inEvents: [CKRecord.Reference]
     let inSchool: String
+    let isVerifiedStudent: Int
 
     init(record: CKRecord){
         id  = record.recordID
 
-        username        = record[TUPlayer.kUsername]      as? String ?? "N/A"
-        firstName       = record[TUPlayer.kFirstName]     as? String ?? "N/A"
-        lastName        = record[TUPlayer.kLastName]      as? String ?? "N/A"
-        isGameLeader    = record[TUPlayer.kIsGameLeader]  as? Int    ?? 0
-        inEvents        = record[TUPlayer.kInEvents]      as? [CKRecord.Reference] ?? []
-        inSchool        = record[TUPlayer.kInSchool]      as? String ?? "N/A"
+        username            = record[TUPlayer.kUsername]        as? String ?? "N/A"
+        firstName           = record[TUPlayer.kFirstName]       as? String ?? "N/A"
+        lastName            = record[TUPlayer.kLastName]        as? String ?? "N/A"
+        isGameLeader        = record[TUPlayer.kIsGameLeader]    as? Int    ?? 0
+        inEvents            = record[TUPlayer.kInEvents]        as? [CKRecord.Reference] ?? []
+        inSchool            = record[TUPlayer.kInSchool]        as? String ?? "N/A"
+        isVerifiedStudent   = record[TUPlayer.kIsVerfiedStudent]as? Int    ?? 0
     }
 }

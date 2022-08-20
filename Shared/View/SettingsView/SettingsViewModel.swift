@@ -9,23 +9,32 @@ import Foundation
 import CloudKit
 import SwiftUI
 
-class SettingsViewModel: ObservableObject {
+@MainActor class SettingsViewModel: ObservableObject {
 
-    @Published var isShowingAlert            = false
+    @Published var isShowingWebsite         = false
+    @Published var hasVerified: Bool = false {
+        didSet {
+            Task {
+                 await changeVerificationStatus(hasVerified)
+            }
+        }
+    }
+    @Published var isShowingAlert           = false
 
-    @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
+    @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 
     //0 = Not Game Leader
     //1 = Game Leader
     //2 = Requesting Game Leader
     //3 = Denied Game Leader
 
-    func changeGameLeaderPosition(to value: Int){
-        Task{
+    nonisolated func changeGameLeaderPosition(to value: Int) async {
             do {
                 guard let playerProfileID = CloudKitManager.shared.playerProfile else {
-                    alertItem = AlertContext.unableToGetUserProfile
-                    isShowingAlert = true
+                    await MainActor.run {
+                        alertItem = AlertContext.unableToGetUserProfile
+                        isShowingAlert = true
+                    }
                     return
                 }
                 let playerRecord = try await CloudKitManager.shared.fetchRecord(with: playerProfileID.id)
@@ -33,9 +42,33 @@ class SettingsViewModel: ObservableObject {
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
             } catch {
-                alertItem = AlertContext.unableToChangeGameLeaderPosition
-                isShowingAlert = true
+                await MainActor.run {
+                    alertItem = AlertContext.unableToChangeGameLeaderPosition
+                    isShowingAlert = true
+                }
             }
-        }
     }
+    
+    nonisolated func changeVerificationStatus(_ hasVerified: Bool) async{
+            do {
+                guard let playerProfileID = CloudKitManager.shared.playerProfile else {
+                    await MainActor.run {
+                        alertItem = AlertContext.unableToGetUserProfile
+                        isShowingAlert = true
+                    }
+                    return
+                }
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: playerProfileID.id)
+                playerRecord[TUPlayer.kIsVerfiedStudent] = hasVerified ? 1 : 0
+                let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                
+            } catch {
+                await MainActor.run {
+                    //MARK: Add Alert
+                    isShowingAlert = true
+                }
+            }
+        
+    }
+    
 }

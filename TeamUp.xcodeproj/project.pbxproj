@@ -112,6 +112,8 @@
 		56EDBB4527E58AAB001D68CF /* EventParticipantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4327E58AAB001D68CF /* EventParticipantCell.swift */; };
 		56EDBB4727E59E93001D68CF /* TeamIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4627E59E93001D68CF /* TeamIcon.swift */; };
 		56EDBB4827E59E93001D68CF /* TeamIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4627E59E93001D68CF /* TeamIcon.swift */; };
+		56FF4EED28AB60F300EA8D0E /* WebKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FF4EEC28AB60F300EA8D0E /* WebKitView.swift */; };
+		56FF4EEE28AB60F300EA8D0E /* WebKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FF4EEC28AB60F300EA8D0E /* WebKitView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,6 +188,7 @@
 		56BC7998286E08C3002046CA /* TeamUpUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpUnitTests.swift; sourceTree = "<group>"; };
 		56EDBB4327E58AAB001D68CF /* EventParticipantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipantCell.swift; sourceTree = "<group>"; };
 		56EDBB4627E59E93001D68CF /* TeamIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamIcon.swift; sourceTree = "<group>"; };
+		56FF4EEC28AB60F300EA8D0E /* WebKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -413,6 +416,7 @@
 			children = (
 				56A0790D289E3700001852A5 /* SettingsViewModel.swift */,
 				56A0790A289E359D001852A5 /* SettingsView.swift */,
+				56FF4EEC28AB60F300EA8D0E /* WebKitView.swift */,
 			);
 			path = SettingsView;
 			sourceTree = "<group>";
@@ -558,6 +562,7 @@
 				5607EFD22877476700BE957E /* Binding+Ext.swift in Sources */,
 				560E4274278FA68200408B4B /* MatchDetailView.swift in Sources */,
 				560E42BB279386BF00408B4B /* MatchDetailViewModel.swift in Sources */,
+				56FF4EED28AB60F300EA8D0E /* WebKitView.swift in Sources */,
 				560E427927907E1200408B4B /* MatchDetailButton.swift in Sources */,
 				56EDBB4727E59E93001D68CF /* TeamIcon.swift in Sources */,
 				560E42892790B6C900408B4B /* MockData.swift in Sources */,
@@ -628,6 +633,7 @@
 				563A46E5279F0FFC006A406B /* PlayerProfileViewModel.swift in Sources */,
 				563A46DA279D9DE4006A406B /* PlayerProfileView.swift in Sources */,
 				566AB2ED278D2DA700F4035C /* TUMatch.swift in Sources */,
+				56FF4EEE28AB60F300EA8D0E /* WebKitView.swift in Sources */,
 				56EDBB4527E58AAB001D68CF /* EventParticipantCell.swift in Sources */,
 				560E42C227946E6100408B4B /* AlertContext.swift in Sources */,
 				566AB2D7278D27F000F4035C /* TeamUpApp.swift in Sources */,

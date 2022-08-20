@@ -37,7 +37,7 @@ final class CloudKitManager {
         if let profileReference = record["userProfile"] as? CKRecord.Reference {
             let playerProfileRecord = try await fetchRecord(with: profileReference.recordID)
             playerProfile = TUPlayer(record: playerProfileRecord)
-            return playerProfile! //Will return a player or nil, either is fine
+            return playerProfile
        }
         return nil
     }

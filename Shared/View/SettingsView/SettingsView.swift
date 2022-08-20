@@ -13,21 +13,61 @@ struct SettingsView: View {
 
     var body: some View {
         List {
-            Button {
-                viewModel.changeGameLeaderPosition(to: 2)
-            } label: {
-                Text(CloudKitManager.shared.playerProfile?.isGameLeader == 2 ? "Requested Game Leader" : "Request Game Leader")
+            Section {
+                Button {
+                    Task{
+                        viewModel.isShowingWebsite = true
+                    }
+                } label: {
+                    Text("Verify Student")
+                }
+                .disabled(CloudKitManager.shared.playerProfile!.isVerifiedStudent == 1)
+                if CloudKitManager.shared.playerProfile!.isVerifiedStudent == 1 {
+                    Button {
+                        Task{
+                            viewModel.hasVerified = false
+                        }
+                    } label: {
+                        Text("Unverify Student")
+                    }
+                }
             }
-            .disabled(CloudKitManager.shared.playerProfile?.isGameLeader == 2 || CloudKitManager.shared.playerProfile?.isGameLeader == 1)
             
-            
-            Button(role: .destructive) {
-                viewModel.changeGameLeaderPosition(to: 0)
-            } label: {
-                Text("Remove Game Leader Role")
+            Section {
+                Button {
+                    Task {
+                        await viewModel.changeGameLeaderPosition(to: 2)
+                    }
+                } label: {
+                    Text(CloudKitManager.shared.playerProfile?.isGameLeader == 2 ? "Requested Game Leader" : "Request Game Leader")
+                }
+                .disabled(CloudKitManager.shared.playerProfile?.isGameLeader == 2 || CloudKitManager.shared.playerProfile?.isGameLeader == 1)
+                
+                
+                Button(role: .destructive) {
+                    Task {
+                        await viewModel.changeGameLeaderPosition(to: 0)
+                    }
+                } label: {
+                    Text("Remove Game Leader Role")
+                }
+                //Add revoke
             }
-            //Add revoke
-
+        }
+        .sheet(isPresented: $viewModel.isShowingWebsite) {
+            NavigationView {
+                WebKitView(viewModel: viewModel)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button {
+                                viewModel.isShowingWebsite = false
+                            } label: {
+                                Text("Cancel")
+                            }
+                        }
+                        
+                    }
+            }
         }
     }
 }
