@@ -21,7 +21,7 @@ enum EventError: Error {
     @Published var eventLocation: String     = ""
     @Published var eventDate: Date           = Date()
     @Published var eventEndDate: Date        = Date()
-    @Published var eventGame: Game           = Game(name: GameNames.none, ranks: [])
+    @Published var eventGame: Game           = Game(name: GameNames.other, ranks: [])
     @Published var eventGameVariant: Game    = Game(name: GameNames.empty, ranks: [])
     
     @Published var isPresentingAddEvent      = false
@@ -46,7 +46,7 @@ enum EventError: Error {
         eventName        = ""
         eventDate        = currentDateAndHour
         eventEndDate     = Calendar.current.date(byAdding: .hour, value: 1, to: currentDateAndHour)!
-        eventGame        = Game(name: GameNames.none, ranks: [])
+        eventGame        = Game(name: GameNames.other, ranks: [])
         eventGameVariant = Game(name: GameNames.empty, ranks: [])
         eventDescription = ""
         eventLocation    = ""

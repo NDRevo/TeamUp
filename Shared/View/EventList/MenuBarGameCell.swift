@@ -19,10 +19,11 @@ struct MenuBarGameCell: View {
                 game.gameColor
             )
             .overlay{
-                if game.name == GameNames.all {
-                    Image(systemName: "rectangle.stack")
-                        .font(.title)
-                        .bold()
+                if let image = game.image {
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 35)
                 } else {
                     Text(game.name.prefix(1))
                         .font(.title)

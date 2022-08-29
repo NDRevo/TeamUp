@@ -23,7 +23,7 @@ import CloudKit
     @Published var tappedGameProfile: TUPlayerGameProfile?
 
     @Published var gameID: String                = ""
-    @Published var selectedGame: Game            = GameLibrary.data.games[2]
+    @Published var selectedGame: Game            = GameLibrary.data.games[1]
     @Published var selectedGameVariant: Game     = Game(name: "", ranks: [])
     @Published var selectedGameRank: Rank        = Rank(rankName: "", rankWeight: 0)
 
@@ -36,8 +36,8 @@ import CloudKit
     @Environment(\.dismiss) var dismiss
 
     func resetInput(){
-        gameID           = ""
-        selectedGame     = GameLibrary.data.games[2]
+        gameID              = ""
+        selectedGame        = GameLibrary.data.games[1]
         selectedGameVariant = Game(name: "", ranks: [])
 
         if !selectedGame.getRanksForGame().isEmpty {

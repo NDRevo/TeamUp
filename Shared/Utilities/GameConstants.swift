@@ -18,6 +18,10 @@ struct Rank: Identifiable, Hashable {
 }
 
 struct Game: Identifiable, Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
     var id: String {
         return self.name
     }
@@ -26,12 +30,14 @@ struct Game: Identifiable, Hashable {
     let gameColor: Color
     private let ranks: [Rank]
     var gameVariants: [Game] = []
+    let image: Image?
 
-    init(name: String,gameColor: Color = .gray, ranks: [Rank], gameVariants: [Game] = []) {
+    init(name: String,gameColor: Color = .gray, ranks: [Rank], gameVariants: [Game] = [], image: Image? = nil) {
         self.name = name
         self.gameColor = gameColor
         self.ranks = ranks
         self.gameVariants = gameVariants
+        self.image = image
     }
 
     func getRanksForGame(for variant: Game? = nil) -> [Rank]{
@@ -57,10 +63,9 @@ final class GameLibrary {
     static let data = GameLibrary()
 
     let games: [Game] = [
-        Game(name: GameNames.all, ranks: []),
-        Game(name: GameNames.none, ranks: []),
-        Game(name: GameNames.other, ranks: []),
-        Game(name: GameNames.amongus, gameColor: .amongus, ranks: []),
+        Game(name: GameNames.all, ranks: [],image: Image(systemName: "rectangle.stack")),
+        Game(name: GameNames.other, ranks: [],image: Image(systemName: "square.grid.2x2.fill")),
+        Game(name: GameNames.amongus, gameColor: .amongus, ranks: [], image: Image(GameNames.amongus)),
         //MARK: Apex Legends
         Game(name: GameNames.apexlegends,
              gameColor: .apexlegend,
@@ -73,7 +78,8 @@ final class GameLibrary {
                 Rank(rankName: "Diamond",       rankWeight: 5),
                 Rank(rankName: "Master",        rankWeight: 6),
                 Rank(rankName: "Apex Predator", rankWeight: 7)
-             ]
+             ],
+             image: Image(GameNames.apexlegends)
         ),
         //MARK: Counter Strike
         Game(name: GameNames.counterstrike,
@@ -104,7 +110,8 @@ final class GameLibrary {
                     Rank(rankName: "Supreme Master First Class",    rankWeight: 8),
                     Rank(rankName: "The Global Elite",              rankWeight: 9),
                  ])
-             ]
+             ],
+             image: Image(GameNames.counterstrike)
         ),
         //MARK: Overwatch
         Game(name: GameNames.overwatch,
@@ -120,7 +127,8 @@ final class GameLibrary {
                 Rank(rankName: "Grandmaster",   rankWeight: 7),
                 Rank(rankName: "Top 500",       rankWeight: 8)
                 
-             ]
+             ],
+             image: Image(GameNames.overwatch)
             ),
         //MARK: VALORANT
         Game(name: GameNames.valorant,
@@ -136,7 +144,8 @@ final class GameLibrary {
                 Rank(rankName: "Ascendent", rankWeight: 7),
                 Rank(rankName: "Immortal",  rankWeight: 8),
                 Rank(rankName: "Radiant",   rankWeight: 9)
-             ]
+             ],
+             image: Image(GameNames.valorant)
         )
     ]
 

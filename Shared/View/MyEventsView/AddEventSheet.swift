@@ -32,7 +32,7 @@ struct AddEventSheet: View {
 
                 Picker("Game", selection: $viewModel.eventGame) {
                     //Starts from 1 to remove "All" case
-                    ForEach(GameLibrary.data.games[1...]){game in
+                    ForEach(GameLibrary.data.games[2...]){game in
                         Text(game.name)
                             .tag(game.self)
                     }
