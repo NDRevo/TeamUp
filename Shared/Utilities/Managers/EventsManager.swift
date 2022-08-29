@@ -9,7 +9,6 @@ import CloudKit
 import SwiftUI
 
 //MARK: EventsManager
-//INFO: Singleton handling all things event created/deletion related
 @MainActor final class EventsManager: ObservableObject {
 
     @Published var userProfile: TUPlayer?

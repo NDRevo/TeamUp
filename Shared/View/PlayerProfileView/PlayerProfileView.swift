@@ -16,9 +16,9 @@ struct PlayerProfileView: View {
 
     var body: some View {
         NavigationView{
-            if !viewModel.isLoggedIn() {
-                CreateProfileView(viewModel: viewModel)
-            } else {
+            if !viewModel.loggedIntoiCloud() { NoiCloudView() }
+            else if !viewModel.isLoggedIn() { CreateProfileView(viewModel: viewModel) }
+            else {
                 ScrollView {
                     VStack(alignment: .leading){
                         ProfileNameBar(viewModel: viewModel)
@@ -32,26 +32,16 @@ struct PlayerProfileView: View {
                     viewModel.alertItem.alertMessage
                 })
                 .sheet(isPresented: $viewModel.isPresentingSheet) {
-                    NavigationView {
-                        AddPlayerGameProfileSheet(viewModel: viewModel)
-                    }
+                    NavigationView { AddPlayerGameProfileSheet(viewModel: viewModel) }
                     .presentationDetents([.fraction(0.60)])
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink {
-                            SettingsView()
-                        } label: {
-                            Image(systemName: "gearshape.fill")
-                        }
-
+                        NavigationLink { SettingsView() }
+                        label: { Image(systemName: "gearshape.fill") }
                     }
                 }
-                .refreshable {
-                    do {
-                        eventsManager.userProfile = try await CloudKitManager.shared.getUserRecord()
-                    } catch {}
-                }
+                .refreshable {do { eventsManager.userProfile = try await CloudKitManager.shared.getUserRecord()} catch {}}
                 .background(Color.appBackground)
             }
         }
@@ -176,5 +166,21 @@ struct PlayerGameProfilesList: View {
             }
             .frame(height: viewModel.playerGameProfiles.isEmpty ? 20 : 180)
         }
+    }
+}
+
+struct NoiCloudView: View {
+    var body: some View {
+        VStack(spacing: 25){
+            Image(systemName: "bolt.horizontal.icloud.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 45)
+            Text("Sign into iCloud to create and use a TeamUp account")
+                .bold()
+                .font(.body)
+                .multilineTextAlignment(.center)
+        }
+        .padding(32)
     }
 }

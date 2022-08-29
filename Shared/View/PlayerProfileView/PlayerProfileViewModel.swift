@@ -78,6 +78,10 @@ import CloudKit
         return true
     }
 
+    func loggedIntoiCloud() -> Bool {
+        return CloudKitManager.shared.userRecord != nil
+    }
+
     func isLoggedIn() -> Bool {
         return CloudKitManager.shared.playerProfile != nil
     }
