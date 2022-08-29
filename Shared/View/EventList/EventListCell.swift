@@ -18,6 +18,7 @@ struct EventListCell: View {
         HStack {
             VStack(spacing: 30){
                 HStack(alignment:.top){
+                    EventDate(event: event)
                     VStack(alignment: .leading, spacing: 6){
                         EventGameName(event: event)
                         EventName(event: event)
@@ -25,6 +26,7 @@ struct EventListCell: View {
                     Spacer()
                     EventDate(event: event)
                 }
+                .frame(height: 60)
                 HStack{
                     EventInfoItem(infoItemText: "Time", eventItem: event.getTime)
                     Spacer()
@@ -57,6 +59,9 @@ struct EventGameName: View {
 
     var body: some View {
         Text(event.eventGameName + event.eventGameVariantName)
+            .minimumScaleFactor(0.90)
+            .lineLimit(1)
+            .truncationMode(.tail)
             .fontWeight(.heavy)
             .font(.body)
             .foregroundColor(.appCell)
@@ -65,6 +70,7 @@ struct EventGameName: View {
             .background {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(Color.getGameColor(gameName: event.eventGameName))
+                    .frame(height: 25)
             }
             .multilineTextAlignment(.leading)
     }
