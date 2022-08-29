@@ -24,11 +24,10 @@ struct EventListCell: View {
                         EventName(event: event)
                     }
                     Spacer()
-                    EventDate(event: event)
                 }
                 .frame(height: 60)
                 HStack{
-                    EventInfoItem(infoItemText: "Time", eventItem: event.getTime)
+                    EventInfoItem(infoItemText: "Start Time", eventItem: event.getTime)
                     Spacer()
                     EventInfoItem(infoItemText: "Location", eventItem: event.eventLocation)
                     Spacer()
