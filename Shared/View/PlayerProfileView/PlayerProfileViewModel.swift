@@ -38,6 +38,7 @@ import CloudKit
     func resetInput(){
         gameID           = ""
         selectedGame     = GameLibrary.data.games[2]
+        selectedGameVariant = Game(name: "", ranks: [])
 
         if !selectedGame.getRanksForGame().isEmpty {
             selectedGameRank = Rank(rankName: "Unranked", rankWeight: 0)
@@ -165,6 +166,7 @@ import CloudKit
 
                 playerGameProfiles.append(newPlayerProfile)
                 playerGameProfiles.sort(by: {$0.gameName < $1.gameName})
+                isPresentingSheet = false
             } catch {
                 alertItem = AlertContext.unableToSaveGameProfile
                 isShowingAlert = true
@@ -183,7 +185,7 @@ import CloudKit
                 let _ = try await CloudKitManager.shared.save(record: gameProfileRecord)
                 
                 getGameProfiles()
-
+                isEditingGameProfile = false
             } catch {
                 alertItem = AlertContext.unableToSaveGameProfile
                 isShowingAlert = true
@@ -287,6 +289,7 @@ import CloudKit
                 let _ = try await CloudKitManager.shared.remove(recordID: gameProfileRecordID)
 
                 playerGameProfiles.removeAll(where: {$0.id == gameProfileRecordID})
+                isEditingGameProfile = false
             } catch {
                 alertItem = AlertContext.unableToDeleteGameProfile
                 isShowingAlert = true

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21277" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="TUEventCD" representedClassName="TUEventCD" syncable="YES" codeGenerationType="class">
+        <attribute name="eventDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="eventDescription" optional="YES" attributeType="String"/>
+        <attribute name="eventEndDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="eventGameName" optional="YES" attributeType="String"/>
+        <attribute name="eventGameVariantName" optional="YES" attributeType="String"/>
+        <attribute name="eventLocation" optional="YES" attributeType="String"/>
+        <attribute name="eventName" optional="YES" attributeType="String"/>
+        <attribute name="eventOwner" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="eventOwnerName" optional="YES" attributeType="String"/>
+        <attribute name="eventSchool" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isPublished" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="TUMatchCD" representedClassName="TUMatchCD" syncable="YES" codeGenerationType="class"/>
+    <entity name="TUTeamCD" representedClassName="TUTeamCD" syncable="YES" codeGenerationType="class"/>
+</model>

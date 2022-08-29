@@ -104,7 +104,7 @@ struct MatchDetailView: View {
         }
         .sheet(isPresented: $viewModel.isShowingAddTeam) {
             NavigationView{ AddTeamSheet(viewModel: viewModel) }
-            .presentationDetents([.medium])
+                .presentationDetents([.medium])
         }
         .confirmationDialog("Delete Match?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {

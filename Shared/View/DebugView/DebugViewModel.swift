@@ -57,6 +57,7 @@ import SwiftUI
                 //Reloads view, locally adds player until another network call is made
                 eventsManager.players.append(TUPlayer(record: playerRecord))
                 eventsManager.players.sort(by: {$0.firstName < $1.firstName})
+                isShowingAddPlayerSheet = false
             } catch {
                 alertItem = AlertContext.unableToCreatePlayer
                 isShowingAlert = true

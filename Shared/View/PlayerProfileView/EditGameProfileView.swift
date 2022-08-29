@@ -44,14 +44,12 @@ struct EditGameProfileView: View {
                     if isSavable {
                         Button {
                             viewModel.saveEditGameProfile(of: gameProfile.id, gameID: gameID, gameRank: gameRank, gameAliases: gameAliases)
-                            dismiss()
                         } label: {
                             Text("Save Game Profile")
                         }
                     }
                     Button(role: .destructive) {
                         viewModel.deleteGameProfile(for: gameProfile.id, eventsManager: eventsManager)
-                        dismiss()
                     } label: {
                         Text("Delete Game Profile")
                     }
@@ -63,7 +61,9 @@ struct EditGameProfileView: View {
         .replaceDisabled()
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Dismiss") {dismiss()}
+                Button("Dismiss") {
+                    viewModel.isEditingGameProfile = false
+                }
             }
         }
         .onAppear {
@@ -72,6 +72,9 @@ struct EditGameProfileView: View {
             gameAliases = gameProfile.gameAliases
         }
         .navigationTitle("Edit")
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
     }
     
     //TIP: Move to a view model... eventually?

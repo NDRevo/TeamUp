@@ -336,9 +336,9 @@
 			children = (
 				563A46E3279F0FFC006A406B /* PlayerProfileViewModel.swift */,
 				563A46D8279D9DE4006A406B /* PlayerProfileView.swift */,
-				569D688E2863B85000D824FC /* EditGameProfileView.swift */,
 				5623DB4827B60A310015D59A /* CreateProfileView.swift */,
 				563A46DF279EF86C006A406B /* AddPlayerGameProfileSheet.swift */,
+				569D688E2863B85000D824FC /* EditGameProfileView.swift */,
 				563A46DB279DA14E006A406B /* PlayerGameProfileCell.swift */,
 			);
 			path = PlayerProfileView;

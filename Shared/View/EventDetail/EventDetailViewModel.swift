@@ -77,7 +77,6 @@ enum DetailItem {
     @Published var isShowingAlert: Bool             = false
     @Published var alertItem: AlertItem             = AlertItem(alertTitle: Text("Unable To Show Alert"),
                                                                 alertMessage: Text("There was a problem showing the alert."))
-    @Environment(\.dismiss) var dismiss
 
     func isEventOwner() -> Bool {
         return event.eventOwner.recordID == CloudKitManager.shared.userRecord?.recordID
@@ -182,6 +181,7 @@ enum DetailItem {
                 //TIP: Reloads view, locally adds player until another network call is made
                 matches.append(TUMatch(record: matchRecord))
                 matches.sort(by: {$0.matchStartTime < $1.matchStartTime})
+                isShowingSheet = false
             } catch {
                 alertItem = AlertContext.unableToCreateMatch
                 isShowingAlert = true

@@ -66,8 +66,6 @@ struct AddPlayerGameProfileSheet: View {
             Section {
                 Button {
                     Task {
-                        dismiss()
-                        try await Task.sleep(nanoseconds: 50_000_000)
                         viewModel.saveGameProfile(to: eventsManager)
                     }
                 } label: {
@@ -81,6 +79,9 @@ struct AddPlayerGameProfileSheet: View {
                 Button("Dismiss") { dismiss() }
             }
         }
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
     }
 }
 

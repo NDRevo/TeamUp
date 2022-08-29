@@ -69,7 +69,6 @@ struct AddEventSheet: View {
                 Button {
                     Task {
                         try viewModel.createEvent(for: eventsManager)
-                        viewModel.isPresentingAddEvent = false
                     }
                 } label: {
                     Text("Create Event")
@@ -84,7 +83,9 @@ struct AddEventSheet: View {
                 Button("Cancel") {viewModel.isPresentingAddEvent = false}
             }
         }
-        //MARK: Adding alert doesn't allow cancel button / dismissmal of sheet to work
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
     }
 }
 

@@ -157,6 +157,7 @@ import SwiftUI
                 //TIP: Reloads view, locally adds player until another network call is made
                 teams.append(TUTeam(record: teamRecord))
                 teamsAndPlayer[teamRecord.recordID] = []
+                isShowingAddTeam = false
             } catch {
                 alertItem = AlertContext.unableToCreateTeam
                 isShowingAlert = true
@@ -181,6 +182,7 @@ import SwiftUI
                     
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
                     teamsAndPlayer[selectedTeam!.id]?.append(TUPlayer(record: playerRecord))
+                    isShowingAddPlayer = false
                 }
             } catch {
                 alertItem = AlertContext.unableToAddSelectedPlayersToTeam

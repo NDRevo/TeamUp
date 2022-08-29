@@ -27,8 +27,6 @@ struct AddMatchSheet: View {
                 Button {
                     Task {
                         viewModel.createMatchForEvent()
-                        try await Task.sleep(nanoseconds: 50_000_000)
-                        dismiss()
                     }
                 } label: {
                     Text("Create Match")
@@ -42,6 +40,9 @@ struct AddMatchSheet: View {
                 Button("Dismiss") {dismiss()}
             }
         }
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
     }
 }
 

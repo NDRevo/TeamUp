@@ -149,7 +149,7 @@ struct PlayerGameProfilesList: View {
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
                 Button {
-                    viewModel.isPresentingSheet = true
+                    viewModel.isPresentingSheet.toggle()
                     viewModel.resetInput()
                 } label: {
                     Image(systemName: "plus.rectangle.portrait")

@@ -113,7 +113,7 @@ enum EventError: Error {
                 //TIP: Reloads view, locally adds player until another network call is made
                 eventsManager.myUnpublishedEvents.append(TUEvent(record: event))
                 eventsManager.myUnpublishedEvents.sort(by: {$0.eventDate < $1.eventDate})
-                
+                isPresentingAddEvent = false
             } catch {
                 alertItem = AlertContext.unableToCreateEvent
                 isShowingAlert = true

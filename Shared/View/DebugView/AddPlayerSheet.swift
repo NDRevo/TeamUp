@@ -32,10 +32,7 @@ struct AddPlayerSheet: View {
             }
             Section {
                 Button {
-                    dismiss()
-                    Task{
-                        viewModel.createAndSavePlayer(for: eventsManager)
-                    }
+                    viewModel.createAndSavePlayer(for: eventsManager)
                 } label: {
                     Text("Add Player")
                         .foregroundColor(.blue)
@@ -48,6 +45,9 @@ struct AddPlayerSheet: View {
                 Button("Dismiss") {dismiss()}
             }
         }
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
     }
 }
 

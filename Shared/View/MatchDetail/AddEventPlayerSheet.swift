@@ -46,7 +46,6 @@ struct AddEventPlayerSheet: View {
                 if !viewModel.checkedOffPlayers.isEmpty {
                     Button("Add Players") {
                         viewModel.addCheckedPlayersToTeam()
-                        dismiss()
                     }
                 }
             }
@@ -54,6 +53,9 @@ struct AddEventPlayerSheet: View {
         .onAppear {
             viewModel.getAvailablePlayers(eventDetailViewModel: eventDetailViewModel)
         }
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
     }
 }
 
