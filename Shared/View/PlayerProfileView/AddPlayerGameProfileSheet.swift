@@ -20,9 +20,8 @@ struct AddPlayerGameProfileSheet: View {
         List {
             Section{
                 Picker("Game", selection: $viewModel.selectedGame) {
-                    ForEach(GameLibrary.data.games[1...]){ game in
+                    ForEach(GameLibrary.data.games[1...], id: \.self){ game in
                         Text(game.name)
-                            .tag(game.self)
                     }
                 }
                 .pickerStyle(.menu)
@@ -34,7 +33,7 @@ struct AddPlayerGameProfileSheet: View {
                     Picker("Variant", selection: $viewModel.selectedGameVariant) {
                         ForEach(viewModel.selectedGame.gameVariants){game in
                             Text(game.name)
-                                .tag(game.self)
+                                .tag(game as Game?)
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
@@ -43,16 +42,18 @@ struct AddPlayerGameProfileSheet: View {
                     Picker("Rank", selection: $viewModel.selectedGameRank) {
                         ForEach(viewModel.selectedGame.getRanksForGame()){ rank in
                             Text(rank.rankName)
-                                .tag(rank.self)
+                                .tag(rank as Rank?)
                         }
                     }
                 }
                 
-                if viewModel.selectedGameVariant.hasRanks() && !viewModel.selectedGameVariant.name.isEmpty {
+                if let ranks = viewModel.selectedGameVariant {
+                    if ranks.hasRanks() && !ranks.name.isEmpty {
                     Picker("Rank", selection: $viewModel.selectedGameRank) {
-                        ForEach(viewModel.selectedGameVariant.getRanksForGame()){ rank in
-                            Text(rank.rankName)
-                                .tag(rank.self)
+                            ForEach(ranks.getRanksForGame()){ rank in
+                                Text(rank.rankName)
+                                    .tag(rank as Rank?)
+                            }
                         }
                     }
                 }

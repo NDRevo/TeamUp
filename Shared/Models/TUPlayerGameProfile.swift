@@ -33,7 +33,7 @@ struct TUPlayerGameProfile: Identifiable {
         gameName        = record[TUPlayerGameProfile.kGameName]  as? String ?? "N/A"
         gameVariantName = record[TUPlayerGameProfile.kGameVariantName]  as? String ?? ""
         gameID          = record[TUPlayerGameProfile.kGameID]    as? String ?? "N/A"
-        gameRank        = record[TUPlayerGameProfile.kGameRank]  as? String ?? "N/A"
+        gameRank        = record[TUPlayerGameProfile.kGameRank]  as? String ?? ""
         gameAliases     = record[TUPlayerGameProfile.kGameAliases] as? [String] ?? []
     }
 }

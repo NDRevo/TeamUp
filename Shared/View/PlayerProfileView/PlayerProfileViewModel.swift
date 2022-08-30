@@ -24,8 +24,8 @@ import CloudKit
 
     @Published var gameID: String                = ""
     @Published var selectedGame: Game            = GameLibrary.data.games[1]
-    @Published var selectedGameVariant: Game     = Game(name: "", ranks: [])
-    @Published var selectedGameRank: Rank        = Rank(rankName: "", rankWeight: 0)
+    @Published var selectedGameVariant: Game?
+    @Published var selectedGameRank: Rank?
 
     @Published var isPresentingSheet             = false
     @Published var isShowingAlert                = false
@@ -38,20 +38,16 @@ import CloudKit
     func resetInput(){
         gameID              = ""
         selectedGame        = GameLibrary.data.games[1]
-        selectedGameVariant = Game(name: "", ranks: [])
-
-        if !selectedGame.getRanksForGame().isEmpty {
-            selectedGameRank = Rank(rankName: "Unranked", rankWeight: 0)
-        } else {
-            selectedGameRank = Rank(rankName: "", rankWeight: 0)
-        }
+        selectedGameVariant = nil
+        selectedGameRank = nil
     }
     
-    func resetRankList(for value: Game){
-        if !value.getRanksForGame().isEmpty {
-            selectedGameRank = value.getRanksForGame()[0]
+    func resetRankList(for game: Game){
+        let gameRanks = game.getRanksForGame()
+        if !gameRanks.isEmpty {
+            selectedGameRank = gameRanks[0]
         } else {
-            selectedGameRank = Rank(rankName: "", rankWeight: 0)
+            selectedGameRank = nil
         }
     }
 
@@ -88,11 +84,13 @@ import CloudKit
 
     private func createPlayerGameProfile() -> CKRecord {
         let playerGameProfile = CKRecord(recordType: RecordType.playerGameProfiles)
-        if !selectedGameVariant.name.isEmpty {
-            playerGameProfile[TUPlayerGameProfile.kGameVariantName] = selectedGameVariant.name
+        if let gameVariant = selectedGameVariant {
+            playerGameProfile[TUPlayerGameProfile.kGameVariantName] = gameVariant.name
         }
         playerGameProfile[TUPlayerGameProfile.kGameName]    = selectedGame.name
-        playerGameProfile[TUPlayerGameProfile.kGameRank]    = selectedGameRank.rankName
+        if let gameRank = selectedGameRank {
+            playerGameProfile[TUPlayerGameProfile.kGameRank]  = gameRank.rankName
+        }
         playerGameProfile[TUPlayerGameProfile.kGameID]      = gameID
         playerGameProfile[TUPlayerGameProfile.kGameAliases]   = ["",""]
 
