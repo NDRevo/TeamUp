@@ -11,7 +11,7 @@ import CloudKit
 struct TUEvent: Identifiable, Hashable {
 
     static let kEventName               = "eventName"
-    static let kEventDate               = "eventDate"
+    static let kEventStartDate          = "eventDate"
     static let kEventEndDate            = "eventEndDate"
     static let kEventGameName           = "eventGameName"
     static let kEventGameVariantName    = "eventGameVariantName"
@@ -25,7 +25,7 @@ struct TUEvent: Identifiable, Hashable {
     let id: CKRecord.ID
 
     let eventName: String
-    let eventDate: Date
+    let eventStartDate: Date
     let eventEndDate: Date
     let eventGameName: String
     let eventGameVariantName: String
@@ -40,7 +40,7 @@ struct TUEvent: Identifiable, Hashable {
         id = record.recordID
 
         eventName               = record[TUEvent.kEventName] as? String ?? "N/A"
-        eventDate               = record[TUEvent.kEventDate] as? Date ?? Date()
+        eventStartDate          = record[TUEvent.kEventStartDate] as? Date ?? Date()
         eventEndDate            = record[TUEvent.kEventEndDate] as? Date ?? Date()
         eventGameName           = record[TUEvent.kEventGameName] as? String ?? "N/A"
         eventGameVariantName    = record[TUEvent.kEventGameVariantName] as? String ?? ""
@@ -57,9 +57,9 @@ struct TUEvent: Identifiable, Hashable {
     var getDateDetails: DateComponents {
         let calendar = Calendar.current
         let dateDetails = DateComponents(
-        year: calendar.component(.year, from: eventDate),
-        month: calendar.component(.month, from: eventDate),
-        day: calendar.component(.day, from: eventDate)
+        year: calendar.component(.year, from: eventStartDate),
+        month: calendar.component(.month, from: eventStartDate),
+        day: calendar.component(.day, from: eventStartDate)
         )
     
         return dateDetails
@@ -68,13 +68,13 @@ struct TUEvent: Identifiable, Hashable {
     var getMonth: String {
          let dateFormatter = DateFormatter()
          dateFormatter.dateFormat = "LLL"
-         return dateFormatter.string(from: eventDate)
+         return dateFormatter.string(from: eventStartDate)
     }
 
     var getTime: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
-        return dateFormatter.string(from: eventDate)
+        return dateFormatter.string(from: eventStartDate)
     }
 
     var getEndTime: String {
@@ -86,6 +86,6 @@ struct TUEvent: Identifiable, Hashable {
     var getEventDetailDate: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "E, MMM d"
-        return dateFormatter.string(from: eventDate)
+        return dateFormatter.string(from: eventStartDate)
     }
 }

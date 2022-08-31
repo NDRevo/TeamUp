@@ -21,8 +21,9 @@ struct AddMatchSheet: View {
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)
 
+            ///Bug:  **Causes UI contraint bugs
             DatePicker("Match Date", selection: $viewModel.matchDate, in: viewModel.dateRange(), displayedComponents: [.hourAndMinute])
-            
+
             Section{
                 Button {
                     Task {

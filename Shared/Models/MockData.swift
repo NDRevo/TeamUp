@@ -12,7 +12,7 @@ struct MockData {
     static var event: CKRecord {
         let event = CKRecord(recordType: RecordType.event)
         event[TUEvent.kEventName]      = "In-Houses"
-        event[TUEvent.kEventDate]      = Date()
+        event[TUEvent.kEventStartDate] = Date()
         event[TUEvent.kEventGameName]  = "Overwatch"
         event[TUEvent.kEventLocation]  = "BSC 122A"
 

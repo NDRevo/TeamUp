@@ -82,7 +82,7 @@ enum EventError: Error {
     private func createEventRecord() -> CKRecord{
         let record = CKRecord(recordType: RecordType.event)
         record[TUEvent.kEventName]              = eventName
-        record[TUEvent.kEventDate]              = eventDate
+        record[TUEvent.kEventStartDate]         = eventDate
         record[TUEvent.kEventEndDate]           = eventEndDate
         record[TUEvent.kEventGameName]          = eventGame.name
         record[TUEvent.kEventGameVariantName]   = eventGameVariant.name
@@ -112,7 +112,7 @@ enum EventError: Error {
 
                 //TIP: Reloads view, locally adds player until another network call is made
                 eventsManager.myUnpublishedEvents.append(TUEvent(record: event))
-                eventsManager.myUnpublishedEvents.sort(by: {$0.eventDate < $1.eventDate})
+                eventsManager.myUnpublishedEvents.sort(by: {$0.eventStartDate < $1.eventStartDate})
                 isPresentingAddEvent = false
             } catch {
                 alertItem = AlertContext.unableToCreateEvent

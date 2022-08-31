@@ -22,7 +22,7 @@ struct CalendarViewController: UIViewControllerRepresentable {
         eventViewController.event = EKEvent(eventStore: store)
         eventViewController.eventStore = store
 
-        eventViewController.event!.startDate = event.eventDate
+        eventViewController.event!.startDate = event.eventStartDate
         eventViewController.event!.endDate = event.eventEndDate
         eventViewController.event!.location = event.eventLocation
         eventViewController.event!.title = event.eventName
@@ -49,7 +49,7 @@ struct CalendarViewController: UIViewControllerRepresentable {
         func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
             switch action {
             case .canceled:
-                //TIP: Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+                ///Bug: **Publishing changes from within view updates is not allowed, this will cause undefined behavior.
                 isShowingCalendarView = false
             case .saved:
                 do {

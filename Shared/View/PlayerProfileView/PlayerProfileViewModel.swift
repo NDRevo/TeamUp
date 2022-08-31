@@ -217,7 +217,7 @@ import CloudKit
                     }
                 }
 
-                eventsParticipating = mappedRecords.map(TUEvent.init).sorted(by: {$0.eventDate < $1.eventDate})
+                eventsParticipating = mappedRecords.map(TUEvent.init).sorted(by: {$0.eventStartDate < $1.eventStartDate})
             } catch {
                 alertItem = AlertContext.unableToFetchEventsParticipating
                 isShowingAlert = true

@@ -47,7 +47,7 @@ enum DetailItem {
 
     init(event: TUEvent){
         self.event = event
-        matchDate = event.eventDate
+        matchDate = event.eventStartDate
     }
 
     var store = EKEventStore()
@@ -68,6 +68,8 @@ enum DetailItem {
     @Published var isLoading                        = false
     @Published var isShowingSheet                   = false
     @Published var isShowingCalendarView            = false
+    
+    @Published var isShowingCreateMatchesView       = false
     @Published var sheetToPresent: PresentingSheet? {
         didSet{
             isShowingSheet = true
@@ -86,9 +88,9 @@ enum DetailItem {
     func dateRange() -> PartialRangeFrom<Date> {
         let calendar = Calendar.current
         let startDate = DateComponents(
-            year: calendar.component(.year, from: event.eventDate),
-            month: calendar.component(.month, from: event.eventDate),
-            day: calendar.component(.day, from: event.eventDate)
+            year: calendar.component(.year, from: event.eventStartDate),
+            month: calendar.component(.month, from: event.eventStartDate),
+            day: calendar.component(.day, from: event.eventStartDate)
         )
         return calendar.date(from:startDate)!...
     }
@@ -143,7 +145,7 @@ enum DetailItem {
 
     func resetMatchInput(){
         matchName = ""
-        matchDate = event.eventDate
+        matchDate = event.eventStartDate
     }
 
     //INFO: Creates Match CKRecord with match: Name, Date, & Reference to event
@@ -159,7 +161,7 @@ enum DetailItem {
 
     //INFO: Returns T/F if creating match is valid based on if name is empty and match date is ahead of event date
     private func isValidMatch() -> Bool{
-        guard !matchName.isEmpty, matchDate >= event.eventDate else {
+        guard !matchName.isEmpty, matchDate >= event.eventStartDate, matchDate <= event.eventEndDate else {
             return false
         }
 
