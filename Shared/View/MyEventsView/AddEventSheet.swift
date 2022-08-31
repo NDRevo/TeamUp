@@ -21,6 +21,9 @@ struct AddEventSheet: View {
                 TextField("Event Name", text: $viewModel.eventName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
+                    .onChange(of: viewModel.eventName) { _ in
+                        viewModel.eventName = String(viewModel.eventName.prefix(25))
+                    }
 
                 DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
                 DatePicker("Event End Date", selection: $viewModel.eventEndDate, in: viewModel.dateRange)
@@ -58,11 +61,19 @@ struct AddEventSheet: View {
                             viewModel.isDiscordLink = true
                         }
                     }
+                    .onChange(of: viewModel.eventLocation) { _ in
+                        viewModel.eventLocation = String(viewModel.eventLocation.prefix(100))
+                    }
             }
 
             Section {
                 TextField("Event Description", text: $viewModel.eventDescription, axis: .vertical)
-                    .lineLimit(4, reservesSpace: true)
+                    .lineLimit(10, reservesSpace: true)
+                    .onChange(of: viewModel.eventDescription) { _ in
+                        viewModel.eventDescription = String(viewModel.eventDescription.prefix(350))
+                    }
+            } footer: {
+                Text("\(350 - viewModel.eventDescription.count) characters left.")
             }
 
             Section{

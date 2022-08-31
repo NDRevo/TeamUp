@@ -197,7 +197,9 @@ struct EventDescriptionViewSection: View {
                         .foregroundColor(.blue)
                     Text("Description")
                 }
+                //TIP: Make Collapsable
                 Text(viewModel.event.eventDescription)
+                    .lineLimit(15)
             }
             Spacer()
         }

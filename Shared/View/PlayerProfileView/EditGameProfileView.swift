@@ -26,6 +26,9 @@ struct EditGameProfileView: View {
         VStack{
             Form {
                 TextField("Game ID", text: $gameID.onChange(perform: checkSavable))
+                    .onChange(of: gameID) { _ in
+                        gameID = String(gameID.prefix(25))
+                    }
                 
                 if !gameProfile.gameRank.isEmpty {
                     Picker("Rank", selection: $gameRank.onChange(perform: checkSavable)) {
@@ -37,7 +40,13 @@ struct EditGameProfileView: View {
 
                 Section {
                     TextField("Alias #1", text: $gameAliases[0].onChange(perform: checkSavable))
+                        .onChange(of: gameAliases[0]) { _ in
+                            gameAliases[0] = String(gameAliases[0].prefix(25))
+                        }
                     TextField("Alias #2", text: $gameAliases[1].onChange(perform: checkSavable))
+                        .onChange(of: gameAliases[1]) { _ in
+                            gameAliases[1] = String(gameAliases[1].prefix(25))
+                        }
                 }
 
                 Section {

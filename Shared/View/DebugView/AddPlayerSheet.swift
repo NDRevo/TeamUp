@@ -21,12 +21,21 @@ struct AddPlayerSheet: View {
                 TextField("Username", text: $viewModel.playerUsername)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
+                    .onChange(of: viewModel.playerUsername) { _ in
+                        viewModel.playerUsername = String(viewModel.playerUsername.prefix(25))
+                    }
                 TextField("First Name", text: $viewModel.playerFirstName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
+                    .onChange(of: viewModel.playerFirstName) { _ in
+                        viewModel.playerFirstName = String(viewModel.playerFirstName.prefix(25))
+                    }
                 TextField("Last Name", text: $viewModel.playerLastName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
+                    .onChange(of: viewModel.playerLastName) { _ in
+                        viewModel.playerLastName = String(viewModel.playerLastName.prefix(25))
+                    }
             } header: {
                 Text("General")
             }

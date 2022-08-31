@@ -20,6 +20,9 @@ struct AddMatchSheet: View {
             TextField("Match Name", text: $viewModel.matchName)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)
+                .onChange(of: viewModel.matchName) { _ in
+                    viewModel.matchName = String(viewModel.matchName.prefix(25))
+                }
 
             ///Bug:  **Causes UI contraint bugs
             DatePicker("Match Date", selection: $viewModel.matchDate, in: viewModel.dateRange(), displayedComponents: [.hourAndMinute])

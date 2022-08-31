@@ -62,6 +62,9 @@ struct AddPlayerGameProfileSheet: View {
                     .disableAutocorrection(true)
                     .keyboardType(.twitter)
                     .textInputAutocapitalization(.never)
+                    .onChange(of: viewModel.gameID) { _ in
+                        viewModel.gameID = String(viewModel.gameID.prefix(25))
+                    }
             }
 
             Section {

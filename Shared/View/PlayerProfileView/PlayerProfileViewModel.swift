@@ -52,14 +52,21 @@ import CloudKit
     }
 
     private func isValidPlayer() async throws -> Bool {
+        let usernameRegex = "([A-Za-z0-9])\\w+"
+        let nameRegex = "([A-Za-z])\\w+"
+        let isValidUsernameString   =  NSPredicate(format: "SELF MATCHES %@", usernameRegex).evaluate(with: playerUsername)
+        let isValidFirstNameString  =  NSPredicate(format: "SELF MATCHES %@", nameRegex).evaluate(with: playerFirstName)
+        let isValidLastNameString   =  NSPredicate(format: "SELF MATCHES %@", nameRegex).evaluate(with: playerLastName)
+        
         let userExists = try await CloudKitManager.shared.checkUsernameExists(for: playerUsername)
 
-        if userExists {
+        if userExists || !isValidUsernameString {
             alertItem = AlertContext.invalidUsername
             return false
         }
 
-        guard !playerFirstName.isEmpty && !playerLastName.isEmpty else {
+        if (playerFirstName.isEmpty || playerLastName.isEmpty) || !isValidFirstNameString || !isValidLastNameString {
+            //MARK: Make a more meaningful alert
             alertItem = AlertContext.emptyNamePlayerProfile
             return false
         }
@@ -109,6 +116,7 @@ import CloudKit
         return playerRecord
     }
 
+    //Async func to check database if username exist
     func createProfile() async {
         do {
             guard try await isValidPlayer() else {

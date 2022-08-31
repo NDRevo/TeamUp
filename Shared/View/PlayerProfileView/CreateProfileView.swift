@@ -27,6 +27,9 @@ struct CreateProfileView: View {
                     .textInputAutocapitalization(.words)
                     .submitLabel(.next)
                     .focused($currentFocus, equals: .username)
+                    .onChange(of: viewModel.playerUsername) { _ in
+                        viewModel.playerUsername = String(viewModel.playerUsername.prefix(25))
+                    }
             } footer: { Text("Your username will be used for search and display purposes.") }
 
             Section {
@@ -45,11 +48,17 @@ struct CreateProfileView: View {
                     .textInputAutocapitalization(.words)
                     .submitLabel(.next)
                     .focused($currentFocus, equals: .firstName)
+                    .onChange(of: viewModel.playerFirstName) { _ in
+                        viewModel.playerFirstName = String(viewModel.playerFirstName.prefix(25))
+                    }
                 TextField("Last Name", text: $viewModel.playerLastName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
                     .submitLabel(.done)
                     .focused($currentFocus, equals: .lastName)
+                    .onChange(of: viewModel.playerLastName) { _ in
+                        viewModel.playerLastName = String(viewModel.playerLastName.prefix(25))
+                    }
             } footer: {
                 Text("Your name will not be viewable to anyone unless you want to display your name by changing your settings.")
             }

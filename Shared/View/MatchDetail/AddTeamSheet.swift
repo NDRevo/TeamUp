@@ -20,6 +20,9 @@ struct AddTeamSheet: View {
             TextField("Team Name", text: $viewModel.teamName)
                 .disableAutocorrection(true)
                 .textInputAutocapitalization(.words)
+                .onChange(of: viewModel.teamName) { _ in
+                    viewModel.teamName = String(viewModel.teamName.prefix(25))
+                }
             Section{
                 Button {
                     Task{
