@@ -10,10 +10,10 @@ import SwiftUI
 enum GameNames {
     static let empty            = ""
     static let all              = "All"
-    static let none             = "None"
     static let amongus          = "Among Us"
     static let apexlegends      = "Apex Legends"
     static let counterstrike    = "Counter Strike: "
+    static let hearthstone      = "Hearthstone"
     static let leagueoflegends  = "League of Legends"
     static let overwatch        = "Overwatch"
     static let other            = "Other"

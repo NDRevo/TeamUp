@@ -113,11 +113,16 @@ final class GameLibrary {
              ],
              image: Image(GameNames.counterstrike)
         ),
+        //MARK: Hearthstone
+        Game(name: GameNames.hearthstone, gameColor: .hearthstone, ranks: [], image: Image(GameNames.hearthstone)),
+        //MARK: League of Legends
+        Game(name: GameNames.leagueoflegends, gameColor: .leagueoflegends, ranks: [],image: Image(GameNames.leagueoflegends)),
         //MARK: Overwatch
         Game(name: GameNames.overwatch,
              gameColor: .overwatch,
              ranks: [
-                Rank(rankName: "Unranked",      rankWeight: 0),
+                Rank(rankName: "Unranked",
+                     rankWeight: 0),
                 Rank(rankName: "Bronze",        rankWeight: 1),
                 Rank(rankName: "Silver",        rankWeight: 2),
                 Rank(rankName: "Gold",          rankWeight: 3),

@@ -15,6 +15,8 @@ extension Color {
 
     static let amongus              = Color(red: 117 / 255, green: 219 / 255,  blue: 244 / 255)
     static let apexlegend           = Color(red: 164 / 255, green: 55 / 255,  blue: 61 / 255)
+    static let hearthstone          = Color(red: 70 / 255, green: 60 / 255,  blue: 45 / 255)
+    static let leagueoflegends      = Color(red: 26 / 255, green: 24 / 255,  blue: 37 / 255)
     static let counterstrike        = Color(red: 93 / 255,  green: 121 / 255, blue: 174 / 255)
     static let overwatch            = Color(red: 249 / 255, green: 158 / 255, blue: 26 / 255)
     static let valorant             = Color(red: 189 / 255, green: 57 / 255,  blue: 68 / 255)
