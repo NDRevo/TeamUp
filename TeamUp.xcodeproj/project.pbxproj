@@ -108,6 +108,11 @@
 		56A0791128A01723001852A5 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0791028A01723001852A5 /* CalendarViewController.swift */; };
 		56A0791228A01723001852A5 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0791028A01723001852A5 /* CalendarViewController.swift */; };
 		56BC7999286E08C3002046CA /* TeamUpUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BC7998286E08C3002046CA /* TeamUpUnitTests.swift */; };
+		56DC614C28C423EE00FC225C /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC614B28C423EE00FC225C /* DataManager.swift */; };
+		56DC614D28C423EE00FC225C /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC614B28C423EE00FC225C /* DataManager.swift */; };
+		56DC614E28C4264C00FC225C /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 56DC614928C4218900FC225C /* DataModel.xcdatamodeld */; };
+		56DC615128C42B0000FC225C /* CoreDataDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC615028C42B0000FC225C /* CoreDataDebugView.swift */; };
+		56DC615228C42B0000FC225C /* CoreDataDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DC615028C42B0000FC225C /* CoreDataDebugView.swift */; };
 		56EDBB4427E58AAB001D68CF /* EventParticipantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4327E58AAB001D68CF /* EventParticipantCell.swift */; };
 		56EDBB4527E58AAB001D68CF /* EventParticipantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4327E58AAB001D68CF /* EventParticipantCell.swift */; };
 		56EDBB4727E59E93001D68CF /* TeamIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EDBB4627E59E93001D68CF /* TeamIcon.swift */; };
@@ -186,6 +191,9 @@
 		56A0791328A01B18001852A5 /* TeamUp--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TeamUp--iOS--Info.plist"; sourceTree = "<group>"; };
 		56BC7996286E08C3002046CA /* TeamUpUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TeamUpUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		56BC7998286E08C3002046CA /* TeamUpUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpUnitTests.swift; sourceTree = "<group>"; };
+		56DC614A28C4218900FC225C /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		56DC614B28C423EE00FC225C /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		56DC615028C42B0000FC225C /* CoreDataDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDebugView.swift; sourceTree = "<group>"; };
 		56EDBB4327E58AAB001D68CF /* EventParticipantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipantCell.swift; sourceTree = "<group>"; };
 		56EDBB4627E59E93001D68CF /* TeamIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamIcon.swift; sourceTree = "<group>"; };
 		56FF4EEC28AB60F300EA8D0E /* WebKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitView.swift; sourceTree = "<group>"; };
@@ -275,6 +283,7 @@
 				563A46E2279F0407006A406B /* PlayerProfileView */,
 				56A07909289E358C001852A5 /* SettingsView */,
 				560E42A627911AF400408B4B /* DebugView */,
+				56DC614F28C42AC800FC225C /* CoreDataTab */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -360,6 +369,8 @@
 		566AB2C5278D27EE00F4035C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				56DC614928C4218900FC225C /* DataModel.xcdatamodeld */,
+				56DC614B28C423EE00FC225C /* DataManager.swift */,
 				560E42912790C76300408B4B /* Utilities */,
 				566AB2EA278D2D9D00F4035C /* Models */,
 				560E427E2790B1F000408B4B /* View */,
@@ -427,6 +438,14 @@
 				56BC7998286E08C3002046CA /* TeamUpUnitTests.swift */,
 			);
 			path = TeamUpUnitTests;
+			sourceTree = "<group>";
+		};
+		56DC614F28C42AC800FC225C /* CoreDataTab */ = {
+			isa = PBXGroup;
+			children = (
+				56DC615028C42B0000FC225C /* CoreDataDebugView.swift */,
+			);
+			path = CoreDataTab;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -568,6 +587,7 @@
 				560E42892790B6C900408B4B /* MockData.swift in Sources */,
 				560E42C42794F22200408B4B /* AddPlayerListCell.swift in Sources */,
 				560E42832790B2C700408B4B /* AddPlayerSheet.swift in Sources */,
+				56DC614E28C4264C00FC225C /* DataModel.xcdatamodeld in Sources */,
 				566AB2E8278D285000F4035C /* EventsListView.swift in Sources */,
 				563A46E4279F0FFC006A406B /* PlayerProfileViewModel.swift in Sources */,
 				563A46D9279D9DE4006A406B /* PlayerProfileView.swift in Sources */,
@@ -579,9 +599,11 @@
 				560E42AB2791B40800408B4B /* AddExistingPlayerSheet.swift in Sources */,
 				56A0790728972652001852A5 /* MenuBarGameCell.swift in Sources */,
 				569D688F2863B85000D824FC /* EditGameProfileView.swift in Sources */,
+				56DC615128C42B0000FC225C /* CoreDataDebugView.swift in Sources */,
 				563A46E7279F862C006A406B /* Color+Ext.swift in Sources */,
 				560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */,
 				560E42802790B2C000408B4B /* AddMatchSheet.swift in Sources */,
+				56DC614C28C423EE00FC225C /* DataManager.swift in Sources */,
 				560E42862790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
 				560E42A42791100200408B4B /* EventDetailViewModel.swift in Sources */,
 				560E42A827911AFD00408B4B /* DebugView.swift in Sources */,
@@ -648,6 +670,7 @@
 				5607EFD32877476700BE957E /* Binding+Ext.swift in Sources */,
 				560E42A927911AFD00408B4B /* DebugView.swift in Sources */,
 				560E426A278E8A2A00408B4B /* EventListCell.swift in Sources */,
+				56DC615228C42B0000FC225C /* CoreDataDebugView.swift in Sources */,
 				560E42B927926A3F00408B4B /* EventsListViewModel.swift in Sources */,
 				560E42A227910CF900408B4B /* TUPlayerGameProfile.swift in Sources */,
 				560E4271278F97EF00408B4B /* EventDetailView.swift in Sources */,
@@ -660,6 +683,7 @@
 				56664C6728A82FA100418AA4 /* EventMoreDetailSheet.swift in Sources */,
 				5623DB4727B4B14C0015D59A /* View+Ext.swift in Sources */,
 				560E42B62792443700408B4B /* DebugViewModel.swift in Sources */,
+				56DC614D28C423EE00FC225C /* DataManager.swift in Sources */,
 				563A46DD279DA14E006A406B /* PlayerGameProfileCell.swift in Sources */,
 				569D68902863B85000D824FC /* EditGameProfileView.swift in Sources */,
 				5623DB4A27B60A310015D59A /* CreateProfileView.swift in Sources */,
@@ -810,6 +834,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "TeamUp (iOS).entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Q8CL37543D;
@@ -830,6 +855,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.noeduran.TeamUp;
 				PRODUCT_NAME = TeamUp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -843,6 +869,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "TeamUp (iOS).entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Q8CL37543D;
@@ -863,6 +890,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.noeduran.TeamUp;
 				PRODUCT_NAME = TeamUp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1010,6 +1038,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		56DC614928C4218900FC225C /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				56DC614A28C4218900FC225C /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 56DC614A28C4218900FC225C /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 566AB2C1278D27EE00F4035C /* Project object */;
 }
