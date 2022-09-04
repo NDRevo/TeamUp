@@ -220,7 +220,8 @@ struct MatchesView: View {
         VStack(alignment: .leading){
             HStack {
                 Text("Matches")
-                    .font(.title)
+                    .font(.title2)
+                    .bold()
                 Spacer()
                 if viewModel.isEventOwner() {
                     Button {
@@ -314,17 +315,17 @@ struct ParticipantsView: View {
         VStack(alignment: .leading){
             HStack{
                 Text("Participants")
-                    .font(.title)
+                    .font(.title2)
+                    .bold()
                 Spacer()
-                if viewModel.isEventOwner() {
+                if viewModel.isEventOwner() && viewModel.event.isPublished == 1 {
                     NavigationLink {
                         AddExistingPlayerSheet(viewModel: viewModel)
                     } label: {
                         Image(systemName: "person.badge.plus")
                             .font(.system(size: 24, design: .default))
                     }
-
-                } else {
+                } else if !viewModel.isEventOwner() && viewModel.event.isPublished == 1 {
                     if let playerProfile = eventsManager.userProfile {
                         if playerProfile.inEvents.contains(where: {$0.recordID == viewModel.event.id}) {
                             Button {
@@ -332,6 +333,12 @@ struct ParticipantsView: View {
                             } label: {
                                 Text("Leave")
                                     .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.appPrimaryInverse)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(.red)
+                                    .cornerRadius(4)
                             }
                         } else {
                             Button {
@@ -339,6 +346,12 @@ struct ParticipantsView: View {
                             } label: {
                                 Text("Join")
                                     .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.appPrimaryInverse)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(.blue)
+                                    .cornerRadius(4)
                             }
                         }
                     }
@@ -348,6 +361,17 @@ struct ParticipantsView: View {
             if viewModel.isLoading {
                 LoadingView()
                     .padding(.top, 48)
+            } else if viewModel.event.isPublished == 0 && viewModel.isEventOwner() {
+                HStack{
+                    Spacer()
+                    Text("Publish event to manually add players")
+                        .font(.title3)
+                        .foregroundColor(.secondary)
+                        .bold()
+                        .multilineTextAlignment(.center)
+                    Spacer()
+                }
+                .padding()
             } else if viewModel.playersInEvent.isEmpty {
                 HStack{
                     Spacer()

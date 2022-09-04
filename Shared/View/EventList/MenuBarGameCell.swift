@@ -24,6 +24,7 @@ struct MenuBarGameCell: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 35)
+                        .foregroundColor(Color(.white))
                 } else {
                     Text(game.name.prefix(1))
                         .font(.title)
