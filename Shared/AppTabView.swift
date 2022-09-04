@@ -34,6 +34,10 @@ struct AppTabView: View {
                 .tabItem {
                     Label("Players", systemImage: "person.3.fill")
                 }
+            CoreDataDebugView()
+                .tabItem {
+                    Label("Core Data", image: "gear")
+                }
         }
         .task {
             do {

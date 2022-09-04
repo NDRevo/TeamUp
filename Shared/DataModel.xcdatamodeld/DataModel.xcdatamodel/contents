@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21277" systemVersion="21G83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Event" representedClassName="Event" syncable="YES" codeGenerationType="class">
+        <attribute name="eventDate" attributeType="Date" defaultDateTimeInterval="683945220" usesScalarValueType="NO"/>
+        <attribute name="eventDescription" attributeType="String" defaultValueString=""/>
+        <attribute name="eventEndDate" attributeType="Date" defaultDateTimeInterval="683945280" usesScalarValueType="NO"/>
+        <attribute name="eventGameName" attributeType="String" defaultValueString=""/>
+        <attribute name="eventGameVariantName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="eventLocation" attributeType="String" defaultValueString=""/>
+        <attribute name="eventName" attributeType="String" defaultValueString=""/>
+        <attribute name="eventOwner" attributeType="String" defaultValueString=""/>
+        <attribute name="eventSchool" attributeType="String" defaultValueString=""/>
+        <attribute name="isPublished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <relationship name="hasMatch" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="EventMatch" inverseName="associatedToEvent" inverseEntity="EventMatch"/>
+        <fetchedProperty name="fetchedProperty" optional="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="EventMatch"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="EventMatch" representedClassName="EventMatch" syncable="YES" codeGenerationType="class">
+        <attribute name="matchName" optional="YES" attributeType="String"/>
+        <attribute name="matchStartTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="associatedToEvent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Event" inverseName="hasMatch" inverseEntity="Event"/>
+    </entity>
+</model>

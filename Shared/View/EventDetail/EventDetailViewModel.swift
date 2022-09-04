@@ -264,6 +264,7 @@ enum DetailItem {
                     playersInEvent = playersInEvent.sorted(by: {$0.firstName < $1.firstName})
                 }
             } catch {
+                print(error)
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
                 isShowingAlert = true
             }
