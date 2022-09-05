@@ -14,21 +14,13 @@ struct SettingsView: View {
     var body: some View {
         List {
             Section {
-                Button {
-                    Task{
-                        viewModel.isShowingWebsite = true
-                    }
-                } label: {
-                    Text("Verify Student")
-                }
-                .disabled(CloudKitManager.shared.playerProfile!.isVerifiedStudent == 1)
-                if CloudKitManager.shared.playerProfile!.isVerifiedStudent == 1 {
+                if CloudKitManager.shared.playerProfile!.isVerifiedStudent == 0 {
                     Button {
                         Task{
-                            viewModel.hasVerified = false
+                            viewModel.isShowingWebsite = true
                         }
                     } label: {
-                        Text("Unverify Student")
+                        Text("Verify Student")
                     }
                 }
             }
@@ -52,7 +44,19 @@ struct SettingsView: View {
                     Text("Remove Game Leader Role")
                 }
                 //Add revoke
+            } footer: {
+                if CloudKitManager.shared.playerProfile!.isVerifiedStudent == 1 {
+                    HStack(alignment: .center){
+                        Spacer()
+                            Text("Verified \(CloudKitManager.shared.playerProfile!.inSchool) Student")
+                        Spacer()
+                    }
+                    .onTapGesture {
+                        viewModel.hasVerified = false
+                    }
+                }
             }
+            
         }
         .sheet(isPresented: $viewModel.isShowingWebsite) {
             NavigationView {
@@ -69,6 +73,7 @@ struct SettingsView: View {
                     }
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
