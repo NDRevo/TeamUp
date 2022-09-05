@@ -22,8 +22,6 @@
 		560E42812790B2C000408B4B /* AddMatchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E427F2790B2C000408B4B /* AddMatchSheet.swift */; };
 		560E42832790B2C700408B4B /* AddPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42822790B2C700408B4B /* AddPlayerSheet.swift */; };
 		560E42842790B2C700408B4B /* AddPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42822790B2C700408B4B /* AddPlayerSheet.swift */; };
-		560E42862790B2CC00408B4B /* AddAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42852790B2CC00408B4B /* AddAdminSheet.swift */; };
-		560E42872790B2CC00408B4B /* AddAdminSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42852790B2CC00408B4B /* AddAdminSheet.swift */; };
 		560E42892790B6C900408B4B /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42882790B6C900408B4B /* MockData.swift */; };
 		560E428A2790B6C900408B4B /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42882790B6C900408B4B /* MockData.swift */; };
 		560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E428B2790C0EE00408B4B /* Date+Ext.swift */; };
@@ -135,7 +133,6 @@
 		560E427B2790825E00408B4B /* AddEventSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventSheet.swift; sourceTree = "<group>"; };
 		560E427F2790B2C000408B4B /* AddMatchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMatchSheet.swift; sourceTree = "<group>"; };
 		560E42822790B2C700408B4B /* AddPlayerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerSheet.swift; sourceTree = "<group>"; };
-		560E42852790B2CC00408B4B /* AddAdminSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAdminSheet.swift; sourceTree = "<group>"; };
 		560E42882790B6C900408B4B /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		560E428B2790C0EE00408B4B /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
 		560E428E2790C28300408B4B /* AddEventPlayerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventPlayerSheet.swift; sourceTree = "<group>"; };
@@ -237,7 +234,6 @@
 				560E427F2790B2C000408B4B /* AddMatchSheet.swift */,
 				56664C6528A82FA100418AA4 /* EventMoreDetailSheet.swift */,
 				560E42AA2791B40800408B4B /* AddExistingPlayerSheet.swift */,
-				560E42852790B2CC00408B4B /* AddAdminSheet.swift */,
 			);
 			path = EventDetail;
 			sourceTree = "<group>";
@@ -582,7 +578,6 @@
 				563A46E7279F862C006A406B /* Color+Ext.swift in Sources */,
 				560E428C2790C0EE00408B4B /* Date+Ext.swift in Sources */,
 				560E42802790B2C000408B4B /* AddMatchSheet.swift in Sources */,
-				560E42862790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
 				560E42A42791100200408B4B /* EventDetailViewModel.swift in Sources */,
 				560E42A827911AFD00408B4B /* DebugView.swift in Sources */,
 				56A0790B289E359D001852A5 /* SettingsView.swift in Sources */,
@@ -643,7 +638,6 @@
 				560E428D2790C0EE00408B4B /* Date+Ext.swift in Sources */,
 				56A0790C289E359D001852A5 /* SettingsView.swift in Sources */,
 				560E42812790B2C000408B4B /* AddMatchSheet.swift in Sources */,
-				560E42872790B2CC00408B4B /* AddAdminSheet.swift in Sources */,
 				560E42A52791100200408B4B /* EventDetailViewModel.swift in Sources */,
 				5607EFD32877476700BE957E /* Binding+Ext.swift in Sources */,
 				560E42A927911AFD00408B4B /* DebugView.swift in Sources */,

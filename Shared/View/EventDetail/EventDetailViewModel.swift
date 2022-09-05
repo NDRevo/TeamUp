@@ -10,7 +10,7 @@ import SwiftUI
 import EventKit
 
 enum PresentingSheet {
-    case addMatch, addPlayer, addAdmin, eventMoreDetail
+    case addMatch, addPlayer, eventMoreDetail
 }
 
 enum DetailItem {
@@ -136,8 +136,6 @@ enum DetailItem {
                 AddMatchSheet(viewModel: self)
             case .addPlayer:
                 AddExistingPlayerSheet(viewModel: self)
-            case .addAdmin:
-                AddAdminSheet()
             case .none:
                 EmptyView()
         }

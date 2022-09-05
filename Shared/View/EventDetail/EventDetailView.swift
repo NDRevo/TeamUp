@@ -36,9 +36,7 @@ struct EventDetailView: View {
             viewModel.refreshEventDetails()
         }
         .navigationTitle(viewModel.event.eventName)
-        .sheet(isPresented: $viewModel.isShowingSheet, onDismiss: {
-            viewModel.refreshEventDetails()
-        }){
+        .sheet(isPresented: $viewModel.isShowingSheet){
             NavigationView {
                 viewModel.presentSheet()
             }
