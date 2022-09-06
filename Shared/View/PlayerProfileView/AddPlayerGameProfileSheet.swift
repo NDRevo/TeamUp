@@ -11,45 +11,45 @@ import SwiftUI
 //INFO: Sheet to add game profile with Game+Variant, rank, and game ID
 struct AddPlayerGameProfileSheet: View {
 
+    @EnvironmentObject private var playerManager: PlayerManager
     @EnvironmentObject private var eventsManager: EventsManager
-    @ObservedObject var viewModel: PlayerProfileViewModel
 
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
         List {
             Section{
-                Picker("Game", selection: $viewModel.selectedGame) {
+                Picker("Game", selection: $playerManager.selectedGame) {
                     ForEach(GameLibrary.data.games[1...], id: \.self){ game in
                         Text(game.name)
                     }
                 }
                 .pickerStyle(.menu)
-                .onChange(of: viewModel.selectedGame) { newValue in
-                    viewModel.resetRankList(for: newValue)
+                .onChange(of: playerManager.selectedGame) { newValue in
+                    playerManager.resetRankList(for: newValue)
                 }
 
-                if viewModel.selectedGame.hasVariants() {
-                    Picker("Variant", selection: $viewModel.selectedGameVariant) {
-                        ForEach(viewModel.selectedGame.gameVariants){game in
+                if playerManager.selectedGame.hasVariants() {
+                    Picker("Variant", selection: $playerManager.selectedGameVariant) {
+                        ForEach(playerManager.selectedGame.gameVariants){game in
                             Text(game.name)
                                 .tag(game as Game?)
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
-                    
-                } else if viewModel.selectedGame.hasRanks() {
-                    Picker("Rank", selection: $viewModel.selectedGameRank) {
-                        ForEach(viewModel.selectedGame.getRanksForGame()){ rank in
+
+                } else if playerManager.selectedGame.hasRanks() {
+                    Picker("Rank", selection: $playerManager.selectedGameRank) {
+                        ForEach(playerManager.selectedGame.getRanksForGame()){ rank in
                             Text(rank.rankName)
                                 .tag(rank as Rank?)
                         }
                     }
                 }
-                
-                if let ranks = viewModel.selectedGameVariant {
+
+                if let ranks = playerManager.selectedGameVariant {
                     if ranks.hasRanks() && !ranks.name.isEmpty {
-                    Picker("Rank", selection: $viewModel.selectedGameRank) {
+                    Picker("Rank", selection: $playerManager.selectedGameRank) {
                             ForEach(ranks.getRanksForGame()){ rank in
                                 Text(rank.rankName)
                                     .tag(rank as Rank?)
@@ -57,20 +57,20 @@ struct AddPlayerGameProfileSheet: View {
                         }
                     }
                 }
-    
-                TextField("Game ID", text: $viewModel.gameID)
+
+                TextField("Game ID", text: $playerManager.gameID)
                     .disableAutocorrection(true)
                     .keyboardType(.twitter)
                     .textInputAutocapitalization(.never)
-                    .onChange(of: viewModel.gameID) { _ in
-                        viewModel.gameID = String(viewModel.gameID.prefix(25))
+                    .onChange(of: playerManager.gameID) { _ in
+                        playerManager.gameID = String(playerManager.gameID.prefix(25))
                     }
             }
 
             Section {
                 Button {
                     Task {
-                        viewModel.saveGameProfile(to: eventsManager)
+                        playerManager.saveGameProfile()
                     }
                 } label: {
                     Text("Add Game Profile")
@@ -83,15 +83,15 @@ struct AddPlayerGameProfileSheet: View {
                 Button("Dismiss") { dismiss() }
             }
         }
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
+        .alert(playerManager.alertItem.alertTitle, isPresented: $playerManager.isShowingAlert, actions: {}, message: {
+            playerManager.alertItem.alertMessage
         })
     }
 }
 
 struct AddPlayerGameProfileSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddPlayerGameProfileSheet(viewModel: PlayerProfileViewModel())
+        AddPlayerGameProfileSheet()
             .environmentObject(EventsManager())
     }
 }

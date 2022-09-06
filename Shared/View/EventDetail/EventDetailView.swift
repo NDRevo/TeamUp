@@ -12,6 +12,7 @@ import EventKit
 //INFO: View that shows all details of the events: General Info, Matches, Participants
 struct EventDetailView: View {
 
+    @EnvironmentObject var playerManager: PlayerManager
     @EnvironmentObject var eventsManager: EventsManager
     @StateObject private var viewModel: EventDetailViewModel
     @Environment(\.dismiss) var dismiss
@@ -57,13 +58,12 @@ struct EventDetailView: View {
                         .foregroundColor(.blue)
                 }
 
-                if viewModel.isEventOwner() {
+                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
                     Menu {
-                        if viewModel.event.isPublished == 0 {
+                        if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton {
                             Button {
                                 viewModel.publishEvent(eventsManager: eventsManager)
-                                eventsManager.getMyPublishedEvents()
-                                eventsManager.getMyUnpublishedEvents()
+                                viewModel.isShowingPublishedButton = false
                             } label: {
                                 Text("Publish")
                             }
@@ -212,6 +212,7 @@ struct EventDescriptionViewSection: View {
 //INFO: Displays a horizontal scroll view of EventMatchCells below the Matches title. Tapping on the cell leads to MatchDetailView
 struct MatchesView: View {
 
+    @EnvironmentObject var playerManager: PlayerManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
@@ -221,7 +222,7 @@ struct MatchesView: View {
                     .font(.title2)
                     .bold()
                 Spacer()
-                if viewModel.isEventOwner() {
+                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
                     Button {
                         viewModel.sheetToPresent = .addMatch
                         viewModel.resetMatchInput()
@@ -306,7 +307,7 @@ struct EventMatchCellView: View {
 //MARK: ParticipantsView
 //INFO: Displays list of players in the event with the ability for a player to join or leave event. Owners can search and add players.
 struct ParticipantsView: View {
-    @EnvironmentObject var eventsManager: EventsManager
+    @EnvironmentObject var playerManager: PlayerManager
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
@@ -316,18 +317,18 @@ struct ParticipantsView: View {
                     .font(.title2)
                     .bold()
                 Spacer()
-                if viewModel.isEventOwner() && viewModel.event.isPublished == 1 {
+                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isPublished == 1 {
                     NavigationLink {
                         AddExistingPlayerSheet(viewModel: viewModel)
                     } label: {
                         Image(systemName: "person.badge.plus")
                             .font(.system(size: 24, design: .default))
                     }
-                } else if !viewModel.isEventOwner() && viewModel.event.isPublished == 1 {
-                    if let playerProfile = eventsManager.userProfile {
+                } else if !viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isPublished == 1 {
+                    if let playerProfile = playerManager.playerProfile {
                         if playerProfile.inEvents.contains(where: {$0.recordID == viewModel.event.id}) {
                             Button {
-                                viewModel.leaveEvent(for: playerProfile, manager: eventsManager)
+                                viewModel.leaveEvent(with: playerManager)
                             } label: {
                                 Text("Leave")
                                     .font(.title3)
@@ -340,7 +341,7 @@ struct ParticipantsView: View {
                             }
                         } else {
                             Button {
-                                viewModel.addPlayerToEvent(for: playerProfile, manager: eventsManager)
+                                viewModel.addPlayerToEvent(with: playerManager)
                             } label: {
                                 Text("Join")
                                     .font(.title3)
@@ -359,7 +360,7 @@ struct ParticipantsView: View {
             if viewModel.isLoading {
                 LoadingView()
                     .padding(.top, 48)
-            } else if viewModel.event.isPublished == 0 && viewModel.isEventOwner() {
+            } else if viewModel.event.isPublished == 0 && viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
                 HStack{
                     Spacer()
                     Text("Publish event to manually add players")
@@ -386,7 +387,7 @@ struct ParticipantsView: View {
                         EventParticipantCell(eventGame: viewModel.event.eventGameName, player: player)
                             .onLongPressGesture {
                                 //This stops scrolling
-                                if viewModel.isEventOwner() {
+                                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
                                     viewModel.removePlayerFromEventWith(for: player)
                                     //viewModel.refreshEventDetails(with: eventsManager.players)
                                 }

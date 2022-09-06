@@ -11,7 +11,6 @@ import SwiftUI
 //MARK: EventsManager
 @MainActor final class EventsManager: ObservableObject {
 
-    @Published var userProfile: TUPlayer?
     @Published var events: [TUEvent]        = []
     @Published var players: [TUPlayer]      = []
 
@@ -22,6 +21,48 @@ import SwiftUI
 
     @Published var isShowingAlert            = false
     @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
+
+    func getPublicEvents(forGame: Game){
+        Task {
+            do{
+                events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, forGame: forGame)
+
+                //TIP: More efficient way of doing this?
+                for event in events {
+                    playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id).count
+                }
+            } catch {
+                alertItem = AlertContext.unableToRetrieveEvents
+                isShowingAlert = true
+            }
+        }
+    }
+
+    func getMyPublishedEvents(for owner: TUPlayer?){
+        Task {
+            do{
+                if let owner = owner {
+                    myPublishedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: owner)
+                }
+            } catch {
+                alertItem = AlertContext.unableToRetrieveEvents
+                isShowingAlert = true
+            }
+        }
+    }
+
+    func getMyUnpublishedEvents(for owner: TUPlayer?){
+        Task {
+            do{
+                if let owner = owner {
+                    myUnpublishedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: false, withSpecificOwner: owner)
+                }
+            } catch {
+                alertItem = AlertContext.unableToRetrieveEvents
+                isShowingAlert = true
+            }
+        }
+    }
 
     func deleteEvent(for event: TUEvent){
         Task{
@@ -68,44 +109,6 @@ import SwiftUI
                 }
             } catch {
                 alertItem = AlertContext.unableToRemovePlayersFromEvent
-                isShowingAlert = true
-            }
-        }
-    }
-
-    func getPublicEvents(forGame: Game){
-        Task {
-            do{
-                events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: false, forGame: forGame)
-
-                //TIP: More efficient way of doing this?
-                for event in events {
-                    playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id).count
-                }
-            } catch {
-                alertItem = AlertContext.unableToRetrieveEvents
-                isShowingAlert = true
-            }
-        }
-    }
-
-    func getMyPublishedEvents(){
-        Task {
-            do{
-                myPublishedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: true, withSpecificOwner: true)
-            } catch {
-                alertItem = AlertContext.unableToRetrieveEvents
-                isShowingAlert = true
-            }
-        }
-    }
-
-    func getMyUnpublishedEvents(){
-        Task {
-            do{
-               myUnpublishedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: false, withSpecificOwner: true)
-            } catch {
-                alertItem = AlertContext.unableToRetrieveEvents
                 isShowingAlert = true
             }
         }

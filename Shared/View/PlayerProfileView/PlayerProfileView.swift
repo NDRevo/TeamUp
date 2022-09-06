@@ -11,28 +11,28 @@ import SwiftUI
 //INFO: Displays players name, game profiles, and events they're participating in
 struct PlayerProfileView: View {
 
+    @EnvironmentObject var playerManager: PlayerManager
     @EnvironmentObject var eventsManager: EventsManager
-    @StateObject var viewModel = PlayerProfileViewModel()
 
     var body: some View {
         NavigationView{
-            if !viewModel.loggedIntoiCloud() { NoiCloudView() }
-            else if !viewModel.isLoggedIn() { CreateProfileView(viewModel: viewModel) }
+            if playerManager.iCloudRecord == nil { NoiCloudView() }
+            else if playerManager.playerProfile == nil { CreateProfileView() }
             else {
                 ScrollView {
                     VStack(alignment: .leading){
-                        ProfileNameBar(viewModel: viewModel)
-                        PlayerGameProfilesList(viewModel: viewModel)
-                        ParticipatingInEventsList(viewModel: viewModel)
+                        ProfileNameBar()
+                        PlayerGameProfilesList()
+                        ParticipatingInEventsList()
                     }
                 }
                 .scrollIndicators(.hidden)
                 .navigationTitle("Profile")
-                .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-                    viewModel.alertItem.alertMessage
+                .alert(playerManager.alertItem.alertTitle, isPresented: $playerManager.isShowingAlert, actions: {}, message: {
+                    playerManager.alertItem.alertMessage
                 })
-                .sheet(isPresented: $viewModel.isPresentingSheet) {
-                    NavigationView { AddPlayerGameProfileSheet(viewModel: viewModel) }
+                .sheet(isPresented: $playerManager.isPresentingSheet) {
+                    NavigationView { AddPlayerGameProfileSheet() }
                     .presentationDetents([.fraction(0.60)])
                 }
                 .toolbar {
@@ -41,27 +41,26 @@ struct PlayerProfileView: View {
                         label: { Image(systemName: "gearshape.fill") }
                     }
                 }
-                .refreshable {do { eventsManager.userProfile = try await CloudKitManager.shared.getUserRecord()} catch {}}
+                .refreshable { await playerManager.getRecordAndPlayerProfile()}
                 .background(Color.appBackground)
             }
         }
         .task {
-            viewModel.getProfile()
-            viewModel.getEventsParticipating()
+            playerManager.getEventsParticipating()
         }
     }
 }
 
 struct PlayerProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerProfileView(viewModel: PlayerProfileViewModel())
+        PlayerProfileView()
     }
 }
 
 //MARK: ProfileNameBar
 //INFO: Displays username and first and last name of player
 struct ProfileNameBar: View {
-    @ObservedObject var viewModel: PlayerProfileViewModel
+    @EnvironmentObject var playerManager: PlayerManager
 
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
@@ -73,10 +72,10 @@ struct ProfileNameBar: View {
                         .frame(width: 80,height: 80)
                         .foregroundColor(.appBackground)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("\(viewModel.playerUsername)")
+                        Text("\(playerManager.playerProfile!.username)")
                             .font(.title)
                             .bold()
-                        Text("\(viewModel.playerFirstName) \(viewModel.playerLastName)")
+                        Text("\(playerManager.playerProfile!.firstName) \(playerManager.playerProfile!.lastName)")
                             .font(.title2)
                     }
                     Spacer()
@@ -90,8 +89,8 @@ struct ProfileNameBar: View {
 //MARK: ParticipatingInEventsList
 //INFO: Displays list of events player is participating in shown via a verticle stack view below a Events Participating header
 struct ParticipatingInEventsList: View {
-    @ObservedObject var viewModel: PlayerProfileViewModel
-    
+    @EnvironmentObject var playerManager: PlayerManager
+
     var body: some View {
         VStack {
             HStack {
@@ -101,10 +100,10 @@ struct ParticipatingInEventsList: View {
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
             }
-            
-            if !viewModel.eventsParticipating.isEmpty {
+
+            if !playerManager.eventsParticipating.isEmpty {
                 LazyVStack(alignment: .center, spacing: 12){
-                    ForEach(viewModel.eventsParticipating) { event in
+                    ForEach(playerManager.eventsParticipating) { event in
                         EventListCell(event: event)
                     }
                 }
@@ -128,8 +127,8 @@ struct ParticipatingInEventsList: View {
 //MARK: PlayerGameProfilesList
 //INFO: Displays list of game profiles in a horizontal scroll view below a Game Profiles header
 struct PlayerGameProfilesList: View {
-    @ObservedObject var viewModel: PlayerProfileViewModel
-    
+    @EnvironmentObject var playerManager: PlayerManager
+
     var body: some View {
         VStack {
             HStack {
@@ -139,8 +138,8 @@ struct PlayerGameProfilesList: View {
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
                 Button {
-                    viewModel.isPresentingSheet.toggle()
-                    viewModel.resetInput()
+                    playerManager.isPresentingSheet.toggle()
+                    playerManager.resetInput()
                 } label: {
                     Image(systemName: "plus.rectangle.portrait")
                         .resizable()
@@ -149,14 +148,14 @@ struct PlayerGameProfilesList: View {
                 }
             }
             .padding(.horizontal, 12)
-            
+
             ScrollView(.horizontal) {
                 LazyHStack(alignment: .top, spacing: 10) {
-                    ForEach(viewModel.playerGameProfiles) { gameProfile in
-                        PlayerGameProfileCell(viewModel: viewModel, gameProfile: gameProfile)
-                            .sheet(isPresented: $viewModel.isEditingGameProfile){
+                    ForEach(playerManager.playerGameProfiles) { gameProfile in
+                        PlayerGameProfileCell(gameProfile: gameProfile)
+                            .sheet(isPresented: $playerManager.isEditingGameProfile){
                                 NavigationView {
-                                    EditGameProfileView(viewModel: viewModel, gameProfile: viewModel.tappedGameProfile!)
+                                    EditGameProfileView(gameProfile: playerManager.tappedGameProfile!)
                                 }
                                 .presentationDetents([.fraction(0.75)])
                             }
@@ -164,7 +163,7 @@ struct PlayerGameProfilesList: View {
                 }
                 .padding(.horizontal, 12)
             }
-            .frame(height: viewModel.playerGameProfiles.isEmpty ? 20 : 180)
+            .frame(height: playerManager.playerGameProfiles.isEmpty ? 20 : 180)
         }
     }
 }

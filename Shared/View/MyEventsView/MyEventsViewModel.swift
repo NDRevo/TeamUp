@@ -23,7 +23,7 @@ enum EventError: Error {
     @Published var eventEndDate: Date        = Date()
     @Published var eventGame: Game           = Game(name: GameNames.other, ranks: [])
     @Published var eventGameVariant: Game    = Game(name: GameNames.empty, ranks: [])
-    
+
     @Published var isPresentingAddEvent      = false
     @Published var isShowingAlert            = false
     @Published var isDiscordLink             = false
@@ -53,7 +53,7 @@ enum EventError: Error {
     }
 
     //INFO: Used to set default date and hour for creating an event
-    var currentDateAndHour: Date = {
+    private var currentDateAndHour: Date = {
         let date = Date()
         let calendar = Calendar.current
         let mock = DateComponents(
@@ -79,7 +79,7 @@ enum EventError: Error {
         return true
     }
 
-    private func createEventRecord() -> CKRecord{
+    private func createEventRecord(with profile: TUPlayer?, profileRecord: CKRecord?) -> CKRecord{
         let record = CKRecord(recordType: RecordType.event)
         record[TUEvent.kEventName]              = eventName
         record[TUEvent.kEventStartDate]         = eventDate
@@ -90,15 +90,15 @@ enum EventError: Error {
         record[TUEvent.kEventLocation]          = eventLocation
         record[TUEvent.kIsPublished]            = 0
         
-        if let userRecord = CloudKitManager.shared.userRecord {
-            record[TUEvent.kEventOwner]         = CKRecord.Reference(record: userRecord, action: .none)
-            record[TUEvent.kEventOwnerName]     = CloudKitManager.shared.playerProfile?.username
-            record[TUEvent.kEventSchool]        = CloudKitManager.shared.playerProfile?.inSchool
+        if let profile = profile {
+            record[TUEvent.kEventOwner]         = CKRecord.Reference(record: profileRecord!, action: .none)
+            record[TUEvent.kEventOwnerName]     = profile.username
+            record[TUEvent.kEventSchool]        = profile.inSchool
         }
         return record
     }
 
-    func createEvent(for eventsManager: EventsManager) throws {
+    func createEvent(for eventsManager: EventsManager, from profileRecord: CKRecord?, with profile: TUPlayer?) throws {
         guard isValidEvent() else {
             alertItem = AlertContext.invalidEvent
             isShowingAlert = true
@@ -107,7 +107,7 @@ enum EventError: Error {
 
         Task {
             do {
-                let event = createEventRecord()
+                let event = createEventRecord(with: profile, profileRecord: profileRecord)
                 let _ = try await CloudKitManager.shared.save(record: event)
 
                 //TIP: Reloads view, locally adds player until another network call is made

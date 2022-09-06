@@ -11,6 +11,7 @@ import SwiftUI
 //INFO: Add Event: Name, Start Date, End Date, Game, Game Variant, Location, and Description
 struct AddEventSheet: View {
 
+    @EnvironmentObject var playerManager: PlayerManager
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: MyEventsViewModel
 
@@ -79,7 +80,7 @@ struct AddEventSheet: View {
             Section{
                 Button {
                     Task {
-                        try viewModel.createEvent(for: eventsManager)
+                        try viewModel.createEvent(for: eventsManager, from: playerManager.playerProfileRecord, with: playerManager.playerProfile)
                     }
                 } label: {
                     Text("Create Event")

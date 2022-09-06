@@ -12,9 +12,6 @@ import CloudKit
 final class CloudKitManager {
 
     static let shared = CloudKitManager()
-
-    var userRecord: CKRecord?
-    var playerProfile: TUPlayer?
     let container = CKContainer.default()
 
     func checkUsernameExists(for username: String) async throws -> Bool {
@@ -27,30 +24,6 @@ final class CloudKitManager {
         } else {
             return false
         }
-    }
-
-    func getUserRecord() async throws -> TUPlayer? {
-        let recordID = try await container.userRecordID()
-        let record = try await container.publicCloudDatabase.record(for: recordID)
-        userRecord = record
-
-        if let profileReference = record["userProfile"] as? CKRecord.Reference {
-            let playerProfileRecord = try await fetchRecord(with: profileReference.recordID)
-            playerProfile = TUPlayer(record: playerProfileRecord)
-            return playerProfile
-       }
-        return nil
-    }
-    
-    func fetchUserRecord() async throws {
-        let recordID = try await container.userRecordID()
-        let record = try await container.publicCloudDatabase.record(for: recordID)
-        userRecord = record
-
-        if let profileReference = record["userProfile"] as? CKRecord.Reference {
-            let playerProfileRecord = try await fetchRecord(with: profileReference.recordID)
-            playerProfile = TUPlayer(record: playerProfileRecord)
-       }
     }
 
     func getPlayers() async throws -> [TUPlayer] {
@@ -108,23 +81,6 @@ final class CloudKitManager {
         }
 
         return playersAndProfiles
-    }
-
-    func getPlayerGameProfiles() async throws -> [TUPlayerGameProfile] {
-        let sortDescriptor = NSSortDescriptor(key: TUPlayerGameProfile.kGameName, ascending: true)
-        
-        guard let profileRecordID = playerProfile else {
-            return []
-        }
-        let reference = CKRecord.Reference(recordID: profileRecordID.id, action: .none)
-        let predicate = NSPredicate(format: "associatedToPlayer == %@", reference)
-        let query = CKQuery(recordType: RecordType.playerGameProfiles, predicate: predicate)
-        query.sortDescriptors = [sortDescriptor]
-
-        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
-        let records = matchResults.compactMap { _ , result in try? result.get()}
-
-        return records.map(TUPlayerGameProfile.init)
     }
     
     func getGamesForPlayer(for playerID: CKRecord.ID) async throws -> [TUPlayerGameProfile] {
@@ -204,7 +160,7 @@ final class CloudKitManager {
         return records
     }
 
-    func getEvents(thatArePublished: Bool, withSpecificOwner: Bool, forGame: Game = Game(name: GameNames.all, ranks: [])) async throws -> [TUEvent] {
+    func getEvents(thatArePublished: Bool, forGame: Game = Game(name: GameNames.all, ranks: [])) async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventStartDate, ascending: true)
         let publishPredicate   = thatArePublished ? NSPredicate(format: "isPublished == 1") : NSPredicate(format: "isPublished == 0")
         let eventGamePredicate = NSPredicate(format: "eventGameName == %@", forGame.name)
@@ -224,13 +180,29 @@ final class CloudKitManager {
         let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
         let records = matchResults.compactMap{_, result in try? result.get()}
 
-        if withSpecificOwner {
-            return records.filter{
-                //MARK: ERROR - Unexpectedly found nil (Cause: No/Slow internet connection)
-                $0[TUEvent.kEventOwner] == CKRecord.Reference(recordID: userRecord!.recordID, action: .none)
-            }.map(TUEvent.init)
+        return records.map(TUEvent.init)
+    }
+    
+    enum FetchingEventsError: Error {
+        case FailedToGetEvents
+    }
+    func getEvents(thatArePublished: Bool, withSpecificOwner: TUPlayer?) async throws -> [TUEvent] {
+        let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventStartDate, ascending: true)
+        let publishPredicate   = thatArePublished ? NSPredicate(format: "isPublished == 1") : NSPredicate(format: "isPublished == 0")
+        
+        guard let owner = withSpecificOwner else {
+            throw FetchingEventsError.FailedToGetEvents
         }
+        let eventOwnerPredicate = NSPredicate(format: "eventOwnerName == %@", owner.username)
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [publishPredicate, eventOwnerPredicate])
 
+        let query = CKQuery(recordType: RecordType.event, predicate: predicate)
+
+        query.sortDescriptors = [sortDescriptor]
+
+        let (matchResults, _) = try await container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap{_, result in try? result.get()}
+        
         return records.map(TUEvent.init)
     }
 

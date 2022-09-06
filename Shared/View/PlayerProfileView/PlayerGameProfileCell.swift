@@ -11,10 +11,8 @@ import SwiftUI
 //INFO: View to display game profile
 struct PlayerGameProfileCell: View {
 
-    @ObservedObject var viewModel: PlayerProfileViewModel
+    @EnvironmentObject var playerManager: PlayerManager
     var gameProfile: TUPlayerGameProfile
-
-    @Environment(\.editMode) var editMode
 
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
@@ -43,8 +41,8 @@ struct PlayerGameProfileCell: View {
                             .padding(.trailing, 8)
                             .foregroundColor(.blue)
                             .onTapGesture {
-                                viewModel.isEditingGameProfile.toggle()
-                                viewModel.tappedGameProfile = gameProfile
+                                playerManager.isEditingGameProfile.toggle()
+                                playerManager.tappedGameProfile = gameProfile
                             }
                     }
                     VStack(alignment: .leading) {
@@ -74,6 +72,6 @@ struct PlayerGameProfileCell: View {
 
 struct PlayerGameProfileCell_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerGameProfileCell(viewModel: PlayerProfileViewModel(), gameProfile: TUPlayerGameProfile(record: MockData.playerGameProfile))
+        PlayerGameProfileCell(gameProfile: TUPlayerGameProfile(record: MockData.playerGameProfile))
     }
 }

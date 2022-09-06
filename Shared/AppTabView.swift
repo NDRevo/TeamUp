@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AppTabView: View {
 
+    @EnvironmentObject var playerManager: PlayerManager
     @EnvironmentObject var eventsManager: EventsManager
 
     var body: some View {
@@ -18,7 +19,7 @@ struct AppTabView: View {
                     Label("Events", systemImage: "calendar")
                 }
             //INFO: If user is a game leader, they have access to this tab to create events
-            if let record = CloudKitManager.shared.playerProfile {
+            if let record = playerManager.playerProfile {
                 if record.isGameLeader == 1{
                     MyEventsView()
                         .tabItem {
@@ -34,11 +35,6 @@ struct AppTabView: View {
                 .tabItem {
                     Label("Players", systemImage: "person.3.fill")
                 }
-        }
-        .task {
-            do {
-                eventsManager.userProfile = try await CloudKitManager.shared.getUserRecord()
-            } catch {}
         }
     }
 }

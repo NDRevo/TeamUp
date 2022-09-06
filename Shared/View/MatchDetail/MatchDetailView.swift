@@ -11,7 +11,7 @@ import SwiftUI
 //INFO: View that displays teams for the match, you can shuffle and balance the teams, and add players from the list of participants
 //INFO: You can only have two teams per match and can shuffle/balance once there are two teams
 struct MatchDetailView: View {
-
+    @EnvironmentObject var playerManager: PlayerManager
     @EnvironmentObject var eventDetailViewModel: EventDetailViewModel
     @ObservedObject var viewModel: MatchDetailViewModel
 
@@ -21,7 +21,7 @@ struct MatchDetailView: View {
         ZStack {
             ScrollView(showsIndicators: false) {
                 VStack{
-                    if viewModel.isAbleToChangeTeams(){
+                    if viewModel.isAbleToChangeTeams(for: playerManager.playerProfile){
                         MatchOptionButtons(viewModel: viewModel)
                     }
 
@@ -32,7 +32,7 @@ struct MatchDetailView: View {
                                     .font(.title)
                                 Spacer()
                                 HStack(spacing: 24){
-                                    if viewModel.isEventOwner() {
+                                    if viewModel.isEventOwner(for: playerManager.playerProfile) {
                                         Button {
                                             viewModel.isShowingAddPlayer = true
                                             viewModel.selectedTeam = team
@@ -79,7 +79,7 @@ struct MatchDetailView: View {
                         Image(systemName: "arrow.clockwise")
                             .foregroundColor(.blue)
                     }
-                    if viewModel.isAbleToAddTeam(){
+                    if viewModel.isAbleToAddTeam(for: playerManager.playerProfile){
                         Button {
                             viewModel.isShowingAddTeam = true
                             viewModel.resetInput()
@@ -88,7 +88,7 @@ struct MatchDetailView: View {
                                 .font(.system(size: 18, weight: .semibold, design: .default))
                         }
                     }
-                    if viewModel.isEventOwner(){
+                    if viewModel.isEventOwner(for: playerManager.playerProfile){
                         Menu {
                             Button(role: .destructive) {
                                 viewModel.isShowingConfirmationDialogue = true
@@ -124,9 +124,8 @@ struct MatchDetailView_Previews: PreviewProvider {
     }
 }
 
-
 struct PlayerListForTeam: View {
-
+    @EnvironmentObject var playerManager: PlayerManager
     @ObservedObject var viewModel: MatchDetailViewModel
     var team: TUTeam
 
@@ -134,7 +133,7 @@ struct PlayerListForTeam: View {
         ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
             EventParticipantCell(eventGame: viewModel.event.eventGameName, player: player)
             .swipeActions(edge: .trailing) {
-                if viewModel.isEventOwner() {
+                if viewModel.isEventOwner(for: playerManager.playerProfile) {
                     Button(role: .destructive){
                         viewModel.removePlayerFromTeam(player: player, teamRecordID: team.id)
                     } label: {
@@ -149,9 +148,9 @@ struct PlayerListForTeam: View {
 //MARK: MatchOptionButtons
 //INFO: Two buttons in an HStack that allow you to either shuffle or balance the teams
 struct MatchOptionButtons: View {
-    
+
     @ObservedObject var viewModel: MatchDetailViewModel
-    
+
     var body: some View {
         HStack(spacing: 20) {
             Button(action: {

@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct SettingsView: View {
-
+    @EnvironmentObject var playerManager: PlayerManager
     @StateObject var viewModel = SettingsViewModel()
 
     var body: some View {
         List {
             Section {
-                if CloudKitManager.shared.playerProfile!.isVerifiedStudent == 0 {
+                if playerManager.playerProfile!.isVerifiedStudent == 0 {
                     Button {
                         Task{
                             viewModel.isShowingWebsite = true
@@ -27,28 +27,23 @@ struct SettingsView: View {
             
             Section {
                 Button {
-                    Task {
-                        await viewModel.changeGameLeaderPosition(to: 2)
-                    }
+                    Task { await viewModel.changeGameLeaderPosition(to: 2, for: playerManager.playerProfile!) }
                 } label: {
-                    Text(CloudKitManager.shared.playerProfile?.isGameLeader == 2 ? "Requested Game Leader" : "Request Game Leader")
+                    Text(playerManager.playerProfile!.isGameLeader == 2 ? "Requested Game Leader" : "Request Game Leader")
                 }
-                .disabled(CloudKitManager.shared.playerProfile?.isGameLeader == 2 || CloudKitManager.shared.playerProfile?.isGameLeader == 1)
-                
-                
+                .disabled(playerManager.playerProfile!.isGameLeader == 2 || playerManager.playerProfile!.isGameLeader == 1)
+
                 Button(role: .destructive) {
-                    Task {
-                        await viewModel.changeGameLeaderPosition(to: 0)
-                    }
+                    Task { await viewModel.changeGameLeaderPosition(to: 0, for: playerManager.playerProfile!) }
                 } label: {
                     Text("Remove Game Leader Role")
                 }
                 //Add revoke
             } footer: {
-                if CloudKitManager.shared.playerProfile!.isVerifiedStudent == 1 {
+                if playerManager.playerProfile!.isVerifiedStudent == 1 {
                     HStack(alignment: .center){
                         Spacer()
-                            Text("Verified \(CloudKitManager.shared.playerProfile!.inSchool) Student")
+                            Text("Verified \(playerManager.playerProfile!.inSchool) Student")
                         Spacer()
                     }
                     .onTapGesture {
@@ -69,7 +64,6 @@ struct SettingsView: View {
                                 Text("Cancel")
                             }
                         }
-                        
                     }
             }
         }

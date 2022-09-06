@@ -12,8 +12,9 @@ import SwiftUI
 //INFO: Owners can only add new events in this view
 struct MyEventsView: View {
 
-    @StateObject private var viewModel = MyEventsViewModel()
+    @EnvironmentObject private var playerManager: PlayerManager
     @EnvironmentObject private var eventsManager: EventsManager
+    @StateObject private var viewModel = MyEventsViewModel()
 
     var body: some View {
         NavigationView {
@@ -69,8 +70,8 @@ struct MyEventsView: View {
             }
             .navigationTitle(Text("My Events"))
             .task {
-                eventsManager.getMyPublishedEvents()
-                eventsManager.getMyUnpublishedEvents()
+                eventsManager.getMyPublishedEvents(for: playerManager.playerProfile)
+                eventsManager.getMyUnpublishedEvents(for: playerManager.playerProfile)
             }
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                 viewModel.alertItem.alertMessage

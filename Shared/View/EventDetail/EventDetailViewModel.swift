@@ -68,7 +68,8 @@ enum DetailItem {
     @Published var isLoading                        = false
     @Published var isShowingSheet                   = false
     @Published var isShowingCalendarView            = false
-    
+    @Published var isShowingPublishedButton         = true
+
     @Published var isShowingCreateMatchesView       = false
     @Published var sheetToPresent: PresentingSheet? {
         didSet{
@@ -80,8 +81,11 @@ enum DetailItem {
     @Published var alertItem: AlertItem             = AlertItem(alertTitle: Text("Unable To Show Alert"),
                                                                 alertMessage: Text("There was a problem showing the alert."))
 
-    func isEventOwner() -> Bool {
-        return event.eventOwner.recordID == CloudKitManager.shared.userRecord?.recordID
+    func isEventOwner(for playerRecord: CKRecord?) -> Bool {
+        if let playerRecord = playerRecord {
+            return event.eventOwner.recordID == playerRecord.recordID
+        }
+        return false
     }
 
     //INFO: Returns range of dates from the event date onwards
@@ -162,7 +166,6 @@ enum DetailItem {
         guard !matchName.isEmpty, matchDate >= event.eventStartDate, matchDate <= event.eventEndDate else {
             return false
         }
-
         return true
     }
 
@@ -189,10 +192,10 @@ enum DetailItem {
         }
     }
 
-    func addPlayerToEvent(for player: TUPlayer, manager: EventsManager){
+    func addPlayerToEvent(with playerManager: PlayerManager){
         Task {
             do {
-                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: playerManager.playerProfile!.id)
 
                 var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
 
@@ -205,9 +208,9 @@ enum DetailItem {
 
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
-                playersInEvent.append(player)
+                playersInEvent.append(playerManager.playerProfile!)
                 playersInEvent = playersInEvent.sorted(by: {$0.firstName < $1.firstName})
-                manager.userProfile = try await CloudKitManager.shared.getUserRecord()
+                await playerManager.getRecordAndPlayerProfile()
             } catch {
                 //MARK: Unable to add you to event
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
@@ -216,11 +219,11 @@ enum DetailItem {
         }
     }
 
-    func leaveEvent(for player: TUPlayer, manager: EventsManager){
+    func leaveEvent(with playerManager: PlayerManager){
         Task {
             do {
-                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
-                
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: playerManager.playerProfile!.id)
+
                 var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
 
                 if !references.isEmpty{
@@ -230,8 +233,8 @@ enum DetailItem {
 
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
-                playersInEvent.removeAll(where: {$0.id == player.id})
-                manager.userProfile = try await CloudKitManager.shared.getUserRecord()
+                playersInEvent.removeAll(where: {$0.id == playerManager.playerProfile!.id})
+                await playerManager.getRecordAndPlayerProfile()
             } catch {
                 //MARK: Unable to add leave event
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
@@ -274,7 +277,6 @@ enum DetailItem {
                 let eventRecord = try await CloudKitManager.shared.fetchRecord(with: event.id)
                 eventRecord[TUEvent.kIsPublished] = 1
                 let _ = try await CloudKitManager.shared.save(record: eventRecord)
-
             } catch {
                 alertItem = AlertContext.unableToPublishEvent
                 isShowingAlert = true
@@ -362,11 +364,6 @@ enum DetailItem {
             }
     }
 
-    private func showLoadingView(){
-        isLoading = true
-    }
-
-    private func hideLoadingView(){
-        isLoading = false
-    }
+    private func showLoadingView(){isLoading = true}
+    private func hideLoadingView(){isLoading = false}
 }

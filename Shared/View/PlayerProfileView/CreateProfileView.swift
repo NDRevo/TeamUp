@@ -16,24 +16,24 @@ enum FormFields {
 //INFO: First view seen when creating a profile. Username, School,and  First and Last Name are needed to create profile
 struct CreateProfileView: View {
 
-    @ObservedObject var viewModel: PlayerProfileViewModel
+    @EnvironmentObject var playerManager: PlayerManager
     @FocusState private var currentFocus: FormFields?
 
     var body: some View {
         List {
             Section {
-                TextField("Username", text: $viewModel.playerUsername)
+                TextField("Username", text: $playerManager.playerUsername)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
                     .submitLabel(.next)
                     .focused($currentFocus, equals: .username)
-                    .onChange(of: viewModel.playerUsername) { _ in
-                        viewModel.playerUsername = String(viewModel.playerUsername.prefix(25))
+                    .onChange(of: playerManager.playerUsername) { _ in
+                        playerManager.playerUsername = String(playerManager.playerUsername.prefix(25))
                     }
             } footer: { Text("Your username will be used for search and display purposes.") }
 
             Section {
-                Picker("School", selection: $viewModel.playerSchool) {
+                Picker("School", selection: $playerManager.playerSchool) {
                     ForEach(SchoolLibrary.data.schools, id: \.self){school in
                         Text(school)
                             .tag(school.self)
@@ -43,30 +43,28 @@ struct CreateProfileView: View {
             }
 
             Section{
-                TextField("First Name", text: $viewModel.playerFirstName)
+                TextField("First Name", text: $playerManager.playerFirstName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
                     .submitLabel(.next)
                     .focused($currentFocus, equals: .firstName)
-                    .onChange(of: viewModel.playerFirstName) { _ in
-                        viewModel.playerFirstName = String(viewModel.playerFirstName.prefix(25))
+                    .onChange(of: playerManager.playerFirstName) { _ in
+                        playerManager.playerFirstName = String(playerManager.playerFirstName.prefix(25))
                     }
-                TextField("Last Name", text: $viewModel.playerLastName)
+                TextField("Last Name", text: $playerManager.playerLastName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
                     .submitLabel(.done)
                     .focused($currentFocus, equals: .lastName)
-                    .onChange(of: viewModel.playerLastName) { _ in
-                        viewModel.playerLastName = String(viewModel.playerLastName.prefix(25))
+                    .onChange(of: playerManager.playerLastName) { _ in
+                        playerManager.playerLastName = String(playerManager.playerLastName.prefix(25))
                     }
             } footer: {
                 Text("Your name will not be viewable to anyone unless you want to display your name by changing your settings.")
             }
             Section {
                 Button {
-                    Task{
-                        await viewModel.createProfile()
-                    }
+                    Task{ await playerManager.createProfile() }
                 } label: {
                     Text("Create Profile")
                         .foregroundColor(.blue)
@@ -74,8 +72,8 @@ struct CreateProfileView: View {
             }
         }
         .navigationTitle("Create Profile")
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
+        .alert(playerManager.alertItem.alertTitle, isPresented: $playerManager.isShowingAlert, actions: {}, message: {
+            playerManager.alertItem.alertMessage
         })
         .onSubmit {
             switch currentFocus {
@@ -91,7 +89,7 @@ struct CreateProfileView: View {
 
 struct CreateProfileView_Previews: PreviewProvider {
     static var previews: some View {
-       CreateProfileView(viewModel: PlayerProfileViewModel())
+       CreateProfileView()
             .environmentObject(EventsManager())
     }
 }

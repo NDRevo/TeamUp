@@ -10,18 +10,16 @@ import SwiftUI
 //MARK: EditGameProfileView
 //INFO: Sheet that is presented to edit player game profile and to add alias
 struct EditGameProfileView: View {
-    
-    @EnvironmentObject var eventsManager: EventsManager
-    @ObservedObject var viewModel: PlayerProfileViewModel
-    
-    var gameProfile: TUPlayerGameProfile
-    @State var gameID: String = ""
-    @State var gameRank: String = ""
-    @State var gameAliases: [String] = ["",""]
 
-    @State var isSavable: Bool = false
-    @Environment(\.dismiss) var dismiss
-    
+    @EnvironmentObject var playerManager: PlayerManager
+    @EnvironmentObject var eventsManager: EventsManager
+
+    var gameProfile: TUPlayerGameProfile
+    @State var gameID: String           = ""
+    @State var gameRank: String         = ""
+    @State var gameAliases: [String]    = ["",""]
+    @State var isSavable: Bool          = false
+
     var body: some View {
         VStack{
             Form {
@@ -52,13 +50,13 @@ struct EditGameProfileView: View {
                 Section {
                     if isSavable {
                         Button {
-                            viewModel.saveEditGameProfile(of: gameProfile.id, gameID: gameID, gameRank: gameRank, gameAliases: gameAliases)
+                            playerManager.saveEditGameProfile(of: gameProfile.id, gameID: gameID, gameRank: gameRank, gameAliases: gameAliases)
                         } label: {
                             Text("Save Game Profile")
                         }
                     }
                     Button(role: .destructive) {
-                        viewModel.deleteGameProfile(for: gameProfile.id, eventsManager: eventsManager)
+                        Task { await playerManager.deleteGameProfile(for: gameProfile) }
                     } label: {
                         Text("Delete Game Profile")
                     }
@@ -70,9 +68,7 @@ struct EditGameProfileView: View {
         .replaceDisabled()
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Dismiss") {
-                    viewModel.isEditingGameProfile = false
-                }
+                Button("Dismiss") { playerManager.isEditingGameProfile = false }
             }
         }
         .onAppear {
@@ -81,12 +77,11 @@ struct EditGameProfileView: View {
             gameAliases = gameProfile.gameAliases
         }
         .navigationTitle("Edit")
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
+        .alert(playerManager.alertItem.alertTitle, isPresented: $playerManager.isShowingAlert, actions: {}, message: {
+            playerManager.alertItem.alertMessage
         })
     }
-    
-    //TIP: Move to a view model... eventually?
+
     func checkSavable() {
         if !gameID.isEmpty {
             if gameRank != gameProfile.gameRank {
@@ -108,6 +103,6 @@ struct EditGameProfileView: View {
 
 struct EditGameProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        EditGameProfileView(viewModel: PlayerProfileViewModel(), gameProfile: TUPlayerGameProfile(record: MockData.playerGameProfile))
+        EditGameProfileView(gameProfile: TUPlayerGameProfile(record: MockData.playerGameProfile))
     }
 }

@@ -36,16 +36,16 @@ import SwiftUI
         self.event = event
     }
 
-    func isEventOwner() -> Bool{
-        return event.eventOwner.recordID == CloudKitManager.shared.userRecord?.recordID
+    func isEventOwner(for player: TUPlayer?) -> Bool{
+        return event.eventOwner.recordID == player!.id
     }
 
-    func isAbleToChangeTeams() -> Bool {
-        return teams.count == 2 && isEventOwner()
+    func isAbleToChangeTeams(for player: TUPlayer?) -> Bool {
+        return teams.count == 2 && isEventOwner(for: player)
     }
 
-    func isAbleToAddTeam() -> Bool {
-        return teams.count < 2 && isEventOwner()
+    func isAbleToAddTeam(for player: TUPlayer?) -> Bool {
+        return teams.count < 2 && isEventOwner(for: player)
     }
 
     func getAvailablePlayers(eventDetailViewModel: EventDetailViewModel){
