@@ -26,23 +26,32 @@ import SwiftUI
 
     @Published var gameID: String                = ""
     @Published var selectedGame: Game            = GameLibrary.data.games[1]
-    @Published var selectedGameVariant: Game?
+    @Published var selectedGameVariant: Game? {
+        didSet {
+            if let gameVariant = selectedGameVariant {
+                selectedGameRank = gameVariant.getRanksForGame().first
+            } else {
+                selectedGameRank = nil
+            }
+        }
+    }
     @Published var selectedGameRank: Rank?
 
     @Published var isEditingGameProfile          = false
     @Published var isPresentingSheet             = false
     @Published var isShowingAlert                = false
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
-    
+
     @Environment(\.dismiss) var dismiss
 
-    func resetRankList(for game: Game){
+    func resetGameProfileSelections(for game: Game){
         let gameRanks = game.getRanksForGame()
         if !gameRanks.isEmpty {
             selectedGameRank = gameRanks[0]
         } else {
             selectedGameRank = nil
         }
+        selectedGameVariant = game.gameVariants.first ?? nil
     }
 
     func resetInput(){

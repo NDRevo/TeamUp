@@ -26,7 +26,7 @@ struct AddPlayerGameProfileSheet: View {
                 }
                 .pickerStyle(.menu)
                 .onChange(of: playerManager.selectedGame) { newValue in
-                    playerManager.resetRankList(for: newValue)
+                    playerManager.resetGameProfileSelections(for: newValue)
                 }
 
                 if playerManager.selectedGame.hasVariants() {

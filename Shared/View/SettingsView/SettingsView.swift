@@ -24,7 +24,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            
+
             Section {
                 Button {
                     Task { await viewModel.changeGameLeaderPosition(to: 2, for: playerManager.playerProfile!) }

@@ -37,30 +37,18 @@ final class CloudKitManager {
         return records.map(TUPlayer.init)
     }
 
-    func getPlayers(with searchString: String) async throws -> [TUPlayer] {
-        let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
-       
-        let firstNamePredicate  = NSPredicate(format: "firstName BEGINSWITH %@", searchString)
-        let lastNamePredicate   = NSPredicate(format: "lastName BEGINSWITH %@", searchString)
+    func getPlayers(with username: String) async throws -> [TUPlayer] {
+        let sortDescriptor = NSSortDescriptor(key: TUPlayer.kUsername, ascending: true)
+        let usernamePredicate  = NSPredicate(format: "userName BEGINSWITH %@", username)
 
         //let compoundPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [firstNamePredicate,])
-        let firstNameQuery = CKQuery(recordType: RecordType.player, predicate: firstNamePredicate)
-        firstNameQuery.sortDescriptors = [sortDescriptor]
-        
-        let lastNameQuery = CKQuery(recordType: RecordType.player, predicate: lastNamePredicate)
-        lastNameQuery.sortDescriptors = [sortDescriptor]
+        let usernameQuery = CKQuery(recordType: RecordType.player, predicate: usernamePredicate)
+        usernameQuery.sortDescriptors = [sortDescriptor]
 
-        let (firstNameResults, _) = try await container.publicCloudDatabase.records(matching: firstNameQuery)
-        let (lastNameResults, _) = try await container.publicCloudDatabase.records(matching: lastNameQuery)
-        
-        let totalResults = firstNameResults + lastNameResults
-        
-        let records = totalResults.compactMap{_, result in try? result.get()}
-        
-        let newRecords = records.map(TUPlayer.init)
-        
-        //DUPLICATES
-        return newRecords
+        let (usernameResults, _) = try await container.publicCloudDatabase.records(matching: usernameQuery)
+        let records = usernameResults.compactMap{_, result in try? result.get()}
+
+        return records.map(TUPlayer.init)
     }
 
     func getPlayersAndProfiles() async throws -> [CKRecord.ID: [TUPlayerGameProfile]] {

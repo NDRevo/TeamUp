@@ -322,6 +322,7 @@ enum DetailItem {
             do {
                 availablePlayers =  try await CloudKitManager.shared.getPlayers(with: searchString)
             } catch {
+                print(error)
                 alertItem = AlertContext.unableToSearchForPlayers
                 isShowingAlert = true
             }
