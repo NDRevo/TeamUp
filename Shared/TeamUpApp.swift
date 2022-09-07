@@ -20,6 +20,8 @@ struct TeamUpApp: App {
                 .environmentObject(playerManager)
                 .task {
                     await playerManager.getRecordAndPlayerProfile()
+                    eventsManager.getMyPublishedEvents(for: playerManager.playerProfile)
+                    eventsManager.getMyUnpublishedEvents(for: playerManager.playerProfile)
                 }
         }
     }

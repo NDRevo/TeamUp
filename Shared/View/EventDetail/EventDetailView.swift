@@ -319,7 +319,7 @@ struct ParticipantsView: View {
                 Spacer()
                 if viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isPublished == 1 {
                     NavigationLink {
-                        AddExistingPlayerSheet(viewModel: viewModel)
+                        AddPlayerToEventSheet(viewModel: viewModel)
                     } label: {
                         Image(systemName: "person.badge.plus")
                             .font(.system(size: 24, design: .default))
@@ -384,7 +384,7 @@ struct ParticipantsView: View {
             } else {
                 LazyVStack {
                     ForEach(viewModel.playersInEvent){ player in
-                        EventParticipantCell(eventGame: viewModel.event.eventGameName, player: player)
+                        EventParticipantCell(event: viewModel.event, player: player)
                             .onLongPressGesture {
                                 //This stops scrolling
                                 if viewModel.isEventOwner(for: playerManager.playerProfileRecord) {

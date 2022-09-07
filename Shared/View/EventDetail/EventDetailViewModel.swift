@@ -139,7 +139,7 @@ enum DetailItem {
             case .addMatch:
                 AddMatchSheet(viewModel: self)
             case .addPlayer:
-                AddExistingPlayerSheet(viewModel: self)
+                AddPlayerToEventSheet(viewModel: self)
             case .none:
                 EmptyView()
         }
@@ -322,7 +322,6 @@ enum DetailItem {
             do {
                 availablePlayers =  try await CloudKitManager.shared.getPlayers(with: searchString)
             } catch {
-                print(error)
                 alertItem = AlertContext.unableToSearchForPlayers
                 isShowingAlert = true
             }

@@ -24,24 +24,11 @@ struct AddPlayerListCell: View {
     var body: some View {
         HStack{
             VStack(alignment: .leading){
-                HStack{
-                    if let playerProfile = playerProfile {
-                        Text(playerProfile.gameID)
-                            .bold()
-                            .font(.title2)
-                        Text("(\(player.firstName))")
-                            .bold()
-                            .font(.title2)
-                    } else {
-                        Text("\(player.firstName) \(player.lastName)")
-                            .bold()
-                            .font(.title2)
-                    }
-                }
-                if let playerProfile = playerProfile {
-                    Text(playerProfile.gameRank)
-                        .fontWeight(.light)
-                }
+                Text("\(player.username)")
+                    .bold()
+                    .font(.title3)
+                Text("\(player.firstName) \(player.lastName)")
+                    .font(.body)
             }
             Spacer()
             Image(systemName: isChecked ? "checkmark.circle" : "circle")

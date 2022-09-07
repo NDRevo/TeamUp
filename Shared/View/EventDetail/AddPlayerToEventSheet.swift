@@ -8,9 +8,9 @@
 import SwiftUI
 import CloudKit
 
-//MARK: AddExistingPlayerSheet
+//MARK: AddPlayerToEventSheet
 //INFO: Displays a sheet for event owners to search for a player and add them to the event
-struct AddExistingPlayerSheet: View {
+struct AddPlayerToEventSheet: View {
 
     @ObservedObject var viewModel: EventDetailViewModel
     @Environment(\.dismiss) var dismiss
@@ -25,16 +25,15 @@ struct AddExistingPlayerSheet: View {
                         }
                     }
                 }
+            } else {
+                VStack(spacing: 12) {
+                    Image(systemName: "person.3")
+                        .font(.system(size: 36))
+                        .foregroundColor(.secondary)
+                    Text("Search players by their username")
+                        .foregroundColor(.secondary)
+                }.offset(y: -64)
             }
-//MARK: Fix
-//                VStack(spacing: 12) {
-//                    Image(systemName: "person.3")
-//                        .font(.system(size: 36))
-//                        .foregroundColor(.secondary)
-//                    Text("No available players")
-//                        .foregroundColor(.secondary)
-//                }.offset(y: -64)
-    
         }
         .searchable(text: $viewModel.searchString)
         .onSubmit(of: .search){
@@ -66,7 +65,7 @@ struct AddExistingPlayerSheet: View {
 
 struct AddExistingPlayerSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddExistingPlayerSheet(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+        AddPlayerToEventSheet(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
             .environmentObject(EventsManager())
     }
 }

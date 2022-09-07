@@ -70,7 +70,29 @@ final class CloudKitManager {
 
         return playersAndProfiles
     }
+
+    func getPlayerGameProfile(for player: TUPlayer, event: TUEvent) async throws -> TUPlayerGameProfile?{
+        let sortDescriptor = NSSortDescriptor(key: TUPlayerGameProfile.kGameName, ascending: true)
     
+
+        let reference = CKRecord.Reference(recordID: player.id, action: .none)
+        var predicateString = "associatedToPlayer == %@ && gameName == %@"
+
+        if !event.eventGameVariantName.isEmpty {
+            predicateString.append(" && gameVariantName == %@")
+        }
+
+        let predicate = NSPredicate(format: predicateString, reference, event.eventGameName, event.eventGameVariantName)
+
+        let query = CKQuery(recordType: RecordType.playerGameProfiles, predicate: predicate)
+        query.sortDescriptors = [sortDescriptor]
+
+        let (matchResults, _) = try await CloudKitManager.shared.container.publicCloudDatabase.records(matching: query)
+        let records = matchResults.compactMap { _ , result in try? result.get()}
+
+        return records.map(TUPlayerGameProfile.init).first
+    }
+
     func getGamesForPlayer(for playerID: CKRecord.ID) async throws -> [TUPlayerGameProfile] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayerGameProfile.kGameName, ascending: true)
        

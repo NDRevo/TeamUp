@@ -301,6 +301,7 @@ import SwiftUI
                     playerProfileRecord = try await CloudKitManager.shared.fetchRecord(with: profileReference.recordID)
                     playerProfile = TUPlayer(record: playerProfileRecord!)
                     getGameProfiles()
+                    getEventsParticipating()
                }
             } catch {
                 alertItem = AlertContext.unableToGetUserRecord

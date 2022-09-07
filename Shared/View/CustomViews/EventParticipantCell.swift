@@ -11,31 +11,22 @@ import SwiftUI
 //INFO: View that displays players name and game profile details
 struct EventParticipantCell: View {
 
-    var eventGame: String
+    var event: TUEvent
     var player: TUPlayer
-    //MARK: Grab playerprofile when going into event detail
-    var playerProfile: TUPlayerGameProfile?
+    @State var gameProfile: TUPlayerGameProfile? = nil
 
     var body: some View {
         HStack{
             VStack(alignment: .leading){
-                HStack{
-                    if let playerProfile = playerProfile {
-                        Text(playerProfile.gameID)
-                            .bold()
-                            .font(.title2)
-                        Text("(\(player.firstName))")
-                            .bold()
-                            .font(.title2)
-                    } else {
-                        Text("\(player.firstName) \(player.lastName)")
-                            .bold()
-                            .font(.title2)
-                    }
-                }
-                if let playerProfile = playerProfile {
-                    Text(playerProfile.gameRank)
-                        .fontWeight(.light)
+                if let gameProfile = gameProfile {
+                    Text("\(gameProfile.gameID)")
+                        .bold()
+                        .font(.title3)
+                    Text(gameProfile.gameRank)
+                } else {
+                    Text("\(player.username)")
+                        .bold()
+                        .font(.title)
                 }
             }
             Spacer()
@@ -44,5 +35,12 @@ struct EventParticipantCell: View {
         .frame(height: 65)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .task {
+            do{
+                gameProfile = try await CloudKitManager.shared.getPlayerGameProfile(for: player,event: event)
+            } catch {
+                print(error)
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@ struct DebugView: View {
                 ForEach(eventsManager.players){ player in
                         HStack{
                             VStack(alignment: .leading){
-                                Text(player.firstName)
+                                Text(player.username)
                                     .bold()
                                     .font(.title2)
                                 
