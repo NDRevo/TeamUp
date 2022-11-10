@@ -89,6 +89,7 @@ enum EventError: Error {
         record[TUEvent.kEventDescription]       = eventDescription
         record[TUEvent.kEventLocation]          = eventLocation
         record[TUEvent.kIsPublished]            = 0
+        record[TUEvent.kIsArchived]             = 0
         
         if let profile = profile {
             record[TUEvent.kEventOwner]         = CKRecord.Reference(record: profileRecord!, action: .none)

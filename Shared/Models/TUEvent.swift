@@ -21,6 +21,7 @@ struct TUEvent: Identifiable, Hashable {
     static let kEventOwner              = "eventOwner"
     static let kEventOwnerName          = "eventOwnerName"
     static let kIsPublished             = "isPublished"
+    static let kIsArchived              = "isArchived"
 
     let id: CKRecord.ID
 
@@ -35,6 +36,7 @@ struct TUEvent: Identifiable, Hashable {
     let eventOwnerName: String
     let eventSchool: String
     let isPublished: Int
+    let isArchived: Int
 
     init(record: CKRecord){
         id = record.recordID
@@ -52,6 +54,7 @@ struct TUEvent: Identifiable, Hashable {
         eventOwnerName          = record[TUEvent.kEventOwnerName] as? String ?? "N/A"
         eventSchool             = record[TUEvent.kEventSchool] as? String ?? "N/A"
         isPublished             = record[TUEvent.kIsPublished] as? Int ?? 0
+        isArchived              = record[TUEvent.kIsArchived] as? Int ?? 0
     }
 
     var getDateDetails: DateComponents {

@@ -185,7 +185,7 @@ import SwiftUI
                     }
                 }
 
-                eventsParticipating = mappedRecords.map(TUEvent.init).sorted(by: {$0.eventStartDate < $1.eventStartDate})
+                eventsParticipating = mappedRecords.map(TUEvent.init).sorted(by: {$0.eventStartDate < $1.eventStartDate}).filter({$0.isArchived == 0})
             } catch {
                 alertItem = AlertContext.unableToFetchEventsParticipating
                 isShowingAlert = true

@@ -57,6 +57,7 @@
 		560E42C227946E6100408B4B /* AlertContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42C027946E6100408B4B /* AlertContext.swift */; };
 		560E42C42794F22200408B4B /* AddPlayerListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42C32794F22200408B4B /* AddPlayerListCell.swift */; };
 		560E42C52794F22200408B4B /* AddPlayerListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42C32794F22200408B4B /* AddPlayerListCell.swift */; };
+		5617ED8428C84CD900B096FA /* ArchivedEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5617ED8328C84CD900B096FA /* ArchivedEventsView.swift */; };
 		5623DB4627B4B14C0015D59A /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623DB4527B4B14C0015D59A /* View+Ext.swift */; };
 		5623DB4727B4B14C0015D59A /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623DB4527B4B14C0015D59A /* View+Ext.swift */; };
 		5623DB4927B60A310015D59A /* CreateProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623DB4827B60A310015D59A /* CreateProfileView.swift */; };
@@ -152,6 +153,7 @@
 		560E42BD2793C30900408B4B /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		560E42C027946E6100408B4B /* AlertContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertContext.swift; sourceTree = "<group>"; };
 		560E42C32794F22200408B4B /* AddPlayerListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerListCell.swift; sourceTree = "<group>"; };
+		5617ED8328C84CD900B096FA /* ArchivedEventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedEventsView.swift; sourceTree = "<group>"; };
 		5623DB4527B4B14C0015D59A /* View+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Ext.swift"; sourceTree = "<group>"; };
 		5623DB4827B60A310015D59A /* CreateProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileView.swift; sourceTree = "<group>"; };
 		563A46D8279D9DE4006A406B /* PlayerProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProfileView.swift; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 			children = (
 				569CAAB5285192D10081AB3B /* MyEventsViewModel.swift */,
 				569CAAB328518FB50081AB3B /* MyEventsView.swift */,
+				5617ED8328C84CD900B096FA /* ArchivedEventsView.swift */,
 				560E427B2790825E00408B4B /* AddEventSheet.swift */,
 			);
 			path = MyEventsView;
@@ -585,6 +588,7 @@
 				56664C6928A8390000418AA4 /* SchoolConstants.swift in Sources */,
 				569CAAB6285192D10081AB3B /* MyEventsViewModel.swift in Sources */,
 				560E42B827926A3F00408B4B /* EventsListViewModel.swift in Sources */,
+				5617ED8428C84CD900B096FA /* ArchivedEventsView.swift in Sources */,
 				560E42A127910CF900408B4B /* TUPlayerGameProfile.swift in Sources */,
 				560E4270278F97EF00408B4B /* EventDetailView.swift in Sources */,
 				566AB2EF278D2DAD00F4035C /* TUEvent.swift in Sources */,

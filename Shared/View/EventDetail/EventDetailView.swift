@@ -60,7 +60,7 @@ struct EventDetailView: View {
 
                 if viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
                     Menu {
-                        if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton {
+                        if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton && viewModel.event.isArchived == 0{
                             Button {
                                 viewModel.publishEvent(eventsManager: eventsManager)
                                 viewModel.isShowingPublishedButton = false
@@ -222,7 +222,7 @@ struct MatchesView: View {
                     .font(.title2)
                     .bold()
                 Spacer()
-                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
+                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isArchived == 0 {
                     Button {
                         viewModel.sheetToPresent = .addMatch
                         viewModel.resetMatchInput()
@@ -360,7 +360,7 @@ struct ParticipantsView: View {
             if viewModel.isLoading {
                 LoadingView()
                     .padding(.top, 48)
-            } else if viewModel.event.isPublished == 0 && viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
+            } else if viewModel.event.isPublished == 0 && viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isArchived == 0 {
                 HStack{
                     Spacer()
                     Text("Publish event to manually add players")
@@ -374,7 +374,7 @@ struct ParticipantsView: View {
             } else if viewModel.playersInEvent.isEmpty {
                 HStack{
                     Spacer()
-                    Text("No participants, yet")
+                    Text("No participants found")
                         .font(.title3)
                         .foregroundColor(.secondary)
                         .bold()
@@ -387,7 +387,7 @@ struct ParticipantsView: View {
                         EventParticipantCell(event: viewModel.event, player: player)
                             .onLongPressGesture {
                                 //This stops scrolling
-                                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
+                                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isArchived == 0 {
                                     viewModel.removePlayerFromEventWith(for: player)
                                     //viewModel.refreshEventDetails(with: eventsManager.players)
                                 }

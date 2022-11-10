@@ -21,7 +21,7 @@ struct MatchDetailView: View {
         ZStack {
             ScrollView(showsIndicators: false) {
                 VStack{
-                    if viewModel.isAbleToChangeTeams(for: playerManager.playerProfile){
+                    if viewModel.isAbleToChangeTeams(for: playerManager.playerProfile) && viewModel.event.isArchived == 0{
                         MatchOptionButtons(viewModel: viewModel)
                     }
 
@@ -32,7 +32,7 @@ struct MatchDetailView: View {
                                     .font(.title)
                                 Spacer()
                                 HStack(spacing: 24){
-                                    if viewModel.isEventOwner(for: playerManager.playerProfile) {
+                                    if viewModel.isEventOwner(for: playerManager.playerProfile) && viewModel.event.isArchived == 0 {
                                         Button {
                                             viewModel.isShowingAddPlayer = true
                                             viewModel.selectedTeam = team
@@ -79,7 +79,7 @@ struct MatchDetailView: View {
                         Image(systemName: "arrow.clockwise")
                             .foregroundColor(.blue)
                     }
-                    if viewModel.isAbleToAddTeam(for: playerManager.playerProfile){
+                    if viewModel.isAbleToAddTeam(for: playerManager.playerProfile) && viewModel.event.isArchived == 0{
                         Button {
                             viewModel.isShowingAddTeam = true
                             viewModel.resetInput()
@@ -88,7 +88,7 @@ struct MatchDetailView: View {
                                 .font(.system(size: 18, weight: .semibold, design: .default))
                         }
                     }
-                    if viewModel.isEventOwner(for: playerManager.playerProfile){
+                    if viewModel.isEventOwner(for: playerManager.playerProfile) && viewModel.event.isArchived == 0{
                         Menu {
                             Button(role: .destructive) {
                                 viewModel.isShowingConfirmationDialogue = true
@@ -132,15 +132,11 @@ struct PlayerListForTeam: View {
     var body: some View {
         ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
             EventParticipantCell(event: viewModel.event, player: player)
-            .swipeActions(edge: .trailing) {
-                if viewModel.isEventOwner(for: playerManager.playerProfile) {
-                    Button(role: .destructive){
+                .onLongPressGesture {
+                    if viewModel.isEventOwner(for: playerManager.playerProfile) && viewModel.event.isArchived == 0 {
                         viewModel.removePlayerFromTeam(player: player, teamRecordID: team.id)
-                    } label: {
-                        Label("Remove Player", systemImage: "minus.circle.fill")
                     }
                 }
-            }
         }
     }
 }

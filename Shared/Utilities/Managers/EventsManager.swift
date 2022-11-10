@@ -22,11 +22,25 @@ import SwiftUI
     @Published var isShowingAlert            = false
     @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 
+    nonisolated func archiveEvents() async {
+            do{
+                for event in await events {
+                    if Date() > event.eventEndDate {
+                        let eventRecord = try await CloudKitManager.shared.fetchRecord(with: event.id)
+                        eventRecord[TUEvent.kIsArchived] = 1
+                        eventRecord[TUEvent.kIsPublished] = 0
+                        let _ = try await CloudKitManager.shared.save(record: eventRecord)
+                    }
+                }
+            } catch {
+                print(error)
+            }
+    }
+
     func getPublicEvents(forGame: Game){
         Task {
             do{
-                events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, forGame: forGame)
-
+                events  = try await CloudKitManager.shared.getEvents(thatArePublished: true, forGame: forGame, isArchived: false)
                 //TIP: More efficient way of doing this?
                 for event in events {
                     playerCountPerEvent[event.id] = try await CloudKitManager.shared.getPlayersForEvent(for: event.id).count

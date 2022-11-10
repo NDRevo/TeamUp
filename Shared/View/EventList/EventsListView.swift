@@ -29,6 +29,9 @@ struct EventsListView: View {
             .task {
                 eventsManager.getPublicEvents(forGame: viewModel.currentGameSelected)
             }
+            .onAppear {
+                Task { await eventsManager.archiveEvents() }
+            }
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                 viewModel.alertItem.alertMessage
             })

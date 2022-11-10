@@ -14,6 +14,8 @@ final class CloudKitManager {
     static let shared = CloudKitManager()
     let container = CKContainer.default()
 
+    private init() {}
+
     func checkUsernameExists(for username: String) async throws -> Bool {
         let predicate = NSPredicate(format: "userName == %@", username)
         let query = CKQuery(recordType: RecordType.player, predicate: predicate)
@@ -170,17 +172,18 @@ final class CloudKitManager {
         return records
     }
 
-    func getEvents(thatArePublished: Bool, forGame: Game = Game(name: GameNames.all, ranks: [])) async throws -> [TUEvent] {
+    func getEvents(thatArePublished: Bool, forGame: Game = Game(name: GameNames.all, ranks: []), isArchived: Bool = false) async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventStartDate, ascending: true)
+        let archivedPredicate  = isArchived ? NSPredicate(format: "isArchived == 1") : NSPredicate(format: "isArchived == 0")
         let publishPredicate   = thatArePublished ? NSPredicate(format: "isPublished == 1") : NSPredicate(format: "isPublished == 0")
         let eventGamePredicate = NSPredicate(format: "eventGameName == %@", forGame.name)
 
         var predicate = NSPredicate()
 
         if forGame.name == GameNames.all {
-            predicate = publishPredicate
+            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [publishPredicate, archivedPredicate])
         } else {
-            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [publishPredicate, eventGamePredicate])
+            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [publishPredicate, eventGamePredicate, archivedPredicate])
         }
 
         let query = CKQuery(recordType: RecordType.event, predicate: predicate)
@@ -196,15 +199,16 @@ final class CloudKitManager {
     enum FetchingEventsError: Error {
         case FailedToGetEvents
     }
-    func getEvents(thatArePublished: Bool, withSpecificOwner: TUPlayer?) async throws -> [TUEvent] {
+    func getEvents(thatArePublished: Bool, withSpecificOwner: TUPlayer?, isArchived: Bool = false) async throws -> [TUEvent] {
         let sortDescriptor = NSSortDescriptor(key: TUEvent.kEventStartDate, ascending: true)
+        let archivedPredicate  = isArchived ? NSPredicate(format: "isArchived == 1") : NSPredicate(format: "isArchived == 0")
         let publishPredicate   = thatArePublished ? NSPredicate(format: "isPublished == 1") : NSPredicate(format: "isPublished == 0")
         
         guard let owner = withSpecificOwner else {
             throw FetchingEventsError.FailedToGetEvents
         }
         let eventOwnerPredicate = NSPredicate(format: "eventOwnerName == %@", owner.username)
-        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [publishPredicate, eventOwnerPredicate])
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [publishPredicate, eventOwnerPredicate, archivedPredicate])
 
         let query = CKQuery(recordType: RecordType.event, predicate: predicate)
 

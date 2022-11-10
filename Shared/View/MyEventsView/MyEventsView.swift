@@ -101,6 +101,13 @@ struct EventsListToolbarContent: ToolbarContent {
 
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
+            NavigationLink {
+               ArchivedEventsView()
+            } label: {
+                Image(systemName: "archivebox")
+                    .tint(.blue)
+            }
+
             Button {
                 viewModel.isPresentingAddEvent = true
                 viewModel.resetInput()
