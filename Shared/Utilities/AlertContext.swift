@@ -82,6 +82,10 @@ struct AlertContext {
     static let unableToPublishEvent              = AlertItem(alertTitle: Text("Server Error"),
                                                              alertMessage: Text("Unable to publish event.\n Check your internet connection and try again."),
                                                              button: Button.init("Ok", role: .none, action: {}))
+    
+    static let eventPastStartTime                = AlertItem(alertTitle: Text("Event Error"),
+                                                             alertMessage: Text("Unable to publish event.\n Current time is past event start time."),
+                                                             button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToSearchForPlayers          = AlertItem(alertTitle: Text("Server Error"),
                                                              alertMessage: Text("Unable to search for players.\n Check your internet connection and try again."),

@@ -60,10 +60,9 @@ struct EventDetailView: View {
 
                 if viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
                     Menu {
-                        if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton && viewModel.event.isArchived == 0{
+                        if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton && viewModel.event.isArchived == 0 {
                             Button {
                                 viewModel.publishEvent(eventsManager: eventsManager)
-                                viewModel.isShowingPublishedButton = false
                             } label: {
                                 Text("Publish")
                             }

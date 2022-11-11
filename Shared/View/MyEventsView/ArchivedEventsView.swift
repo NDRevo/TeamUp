@@ -10,12 +10,11 @@ import SwiftUI
 struct ArchivedEventsView: View {
     @EnvironmentObject var playerManager: PlayerManager
     @EnvironmentObject var eventsManager: EventsManager
-    @State var archivedEvents: [TUEvent] = []
 
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 12) {
-                ForEach(archivedEvents){ event in
+                ForEach(eventsManager.myArchivedEvents){ event in
                     NavigationLink {
                         EventDetailView(event: event)
                     } label: {
@@ -25,12 +24,8 @@ struct ArchivedEventsView: View {
             }
             .padding(.horizontal, 12)
         }
-        .task {
-            do {
-                archivedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: false, withSpecificOwner: playerManager.playerProfile, isArchived: true)
-            } catch {
-                print(error)
-            }
+        .onAppear {
+            eventsManager.getMyArchivedEvents(for: playerManager.playerProfile)
         }
         .navigationTitle("Archived Events")
     }

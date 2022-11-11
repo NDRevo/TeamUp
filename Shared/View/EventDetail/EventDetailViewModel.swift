@@ -272,14 +272,20 @@ enum DetailItem {
     }
 
     func publishEvent(eventsManager: EventsManager){
-        Task {
-            do {
-                let eventRecord = try await CloudKitManager.shared.fetchRecord(with: event.id)
-                eventRecord[TUEvent.kIsPublished] = 1
-                let _ = try await CloudKitManager.shared.save(record: eventRecord)
-            } catch {
-                alertItem = AlertContext.unableToPublishEvent
-                isShowingAlert = true
+        if event.eventStartDate < Date() {
+            alertItem = AlertContext.eventPastStartTime
+            isShowingAlert = true
+        } else {
+            Task {
+                do {
+                    let eventRecord = try await CloudKitManager.shared.fetchRecord(with: event.id)
+                    eventRecord[TUEvent.kIsPublished] = 1
+                    let _ = try await CloudKitManager.shared.save(record: eventRecord)
+                    isShowingPublishedButton = false
+                } catch {
+                    alertItem = AlertContext.unableToPublishEvent
+                    isShowingAlert = true
+                }
             }
         }
     }

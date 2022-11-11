@@ -14,8 +14,9 @@ import SwiftUI
     @Published var events: [TUEvent]        = []
     @Published var players: [TUPlayer]      = []
 
-    @Published var myPublishedEvents: [TUEvent]             = []
-    @Published var myUnpublishedEvents: [TUEvent]           = []
+    @Published var myPublishedEvents: [TUEvent]     = []
+    @Published var myUnpublishedEvents: [TUEvent]   = []
+    @Published var myArchivedEvents: [TUEvent]      = []
 
     @Published var playerCountPerEvent: [CKRecord.ID:Int]   = [:]
 
@@ -74,6 +75,18 @@ import SwiftUI
             } catch {
                 alertItem = AlertContext.unableToRetrieveEvents
                 isShowingAlert = true
+            }
+        }
+    }
+    
+    func getMyArchivedEvents(for owner: TUPlayer?) {
+        Task {
+            do {
+                if let owner = owner {
+                    myArchivedEvents = try await CloudKitManager.shared.getEvents(thatArePublished: false, withSpecificOwner: owner, isArchived: true)
+                }
+            } catch {
+                print(error)
             }
         }
     }
