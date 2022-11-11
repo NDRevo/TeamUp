@@ -25,12 +25,15 @@ struct EventsListView: View {
                     Spacer()
                 }
             }
-            .navigationTitle("Events")
-            .task {
+            .refreshable {
                 eventsManager.getPublicEvents(forGame: viewModel.currentGameSelected)
             }
+            .navigationTitle("Events")
             .onAppear {
-                Task { await eventsManager.archiveEvents() }
+                eventsManager.getPublicEvents(forGame: viewModel.currentGameSelected)
+                Task {
+                    await eventsManager.archiveEvents()
+                }
             }
             .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
                 viewModel.alertItem.alertMessage

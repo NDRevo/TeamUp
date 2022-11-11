@@ -15,6 +15,8 @@ enum EventError: Error {
 
 @MainActor final class MyEventsViewModel: ObservableObject {
 
+    let locations: [locations] = [.irl, .discord]
+
     @Published var eventName: String         = ""
     @Published var eventSchool: String       = ""
     @Published var eventDescription: String  = ""
@@ -25,8 +27,10 @@ enum EventError: Error {
     @Published var eventGameVariant: Game    = Game(name: GameNames.empty, ranks: [])
 
     @Published var isPresentingAddEvent      = false
+    @Published var isPresentingMap           = false
     @Published var isShowingAlert            = false
-    @Published var isDiscordLink             = false
+
+    @Published var locationPicked: locations = .irl
 
     @Published var alertItem: AlertItem      = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 

@@ -6,6 +6,16 @@
 //
 
 import SwiftUI
+
+private enum Field: Int, CaseIterable {
+    case eventName, eventIRLLocation, eventDiscordLocation, eventDescription
+}
+
+public enum locations: String, CaseIterable {
+    case irl = "IRL"
+    case discord = "Discord"
+}
+
 //MARK: AddEventSheet
 //INFO: Sheet displayed to add an event. Is set to unpublished by default
 //INFO: Add Event: Name, Start Date, End Date, Game, Game Variant, Location, and Description
@@ -14,10 +24,10 @@ struct AddEventSheet: View {
     @EnvironmentObject var playerManager: PlayerManager
     @EnvironmentObject var eventsManager: EventsManager
     @ObservedObject var viewModel: MyEventsViewModel
+    @FocusState private var focusField: Field?
 
     var body: some View {
         List{
-
             Section{
                 TextField("Event Name", text: $viewModel.eventName)
                     .disableAutocorrection(true)
@@ -25,6 +35,7 @@ struct AddEventSheet: View {
                     .onChange(of: viewModel.eventName) { _ in
                         viewModel.eventName = String(viewModel.eventName.prefix(25))
                     }
+                    .focused($focusField, equals: .eventName)
 
                 DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
                 DatePicker("Event End Date", selection: $viewModel.eventEndDate, in: viewModel.dateRange)
@@ -42,7 +53,7 @@ struct AddEventSheet: View {
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
-                
+
                 if !viewModel.eventGame.gameVariants.isEmpty {
                         Picker("Variant", selection: $viewModel.eventGameVariant) {
                             ForEach(viewModel.eventGame.gameVariants){game in
@@ -52,27 +63,58 @@ struct AddEventSheet: View {
                         }
                         .pickerStyle(MenuPickerStyle())
                 }
-
-                TextField("Event Location", text: $viewModel.eventLocation)
-                    .disableAutocorrection(true)
-                    .textInputAutocapitalization(.words)
-                    .foregroundColor(viewModel.isDiscordLink ? .blue : .none)
-                    .onChange(of: viewModel.eventLocation) { text in
-                        if text.starts(with: "discord.gg"){
-                            viewModel.isDiscordLink = true
-                        }
-                    }
-                    .onChange(of: viewModel.eventLocation) { _ in
-                        viewModel.eventLocation = String(viewModel.eventLocation.prefix(100))
-                    }
             }
 
+            Section {
+                Picker(selection: $viewModel.locationPicked, content: {
+                    ForEach(viewModel.locations, id: \.self){ location in
+                        Button {
+                            viewModel.locationPicked = location
+                        } label: {
+                            Text(location.rawValue)
+                        }
+                    }
+                }, label: {
+                    Text("Location Type")
+                })
+                .onChange(of: viewModel.locationPicked) { _ in
+                    viewModel.eventLocation = ""
+                }
+                if viewModel.locationPicked == .discord {
+                    HStack(spacing:0){
+                        Text("discord.gg/")
+                            .bold()
+                        TextField(text: $viewModel.eventLocation) {
+                            Text("valowatch")
+                        }
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .focused($focusField, equals: .eventDiscordLocation)
+                    }
+                } else {
+                    HStack{
+                        Image(systemName: "magnifyingglass")
+                            .onTapGesture {
+                                viewModel.isPresentingMap = true
+                            }
+                            .foregroundColor(.blue)
+                        TextField(text: $viewModel.eventLocation) {
+                            Text("Event Location")
+                        }
+                        .focused($focusField, equals: .eventIRLLocation)
+                    }
+                }
+            }
+            .listSectionSeparator(.hidden)
+            
+            
             Section {
                 TextField("Event Description", text: $viewModel.eventDescription, axis: .vertical)
                     .lineLimit(10, reservesSpace: true)
                     .onChange(of: viewModel.eventDescription) { _ in
                         viewModel.eventDescription = String(viewModel.eventDescription.prefix(350))
                     }
+                    .focused($focusField, equals: .eventDescription)
             } footer: {
                 Text("\(350 - viewModel.eventDescription.count) characters left.")
             }
@@ -89,10 +131,22 @@ struct AddEventSheet: View {
             }
         }
         .navigationTitle("Create Event")
+        .sheet(isPresented: $viewModel.isPresentingMap, content: {
+            SearchMapView(viewModel: viewModel)
+        })
+        .scrollIndicators(.hidden)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 //MARK: Publishing changes from within view updates is not allowed, this will cause undefined behavior.
                 Button("Cancel") {viewModel.isPresentingAddEvent = false}
+            }
+
+            ToolbarItemGroup(placement: .keyboard) {
+                Button {
+                    focusField = nil
+                } label: {
+                    Image(systemName: "keyboard.badge.eye.fill")
+                }
             }
         }
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
