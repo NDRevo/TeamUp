@@ -91,7 +91,13 @@ enum EventError: Error {
         record[TUEvent.kEventGameName]          = eventGame.name
         record[TUEvent.kEventGameVariantName]   = eventGameVariant.name
         record[TUEvent.kEventDescription]       = eventDescription
-        record[TUEvent.kEventLocation]          = eventLocation
+
+        if locationPicked == .discord {
+            record[TUEvent.kEventLocation] = "discord.gg/\(eventLocation)"
+        } else {
+            record[TUEvent.kEventLocation] = eventLocation
+        }
+
         record[TUEvent.kIsPublished]            = 0
         record[TUEvent.kIsArchived]             = 0
         
