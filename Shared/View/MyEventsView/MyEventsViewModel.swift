@@ -20,6 +20,7 @@ enum EventError: Error {
     @Published var eventName: String         = ""
     @Published var eventSchool: String       = ""
     @Published var eventDescription: String  = ""
+    @Published var eventLocationTitle: String?
     @Published var eventLocation: String     = ""
     @Published var eventDate: Date           = Date()
     @Published var eventEndDate: Date        = Date()
@@ -53,7 +54,9 @@ enum EventError: Error {
         eventGame        = Game(name: GameNames.other, ranks: [])
         eventGameVariant = Game(name: GameNames.empty, ranks: [])
         eventDescription = ""
+        eventLocationTitle = nil
         eventLocation    = ""
+        locationPicked   = .irl
     }
 
     //INFO: Used to set default date and hour for creating an event
@@ -95,6 +98,7 @@ enum EventError: Error {
         if locationPicked == .discord {
             record[TUEvent.kEventLocation] = "discord.gg/\(eventLocation)"
         } else {
+            record[TUEvent.kEventLocationTitle] = eventLocationTitle
             record[TUEvent.kEventLocation] = eventLocation
         }
 

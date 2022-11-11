@@ -14,6 +14,14 @@ struct EventListCell: View {
 
     var event: TUEvent
 
+    var eventLocation: String {
+        if let eventLocationTitle = event.eventLocationTitle {
+            return eventLocationTitle
+        } else {
+           return event.eventLocation
+        }
+    }
+
     var body: some View {
         HStack {
             VStack(spacing: 30){
@@ -29,7 +37,8 @@ struct EventListCell: View {
                 HStack{
                     EventInfoItem(infoItemText: "Start Time", eventItem: event.getTime)
                     Spacer()
-                    EventInfoItem(infoItemText: "Location", eventItem: event.eventLocation)
+                    EventInfoItem(infoItemText: "Location", eventItem: eventLocation)
+                        .frame(width: 150)
                     Spacer()
                     EventInfoItem(infoItemText: "Players", eventItem: "\(eventsManager.playerCountPerEvent[event.id] ?? 0)")
                 }
@@ -120,7 +129,7 @@ struct EventInfoItem: View {
     var eventItem: String
     
     var body: some View {
-        VStack(alignment: .center,spacing: 5){
+        VStack(alignment: .center, spacing: 5){
             Text(infoItemText)
                 .fontWeight(.medium)
                 .font(.subheadline)
@@ -129,6 +138,7 @@ struct EventInfoItem: View {
                 .bold()
                 .font(.body)
                 .lineLimit(1)
+                .minimumScaleFactor(0.75)
         }
     }
 }

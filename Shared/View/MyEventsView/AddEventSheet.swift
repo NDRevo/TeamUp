@@ -46,13 +46,13 @@ struct AddEventSheet: View {
                     }
 
                 Picker("Game", selection: $viewModel.eventGame) {
-                    //Starts from 1 to remove "All" case
+                    //Starts from 2 to remove "All" & other case
                     ForEach(GameLibrary.data.games[2...]){game in
                         Text(game.name)
                             .tag(game.self)
                     }
                 }
-                .pickerStyle(MenuPickerStyle())
+                .pickerStyle(.menu)
 
                 if !viewModel.eventGame.gameVariants.isEmpty {
                         Picker("Variant", selection: $viewModel.eventGameVariant) {
@@ -61,7 +61,7 @@ struct AddEventSheet: View {
                                     .tag(game.self)
                             }
                         }
-                        .pickerStyle(MenuPickerStyle())
+                        .pickerStyle(.menu)
                 }
             }
 
@@ -102,6 +102,7 @@ struct AddEventSheet: View {
                             Text("Event Location")
                         }
                         .focused($focusField, equals: .eventIRLLocation)
+                        .textInputAutocapitalization(.words)
                     }
                 }
             }

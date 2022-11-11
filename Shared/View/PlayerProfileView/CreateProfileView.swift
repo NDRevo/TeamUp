@@ -39,7 +39,7 @@ struct CreateProfileView: View {
                             .tag(school.self)
                     }
                 }
-                .pickerStyle(MenuPickerStyle())
+                .pickerStyle(.menu)
             }
 
             Section{

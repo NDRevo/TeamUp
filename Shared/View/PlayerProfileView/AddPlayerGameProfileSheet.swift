@@ -36,7 +36,7 @@ struct AddPlayerGameProfileSheet: View {
                                 .tag(game as Game?)
                         }
                     }
-                    .pickerStyle(MenuPickerStyle())
+                    .pickerStyle(.menu)
 
                 } else if playerManager.selectedGame.hasRanks() {
                     Picker("Rank", selection: $playerManager.selectedGameRank) {

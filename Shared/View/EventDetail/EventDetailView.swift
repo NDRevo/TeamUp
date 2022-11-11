@@ -116,26 +116,34 @@ struct EventLocationDetailViewSection: View {
                             }
                     }
                 } else {
-                    HStack(spacing: 4){
-                        Image(systemName: DetailItem.location.getSystemImage())
-                            .foregroundColor(.blue)
-                        Text(DetailItem.location.getTextHeading())
-                            .font(.callout)
-                    }
-                    Text(viewModel.event.eventLocation)
-                        .bold()
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
-                        .onTapGesture {
-                            var url = URL(string: viewModel.event.eventLocation)
-                            if viewModel.event.eventLocation.starts(with: "discord.gg") {
-                                url = URL(string: "https://\(viewModel.event.eventLocation)")
-                                UIApplication.shared.open(url!)
-                            } else{
-                                url = URL(string: "maps://?q=\(viewModel.event.eventLocation.replacingOccurrences(of: " ", with: "+"))")
-                                UIApplication.shared.open(url!)
-                            }
+                    VStack(alignment: .leading,spacing: 10){
+                        HStack(spacing: 4){
+                            Image(systemName: DetailItem.location.getSystemImage())
+                                .foregroundColor(.blue)
+                            Text(DetailItem.location.getTextHeading())
+                                .font(.callout)
                         }
+                        VStack(alignment: .leading, spacing: 4){
+                            if let eventLocationTitle = viewModel.event.eventLocationTitle {
+                                Text(eventLocationTitle)
+                                    .bold()
+                            }
+                            Text(viewModel.event.eventLocation)
+                                .bold()
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.75)
+                                .onTapGesture {
+                                    var url = URL(string: viewModel.event.eventLocation)
+                                    if viewModel.event.eventLocation.starts(with: "discord.gg") {
+                                        url = URL(string: "https://\(viewModel.event.eventLocation)")
+                                        UIApplication.shared.open(url!)
+                                    } else{
+                                        url = URL(string: "maps://?address=\(viewModel.event.eventLocation.replacingOccurrences(of: " ", with: "%20"))&q=\(viewModel.event.eventLocationTitle?.replacingOccurrences(of: " ", with: "%20") ?? "")")
+                                        UIApplication.shared.open(url!)
+                                    }
+                                }
+                        }
+                    }
                 }
             }
             Spacer()
