@@ -23,35 +23,8 @@ struct MyEventsView: View {
                 if !eventsManager.myUnpublishedEvents.isEmpty || !eventsManager.myPublishedEvents.isEmpty {
                     ScrollView {
                         VStack(alignment: .leading){
-                            if !eventsManager.myUnpublishedEvents.isEmpty {
-                                Text("Unpublished Events")
-                                    .bold()
-                                    .font(.title2)
-                                VStack(spacing: 12){
-                                    ForEach(eventsManager.myUnpublishedEvents) { event in
-                                        NavigationLink {
-                                            EventDetailView(event: event)
-                                        } label: {
-                                            EventListCell(event: event)
-                                        }
-                                    }
-                                }
-                            }
-
-                            if !eventsManager.myPublishedEvents.isEmpty {
-                                Text("Published Events")
-                                    .bold()
-                                    .font(.title2)
-                                VStack(spacing: 12){
-                                    ForEach(eventsManager.myPublishedEvents) { event in
-                                        NavigationLink {
-                                            EventDetailView(event: event)
-                                        } label: {
-                                            EventListCell(event: event)
-                                        }
-                                    }
-                                }
-                            }
+                            MyEventsListView(myEvents: eventsManager.myUnpublishedEvents, typeOfEvents: "Unpublished Event")
+                            MyEventsListView(myEvents: eventsManager.myPublishedEvents, typeOfEvents: "Published Event")
                             Spacer()
                         }
                         .padding(.horizontal, 12)
@@ -116,6 +89,28 @@ struct EventsListToolbarContent: ToolbarContent {
                     .tint(.blue)
             }
             .accessibilityLabel("Create Event")
+        }
+    }
+}
+
+struct MyEventsListView: View {
+    var myEvents: [TUEvent]
+    var typeOfEvents: String
+    
+    var body: some View {
+        if !myEvents.isEmpty {
+            Text(typeOfEvents)
+                .bold()
+                .font(.title2)
+            VStack(spacing: 12){
+                ForEach(myEvents) { event in
+                    NavigationLink {
+                        EventDetailView(event: event)
+                    } label: {
+                        EventListCell(event: event)
+                    }
+                }
+            }
         }
     }
 }

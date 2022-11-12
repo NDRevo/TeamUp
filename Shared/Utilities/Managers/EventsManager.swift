@@ -34,6 +34,7 @@ import SwiftUI
                     }
                 }
             } catch {
+                //We don't want everyone to be alerted that an event cant be archived
                 print(error)
             }
     }

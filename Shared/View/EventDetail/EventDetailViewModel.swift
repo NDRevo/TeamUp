@@ -9,8 +9,10 @@ import CloudKit
 import SwiftUI
 import EventKit
 
+
+/// Determines what sheet to present
 enum PresentingSheet {
-    case addMatch, addPlayer, eventMoreDetail
+    case addMatch, addPlayer, eventMoreDetails
 }
 
 enum DetailItem {
@@ -80,7 +82,9 @@ enum DetailItem {
     @Published var isShowingAlert: Bool             = false
     @Published var alertItem: AlertItem             = AlertItem(alertTitle: Text("Unable To Show Alert"),
                                                                 alertMessage: Text("There was a problem showing the alert."))
-
+    /// Check to see if user is owner of event
+    /// - Parameter playerRecord: CKRecord of player being checked
+    /// - Returns: Bool
     func isEventOwner(for playerRecord: CKRecord?) -> Bool {
         if let playerRecord = playerRecord {
             return event.eventOwner.recordID == playerRecord.recordID
@@ -88,7 +92,8 @@ enum DetailItem {
         return false
     }
 
-    //INFO: Returns range of dates from the event date onwards
+    /// dateRange
+    /// - Returns: Range from event start. Used to created match within date range of event inclusive
     func dateRange() -> PartialRangeFrom<Date> {
         let calendar = Calendar.current
         let startDate = DateComponents(
@@ -99,7 +104,7 @@ enum DetailItem {
         return calendar.date(from:startDate)!...
     }
 
-    //INFO: Checks whether user has calendar access, alerts if doesn't
+    /// Used to determine if user has given app access to calendar
     nonisolated func checkCalendarAcces() async {
         do {
             let hasGivenAccess = try await store.requestAccess(to: .event)
@@ -117,11 +122,13 @@ enum DetailItem {
         } catch {}
     }
 
+    /// Fetches matches and players in event upon pull to refresh
     func refreshEventDetails(){
         getMatchesForEvent()
         getPlayersInEvents()
     }
 
+    /// Fetches matches and players in events at first launch
     func setUpEventDetails(){
         //MARK: Prevents from being called twice. Bug in SwiftUI
         if !onAppearHasFired {
@@ -131,11 +138,12 @@ enum DetailItem {
         }
     }
 
-    //INFO: Presents a sheet based on PresentingSheet enumerator
+    /// Presents a sheet based on PresentingSheet enumerator
+    /// - Returns: A sheet view
     @ViewBuilder func presentSheet() -> some View {
         switch sheetToPresent {
-            case .eventMoreDetail:
-                EventMoreDetailSheet(viewModel: self)
+            case .eventMoreDetails:
+                EventMoreDetailsSheet(viewModel: self)
             case .addMatch:
                 AddMatchSheet(viewModel: self)
             case .addPlayer:
@@ -145,12 +153,14 @@ enum DetailItem {
         }
     }
 
+    /// Resets user input from add match sheet
     func resetMatchInput(){
         matchName = ""
         matchDate = event.eventStartDate
     }
 
-    //INFO: Creates Match CKRecord with match: Name, Date, & Reference to event
+    /// Creates Match CKRecord with match: Name, Date, & Reference to event
+    /// - Returns: CKRecord used to save in CloudKit
     private func createMatchRecord() -> CKRecord{
         let record = CKRecord(recordType: RecordType.match)
 
@@ -161,7 +171,8 @@ enum DetailItem {
         return record
     }
 
-    //INFO: Returns T/F if creating match is valid based on if name is empty and match date is ahead of event date
+    ///  Checks if valid based on if name is empty and match date is ahead of event date
+    /// - Returns: Bool
     private func isValidMatch() -> Bool{
         guard !matchName.isEmpty, matchDate >= event.eventStartDate, matchDate <= event.eventEndDate else {
             return false
@@ -169,6 +180,7 @@ enum DetailItem {
         return true
     }
 
+    /// Calls to create TUMatch record and saves to cloudkit
     func createMatchForEvent(){
         guard isValidMatch() else {
             alertItem = AlertContext.invalidMatch
@@ -192,6 +204,8 @@ enum DetailItem {
         }
     }
 
+    /// Adds reference of event to TUPlayer record and saves it in cloudkit. Appens it locally and makes a network call to update UI
+    /// - Parameter playerManager: Global state object to handle app user's profile
     func addPlayerToEvent(with playerManager: PlayerManager){
         Task {
             do {
@@ -219,6 +233,8 @@ enum DetailItem {
         }
     }
 
+    /// Updates TUPlayer record to remove reference
+    /// - Parameter playerManager: Global state object to handle app user's profile
     func leaveEvent(with playerManager: PlayerManager){
         Task {
             do {
@@ -243,15 +259,19 @@ enum DetailItem {
         }
     }
 
-    //INFO: For Event owners to search players and manually add them to their event
+    /// For event owners to search players and manually add them to their event
+    /// Updates TUPlayer record's inEvents field to append a reference to the event
     func addCheckedPlayersToEvent(){
         Task {
             do {
                 for player in checkedOffPlayers {
+                    //Fetches player record
                     let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
                     
+                    //Gets inEvents reference list
                     var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
 
+                    //Checks if array is empty, meaning theyre not part of an event
                     if references.isEmpty{
                         playerRecord[TUPlayer.kInEvents] = [CKRecord.Reference(recordID: event.id, action: .none)]
                     } else {
@@ -271,6 +291,8 @@ enum DetailItem {
         }
     }
 
+    /// Updates event record to set isPublished to true
+    /// - Parameter eventsManager: Global state object to handle events
     func publishEvent(eventsManager: EventsManager){
         if event.eventStartDate < Date() {
             alertItem = AlertContext.eventPastStartTime
@@ -290,7 +312,7 @@ enum DetailItem {
         }
     }
 
-    //INFO: Gets called on appearance of event detail view
+    /// Fetches matches from cloudkit using event id
     private func getMatchesForEvent(){
         showLoadingView()
         Task {
@@ -306,7 +328,7 @@ enum DetailItem {
         }
     }
 
-    //INFO: Gets called on appearance of event detail view
+    /// Fetches list of players in an event from cloudkit by using the event id
     private func getPlayersInEvents(){
         showLoadingView()
         Task {
@@ -322,7 +344,8 @@ enum DetailItem {
         }
     }
 
-    //INFO: Fetches list of players based of search
+    /// Fetches list of players that match search string passed by user
+    /// - Parameter searchString: User inputted string used to find players
     func getSearchedPlayers(with searchString: String) {
         Task {
             do {
@@ -333,23 +356,26 @@ enum DetailItem {
             }
         }
     }
-
-    //INFO: Removes player's reference to event and any references of a team within event
+    
+    /// Removes player from an event
+    /// - Parameter player: Player to be removed
     func removePlayerFromEventWith(for player: TUPlayer){
             Task {
                 do {
+                    //Fetches player record
                     let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
 
+                    //Removes event reference from player InEvents list
                     var references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as! [CKRecord.Reference]
                     references.removeAll(where: {$0.recordID == event.id})
-
                     playerRecord[TUPlayer.kInEvents] = references
 
+                    //Fetches teams in an event
                     let teamsInEvents = try await CloudKitManager.shared.getTeamsFromEvent(for: event.id)
 
+                    //Fetches list of teams the player is on
                     var teamReferences: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as? [CKRecord.Reference] ?? []
 
-                    //TIP: Make into dictionary?
                     if !teamsInEvents.isEmpty {
                         for teamReference in teamReferences {
                             //INFO: If team doesnt exist then remove from player's onTeams

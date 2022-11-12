@@ -27,28 +27,7 @@ struct MatchDetailView: View {
 
                     ForEach(viewModel.teams) { team in
                         VStack{
-                            HStack {
-                                Text(team.teamName)
-                                    .font(.title)
-                                Spacer()
-                                HStack(spacing: 24){
-                                    if viewModel.isEventOwner(for: playerManager.playerProfile) && viewModel.event.isArchived == 0 {
-                                        Button {
-                                            viewModel.isShowingAddPlayer = true
-                                            viewModel.selectedTeam = team
-                                        } label: {
-                                            Image(systemName: "person.badge.plus")
-                                                .font(.system(size: 24, design: .default))
-                                        }
-                                        Button {
-                                            viewModel.deleteTeam(teamID: team.id)
-                                        } label: {
-                                            TeamIcon(color: .red, isAdding: false)
-                                                .font(.system(size: 25, weight: .regular, design: .default))
-                                        }
-                                    }
-                                }
-                            }
+                            TeamHeaderView(viewModel: viewModel, team: team)
                             PlayerListForTeam(viewModel: viewModel, team: team)
                         }
                         .padding(12)
@@ -121,49 +100,5 @@ struct MatchDetailView_Previews: PreviewProvider {
     static var previews: some View {
         //EventDetailViewModel not implemented
         MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event)))
-    }
-}
-
-struct PlayerListForTeam: View {
-    @EnvironmentObject var playerManager: PlayerManager
-    @ObservedObject var viewModel: MatchDetailViewModel
-    var team: TUTeam
-
-    var body: some View {
-        ForEach(viewModel.teamsAndPlayer[team.id] ?? []){ player in
-            EventParticipantCell(event: viewModel.event, player: player)
-                .onLongPressGesture {
-                    if viewModel.isEventOwner(for: playerManager.playerProfile) && viewModel.event.isArchived == 0 {
-                        viewModel.removePlayerFromTeam(player: player, teamRecordID: team.id)
-                    }
-                }
-        }
-    }
-}
-
-//MARK: MatchOptionButtons
-//INFO: Two buttons in an HStack that allow you to either shuffle or balance the teams
-struct MatchOptionButtons: View {
-
-    @ObservedObject var viewModel: MatchDetailViewModel
-
-    var body: some View {
-        HStack(spacing: 20) {
-            Button(action: {
-                viewModel.shufflePlayers()
-            }, label: {
-                Text("Shuffle")
-            })
-            .modifier(MatchDetailButtonStyle(color: .yellow))
-
-            Button(action: {
-                print("BALANCE")
-            }, label: {
-                Text("Balance")
-            })
-            .modifier(MatchDetailButtonStyle(color: .blue))
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
-        .listRowBackground(Color.clear)
     }
 }

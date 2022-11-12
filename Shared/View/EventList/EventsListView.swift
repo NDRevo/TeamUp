@@ -21,7 +21,7 @@ struct EventsListView: View {
                 VStack {
                     GameMenuBar(viewModel: viewModel)
                     if eventsManager.events.isEmpty {NoEventsFoundMessage()}
-                    else {ListOfEvents(viewModel: viewModel) }
+                    else {ListOfEvents(viewModel: viewModel)}
                     Spacer()
                 }
             }
