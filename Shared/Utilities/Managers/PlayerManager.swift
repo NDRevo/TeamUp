@@ -132,7 +132,6 @@ import SwiftUI
         let playerRecord = createPlayerRecord()
 
         guard let userRecord = iCloudRecord else {
-            print("NO RECORD")
             alertItem = AlertContext.unableToGetUserRecord
             isShowingAlert = true
             return
@@ -283,37 +282,34 @@ import SwiftUI
 
     //MARK: CLOUDKIT
 
-    //
-    // Retrieves user record from iCloud
-    // Fetches user record from CloudKit
-    // Fetches TUPlayer record using user record
-    // Fetches game profiles
-    //
-    
+    /// Retrieves user record from iCloud
+    /// Fetches user record from CloudKit
+    /// Fetches TUPlayer record using user record
+    /// Fetches game profiles
     func getRecordAndPlayerProfile() async {
         Task{
             do {
                 let recordID = try await CloudKitManager.shared.container.userRecordID()
-                let record = try await CloudKitManager.shared.container.publicCloudDatabase.record(for: recordID)
-                iCloudRecord = record
+                iCloudRecord = try await CloudKitManager.shared.container.publicCloudDatabase.record(for: recordID)
 
-                if let profileReference = record["userProfile"] as? CKRecord.Reference {
-                    playerProfileRecord = try await CloudKitManager.shared.fetchRecord(with: profileReference.recordID)
-                    playerProfile = TUPlayer(record: playerProfileRecord!)
+                if let profileReference = iCloudRecord!["userProfile"] as? CKRecord.Reference {
+                    let playerProfileRecord = try await CloudKitManager.shared.fetchRecord(with: profileReference.recordID)
+                    playerProfile = TUPlayer(record: playerProfileRecord)
                     getGameProfiles()
                     getEventsParticipating()
                }
             } catch {
-                alertItem = AlertContext.unableToGetUserRecord
-                isShowingAlert = true
+                //Player Profile tab already displays the need to log into iCloud
+                if iCloudRecord == nil {}
+                else {
+                    alertItem = AlertContext.unableToGetUserRecord
+                    isShowingAlert = true
+                }
             }
         }
     }
 
-    //
-    // Retrieves game profiles for player
-    //
-
+    /// Retrieves game profiles for player
     func getPlayerGameProfiles() async throws {
         let sortDescriptor = NSSortDescriptor(key: TUPlayerGameProfile.kGameName, ascending: true)
         

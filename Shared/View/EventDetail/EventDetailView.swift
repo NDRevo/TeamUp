@@ -58,7 +58,7 @@ struct EventDetailView: View {
                         .foregroundColor(.blue)
                 }
 
-                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) {
+                if viewModel.isEventOwner(for: playerManager.playerProfile?.record) {
                     Menu {
                         if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton && viewModel.event.isArchived == 0 {
                             Button {

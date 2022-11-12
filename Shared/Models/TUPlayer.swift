@@ -18,6 +18,7 @@ struct TUPlayer: Identifiable, Hashable {
     static let kIsGameLeader        = "isGameLeader"
     static let kIsVerfiedStudent    = "isVerifiedStudent"
 
+    let record: CKRecord
     let id: CKRecord.ID
 
     let username: String
@@ -29,6 +30,7 @@ struct TUPlayer: Identifiable, Hashable {
     let isVerifiedStudent: Int
 
     init(record: CKRecord){
+        self.record = record
         id  = record.recordID
 
         username            = record[TUPlayer.kUsername]        as? String ?? "N/A"

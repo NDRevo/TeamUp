@@ -20,14 +20,14 @@ struct EventParticipantsView: View {
                     .font(.title2)
                     .bold()
                 Spacer()
-                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isPublished == 1 {
+                if viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isPublished == 1 {
                     NavigationLink {
                         AddPlayerToEventSheet(viewModel: viewModel)
                     } label: {
                         Image(systemName: "person.badge.plus")
                             .font(.system(size: 24, design: .default))
                     }
-                } else if !viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isPublished == 1 {
+                } else if !viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isPublished == 1 {
                     if let playerProfile = playerManager.playerProfile {
                         if playerProfile.inEvents.contains(where: {$0.recordID == viewModel.event.id}) {
                             Button {
@@ -63,7 +63,7 @@ struct EventParticipantsView: View {
             if viewModel.isLoading {
                 LoadingView()
                     .padding(.top, 48)
-            } else if viewModel.event.isPublished == 0 && viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isArchived == 0 {
+            } else if viewModel.event.isPublished == 0 && viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isArchived == 0 {
                 HStack{
                     Spacer()
                     Text("Publish event to manually add players")
@@ -90,7 +90,7 @@ struct EventParticipantsView: View {
                         EventParticipantCell(event: viewModel.event, player: player)
                             .onLongPressGesture {
                                 //This stops scrolling
-                                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isArchived == 0 {
+                                if viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isArchived == 0 {
                                     viewModel.removePlayerFromEventWith(for: player)
                                     //viewModel.refreshEventDetails(with: eventsManager.players)
                                 }

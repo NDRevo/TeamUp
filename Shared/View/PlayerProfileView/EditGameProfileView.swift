@@ -77,9 +77,6 @@ struct EditGameProfileView: View {
             gameAliases = gameProfile.gameAliases
         }
         .navigationTitle("Edit")
-        .alert(playerManager.alertItem.alertTitle, isPresented: $playerManager.isShowingAlert, actions: {}, message: {
-            playerManager.alertItem.alertMessage
-        })
     }
 
     func checkSavable() {

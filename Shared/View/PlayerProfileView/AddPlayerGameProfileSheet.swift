@@ -83,9 +83,6 @@ struct AddPlayerGameProfileSheet: View {
                 Button("Dismiss") { dismiss() }
             }
         }
-        .alert(playerManager.alertItem.alertTitle, isPresented: $playerManager.isShowingAlert, actions: {}, message: {
-            playerManager.alertItem.alertMessage
-        })
     }
 }
 

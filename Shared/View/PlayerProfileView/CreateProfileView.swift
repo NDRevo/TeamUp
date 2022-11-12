@@ -72,9 +72,6 @@ struct CreateProfileView: View {
             }
         }
         .navigationTitle("Create Profile")
-        .alert(playerManager.alertItem.alertTitle, isPresented: $playerManager.isShowingAlert, actions: {}, message: {
-            playerManager.alertItem.alertMessage
-        })
         .onSubmit {
             switch currentFocus {
                 case .username: currentFocus = .firstName

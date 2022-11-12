@@ -123,7 +123,7 @@ struct AddEventSheet: View {
             Section{
                 Button {
                     Task {
-                        try viewModel.createEvent(for: eventsManager, from: playerManager.playerProfileRecord, with: playerManager.playerProfile)
+                        try viewModel.createEvent(for: eventsManager, from: playerManager.playerProfile?.record, with: playerManager.playerProfile)
                     }
                 } label: {
                     Text("Create Event")

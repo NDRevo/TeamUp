@@ -28,9 +28,6 @@ struct PlayerProfileView: View {
                 }
                 .scrollIndicators(.hidden)
                 .navigationTitle("Profile")
-                .alert(playerManager.alertItem.alertTitle, isPresented: $playerManager.isShowingAlert, actions: {}, message: {
-                    playerManager.alertItem.alertMessage
-                })
                 .sheet(isPresented: $playerManager.isPresentingSheet) {
                     NavigationView { AddPlayerGameProfileSheet() }
                     .presentationDetents([.fraction(0.60)])

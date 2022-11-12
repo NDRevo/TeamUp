@@ -21,7 +21,7 @@ struct EventMatchesView: View {
                     .font(.title2)
                     .bold()
                 Spacer()
-                if viewModel.isEventOwner(for: playerManager.playerProfileRecord) && viewModel.event.isArchived == 0 {
+                if viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isArchived == 0 {
                     Button {
                         viewModel.sheetToPresent = .addMatch
                         viewModel.resetMatchInput()
