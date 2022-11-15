@@ -93,3 +93,11 @@ struct EventDetailView: View {
         .background(Color.appBackground)
     }
 }
+
+struct EventDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        EventDetailView(event: TUEvent(record: MockData.event))
+            .environmentObject(PlayerManager(iCloudRecord: MockData.player, playerProfile: TUPlayer(record: MockData.player)))
+            .environmentObject(EventsManager())
+    }
+}

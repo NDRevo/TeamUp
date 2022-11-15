@@ -87,6 +87,6 @@ struct CreateProfileView: View {
 struct CreateProfileView_Previews: PreviewProvider {
     static var previews: some View {
        CreateProfileView()
-            .environmentObject(EventsManager())
+            .environmentObject(PlayerManager(iCloudRecord: MockData.player, playerProfile: TUPlayer(record: MockData.player)))
     }
 }

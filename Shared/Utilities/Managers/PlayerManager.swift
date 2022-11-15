@@ -44,6 +44,11 @@ import SwiftUI
 
     @Environment(\.dismiss) var dismiss
 
+    init(iCloudRecord:CKRecord? = nil, playerProfile: TUPlayer? = nil) {
+        self.iCloudRecord = iCloudRecord
+        self.playerProfile = playerProfile
+    }
+
     func resetGameProfileSelections(for game: Game){
         let gameRanks = game.getRanksForGame()
         if !gameRanks.isEmpty {

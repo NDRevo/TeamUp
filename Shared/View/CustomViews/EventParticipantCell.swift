@@ -44,3 +44,9 @@ struct EventParticipantCell: View {
         }
     }
 }
+
+struct EventParticipantCell_Previews: PreviewProvider {
+    static var previews: some View {
+        EventParticipantCell(event: TUEvent(record: MockData.event), player: TUPlayer(record: MockData.player))
+    }
+}

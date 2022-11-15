@@ -61,7 +61,7 @@ struct AddEventPlayerSheet: View {
 
 struct AddEventPlayerSheet_Previews: PreviewProvider {
     static var previews: some View {
-        //EventDetailViewModel not implemented
         AddEventPlayerSheet(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event)))
+            .environmentObject(EventDetailViewModel(event: TUEvent(record: MockData.event)))
     }
 }

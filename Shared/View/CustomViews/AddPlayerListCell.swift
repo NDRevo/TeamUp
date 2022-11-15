@@ -48,3 +48,9 @@ struct AddPlayerListCell: View {
         }
     }
 }
+
+struct EAddPlayerListCell_Previews: PreviewProvider {
+    static var previews: some View {
+        AddPlayerListCell(checkedOffPlayers: .constant([TUPlayer(record: MockData.player)]), eventGame: "VALORANT", player: TUPlayer(record: MockData.player))
+    }
+}

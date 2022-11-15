@@ -54,5 +54,6 @@ struct PlayerGameProfilesList: View {
 struct PlayerGameProfilesList_Previews: PreviewProvider {
     static var previews: some View {
         PlayerGameProfilesList()
+            .environmentObject(PlayerManager())
     }
 }

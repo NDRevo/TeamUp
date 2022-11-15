@@ -33,3 +33,9 @@ struct MatchOptionButtons: View {
         .listRowBackground(Color.clear)
     }
 }
+
+struct MatchOptionButtons_Previews: PreviewProvider {
+    static var previews: some View {
+        MatchOptionButtons(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event)))
+    }
+}

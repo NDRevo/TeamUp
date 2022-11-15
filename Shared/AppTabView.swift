@@ -43,5 +43,6 @@ struct AppTabView_Previews: PreviewProvider {
     static var previews: some View {
         AppTabView()
             .environmentObject(EventsManager())
+            .environmentObject(PlayerManager(iCloudRecord: MockData.player, playerProfile: TUPlayer(record: MockData.player)))
     }
 }

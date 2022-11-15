@@ -46,8 +46,8 @@ struct MoreDetailItemView: View {
 }
 
 
-//struct EventMoreDetailSheet_Previews: PreviewProvider {
-//    static var previews: some View {
-//        EventMoreDetailSheet()
-//    }
-//}
+struct EventMoreDetailsSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        EventMoreDetailsSheet(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+    }
+}

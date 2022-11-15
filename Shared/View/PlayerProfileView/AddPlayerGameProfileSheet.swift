@@ -12,7 +12,6 @@ import SwiftUI
 struct AddPlayerGameProfileSheet: View {
 
     @EnvironmentObject private var playerManager: PlayerManager
-    @EnvironmentObject private var eventsManager: EventsManager
 
     @Environment(\.dismiss) var dismiss
 
@@ -89,6 +88,6 @@ struct AddPlayerGameProfileSheet: View {
 struct AddPlayerGameProfileSheet_Previews: PreviewProvider {
     static var previews: some View {
         AddPlayerGameProfileSheet()
-            .environmentObject(EventsManager())
+            .environmentObject(PlayerManager(iCloudRecord: MockData.player, playerProfile: TUPlayer(record: MockData.player)))
     }
 }

@@ -18,8 +18,8 @@ struct MatchDetailView: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        ZStack {
-            ScrollView(showsIndicators: false) {
+        ScrollView(showsIndicators: false) {
+            ZStack {
                 VStack{
                     if viewModel.isAbleToChangeTeams(for: playerManager.playerProfile) && viewModel.event.isArchived == 0{
                         MatchOptionButtons(viewModel: viewModel)
@@ -33,15 +33,14 @@ struct MatchDetailView: View {
                         .padding(12)
                     }
                 }
+                if viewModel.isLoading{LoadingView()}
             }
-            if viewModel.isLoading{LoadingView()}
+        }
+        //FIX: This fails to show refresh indicator but still refreshes??
+        .refreshable {
+            viewModel.getTeamsForMatch()
         }
         .background(Color.appBackground)
-        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
-            NavigationView{
-                AddEventPlayerSheet(viewModel: viewModel)
-            }
-        }
         .navigationTitle(viewModel.match.matchName)
         .task {
             viewModel.getTeamsForMatch()
@@ -52,12 +51,6 @@ struct MatchDetailView: View {
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 HStack(spacing: 20) {
-                    Button {
-                        viewModel.getTeamsForMatch()
-                    } label: {
-                        Image(systemName: "arrow.clockwise")
-                            .foregroundColor(.blue)
-                    }
                     if viewModel.isAbleToAddTeam(for: playerManager.playerProfile) && viewModel.event.isArchived == 0{
                         Button {
                             viewModel.isShowingAddTeam = true
@@ -82,8 +75,15 @@ struct MatchDetailView: View {
             }
         }
         .sheet(isPresented: $viewModel.isShowingAddTeam) {
-            NavigationView{ AddTeamSheet(viewModel: viewModel) }
-                .presentationDetents([.medium])
+            NavigationView {
+                AddTeamSheet(viewModel: viewModel)
+            }
+            .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $viewModel.isShowingAddPlayer) {
+            NavigationView {
+                AddEventPlayerSheet(viewModel: viewModel)
+            }
         }
         .confirmationDialog("Delete Match?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {
@@ -98,7 +98,6 @@ struct MatchDetailView: View {
 
 struct MatchDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        //EventDetailViewModel not implemented
         MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event)))
     }
 }

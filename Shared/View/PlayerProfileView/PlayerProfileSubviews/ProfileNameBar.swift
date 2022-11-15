@@ -39,5 +39,6 @@ struct ProfileNameBar: View {
 struct ProfileNameBar_Previews: PreviewProvider {
     static var previews: some View {
         ProfileNameBar()
+            .environmentObject(PlayerManager(playerProfile: TUPlayer(record: MockData.player)))
     }
 }

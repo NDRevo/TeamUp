@@ -12,7 +12,6 @@ import SwiftUI
 struct PlayerProfileView: View {
 
     @EnvironmentObject var playerManager: PlayerManager
-    @EnvironmentObject var eventsManager: EventsManager
 
     var body: some View {
         NavigationView{
@@ -51,5 +50,8 @@ struct PlayerProfileView: View {
 struct PlayerProfileView_Previews: PreviewProvider {
     static var previews: some View {
         PlayerProfileView()
+            .environmentObject(PlayerManager(
+                iCloudRecord: MockData.player,
+                playerProfile: TUPlayer(record: MockData.player)))
     }
 }

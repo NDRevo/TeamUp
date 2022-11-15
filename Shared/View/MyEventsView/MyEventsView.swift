@@ -64,6 +64,8 @@ struct MyEventsView: View {
 struct MyEventsView_Previews: PreviewProvider {
     static var previews: some View {
         MyEventsView()
+            .environmentObject(PlayerManager(iCloudRecord: MockData.player, playerProfile: TUPlayer(record: MockData.player)))
+            .environmentObject(EventsManager())
     }
 }
 

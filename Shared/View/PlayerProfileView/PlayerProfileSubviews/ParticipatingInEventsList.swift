@@ -48,5 +48,6 @@ struct ParticipatingInEventsList: View {
 struct ParticipatingInEventsList_Previews: PreviewProvider {
     static var previews: some View {
         ParticipatingInEventsList()
+            .environmentObject(PlayerManager())
     }
 }

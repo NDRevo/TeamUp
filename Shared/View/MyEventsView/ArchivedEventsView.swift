@@ -35,5 +35,7 @@ struct ArchivedEventsView: View {
 struct ArchivedEventsView_Previews: PreviewProvider {
     static var previews: some View {
         ArchivedEventsView()
+            .environmentObject(EventsManager())
+            .environmentObject(PlayerManager(iCloudRecord: MockData.player, playerProfile: TUPlayer(record: MockData.player)))
     }
 }
