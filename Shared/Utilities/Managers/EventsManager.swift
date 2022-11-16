@@ -31,6 +31,12 @@ import SwiftUI
                         eventRecord[TUEvent.kIsArchived] = 1
                         eventRecord[TUEvent.kIsPublished] = 0
                         let _ = try await CloudKitManager.shared.save(record: eventRecord)
+                        
+                        await MainActor.run {
+                            events.removeAll(where: {$0 == event})
+                            myPublishedEvents.removeAll(where: {$0 == event})
+                            //No need to add to myArchivedEvents since it fetches onAppear
+                        }
                     }
                 }
             } catch {
