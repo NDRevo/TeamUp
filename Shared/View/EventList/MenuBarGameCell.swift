@@ -45,6 +45,6 @@ struct MenuBarGameCell: View {
 
 struct GameCell_Previews: PreviewProvider {
     static var previews: some View {
-        MenuBarGameCell(viewModel: EventsListViewModel(), game: Game(name: "None", ranks: []))
+        MenuBarGameCell(viewModel: EventsListViewModel(), game: GameLibrary.data.games.last!)
     }
 }

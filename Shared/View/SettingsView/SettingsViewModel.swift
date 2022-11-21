@@ -11,6 +11,8 @@ import SwiftUI
 
 @MainActor class SettingsViewModel: ObservableObject {
 
+    @AppStorage("isRequestingGameLeader") var isRequestingGameLeader: Bool = false
+
     @Published var isShowingWebsite         = false
     @Published var hasVerified: Bool        = false
     @Published var isShowingAlert           = false
@@ -28,6 +30,9 @@ import SwiftUI
                 playerRecord[TUPlayer.kIsGameLeader] = value
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
+                await MainActor.run {
+                    isRequestingGameLeader = true
+                }
             } catch {
                 await MainActor.run {
                     alertItem = AlertContext.unableToChangeGameLeaderPosition

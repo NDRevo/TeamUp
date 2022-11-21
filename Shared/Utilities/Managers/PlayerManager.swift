@@ -11,8 +11,10 @@ import SwiftUI
 //MARK: PlayersManager
 @MainActor final class PlayerManager: ObservableObject {
 
+    @AppStorage("isGameLeader") var isGameLeader: Bool = false
+    @AppStorage("isVerifiedStudent") var isVerifiedStudent: Bool = false
+
     var iCloudRecord: CKRecord?
-    var playerProfileRecord: CKRecord?
     @Published var playerProfile: TUPlayer?
     @Published var playerGameProfiles: [TUPlayerGameProfile] = []
     @Published var eventsParticipating: [TUEvent] = []
@@ -300,6 +302,8 @@ import SwiftUI
                 if let profileReference = iCloudRecord!["userProfile"] as? CKRecord.Reference {
                     let playerProfileRecord = try await CloudKitManager.shared.fetchRecord(with: profileReference.recordID)
                     playerProfile = TUPlayer(record: playerProfileRecord)
+                    //Force unwrapping due to guarenteed record existing
+                    isGameLeader = playerProfile!.isGameLeader == 1 ? true : false
                     getGameProfiles()
                     getEventsParticipating()
                }

@@ -15,7 +15,7 @@ struct MockData {
         event[TUEvent.kEventGameName]  = "Overwatch"
         event[TUEvent.kEventStartDate] = Date()
         event[TUEvent.kEventEndDate]  = Date() + 100_000_000
-        event[TUEvent.kEventLocation]  = "https://discord.gg/valowatch"
+        event[TUEvent.kEventLocation]  = "discord.gg/valowatch"
         event[TUEvent.kEventSchool]  = "Rutgers University"
         event[TUEvent.kEventDescription]  = "Club event"
 
@@ -43,8 +43,8 @@ struct MockData {
         player[TUPlayer.kLastName]      = "Ross"
         player[TUPlayer.kUsername]      = "Revo"
         player[TUPlayer.kInSchool]      = "Rutgers"
-        player[TUPlayer.kIsGameLeader]  = 1
-        player[TUPlayer.kIsVerfiedStudent]  = 1
+        player[TUPlayer.kIsGameLeader]  = 2
+        player[TUPlayer.kIsVerfiedStudent]  = 0
 
         return player
     }

@@ -26,19 +26,25 @@ struct SettingsView: View {
             }
 
             Section {
-                Button {
-                    Task { await viewModel.changeGameLeaderPosition(to: 2, for: playerManager.playerProfile!) }
-                } label: {
-                    Text(playerManager.playerProfile!.isGameLeader == 2 ? "Requested Game Leader" : "Request Game Leader")
+                if viewModel.isRequestingGameLeader {
+                    Text("Game Leader Request Pending")
+                        .foregroundColor(.gray)
+                } else if playerManager.isGameLeader {
+                    Button(role: .destructive) {
+                        Task { await viewModel.changeGameLeaderPosition(to: 0, for: playerManager.playerProfile!) }
+                    } label: {
+                        Text("Remove Game Leader Role")
+                    }
+                } else {
+                    Button {
+                        Task {
+                            await viewModel.changeGameLeaderPosition(to: 2, for: playerManager.playerProfile!)
+                        }
+                    } label: {
+                        Text("Request Game Leader")
+                    }
+                    .disabled(viewModel.isRequestingGameLeader)
                 }
-                .disabled(playerManager.playerProfile!.isGameLeader == 2 || playerManager.playerProfile!.isGameLeader == 1)
-
-                Button(role: .destructive) {
-                    Task { await viewModel.changeGameLeaderPosition(to: 0, for: playerManager.playerProfile!) }
-                } label: {
-                    Text("Remove Game Leader Role")
-                }
-                //Add revoke
             } footer: {
                 if playerManager.playerProfile!.isVerifiedStudent == 1 {
                     HStack(alignment: .center){
