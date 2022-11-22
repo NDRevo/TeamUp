@@ -16,55 +16,57 @@ struct PlayerGameProfileCell: View {
 
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
-            .frame(width: 205, height: 180)
+            .frame(width: 205, height: 95)
             .foregroundColor(.appCell)
             .overlay(alignment: .topLeading) {
                 VStack(alignment: .leading, spacing: 4){
-                    HStack {
-                        Text(gameProfile.gameName + gameProfile.gameVariantName)
-                            .foregroundColor(Color.appCell)
-                            .fontWeight(.heavy)
-                            .font(.body)
-                            .lineLimit(1)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 2)
-                            .background {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(Color.getGameColor(gameName: gameProfile.gameName))
-                            }
-                            .padding(EdgeInsets(top: 8, leading: 8, bottom: 0, trailing: 0))
-                        Spacer()
-                        Image(systemName: "square.and.pencil")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20)
-                            .padding(.trailing, 8)
-                            .foregroundColor(.blue)
-                            .onTapGesture {
-                                playerManager.isEditingGameProfile.toggle()
-                                playerManager.tappedGameProfile = gameProfile
-                            }
-                    }
-                    VStack(alignment: .leading) {
-                        Text(gameProfile.gameID)
-                            .bold()
-                            .font(.title)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.35)
-                        Text(gameProfile.gameRank)
-                        Spacer()
-                        
-                        //ForEach<Array<String>, String, Optional<Text>>: the ID  occurs multiple times within the collection, this will give undefined results!
-                        //This will be resolved when made an optional
-                        ForEach(gameProfile.gameAliases, id: \.self){ alias in
-                            if alias != "" {
-                                Text(alias)
-                                    .foregroundColor(.gray)
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading){
+                            Text(gameProfile.gameName + gameProfile.gameVariantName)
+                                .foregroundColor(Color.appCell)
+                                .fontWeight(.heavy)
+                                .font(.body)
+                                .lineLimit(1)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 2)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(Color.getGameColor(gameName: gameProfile.gameName))
+                                }
+                            VStack(alignment: .leading) {
+                                Text(gameProfile.gameID)
+                                    .bold()
+                                    .font(.title)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.35)
+                                Text(gameProfile.gameRank)
+                                    .fontWeight(.semibold)
+                                    .lineLimit(1)
                             }
                         }
+                        Spacer()
+                        VStack {
+                            Image(systemName: "square.and.pencil")
+                                .resizable()
+                                .scaledToFit()
+                                .fontWeight(.semibold)
+                                .frame(width: 20)
+                                .foregroundColor(.blue)
+                                .onTapGesture {
+                                    playerManager.isEditingGameProfile.toggle()
+                                    playerManager.tappedGameProfile = gameProfile
+                                }
+                            Spacer()
+                            Image(systemName: "square.on.square.badge.person.crop")
+                                .resizable()
+                                .scaledToFit()
+                                .fontWeight(.semibold)
+                                .frame(width: 22)
+                                .foregroundColor(.blue)
+                        }
+                        
                     }
-                    .padding(.horizontal, 8)
-                    .padding(.bottom, 6) //Matches top padding of game title rectangle (8-2 = 6)
+                    .padding(9)
                 }
             }
     }

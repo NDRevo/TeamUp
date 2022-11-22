@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var playerManager: PlayerManager
+    @EnvironmentObject private var playerManager: PlayerManager
+    @EnvironmentObject private var eventsManager: EventsManager
     @StateObject var viewModel = SettingsViewModel()
 
     var body: some View {
@@ -26,27 +27,30 @@ struct SettingsView: View {
             }
 
             Section {
-                if viewModel.isRequestingGameLeader {
+                if playerManager.isRequestingGameLeader {
                     Text("Game Leader Request Pending")
                         .foregroundColor(.gray)
                 } else if playerManager.isGameLeader {
                     Button(role: .destructive) {
-                        Task { await viewModel.changeGameLeaderPosition(to: 0, for: playerManager.playerProfile!) }
+                        viewModel.checkCanRemoveRole(eventsManager.myPublishedEvents)
+                        Task{
+                           await eventsManager.deleteAllUnpublishedEvents()
+                        }
                     } label: {
                         Text("Remove Game Leader Role")
                     }
                 } else {
                     Button {
                         Task {
-                            await viewModel.changeGameLeaderPosition(to: 2, for: playerManager.playerProfile!)
+                            await viewModel.changeGameLeaderPosition(to: 2, handledBy: playerManager)
                         }
                     } label: {
                         Text("Request Game Leader")
                     }
-                    .disabled(viewModel.isRequestingGameLeader)
+                    .disabled(playerManager.isRequestingGameLeader)
                 }
             } footer: {
-                if playerManager.playerProfile!.isVerifiedStudent == 1 {
+                if playerManager.isGameLeader {
                     HStack(alignment: .center){
                         Spacer()
                             Text("Verified \(playerManager.playerProfile!.inSchool) Student")
@@ -57,7 +61,6 @@ struct SettingsView: View {
                     }
                 }
             }
-            
         }
         .sheet(isPresented: $viewModel.isShowingWebsite) {
             NavigationView {
@@ -73,6 +76,17 @@ struct SettingsView: View {
                     }
             }
         }
+        .confirmationDialog("Remove Game Leader Role?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
+            Button(role: .destructive) {
+                Task {
+                    await viewModel.changeGameLeaderPosition(to: 0, handledBy: playerManager)
+                }
+            } label: { Text("Remove role") }
+        }, message: { Text("Removing game leader role will retain archived events but delete unpublished events, are you sure?")}
+        )
+        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
+            viewModel.alertItem.alertMessage
+        })
         .navigationBarTitleDisplayMode(.inline)
     }
 }

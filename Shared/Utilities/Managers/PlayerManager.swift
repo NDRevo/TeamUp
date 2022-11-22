@@ -13,6 +13,7 @@ import SwiftUI
 
     @AppStorage("isGameLeader") var isGameLeader: Bool = false
     @AppStorage("isVerifiedStudent") var isVerifiedStudent: Bool = false
+    @AppStorage("isRequestingGameLeader") var isRequestingGameLeader: Bool = false
 
     var iCloudRecord: CKRecord?
     @Published var playerProfile: TUPlayer?
@@ -304,6 +305,7 @@ import SwiftUI
                     playerProfile = TUPlayer(record: playerProfileRecord)
                     //Force unwrapping due to guarenteed record existing
                     isGameLeader = playerProfile!.isGameLeader == 1 ? true : false
+                    isRequestingGameLeader = playerProfile!.isGameLeader == 2 ? true : false
                     getGameProfiles()
                     getEventsParticipating()
                }

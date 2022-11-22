@@ -13,7 +13,7 @@ struct PlayerGameProfilesList: View {
     @EnvironmentObject var playerManager: PlayerManager
 
     var body: some View {
-        VStack {
+        VStack(alignment: .center, spacing: 12) {
             HStack {
                 Text("Game Profiles")
                     .bold()
@@ -24,29 +24,39 @@ struct PlayerGameProfilesList: View {
                     playerManager.isPresentingSheet.toggle()
                     playerManager.resetInput()
                 } label: {
-                    Image(systemName: "plus.rectangle.portrait")
+                    Image(systemName: "person.crop.rectangle.badge.plus")
                         .resizable()
                         .scaledToFit()
-                        .frame(width:20)
+                        .foregroundStyle(.blue, .secondary)
+                        .frame(width: 30)
                 }
             }
             .padding(.horizontal, 12)
-
-            ScrollView(.horizontal) {
-                LazyHStack(alignment: .top, spacing: 10) {
-                    ForEach(playerManager.playerGameProfiles) { gameProfile in
-                        PlayerGameProfileCell(gameProfile: gameProfile)
-                            .sheet(isPresented: $playerManager.isEditingGameProfile){
-                                NavigationView {
-                                    EditGameProfileView(gameProfile: playerManager.tappedGameProfile!)
-                                }
-                                .presentationDetents([.fraction(0.75)])
-                            }
-                    }
+            if playerManager.playerGameProfiles.isEmpty {
+                VStack(alignment: .center, spacing: 12){
+                    Image(systemName: "person.text.rectangle")
+                        .font(.system(size: 36))
+                        .foregroundColor(.secondary)
+                    Text("No game profiles found")
+                        .foregroundColor(.secondary)
+                        .bold()
                 }
-                .padding(.horizontal, 12)
+            } else {
+                ScrollView(.horizontal) {
+                    LazyHStack(alignment: .top, spacing: 10) {
+                        ForEach(playerManager.playerGameProfiles) { gameProfile in
+                            PlayerGameProfileCell(gameProfile: gameProfile)
+                                .sheet(isPresented: $playerManager.isEditingGameProfile){
+                                    NavigationView {
+                                        EditGameProfileView(gameProfile: playerManager.tappedGameProfile!)
+                                    }
+                                    .presentationDetents([.fraction(0.75)])
+                                }
+                        }
+                    }
+                    .padding(.horizontal, 12)
+                }
             }
-            .frame(height: playerManager.playerGameProfiles.isEmpty ? 20 : 180)
         }
     }
 }

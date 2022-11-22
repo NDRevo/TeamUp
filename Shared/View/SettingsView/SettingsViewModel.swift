@@ -11,11 +11,10 @@ import SwiftUI
 
 @MainActor class SettingsViewModel: ObservableObject {
 
-    @AppStorage("isRequestingGameLeader") var isRequestingGameLeader: Bool = false
-
     @Published var isShowingWebsite         = false
     @Published var hasVerified: Bool        = false
     @Published var isShowingAlert           = false
+    @Published var isShowingConfirmationDialogue = false
 
     @Published var alertItem: AlertItem     = AlertItem(alertTitle: Text("Unable To Show Alert"),alertMessage: Text("There was a problem showing the alert."))
 
@@ -24,14 +23,30 @@ import SwiftUI
     //2 = Requesting Game Leader
     //3 = Denied Game Leader
 
-    nonisolated func changeGameLeaderPosition(to value: Int, for player: TUPlayer) async {
+    func checkCanRemoveRole(_ myPublishedEvents: [TUEvent]) {
+        //Can't delete event because you have a published event
+        if !myPublishedEvents.isEmpty {
+            alertItem = AlertContext.unableToRemoveGameLeaderRole
+            isShowingAlert = true
+        } else {
+            isShowingConfirmationDialogue = true
+        }
+    }
+
+    nonisolated func changeGameLeaderPosition(to value: Int, handledBy playerManager: PlayerManager) async {
             do {
-                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
+                let playerRecord = try await CloudKitManager.shared.fetchRecord(with: playerManager.playerProfile!.id)
                 playerRecord[TUPlayer.kIsGameLeader] = value
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
                 await MainActor.run {
-                    isRequestingGameLeader = true
+                    //Only values 0 and 2 will be used with this method hence:
+                    if value == 0 {
+                        playerManager.isRequestingGameLeader = false
+                        playerManager.isGameLeader = false
+                    } else if value == 2 {
+                        playerManager.isRequestingGameLeader = true
+                    }
                 }
             } catch {
                 await MainActor.run {

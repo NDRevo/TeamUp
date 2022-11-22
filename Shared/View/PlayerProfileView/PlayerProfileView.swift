@@ -19,7 +19,7 @@ struct PlayerProfileView: View {
             else if playerManager.playerProfile == nil { CreateProfileView() }
             else {
                 ScrollView {
-                    VStack(alignment: .leading){
+                    VStack(alignment: .leading, spacing: 12){
                         ProfileNameBar()
                         PlayerGameProfilesList()
                         ParticipatingInEventsList()

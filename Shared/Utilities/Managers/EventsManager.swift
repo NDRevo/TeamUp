@@ -117,6 +117,25 @@ import SwiftUI
         }
     }
 
+    nonisolated func deleteAllUnpublishedEvents() async {
+        Task {
+            do {
+                for event in await myUnpublishedEvents {
+                    let _ = try await CloudKitManager.shared.remove(recordID: event.id)
+                }
+                await MainActor.run {
+                    myUnpublishedEvents = []
+                }
+            } catch {
+                await MainActor.run {
+                    //Unable to delete all unpublishedevetns
+                    alertItem = AlertContext.unableToDeleteEvent
+                    isShowingAlert = true
+                }
+            }
+        }
+    }
+
     private func removePlayersFromEvent(eventID: CKRecord.ID){
         Task{
             do {

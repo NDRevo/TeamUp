@@ -31,10 +31,10 @@ struct ParticipatingInEventsList: View {
                 .padding(.bottom, 12)
             } else {
                 VStack(alignment: .center, spacing: 12){
-                    Image(systemName: "rectangle.dashed")
+                    Image(systemName: "calendar.badge.exclamationmark")
                         .font(.system(size: 36))
-                        .foregroundColor(.secondary)
-                    Text("You're not part of any events")
+                        .foregroundStyle(.primary, .secondary)
+                    Text("Not part of any events")
                         .foregroundColor(.secondary)
                         .bold()
                 }
