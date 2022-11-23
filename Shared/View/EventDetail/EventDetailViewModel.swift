@@ -191,10 +191,10 @@ enum DetailItem {
         Task{
             do{
                 let matchRecord = createMatchRecord()
-                let _ = try await CloudKitManager.shared.save(record: matchRecord)
+                let newMatchRecord = try await CloudKitManager.shared.save(record: matchRecord)
 
                 //TIP: Reloads view, locally adds player until another network call is made
-                matches.append(TUMatch(record: matchRecord))
+                matches.append(TUMatch(record: newMatchRecord))
                 matches.sort(by: {$0.matchStartTime < $1.matchStartTime})
                 isShowingSheet = false
             } catch {
@@ -220,11 +220,11 @@ enum DetailItem {
                     playerRecord[TUPlayer.kInEvents] = references
                 }
 
-                let _ = try await CloudKitManager.shared.save(record: playerRecord)
+                let newPlayerRecord = try await CloudKitManager.shared.save(record: playerRecord)
 
-                playersInEvent.append(playerManager.playerProfile!)
+                playerManager.playerProfile = TUPlayer(record: newPlayerRecord)
+                playersInEvent.append(TUPlayer(record: newPlayerRecord))
                 playersInEvent = playersInEvent.sorted(by: {$0.firstName < $1.firstName})
-                await playerManager.getRecordAndPlayerProfile()
             } catch {
                 //MARK: Unable to add you to event
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
@@ -247,10 +247,9 @@ enum DetailItem {
                     playerRecord[TUPlayer.kInEvents] = references
                 }
 
-                let _ = try await CloudKitManager.shared.save(record: playerRecord)
-
-                playersInEvent.removeAll(where: {$0.id == playerManager.playerProfile!.id})
-                await playerManager.getRecordAndPlayerProfile()
+                let newPlayerRecord = try await CloudKitManager.shared.save(record: playerRecord)
+                playerManager.playerProfile = TUPlayer(record: newPlayerRecord)
+                playersInEvent.removeAll(where: {$0.id == newPlayerRecord.recordID})
             } catch {
                 //MARK: Unable to add leave event
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent

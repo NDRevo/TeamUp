@@ -50,7 +50,9 @@ struct EditGameProfileView: View {
                 Section {
                     if isSavable {
                         Button {
-                            playerManager.saveEditGameProfile(of: gameProfile.id, gameID: gameID, gameRank: gameRank, gameAliases: gameAliases)
+                            Task{
+                                await playerManager.saveEditGameProfile(of: gameProfile, gameID: gameID, gameRank: gameRank, gameAliases: gameAliases)
+                            }
                         } label: {
                             Text("Save Game Profile")
                         }

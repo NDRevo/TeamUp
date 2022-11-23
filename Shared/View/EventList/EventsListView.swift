@@ -96,14 +96,16 @@ struct ListOfEvents: View {
 //INFO: Displays a no events found message that is non-scrollable
 struct NoEventsFoundMessage: View {
     var body: some View {
-        VStack(spacing: 12){
-            Image(systemName: "calendar")
-                .font(.system(size: 36))
-                .foregroundColor(.secondary)
-            Text("No events found")
-                .foregroundColor(.secondary)
-                .bold()
+        ScrollView {
+            VStack(spacing: 12){
+                Image(systemName: "calendar")
+                    .font(.system(size: 36))
+                    .foregroundColor(.secondary)
+                Text("No events found")
+                    .foregroundColor(.secondary)
+                    .bold()
+            }
+            .offset(y: 120)
         }
-        .offset(y: 120)
     }
 }

@@ -244,19 +244,22 @@ import SwiftUI
         }
     }
 
-    func saveEditGameProfile(of gameProfile: TUPlayerGameProfile.ID, gameID: String, gameRank: String, gameAliases: [String]){
-        Task{
-            do {
-                let gameProfileRecord = try await CloudKitManager.shared.fetchRecord(with: gameProfile)
+    nonisolated func saveEditGameProfile(of gameProfile: TUPlayerGameProfile, gameID: String, gameRank: String, gameAliases: [String]) async {
+        do {
+            let gameProfileRecord = try await CloudKitManager.shared.fetchRecord(with: gameProfile.id)
 
-                gameProfileRecord[TUPlayerGameProfile.kGameID] = gameID
-                gameProfileRecord[TUPlayerGameProfile.kGameRank] = gameRank
-                gameProfileRecord[TUPlayerGameProfile.kGameAliases] = gameAliases
+            gameProfileRecord[TUPlayerGameProfile.kGameID] = gameID
+            gameProfileRecord[TUPlayerGameProfile.kGameRank] = gameRank
+            gameProfileRecord[TUPlayerGameProfile.kGameAliases] = gameAliases
 
-                let _ = try await CloudKitManager.shared.save(record: gameProfileRecord)
-                getGameProfiles()
+            let newGameProfileRecord = try await CloudKitManager.shared.save(record: gameProfileRecord)
+            await MainActor.run {
+                playerGameProfiles.removeAll(where: {$0.id == gameProfile.id})
+                playerGameProfiles.append(TUPlayerGameProfile(record: newGameProfileRecord))
                 isEditingGameProfile = false
-            } catch {
+            }
+        } catch {
+            await MainActor.run {
                 alertItem = AlertContext.unableToSaveGameProfile
                 isShowingAlert = true
             }
@@ -324,9 +327,8 @@ import SwiftUI
                 }
                 let playerGameProfile = createPlayerGameProfile()
                 playerGameProfile[TUPlayerGameProfile.kAssociatedToPlayer] = CKRecord.Reference(recordID: playerProfileID.id, action: .deleteSelf)
-                let _ = try await CloudKitManager.shared.save(record: playerGameProfile)
-
-                let newPlayerProfile = TUPlayerGameProfile(record: playerGameProfile)
+                let newPlayerGameProfileRecord = try await CloudKitManager.shared.save(record: playerGameProfile)
+                let newPlayerProfile = TUPlayerGameProfile(record: newPlayerGameProfileRecord)
 
                 playerGameProfiles.append(newPlayerProfile)
                 playerGameProfiles.sort(by: {$0.gameName < $1.gameName})

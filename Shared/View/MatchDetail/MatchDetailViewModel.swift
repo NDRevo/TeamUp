@@ -152,10 +152,10 @@ import SwiftUI
         Task {
             do {
                 let teamRecord = createTeamRecord()
-                let _ = try await CloudKitManager.shared.save(record: teamRecord)
+                let newTeamRecord = try await CloudKitManager.shared.save(record: teamRecord)
 
                 //TIP: Reloads view, locally adds player until another network call is made
-                teams.append(TUTeam(record: teamRecord))
+                teams.append(TUTeam(record: newTeamRecord))
                 teamsAndPlayer[teamRecord.recordID] = []
                 isShowingAddTeam = false
             } catch {
@@ -180,8 +180,8 @@ import SwiftUI
                         playerRecord[TUPlayer.kOnTeams] = references
                     }
                     
-                    let _ = try await CloudKitManager.shared.save(record: playerRecord)
-                    teamsAndPlayer[selectedTeam!.id]?.append(TUPlayer(record: playerRecord))
+                    let newPlayerRecord = try await CloudKitManager.shared.save(record: playerRecord)
+                    teamsAndPlayer[selectedTeam!.id]?.append(TUPlayer(record: newPlayerRecord))
                     isShowingAddPlayer = false
                 }
             } catch {
@@ -231,12 +231,12 @@ import SwiftUI
             do {
                 for player in teamsAndPlayer[teamID] ?? []{
                     let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
-    
+
                     var references: [CKRecord.Reference] = playerRecord[TUPlayer.kOnTeams] as! [CKRecord.Reference]
                     references.removeAll(where: {$0.recordID == teamID})
-                    
+
                     playerRecord[TUPlayer.kOnTeams] = references
-                    
+
                     let _ = try await CloudKitManager.shared.save(record: playerRecord)
                 }
             } catch {
