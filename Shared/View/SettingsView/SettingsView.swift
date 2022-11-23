@@ -14,50 +14,51 @@ struct SettingsView: View {
 
     var body: some View {
         List {
-            Section {
-                if playerManager.playerProfile!.isVerifiedStudent == 0 {
-                    Button {
-                        Task{
-                            viewModel.isShowingWebsite = true
+            if let playerProfile =  playerManager.playerProfile {
+                if playerProfile.inSchool != Constants.none {
+                    Section {
+                        if playerManager.isVerifiedStudent {
+                                Button {
+                                    Task{
+                                        viewModel.isShowingWebsite = true
+                                    }
+                                } label: {
+                                    Text("Verify Student")
+                                }
+                            }
+                    } footer: {
+                        if playerManager.isVerifiedStudent {
+                            HStack(alignment: .center){
+                                Spacer()
+                                    Text("Verified \(playerProfile.inSchool) Student")
+                                Spacer()
+                            }
                         }
-                    } label: {
-                        Text("Verify Student")
                     }
-                }
-            }
 
-            Section {
-                if playerManager.isRequestingGameLeader {
-                    Text("Game Leader Request Pending")
-                        .foregroundColor(.gray)
-                } else if playerManager.isGameLeader {
-                    Button(role: .destructive) {
-                        viewModel.checkCanRemoveRole(eventsManager.myPublishedEvents)
-                        Task{
-                           await eventsManager.deleteAllUnpublishedEvents()
+                    Section {
+                        if playerManager.isRequestingGameLeader {
+                            Text("Game Leader Request Pending")
+                                .foregroundColor(.gray)
+                        } else if playerManager.isGameLeader {
+                            Button(role: .destructive) {
+                                viewModel.checkCanRemoveRole(eventsManager.myPublishedEvents)
+                                Task{
+                                   await eventsManager.deleteAllUnpublishedEvents()
+                                }
+                            } label: {
+                                Text("Remove Game Leader Role")
+                            }
+                        } else {
+                            Button {
+                                Task {
+                                    await viewModel.changeGameLeaderPosition(to: 2, handledBy: playerManager)
+                                }
+                            } label: {
+                                Text("Request Game Leader")
+                            }
+                            .disabled(playerManager.isRequestingGameLeader)
                         }
-                    } label: {
-                        Text("Remove Game Leader Role")
-                    }
-                } else {
-                    Button {
-                        Task {
-                            await viewModel.changeGameLeaderPosition(to: 2, handledBy: playerManager)
-                        }
-                    } label: {
-                        Text("Request Game Leader")
-                    }
-                    .disabled(playerManager.isRequestingGameLeader)
-                }
-            } footer: {
-                if playerManager.isGameLeader {
-                    HStack(alignment: .center){
-                        Spacer()
-                            Text("Verified \(playerManager.playerProfile!.inSchool) Student")
-                        Spacer()
-                    }
-                    .onTapGesture {
-                        viewModel.hasVerified = false
                     }
                 }
             }

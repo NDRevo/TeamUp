@@ -90,10 +90,18 @@ import SwiftUI
         }
     }
 
-    func deletePlayer(recordID: CKRecord.ID){
+    func deletePlayer(recordID: CKRecord.ID, using manager: PlayerManager){
         Task {
             do {
                 let _ = try await CloudKitManager.shared.remove(recordID: recordID)
+
+                guard let userRecord = manager.iCloudRecord else {
+                    alertItem = AlertContext.unableToGetPlayerList
+                    return
+                }
+
+                userRecord["userProfile"] = nil
+                let _ = try await CloudKitManager.shared.save(record: userRecord)
             } catch {
                 alertItem = AlertContext.unableToDeletePlayer
                 isShowingAlert = true

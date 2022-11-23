@@ -119,6 +119,7 @@
 		56A0790F289E3700001852A5 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0790D289E3700001852A5 /* SettingsViewModel.swift */; };
 		56A0791128A01723001852A5 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0791028A01723001852A5 /* CalendarViewController.swift */; };
 		56A0791228A01723001852A5 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0791028A01723001852A5 /* CalendarViewController.swift */; };
+		56BC3211292E635A00051943 /* PlayerInfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BC3210292E635A00051943 /* PlayerInfoBar.swift */; };
 		56BC7999286E08C3002046CA /* TeamUpUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BC7998286E08C3002046CA /* TeamUpUnitTests.swift */; };
 		56C69EFF28C6701A00CB64BD /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C69EFE28C6701A00CB64BD /* PlayerManager.swift */; };
 		56C69F0028C6701A00CB64BD /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C69EFE28C6701A00CB64BD /* PlayerManager.swift */; };
@@ -212,6 +213,7 @@
 		56A0790D289E3700001852A5 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		56A0791028A01723001852A5 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		56A0791328A01B18001852A5 /* TeamUp--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TeamUp--iOS--Info.plist"; sourceTree = "<group>"; };
+		56BC3210292E635A00051943 /* PlayerInfoBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInfoBar.swift; sourceTree = "<group>"; };
 		56BC7996286E08C3002046CA /* TeamUpUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TeamUpUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		56BC7998286E08C3002046CA /* TeamUpUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpUnitTests.swift; sourceTree = "<group>"; };
 		56C69EFE28C6701A00CB64BD /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 				567C69A3292028DF00B5B3E3 /* PlayerGameProfilesList.swift */,
 				567C69A52920290E00B5B3E3 /* ParticipatingInEventsList.swift */,
 				567C69A72920292400B5B3E3 /* ProfileNameBar.swift */,
+				56BC3210292E635A00051943 /* PlayerInfoBar.swift */,
 			);
 			path = PlayerProfileSubviews;
 			sourceTree = "<group>";
@@ -687,6 +690,7 @@
 				567C699C2920258100B5B3E3 /* PlayerListForTeam.swift in Sources */,
 				560E42BE2793C30900408B4B /* LoadingView.swift in Sources */,
 				563A46E0279EF86C006A406B /* AddPlayerGameProfileSheet.swift in Sources */,
+				56BC3211292E635A00051943 /* PlayerInfoBar.swift in Sources */,
 				567C69A82920292400B5B3E3 /* ProfileNameBar.swift in Sources */,
 				567C6997291EE3ED00B5B3E3 /* EventMatchCellView.swift in Sources */,
 				567C699A2920256100B5B3E3 /* MatchOptionButtons.swift in Sources */,

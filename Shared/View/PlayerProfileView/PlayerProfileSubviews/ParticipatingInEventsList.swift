@@ -42,6 +42,9 @@ struct ParticipatingInEventsList: View {
             }
         }
         .padding(.horizontal, 12)
+        .onAppear {
+            playerManager.getEventsParticipating()
+        }
     }
 }
 

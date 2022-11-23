@@ -15,7 +15,8 @@ import SwiftUI
     @AppStorage("isVerifiedStudent") var isVerifiedStudent: Bool = false
     @AppStorage("isRequestingGameLeader") var isRequestingGameLeader: Bool = false
 
-    var iCloudRecord: CKRecord?
+    //iCloudRecord has Published wrapper so it updates Profile view after call to fetch record
+    @Published var iCloudRecord: CKRecord?
     @Published var playerProfile: TUPlayer?
     @Published var playerGameProfiles: [TUPlayerGameProfile] = []
     @Published var eventsParticipating: [TUEvent] = []
@@ -62,11 +63,18 @@ import SwiftUI
         selectedGameVariant = game.gameVariants.first ?? nil
     }
 
-    func resetInput(){
+    func resetGameProfileInput(){
         gameID              = ""
         selectedGame        = GameLibrary.data.games[1]
         selectedGameVariant = nil
         selectedGameRank    = nil
+    }
+
+    func resetCreateProfileInput(){
+        playerUsername = ""
+        playerSchool = SchoolLibrary.data.schools.first!
+        playerFirstName = ""
+        playerLastName = ""
     }
 
     private func isValidGameProfile() -> Bool {
@@ -151,8 +159,8 @@ import SwiftUI
         Task {
             do {
                 let _ = try await CloudKitManager.shared.batchSave(records: [userRecord,playerRecord])
-
                 playerProfile = TUPlayer(record: playerRecord)
+                resetCreateProfileInput()
             } catch {
                 alertItem = AlertContext.unableToCreatePlayer
                 isShowingAlert = true
@@ -174,9 +182,7 @@ import SwiftUI
         Task {
             do {
                 //MARK: ERROR - Unexpectedly found nil (Cause: No/Slow internet connection)
-                guard let record = playerProfile else {
-                    return
-                }
+                guard let record = playerProfile else { return }
 
                 let playerRecord = try await CloudKitManager.shared.fetchRecord(with: record.id)
                 let references: [CKRecord.Reference] = playerRecord[TUPlayer.kInEvents] as? [CKRecord.Reference] ?? []
@@ -308,7 +314,12 @@ import SwiftUI
                     isRequestingGameLeader = playerProfile!.isGameLeader == 2 ? true : false
                     getGameProfiles()
                     getEventsParticipating()
-               }
+                } else {
+                    playerProfile = nil
+                    isGameLeader = false
+                    isRequestingGameLeader = false
+                    isVerifiedStudent = false
+                }
             } catch {
                 //Player Profile tab already displays the need to log into iCloud
                 if iCloudRecord == nil {}

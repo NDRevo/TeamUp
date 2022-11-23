@@ -42,8 +42,8 @@ struct MockData {
         player[TUPlayer.kFirstName]     = "Bob"
         player[TUPlayer.kLastName]      = "Ross"
         player[TUPlayer.kUsername]      = "Revo"
-        player[TUPlayer.kInSchool]      = "Rutgers"
-        player[TUPlayer.kIsGameLeader]  = 2
+        player[TUPlayer.kInSchool]      = "Rutgers University - NBW"
+        player[TUPlayer.kIsGameLeader]  = 1
         player[TUPlayer.kIsVerfiedStudent]  = 0
 
         return player

@@ -13,9 +13,9 @@ final class SchoolLibrary {
     static let data = SchoolLibrary()
     
     let schools: [String] = [
-        "None",
-        "Rutgers University - New Brunswick",
-        "Rutgers University - Newark",
-        "Rutgers University - Camden"
+        Constants.none,
+        "Rutgers University - NBW",
+        "Rutgers University - NWK",
+        "Rutgers University - CDN"
     ]
 }

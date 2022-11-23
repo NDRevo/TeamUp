@@ -10,6 +10,7 @@ import SwiftUI
 struct DebugView: View {
 
     @EnvironmentObject private var eventsManager: EventsManager
+    @EnvironmentObject private var playerManager: PlayerManager
     @StateObject private var viewModel = DebugViewModel()
 
     var body: some View {
@@ -40,7 +41,7 @@ struct DebugView: View {
                 .onDelete { indexSet in
                     for index in indexSet {
                         let recordID = eventsManager.players[index].id
-                        viewModel.deletePlayer(recordID: recordID)
+                        viewModel.deletePlayer(recordID: recordID, using: playerManager)
 
                         eventsManager.players.remove(at: index)
                     }

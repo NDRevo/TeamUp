@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+enum Constants {
+    static let none = "None"
+}
+
 enum GameNames {
     static let empty            = ""
     static let all              = "All"

@@ -22,7 +22,7 @@ struct PlayerGameProfilesList: View {
                 Spacer()
                 Button {
                     playerManager.isPresentingSheet.toggle()
-                    playerManager.resetInput()
+                    playerManager.resetGameProfileInput()
                 } label: {
                     Image(systemName: "person.crop.rectangle.badge.plus")
                         .resizable()

@@ -13,26 +13,30 @@ struct ProfileNameBar: View {
     @EnvironmentObject var playerManager: PlayerManager
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 8)
-            .frame(height: 100)
-            .foregroundColor(.appCell)
-            .overlay(alignment: .center) {
-                HStack(spacing: 12){
-                    RoundedRectangle(cornerRadius: 8)
-                        .frame(width: 80,height: 80)
-                        .foregroundColor(.appBackground)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("\(playerManager.playerProfile!.username)")
-                            .font(.title)
-                            .bold()
-                        Text("\(playerManager.playerProfile!.firstName) \(playerManager.playerProfile!.lastName)")
-                            .font(.title2)
+        HStack(spacing: 12){
+            RoundedRectangle(cornerRadius: 8)
+                .frame(width: 75,height: 75)
+                .foregroundColor(.blue)
+            RoundedRectangle(cornerRadius: 8)
+                .frame(height: 75)
+                .foregroundColor(.appCell)
+                .overlay(alignment: .center) {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            if let playerProfile = playerManager.playerProfile {
+                                Text("@\(playerProfile.username)")
+                                    .font(.title)
+                                    .bold()
+                                Text("\(playerProfile.firstName) \(playerProfile.lastName)")
+                                    .font(.title2)
+                            }
+                        }
+                        Spacer()
                     }
-                    Spacer()
+                    .padding(.horizontal, 8)
                 }
-                .padding(.horizontal)
-            }
-            .padding(.horizontal, 12)
+        }
+        .padding(.horizontal, 12)
     }
 }
 

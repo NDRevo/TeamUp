@@ -21,12 +21,12 @@ struct PlayerProfileView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 12){
                         ProfileNameBar()
+                        PlayerInfoBar()
                         PlayerGameProfilesList()
                         ParticipatingInEventsList()
                     }
                 }
                 .scrollIndicators(.hidden)
-                .navigationTitle("Profile")
                 .sheet(isPresented: $playerManager.isPresentingSheet) {
                     NavigationView { AddPlayerGameProfileSheet() }
                     .presentationDetents([.fraction(0.60)])
@@ -40,9 +40,6 @@ struct PlayerProfileView: View {
                 .refreshable { await playerManager.getRecordAndPlayerProfile()}
                 .background(Color.appBackground)
             }
-        }
-        .task {
-            playerManager.getEventsParticipating()
         }
     }
 }
