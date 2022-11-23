@@ -111,7 +111,11 @@ struct AlertContext {
     //MARK: - PlayerProfileView
 
     static let invalidUsername              = AlertItem(alertTitle: Text("Invalid Username"),
-                                                        alertMessage: Text("Username already exists. Try something more unique!"),
+                                                        alertMessage: Text("Username already exists or contains characters not supported. Try something more unique!"),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
+    static let invalidName                  = AlertItem(alertTitle: Text("Invalid Name"),
+                                                        alertMessage: Text("Name must be greater than one character and not contain emojis or specific special characters."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
     static let emptyNamePlayerProfile       = AlertItem(alertTitle: Text("Invalid Username"),
@@ -120,6 +124,10 @@ struct AlertContext {
 
     static let invalidGameProfile           = AlertItem(alertTitle: Text("Invalid Game Profile"),
                                                         alertMessage: Text("A game profile must have an ID."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
+
+    static let unableToSaveEditedProfile    = AlertItem(alertTitle: Text("Failed To Save"),
+                                                        alertMessage: Text("Unable to save edits. \n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToSaveGameProfile      = AlertItem(alertTitle: Text("Server Error"),

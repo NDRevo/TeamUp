@@ -10,7 +10,6 @@ import SwiftUI
 //MARK: PlayerProfileView
 //INFO: Displays players name, game profiles, and events they're participating in
 struct PlayerProfileView: View {
-
     @EnvironmentObject var playerManager: PlayerManager
 
     var body: some View {
@@ -33,8 +32,31 @@ struct PlayerProfileView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink { SettingsView() }
-                        label: { Image(systemName: "gearshape.fill") }
+                        Button {
+                            withAnimation {
+                                playerManager.isEditingProfile.toggle()
+                            }
+                        } label: {
+                            Image(systemName: "person.crop.circle.dashed")
+                                .foregroundColor(playerManager.isEditingProfile ? .gray : .blue)
+                        }
+                    }
+                    if playerManager.isEditingProfile {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                Task{await playerManager.saveEditedProfile()}
+                            } label: {
+                                Image(systemName: "person.crop.circle.badge.checkmark")
+                                    .foregroundStyle(.green, .blue)
+                            }
+                        }
+                    } else {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink { SettingsView() }
+                            label: {
+                                Image(systemName: "gearshape.fill")
+                            }
+                        }
                     }
                 }
                 .refreshable { await playerManager.getRecordAndPlayerProfile()}

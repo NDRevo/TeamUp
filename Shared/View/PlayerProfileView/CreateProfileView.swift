@@ -22,18 +22,18 @@ struct CreateProfileView: View {
     var body: some View {
         List {
             Section {
-                TextField("Username", text: $playerManager.playerUsername)
+                TextField("Username", text: $playerManager.createdPlayerUsername)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
                     .submitLabel(.next)
                     .focused($currentFocus, equals: .username)
-                    .onChange(of: playerManager.playerUsername) { _ in
-                        playerManager.playerUsername = String(playerManager.playerUsername.prefix(25))
+                    .onChange(of: playerManager.createdPlayerUsername) { _ in
+                        playerManager.createdPlayerUsername = String(playerManager.createdPlayerUsername.prefix(25))
                     }
             } footer: { Text("Your username will be used for search and display purposes.") }
 
             Section {
-                Picker("School", selection: $playerManager.playerSchool) {
+                Picker("School", selection: $playerManager.createdPlayerSchool) {
                     ForEach(SchoolLibrary.data.schools, id: \.self){school in
                         Text(school)
                             .tag(school.self)
@@ -43,21 +43,21 @@ struct CreateProfileView: View {
             }
 
             Section{
-                TextField("First Name", text: $playerManager.playerFirstName)
+                TextField("First Name", text: $playerManager.createdPlayerFirstName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
                     .submitLabel(.next)
                     .focused($currentFocus, equals: .firstName)
-                    .onChange(of: playerManager.playerFirstName) { _ in
-                        playerManager.playerFirstName = String(playerManager.playerFirstName.prefix(25))
+                    .onChange(of: playerManager.createdPlayerFirstName) { _ in
+                        playerManager.createdPlayerFirstName = String(playerManager.createdPlayerFirstName.prefix(25))
                     }
-                TextField("Last Name", text: $playerManager.playerLastName)
+                TextField("Last Name", text: $playerManager.createdPlayerLastName)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
                     .submitLabel(.done)
                     .focused($currentFocus, equals: .lastName)
-                    .onChange(of: playerManager.playerLastName) { _ in
-                        playerManager.playerLastName = String(playerManager.playerLastName.prefix(25))
+                    .onChange(of: playerManager.createdPlayerLastName) { _ in
+                        playerManager.createdPlayerLastName = String(playerManager.createdPlayerLastName.prefix(25))
                     }
             } footer: {
                 Text("Your name will not be viewable to anyone unless you want to display your name by changing your settings.")

@@ -15,23 +15,48 @@ struct ProfileNameBar: View {
     var body: some View {
         HStack(spacing: 12){
             RoundedRectangle(cornerRadius: 8)
-                .frame(width: 75,height: 75)
+                .frame(width: 80,height: playerManager.isEditingProfile ? 130 : 80)
                 .foregroundColor(.blue)
             RoundedRectangle(cornerRadius: 8)
-                .frame(height: 75)
+                .frame(height: playerManager.isEditingProfile ? 130 : 80)
                 .foregroundColor(.appCell)
                 .overlay(alignment: .center) {
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
                             if let playerProfile = playerManager.playerProfile {
-                                Text("@\(playerProfile.username)")
-                                    .font(.title)
-                                    .bold()
-                                Text("\(playerProfile.firstName) \(playerProfile.lastName)")
+                                if playerManager.isEditingProfile {
+                                    TextField(playerProfile.username, text: $playerManager.editedUsername)
+                                        .font(.title)
+                                        .bold()
+                                        .keyboardType(.twitter)
+                                        .textInputAutocapitalization(.never)
+                                        .minimumScaleFactor(0.75)
+                                        .padding(.horizontal, 4)
+                                } else {
+                                    Text("@\(playerProfile.username)")
+                                        .font(.title)
+                                        .bold()
+                                }
+                                
+                                if playerManager.isEditingProfile {
+                                    VStack(spacing: 6) {
+                                        TextField(playerProfile.firstName, text: $playerManager.editedFirstName)
+                                            .padding(4)
+                                            .background { Color.appBackground.cornerRadius(8) }
+                                        TextField(playerProfile.lastName, text: $playerManager.editedLastName)
+                                            .padding(4)
+                                            .background { Color.appBackground.cornerRadius(8) }
+                                    }
                                     .font(.title2)
+                                    .minimumScaleFactor(0.75)
+                                } else {
+                                    Text("\(playerProfile.firstName) \(playerProfile.lastName)")
+                                        .font(.title2)
+                                        .minimumScaleFactor(0.75)
+                                }
                             }
                         }
-                        Spacer()
+                        if !playerManager.isEditingProfile { Spacer() }
                     }
                     .padding(.horizontal, 8)
                 }

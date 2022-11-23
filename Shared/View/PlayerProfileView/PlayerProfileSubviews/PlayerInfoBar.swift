@@ -9,18 +9,44 @@ import SwiftUI
 
 struct PlayerInfoBar: View {
     @EnvironmentObject var playerManager: PlayerManager
-    
+
     var body: some View {
-        if playerManager.playerSchool != Constants.none || playerManager.isGameLeader {
+        if playerManager.isEditingProfile {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
-                    if playerManager.playerSchool != Constants.none {
                         HStack{
                             Image(systemName: "graduationcap.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 25)
-                            Text(playerManager.playerSchool)
+                            Picker("School", selection: $playerManager.editedSelectedSchool) {
+                                ForEach(SchoolLibrary.data.schools, id: \.self){school in
+                                    Text(school)
+                                        .tag(school.self)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            Spacer()
+                        }
+                }
+                Spacer()
+            }
+            .padding(12)
+            .background {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.appCell)
+            }
+            .padding(.horizontal,12)
+        } else if playerManager.playerProfile?.inSchool != Constants.none || playerManager.isGameLeader {
+            HStack {
+                VStack(alignment: .leading, spacing: 8) {
+                    if playerManager.playerProfile?.inSchool != Constants.none {
+                        HStack{
+                            Image(systemName: "graduationcap.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 25)
+                            Text(playerManager.playerProfile!.inSchool)
                                 .font(.title3)
                                 .fontWeight(.semibold)
                         }

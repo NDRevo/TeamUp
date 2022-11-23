@@ -21,10 +21,25 @@ import SwiftUI
     @Published var playerGameProfiles: [TUPlayerGameProfile] = []
     @Published var eventsParticipating: [TUEvent] = []
 
-    @Published var playerUsername: String        = ""
-    @Published var playerSchool: String          = SchoolLibrary.data.schools.first!
-    @Published var playerFirstName: String       = ""
-    @Published var playerLastName: String        = ""
+    //MARK: Creating Profile
+    @Published var createdPlayerUsername: String = ""
+    @Published var createdPlayerSchool: String = SchoolLibrary.data.schools.first!
+    @Published var createdPlayerFirstName: String = ""
+    @Published var createdPlayerLastName: String = ""
+
+    //MARK: Editing Profile
+    @Published var isEditingProfile: Bool = false {
+        didSet {
+            editedUsername = ""
+            editedFirstName = ""
+            editedLastName = ""
+            editedSelectedSchool = playerProfile!.inSchool
+        }
+    }
+    @Published var editedUsername: String = ""
+    @Published var editedFirstName: String = ""
+    @Published var editedLastName: String = ""
+    @Published var editedSelectedSchool: String = SchoolLibrary.data.schools.first!
 
     @Published var tappedGameProfile: TUPlayerGameProfile?
 
@@ -71,10 +86,10 @@ import SwiftUI
     }
 
     func resetCreateProfileInput(){
-        playerUsername = ""
-        playerSchool = SchoolLibrary.data.schools.first!
-        playerFirstName = ""
-        playerLastName = ""
+        createdPlayerUsername = ""
+        createdPlayerSchool = SchoolLibrary.data.schools.first!
+        createdPlayerFirstName = ""
+        createdPlayerLastName = ""
     }
 
     private func isValidGameProfile() -> Bool {
@@ -82,22 +97,44 @@ import SwiftUI
         return true
     }
 
-    private func isValidPlayer() async throws -> Bool {
-        let usernameRegex = "([A-Za-z0-9])\\w+"
-        let nameRegex = "([A-Za-z])\\w+"
-        let isValidUsernameString   =  NSPredicate(format: "SELF MATCHES %@", usernameRegex).evaluate(with: playerUsername)
-        let isValidFirstNameString  =  NSPredicate(format: "SELF MATCHES %@", nameRegex).evaluate(with: playerFirstName)
-        let isValidLastNameString   =  NSPredicate(format: "SELF MATCHES %@", nameRegex).evaluate(with: playerLastName)
+    private func isValidUsername(username: String) -> Bool {
+        if username.isEmpty {return false}
 
-        let userExists = try await CloudKitManager.shared.checkUsernameExists(for: playerUsername)
-        if userExists || !isValidUsernameString {
+        let usernameRegex = "([A-Za-z0-9])\\w+"
+        let isValidUsernameString   =  NSPredicate(format: "SELF MATCHES %@", usernameRegex).evaluate(with: username)
+
+        if !isValidUsernameString {
             alertItem = AlertContext.invalidUsername
             return false
         }
+        return true
+    }
 
-        if (playerFirstName.isEmpty || playerLastName.isEmpty) || !isValidFirstNameString || !isValidLastNameString {
-            //MARK: Make a more meaningful alert
-            alertItem = AlertContext.emptyNamePlayerProfile
+    private func isValidName(name: String) -> Bool {
+        if name.isEmpty {return false}
+
+        let nameRegex = "([A-Za-z])\\w+"
+        let isValidNameString  =  NSPredicate(format: "SELF MATCHES %@", nameRegex).evaluate(with: name)
+
+        if !isValidNameString {
+            alertItem = AlertContext.invalidName
+            return false
+        }
+        return true
+    }
+
+    private func isValidCreatedPlayer() async throws -> Bool {
+
+        if !isValidUsername(username: self.createdPlayerUsername) {
+            return false
+        } else {
+            let userExists = try await CloudKitManager.shared.checkUsernameExists(for: createdPlayerUsername)
+            if userExists {
+                return false
+            }
+        }
+
+        if !isValidName(name: self.createdPlayerFirstName) || !isValidName(name: self.createdPlayerLastName) {
             return false
         }
 
@@ -123,10 +160,10 @@ import SwiftUI
 
     private func createPlayerRecord() -> CKRecord{
         let playerRecord = CKRecord(recordType: RecordType.player)
-        playerRecord[TUPlayer.kUsername]         = playerUsername
-        playerRecord[TUPlayer.kInSchool]         = playerSchool
-        playerRecord[TUPlayer.kFirstName]        = playerFirstName
-        playerRecord[TUPlayer.kLastName]         = playerLastName
+        playerRecord[TUPlayer.kUsername]         = createdPlayerUsername
+        playerRecord[TUPlayer.kInSchool]         = createdPlayerSchool
+        playerRecord[TUPlayer.kFirstName]        = createdPlayerFirstName
+        playerRecord[TUPlayer.kLastName]         = createdPlayerLastName
         playerRecord[TUPlayer.kIsGameLeader]     = 0
         playerRecord[TUPlayer.kIsVerfiedStudent] = 0
 
@@ -135,11 +172,12 @@ import SwiftUI
 
     func createProfile() async {
         do {
-            guard try await isValidPlayer() else {
+            guard try await isValidCreatedPlayer() else {
                 isShowingAlert = true
                 return
             }
         } catch {
+            //Will hit if can't search name in CloudKit
             alertItem = AlertContext.unableToCheckIfValidPlayer
             isShowingAlert = true
         }
@@ -223,6 +261,51 @@ import SwiftUI
                 isShowingAlert = true
             }
         }
+    }
+
+    func saveEditedProfile() async {
+        await MainActor.run {
+            if editedUsername.isEmpty && editedFirstName.isEmpty && editedLastName.isEmpty && editedSelectedSchool == playerProfile!.inSchool  {
+                withAnimation{
+                    isEditingProfile = false
+                }
+                return
+            }
+        }
+
+        let isValidUserame   = isValidUsername(username: editedUsername)
+        let isValidFirstName = isValidName(name: editedFirstName )
+        let isValidLastName  = isValidName(name: editedLastName )
+        do {
+            let playerRecord = try await CloudKitManager.shared.fetchRecord(with: playerProfile!.id)
+
+            if !editedUsername.isEmpty {
+                if isValidUserame { playerRecord[TUPlayer.kUsername] = editedUsername }
+            }
+            if !editedFirstName.isEmpty {
+                if isValidFirstName { playerRecord[TUPlayer.kFirstName] = editedFirstName }
+            }
+            if !editedLastName.isEmpty {
+                if isValidLastName{ playerRecord[TUPlayer.kLastName] = editedLastName }
+            }
+
+            playerRecord[TUPlayer.kInSchool] = editedSelectedSchool
+
+            let newPlayerRecord = try await CloudKitManager.shared.save(record: playerRecord)
+            playerProfile = TUPlayer(record: newPlayerRecord)
+
+            withAnimation{
+                isEditingProfile = false
+            }
+        } catch {
+            //Valid checks change the AlertContext
+            if !isValidUserame || !isValidFirstName || !isValidLastName { isShowingAlert = true }
+            else {
+                alertItem = AlertContext.unableToSaveEditedProfile
+                isShowingAlert = true
+            }
+        }
+    
     }
 
     func saveGameProfile(){
