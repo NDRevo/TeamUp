@@ -1,5 +1,5 @@
 //
-//  PlayerListViewModel.swift
+//  DebugViewModel.swift
 //  TeamUp
 //
 //  Created by Noé Duran on 1/14/22.

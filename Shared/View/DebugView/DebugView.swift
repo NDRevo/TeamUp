@@ -1,5 +1,5 @@
 //
-//  PlayerListView.swift
+//  DebugView.swift
 //  TeamUp
 //
 //  Created by Noé Duran on 1/13/22.
@@ -72,7 +72,7 @@ struct DebugView: View {
     }
 }
 
-struct PlayerListView_Previews: PreviewProvider {
+struct DebugView_Previews: PreviewProvider {
     static var previews: some View {
         DebugView()
             .environmentObject(EventsManager())
