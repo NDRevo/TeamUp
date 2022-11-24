@@ -15,7 +15,7 @@ struct SettingsView: View {
     var body: some View {
         List {
             if let playerProfile =  playerManager.playerProfile {
-                if playerProfile.inSchool != Constants.none {
+                if playerProfile.inSchool != WordConstants.none {
                     Section {
                         if playerManager.isVerifiedStudent {
                                 Button {

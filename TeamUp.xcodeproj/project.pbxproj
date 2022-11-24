@@ -32,8 +32,8 @@
 		560E42992790C84900408B4B /* EventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42972790C84900408B4B /* EventsManager.swift */; };
 		560E429B2791009900408B4B /* AddTeamSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429A2791009900408B4B /* AddTeamSheet.swift */; };
 		560E429C2791009900408B4B /* AddTeamSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429A2791009900408B4B /* AddTeamSheet.swift */; };
-		560E429E279103BB00408B4B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429D279103BB00408B4B /* Constants.swift */; };
-		560E429F279103BB00408B4B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429D279103BB00408B4B /* Constants.swift */; };
+		560E429E279103BB00408B4B /* OtherConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429D279103BB00408B4B /* OtherConstants.swift */; };
+		560E429F279103BB00408B4B /* OtherConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E429D279103BB00408B4B /* OtherConstants.swift */; };
 		560E42A127910CF900408B4B /* TUPlayerGameProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A027910CF800408B4B /* TUPlayerGameProfile.swift */; };
 		560E42A227910CF900408B4B /* TUPlayerGameProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A027910CF800408B4B /* TUPlayerGameProfile.swift */; };
 		560E42A42791100200408B4B /* EventDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560E42A32791100200408B4B /* EventDetailViewModel.swift */; };
@@ -157,7 +157,7 @@
 		560E428E2790C28300408B4B /* AddEventPlayerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventPlayerSheet.swift; sourceTree = "<group>"; };
 		560E42972790C84900408B4B /* EventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsManager.swift; sourceTree = "<group>"; };
 		560E429A2791009900408B4B /* AddTeamSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeamSheet.swift; sourceTree = "<group>"; };
-		560E429D279103BB00408B4B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		560E429D279103BB00408B4B /* OtherConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherConstants.swift; sourceTree = "<group>"; };
 		560E42A027910CF800408B4B /* TUPlayerGameProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TUPlayerGameProfile.swift; sourceTree = "<group>"; };
 		560E42A32791100200408B4B /* EventDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewModel.swift; sourceTree = "<group>"; };
 		560E42A727911AFD00408B4B /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
@@ -321,7 +321,7 @@
 			children = (
 				560E42962790C83600408B4B /* Managers */,
 				560E427627906B1C00408B4B /* Extensions */,
-				560E429D279103BB00408B4B /* Constants.swift */,
+				560E429D279103BB00408B4B /* OtherConstants.swift */,
 				56664C5F28A22B3000418AA4 /* GameConstants.swift */,
 				56664C6828A8390000418AA4 /* SchoolConstants.swift */,
 				560E42C027946E6100408B4B /* AlertContext.swift */,
@@ -638,7 +638,7 @@
 				566AB2E5278D280D00F4035C /* AppTabView.swift in Sources */,
 				567C69A4292028DF00B5B3E3 /* PlayerGameProfilesList.swift in Sources */,
 				567C6988291DF26900B5B3E3 /* SearchMapView.swift in Sources */,
-				560E429E279103BB00408B4B /* Constants.swift in Sources */,
+				560E429E279103BB00408B4B /* OtherConstants.swift in Sources */,
 				5607EFD22877476700BE957E /* Binding+Ext.swift in Sources */,
 				560E4274278FA68200408B4B /* MatchDetailView.swift in Sources */,
 				560E42BB279386BF00408B4B /* MatchDetailViewModel.swift in Sources */,
@@ -713,7 +713,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				566AB2E6278D280D00F4035C /* AppTabView.swift in Sources */,
-				560E429F279103BB00408B4B /* Constants.swift in Sources */,
+				560E429F279103BB00408B4B /* OtherConstants.swift in Sources */,
 				56664C6A28A8390000418AA4 /* SchoolConstants.swift in Sources */,
 				560E4275278FA68200408B4B /* MatchDetailView.swift in Sources */,
 				560E42BC279386BF00408B4B /* MatchDetailViewModel.swift in Sources */,

@@ -41,8 +41,13 @@ struct PlayerProfileView: View {
                                 playerManager.isEditingProfile.toggle()
                             }
                         } label: {
-                            Image(systemName: "person.crop.circle.dashed")
-                                .foregroundColor(playerManager.isEditingProfile ? .gray : .blue)
+                            if playerManager.isEditingProfile {
+                                Image(systemName: "person.crop.circle.badge.xmark")
+                                    .foregroundStyle(.red, .blue)
+                            } else {
+                                Image(systemName: "person.crop.circle.dashed")
+                                    .foregroundColor(.blue)
+                            }
                         }
                     }
                     if playerManager.isEditingProfile {

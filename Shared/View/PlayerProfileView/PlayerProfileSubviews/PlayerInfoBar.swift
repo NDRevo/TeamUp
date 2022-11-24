@@ -37,17 +37,17 @@ struct PlayerInfoBar: View {
                     .foregroundColor(.appCell)
             }
             .padding(.horizontal,12)
-        } else if playerManager.playerProfile?.inSchool != Constants.none || playerManager.isGameLeader {
+        } else if playerManager.playerProfile?.inSchool != WordConstants.none || playerManager.isGameLeader {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
-                    if playerManager.playerProfile?.inSchool != Constants.none {
+                    if playerManager.playerProfile?.inSchool != WordConstants.none {
                         HStack{
                             Image(systemName: "graduationcap.fill")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 25)
+                                .frame(width: 20)
                             Text(playerManager.playerProfile!.inSchool)
-                                .font(.title3)
+                                .font(.body)
                                 .fontWeight(.semibold)
                         }
                     }
@@ -56,9 +56,9 @@ struct PlayerInfoBar: View {
                             Image(systemName: "person.badge.shield.checkmark.fill")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 25)
+                                .frame(width: 20)
                             Text("Rutgers VALORANT Club")
-                                .font(.title3)
+                                .font(.body)
                                 .fontWeight(.semibold)
                         }
                     }

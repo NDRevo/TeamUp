@@ -27,9 +27,10 @@ struct PlayerGameProfilesList: View {
                     Image(systemName: "person.crop.rectangle.badge.plus")
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(.blue, .secondary)
+                        .foregroundStyle(playerManager.isEditingProfile ? .secondary : .primary, .secondary)
                         .frame(width: 30)
                 }
+                .disabled(playerManager.isEditingProfile)
             }
             .padding(.horizontal, 12)
             if playerManager.playerGameProfiles.isEmpty {
