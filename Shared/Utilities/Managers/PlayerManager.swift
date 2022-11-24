@@ -279,22 +279,32 @@ import SwiftUI
         let isValidUserame   = isValidUsername(username: editedUsername)
         let isValidFirstName = isValidName(name: editedFirstName )
         let isValidLastName  = isValidName(name: editedLastName )
+        
         do {
-            let playerRecord = try await CloudKitManager.shared.fetchRecord(with: playerProfile!.id)
+            //May need to fetch most recent record if any issues persist, for now using record property within TUPlayer
+            let playerProfileRecord = playerProfile!.record
+            let usernameExists = try await CloudKitManager.shared.checkUsernameExists(for: editedUsername)
 
             if !editedUsername.isEmpty {
-                if isValidUserame { playerRecord[TUPlayer.kUsername] = editedUsername }
+                if usernameExists && playerProfile?.username == editedUsername {/* Don't do anything */}
+                else if usernameExists && playerProfile?.username != editedUsername {
+                    alertItem = AlertContext.invalidUsername
+                    isShowingAlert = true
+                    return
+                } else if isValidUserame && !usernameExists {
+                    playerProfileRecord[TUPlayer.kUsername] = editedUsername
+                }
             }
             if !editedFirstName.isEmpty {
-                if isValidFirstName { playerRecord[TUPlayer.kFirstName] = editedFirstName }
+                if isValidFirstName { playerProfileRecord[TUPlayer.kFirstName] = editedFirstName }
             }
             if !editedLastName.isEmpty {
-                if isValidLastName{ playerRecord[TUPlayer.kLastName] = editedLastName }
+                if isValidLastName{ playerProfileRecord[TUPlayer.kLastName] = editedLastName }
             }
 
-            playerRecord[TUPlayer.kInSchool] = editedSelectedSchool
+            playerProfileRecord[TUPlayer.kInSchool] = editedSelectedSchool
 
-            let newPlayerRecord = try await CloudKitManager.shared.save(record: playerRecord)
+            let newPlayerRecord = try await CloudKitManager.shared.save(record: playerProfileRecord)
             playerProfile = TUPlayer(record: newPlayerRecord)
 
             withAnimation{

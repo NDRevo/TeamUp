@@ -26,6 +26,7 @@ struct PlayerProfileView: View {
                     }
                 }
                 .scrollIndicators(.hidden)
+                .scrollDismissesKeyboard(.immediately)
                 .sheet(isPresented: $playerManager.isPresentingSheet) {
                     NavigationView { AddPlayerGameProfileSheet() }
                     .presentationDetents([.fraction(0.60)])
@@ -59,7 +60,11 @@ struct PlayerProfileView: View {
                         }
                     }
                 }
-                .refreshable { await playerManager.getRecordAndPlayerProfile()}
+                .refreshable {
+                    if !playerManager.isEditingProfile {
+                        await playerManager.getRecordAndPlayerProfile()
+                    }
+                }
                 .background(Color.appBackground)
             }
         }

@@ -17,9 +17,10 @@ final class CloudKitManager {
     private init() {}
 
     func checkUsernameExists(for username: String) async throws -> Bool {
+        //CASE SENSITIVE!!!
         let predicate = NSPredicate(format: "userName == %@", username)
         let query = CKQuery(recordType: RecordType.player, predicate: predicate)
-        
+
         let (results, _) = try await container.publicCloudDatabase.records(matching: query)
         if !results.isEmpty {
             return true

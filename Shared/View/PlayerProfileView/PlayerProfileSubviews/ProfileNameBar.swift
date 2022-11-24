@@ -30,6 +30,7 @@ struct ProfileNameBar: View {
                                         .bold()
                                         .keyboardType(.twitter)
                                         .textInputAutocapitalization(.never)
+                                        .autocorrectionDisabled()
                                         .minimumScaleFactor(0.75)
                                         .padding(.horizontal, 4)
                                 } else {
@@ -43,9 +44,11 @@ struct ProfileNameBar: View {
                                         TextField(playerProfile.firstName, text: $playerManager.editedFirstName)
                                             .padding(4)
                                             .background { Color.appBackground.cornerRadius(8) }
+                                            .autocorrectionDisabled()
                                         TextField(playerProfile.lastName, text: $playerManager.editedLastName)
                                             .padding(4)
                                             .background { Color.appBackground.cornerRadius(8) }
+                                            .autocorrectionDisabled()
                                     }
                                     .font(.title2)
                                     .minimumScaleFactor(0.75)
