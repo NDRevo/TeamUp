@@ -40,7 +40,8 @@ import SwiftUI
     @Published var editedFirstName: String = ""
     @Published var editedLastName: String = ""
     @Published var editedSelectedSchool: String = SchoolLibrary.data.schools.first!
-    @Published var editedSelectedColor: UIColor? = nil
+    @Published var editedSelectedColor: Color? = nil
+    @Published var selectedColor: Color? = nil
 
     @Published var tappedGameProfile: TUPlayerGameProfile?
 
@@ -64,6 +65,10 @@ import SwiftUI
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
     @Environment(\.dismiss) var dismiss
+
+    var profileColor: Color? {
+        return (editedSelectedColor != nil) ? editedSelectedColor! : playerProfile!.profileColor
+    }
 
     init(iCloudRecord:CKRecord? = nil, playerProfile: TUPlayer? = nil) {
         self.iCloudRecord = iCloudRecord
@@ -307,7 +312,7 @@ import SwiftUI
             playerProfileRecord[TUPlayer.kInSchool] = editedSelectedSchool
 
             if let editedSelectedColor = editedSelectedColor {
-                if playerProfile?.profileColor != Color(uiColor: UIColor(hexString: editedSelectedColor.toHexString())) {
+                if playerProfile?.profileColor != Color(hexString: editedSelectedColor.toHexString()!) {
                     playerProfileRecord[TUPlayer.kProfileColor] = editedSelectedColor.toHexString()
                 }
             }

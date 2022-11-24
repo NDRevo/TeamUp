@@ -17,7 +17,7 @@ struct ProfileNameBar: View {
             ZStack(alignment: .center) {
                 RoundedRectangle(cornerRadius: 8)
                     .frame(width: 80,height: playerManager.isEditingProfile ? 130 : 80)
-                    .foregroundColor((playerManager.editedSelectedColor != nil) ? Color(uiColor: playerManager.editedSelectedColor!) : playerManager.playerProfile?.profileColor)
+                    .foregroundColor(playerManager.profileColor)
                 if playerManager.isEditingProfile {
                     Button {
                         playerManager.isShowingColorPicker = true
@@ -82,20 +82,32 @@ struct ProfileNameBar: View {
         .sheet(isPresented: $playerManager.isShowingColorPicker) {
             NavigationView {
                 VStack{
-                    ColorPickerViewController(profileColor: playerManager.playerProfile!.profileColor, selectedColor: $playerManager.editedSelectedColor, isShowingColorPicker: $playerManager.isShowingColorPicker)
-                        .onAppear {playerManager.editedSelectedColor = UIColor(playerManager.playerProfile!.profileColor)}
+                    ColorPickerViewController(
+                        profileColor: playerManager.profileColor,
+                        selectedColor: $playerManager.selectedColor,
+                        isShowingColorPicker: $playerManager.isShowingColorPicker
+                    )
+                    .onAppear {
+                        playerManager.editedSelectedColor = playerManager.profileColor!
+                        playerManager.selectedColor =  playerManager.profileColor!
+                    }
                 }
                 .navigationTitle("Color Picker")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button("Dismiss") {
-                            // Not called in didSet, when tapping on 'dismiss' or 'change' it would have set editedSelectedColor to nil before saving
-                            playerManager.editedSelectedColor = nil
+                        Button("Cancel") {
+                            if (playerManager.editedSelectedColor != nil) && (playerManager.selectedColor != nil) {
+                                playerManager.editedSelectedColor = playerManager.editedSelectedColor
+                            } else {
+                                // Not called in didSet, when tapping on 'dismiss' or 'change' it would have set editedSelectedColor to nil before saving
+                                playerManager.editedSelectedColor = nil
+                            }
                             playerManager.isShowingColorPicker = false
                         }
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button("Change") {
+                            playerManager.editedSelectedColor = playerManager.selectedColor
                             playerManager.isShowingColorPicker = false
                         }
                     }

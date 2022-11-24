@@ -9,9 +9,9 @@ import UIKit
 import SwiftUI
 
 struct ColorPickerViewController: UIViewControllerRepresentable {
-    
+
     var profileColor: Color?
-    @Binding var selectedColor: UIColor?
+    @Binding var selectedColor: Color?
     @Binding var isShowingColorPicker: Bool
 
     func makeCoordinator() -> Coordinator {
@@ -36,30 +36,27 @@ struct ColorPickerViewController: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, UIColorPickerViewControllerDelegate {
 
-        @Binding var selectedColor: UIColor?
+        @Binding var selectedColor: Color?
         @Binding var isShowingColorPicker: Bool
-    
-        init(selectedColor: Binding<UIColor?>, isShowingColorPicker: Binding<Bool>) {
+
+        init(selectedColor: Binding<Color?>, isShowingColorPicker: Binding<Bool>) {
             _selectedColor = selectedColor
             _isShowingColorPicker = isShowingColorPicker
         }
 
         func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
-            selectedColor = color
+            selectedColor = Color(uiColor: color)
         }
-        
+
         func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-            
             isShowingColorPicker = false
         }
-        
     }
-
 }
 
 
 struct UIColorPicker_Previews: PreviewProvider {
     static var previews: some View {
-        ColorPickerViewController(selectedColor: .constant(UIColor(.blue)), isShowingColorPicker: .constant(true))
+        ColorPickerViewController(selectedColor: .constant(.blue), isShowingColorPicker: .constant(true))
     }
 }

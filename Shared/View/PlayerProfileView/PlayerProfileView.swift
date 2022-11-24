@@ -36,6 +36,7 @@ struct PlayerProfileView: View {
                         Button {
                             // Nil'd out in the event the color is changed but not saved
                             playerManager.editedSelectedColor = nil
+                            playerManager.selectedColor = nil
                             withAnimation {
                                 playerManager.isEditingProfile.toggle()
                             }

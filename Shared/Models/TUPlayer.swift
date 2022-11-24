@@ -39,7 +39,7 @@ struct TUPlayer: Identifiable, Hashable {
         username            = record[TUPlayer.kUsername]        as? String ?? "N/A"
         firstName           = record[TUPlayer.kFirstName]       as? String ?? "N/A"
         lastName            = record[TUPlayer.kLastName]        as? String ?? "N/A"
-        profileColor        = Color(uiColor: UIColor(hexString: record[TUPlayer.kProfileColor] as? String ?? "#42a7f5"))
+        profileColor        = Color(hexString: record[TUPlayer.kProfileColor] as? String ?? "#42a7f5")
         isGameLeader        = record[TUPlayer.kIsGameLeader]    as? Int    ?? 0
         inEvents            = record[TUPlayer.kInEvents]        as? [CKRecord.Reference] ?? []
         inSchool            = record[TUPlayer.kInSchool]        as? String ?? "N/A"
