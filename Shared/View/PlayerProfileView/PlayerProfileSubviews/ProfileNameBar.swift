@@ -14,9 +14,23 @@ struct ProfileNameBar: View {
 
     var body: some View {
         HStack(spacing: 12){
-            RoundedRectangle(cornerRadius: 8)
-                .frame(width: 80,height: playerManager.isEditingProfile ? 130 : 80)
-                .foregroundColor(.blue)
+            ZStack(alignment: .center) {
+                RoundedRectangle(cornerRadius: 8)
+                    .frame(width: 80,height: playerManager.isEditingProfile ? 130 : 80)
+                    .foregroundColor((playerManager.editedSelectedColor != nil) ? Color(uiColor: playerManager.editedSelectedColor!) : playerManager.playerProfile?.profileColor)
+                if playerManager.isEditingProfile {
+                    Button {
+                        playerManager.isShowingColorPicker = true
+                    } label: {
+                        Image(systemName: "swatchpalette.fill")
+                            .foregroundColor(.appBackground)
+                            .font(.title)
+                            .frame(width: 80,height: playerManager.isEditingProfile ? 130 : 80)
+                        
+                    }
+                }
+            }
+
             RoundedRectangle(cornerRadius: 8)
                 .frame(height: playerManager.isEditingProfile ? 130 : 80)
                 .foregroundColor(.appCell)
@@ -65,6 +79,29 @@ struct ProfileNameBar: View {
                 }
         }
         .padding(.horizontal, 12)
+        .sheet(isPresented: $playerManager.isShowingColorPicker) {
+            NavigationView {
+                VStack{
+                    ColorPickerViewController(profileColor: playerManager.playerProfile!.profileColor, selectedColor: $playerManager.editedSelectedColor, isShowingColorPicker: $playerManager.isShowingColorPicker)
+                        .onAppear {playerManager.editedSelectedColor = UIColor(playerManager.playerProfile!.profileColor)}
+                }
+                .navigationTitle("Color Picker")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("Dismiss") {
+                            // Not called in didSet, when tapping on 'dismiss' or 'change' it would have set editedSelectedColor to nil before saving
+                            playerManager.editedSelectedColor = nil
+                            playerManager.isShowingColorPicker = false
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Change") {
+                            playerManager.isShowingColorPicker = false
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

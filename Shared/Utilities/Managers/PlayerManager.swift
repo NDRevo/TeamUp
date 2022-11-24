@@ -40,6 +40,7 @@ import SwiftUI
     @Published var editedFirstName: String = ""
     @Published var editedLastName: String = ""
     @Published var editedSelectedSchool: String = SchoolLibrary.data.schools.first!
+    @Published var editedSelectedColor: UIColor? = nil
 
     @Published var tappedGameProfile: TUPlayerGameProfile?
 
@@ -59,6 +60,7 @@ import SwiftUI
     @Published var isEditingGameProfile          = false
     @Published var isPresentingSheet             = false
     @Published var isShowingAlert                = false
+    @Published var isShowingColorPicker          = false
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
     @Environment(\.dismiss) var dismiss
@@ -304,9 +306,17 @@ import SwiftUI
 
             playerProfileRecord[TUPlayer.kInSchool] = editedSelectedSchool
 
+            if let editedSelectedColor = editedSelectedColor {
+                if playerProfile?.profileColor != Color(uiColor: UIColor(hexString: editedSelectedColor.toHexString())) {
+                    playerProfileRecord[TUPlayer.kProfileColor] = editedSelectedColor.toHexString()
+                }
+            }
+
             let newPlayerRecord = try await CloudKitManager.shared.save(record: playerProfileRecord)
             playerProfile = TUPlayer(record: newPlayerRecord)
 
+            // Not called in didSet, when tapping on 'dismiss' or 'change' it would have set editedSelectedColor to nil before saving
+            editedSelectedColor = nil
             withAnimation{
                 isEditingProfile = false
             }
@@ -318,7 +328,6 @@ import SwiftUI
                 isShowingAlert = true
             }
         }
-    
     }
 
     func saveGameProfile(){
