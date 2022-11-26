@@ -12,29 +12,39 @@ struct PlayerInfoBar: View {
 
     var body: some View {
         if playerManager.isEditingProfile {
-            HStack {
-                VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 8) {
                         HStack{
                             Image(systemName: "graduationcap.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 25)
                             Picker("School", selection: $playerManager.editedSelectedSchool) {
-                                ForEach(SchoolLibrary.data.schools, id: \.self){school in
-                                    Text(school)
-                                        .tag(school.self)
+                                ForEach(SchoolLibrary.allCases, id: \.self){school in
+                                    Text(school.rawValue)
+                                        .tag(school.rawValue.self)
                                 }
                             }
+                            .disabled((playerManager.isClubLeader == .clubLeader || playerManager.isClubLeader == .requestClubLeader) || playerManager.studentVerifiedStatus == .isVerifiedStudent)
                             .pickerStyle(.menu)
                             Spacer()
                         }
+                    }
+                    Spacer()
                 }
-                Spacer()
-            }
-            .padding(12)
-            .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(.appCell)
+                .padding(12)
+                .background {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.appCell)
+                }
+                if (playerManager.isClubLeader == .clubLeader || playerManager.isClubLeader == .requestClubLeader) || playerManager.studentVerifiedStatus == .isVerifiedStudent {
+                    Text("Remove club and school verification status before changing schools!")
+                        .foregroundColor(.secondary)
+                        .font(.footnote)
+                        //We apply another 12pts of padding to have a bit of a inset look
+                        .padding(.horizontal, 12)
+                }
             }
             .padding(.horizontal,12)
         } else if playerManager.playerProfile?.inSchool != WordConstants.none || playerManager.isClubLeader == .clubLeader {

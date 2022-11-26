@@ -34,9 +34,9 @@ struct CreateProfileView: View {
 
             Section {
                 Picker("School", selection: $playerManager.createdPlayerSchool) {
-                    ForEach(SchoolLibrary.data.schools, id: \.self){school in
-                        Text(school)
-                            .tag(school.self)
+                    ForEach(SchoolLibrary.allCases, id: \.self){school in
+                        Text(school.rawValue)
+                            .tag(school.rawValue.self)
                     }
                 }
                 .pickerStyle(.menu)

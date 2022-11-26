@@ -16,16 +16,27 @@ struct SettingsView: View {
         List {
             if let playerProfile =  playerManager.playerProfile {
                 if playerProfile.inSchool != WordConstants.none {
+                    
                     Section {
-                        if !playerManager.isVerifiedStudent {
-                            Button {
-                                Task{
-                                    viewModel.isShowingWebsite = true
+                        if !SchoolLibrary(rawValue: playerProfile.inSchool)!.getVerificationLink().isEmpty {
+                            if playerManager.studentVerifiedStatus == .notVerified {
+                                Button {
+                                    Task{
+                                        viewModel.isShowingWebsite = true
+                                    }
+                                } label: {
+                                    Label("Verify School Attendance", systemImage: "graduationcap.fill")
                                 }
-                            } label: {
-                                Label("Verify School Attendance", systemImage: "graduationcap.fill")
+                            } else {
+                                Button {
+                                    playerManager.studentVerifiedStatus = .notVerified
+                                } label: {
+                                    Label("Remove Verified Status", systemImage: "graduationcap.fill")
+                                        .foregroundColor(.red)
+                                }
                             }
                         }
+
                         if playerManager.isClubLeader == .requestClubLeader {
                             Label("Club Leader Request Pending", systemImage: "person.badge.clock.fill")
                                 .foregroundColor(.gray)
@@ -59,7 +70,7 @@ struct SettingsView: View {
                             .disabled(playerManager.isClubLeader == .requestClubLeader)
                         }
                     } footer: {
-                        if playerManager.isVerifiedStudent {
+                        if playerManager.studentVerifiedStatus == .isVerifiedStudent {
                             HStack(alignment: .center){
                                 Text("Verified \(playerProfile.inSchool) Student")
                             }
@@ -80,6 +91,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    .environmentObject(playerManager)
             }
         }
         .sheet(isPresented: $viewModel.isShowingRequestClubLeaderSheet) {

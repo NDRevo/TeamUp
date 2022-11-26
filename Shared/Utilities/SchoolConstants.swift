@@ -7,15 +7,19 @@
 
 import Foundation
 
-//MARK: SchoolLibrary
-//INFO: Singleton containing list of supported schools
-final class SchoolLibrary {
-    static let data = SchoolLibrary()
+enum SchoolLibrary: String, CaseIterable {
+    case none      = "None"
+    case rutgersNB = "Rutgers University - New Brunswick"
+    case rutgersNW = "Rutgers University - Newark"
+    case rutgersCM = "Rutgers University - Camden"
+    case stevensIT   = "Stevens Institute of Technology"
     
-    let schools: [String] = [
-        WordConstants.none,
-        "Rutgers University - New Brunswick",
-        "Rutgers University - Newark",
-        "Rutgers University - Camden"
-    ]
+    func getVerificationLink() -> String {
+        switch self {
+        case .none : return ""
+        case .rutgersCM,.rutgersNW,.rutgersNB: return "https://cas.rutgers.edu/login"
+        case .stevensIT: return ""
+        }
+    }
+    
 }

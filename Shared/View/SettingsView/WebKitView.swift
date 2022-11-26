@@ -9,6 +9,7 @@ import SwiftUI
 import WebKit
 
 struct WebKitView: UIViewRepresentable {
+    @EnvironmentObject var playerManager: PlayerManager
     @ObservedObject var viewModel: SettingsViewModel
 
     func makeUIView(context: Context) -> WKWebView {
@@ -19,34 +20,41 @@ struct WebKitView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        let urlRequest = URLRequest(url: URL(string: "https://cas.rutgers.edu/login")!)
+        //Too much force unwrapping
+        let urlLink = URL(string: SchoolLibrary(rawValue: playerManager.playerProfile!.inSchool)!.getVerificationLink())
+        let urlRequest = URLRequest(url: urlLink!)
         uiView.load(urlRequest)
     }
 
     func makeCoordinator() -> WebKitView.Coordinator {
-        return Coordinator(self, viewModel)
+        return Coordinator(self, playerManager, viewModel)
     }
 
     class Coordinator : NSObject, WKNavigationDelegate {
+        @ObservedObject var playerManager: PlayerManager
         @ObservedObject var viewModel: SettingsViewModel
         let parent: WebKitView
-        
-        init(_ parent: WebKitView, _ viewModel: SettingsViewModel) {
+        var iRanAlready = false
+
+        init(_ parent: WebKitView,_ playerManager: PlayerManager, _ viewModel: SettingsViewModel) {
             self.parent = parent
+            self.playerManager = playerManager
             self.viewModel = viewModel
         }
         
         func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-            let config = WKFindConfiguration()
-            config.caseSensitive = false
             //This is the dumbest thing i've ever created and its why trust issues exist
-            
-            webView.find("Log In Successful", configuration: config) { result in
-                if result.matchFound {
-                    self.viewModel.isShowingWebsite = false
-                    self.viewModel.hasVerified = true
+            webView.configuration.websiteDataStore.httpCookieStore.getAllCookies({ cookies in
+                if !self.iRanAlready {
+                    for cookie in cookies {
+                        if cookie.name == "TGC" {
+                            self.iRanAlready = true
+                            self.viewModel.isShowingWebsite = false
+                            self.playerManager.studentVerifiedStatus = .isVerifiedStudent
+                        }
+                    }
                 }
-            }
+            })
         }
     }
 }

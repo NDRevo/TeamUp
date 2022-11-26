@@ -9,6 +9,11 @@ import Foundation
 import CloudKit
 import SwiftUI
 
+enum SchoolVerifiedStatus: Int {
+    case notVerified = 0
+    case isVerifiedStudent = 1
+}
+
 enum ClubLeaderStatus: Int {
     case notClubLeader = 0
     case clubLeader = 1
@@ -22,7 +27,6 @@ enum ClubLeaderStatus: Int {
     @Published var clubLeaderRequestDescription: String = ""
 
     @Published var isShowingWebsite         = false
-    @Published var hasVerified: Bool        = false
     @Published var isShowingAlert           = false
     @Published var isShowingConfirmationDialogue = false
     @Published var isShowingRequestClubLeaderSheet = false

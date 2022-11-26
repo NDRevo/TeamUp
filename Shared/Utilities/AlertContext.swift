@@ -129,6 +129,10 @@ struct AlertContext {
     static let unableToSaveEditedProfile    = AlertItem(alertTitle: Text("Failed To Save"),
                                                         alertMessage: Text("Unable to save edits. \n Check your internet connection and try again."),
                                                         button: Button.init("Ok", role: .none, action: {}))
+    
+    static let unableToSaveVerifiedStatus   = AlertItem(alertTitle: Text("Failed To Save"),
+                                                        alertMessage: Text("Unable to save verified status. \n Check your internet connection and try again."),
+                                                        button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToSaveGameProfile      = AlertItem(alertTitle: Text("Server Error"),
                                                         alertMessage: Text("Unable to save game profile. \n Check your internet connection and try again."),

@@ -12,7 +12,11 @@ import SwiftUI
 @MainActor final class PlayerManager: ObservableObject {
 
     @AppStorage("isClubLeader") var isClubLeader: ClubLeaderStatus = .notClubLeader
-    @AppStorage("isVerifiedStudent") var isVerifiedStudent: Bool = false
+    @AppStorage("studentVerifiedStatus") var studentVerifiedStatus: SchoolVerifiedStatus = .notVerified {
+        didSet {
+            Task { await saveVerifiedStatus() }
+        }
+    }
 
     //iCloudRecord has Published wrapper so it updates Profile view after call to fetch record
     @Published var iCloudRecord: CKRecord?
@@ -22,7 +26,7 @@ import SwiftUI
 
     //MARK: Creating Profile
     @Published var createdPlayerUsername: String = ""
-    @Published var createdPlayerSchool: String = SchoolLibrary.data.schools.first!
+    @Published var createdPlayerSchool: String = SchoolLibrary.none.rawValue
     @Published var createdPlayerFirstName: String = ""
     @Published var createdPlayerLastName: String = ""
 
@@ -38,7 +42,7 @@ import SwiftUI
     @Published var editedUsername: String = ""
     @Published var editedFirstName: String = ""
     @Published var editedLastName: String = ""
-    @Published var editedSelectedSchool: String = SchoolLibrary.data.schools.first!
+    @Published var editedSelectedSchool: String = SchoolLibrary.none.rawValue
     @Published var editedSelectedColor: Color? = nil
     @Published var selectedColor: Color? = nil
 
@@ -93,7 +97,7 @@ import SwiftUI
 
     func resetCreateProfileInput(){
         createdPlayerUsername = ""
-        createdPlayerSchool = SchoolLibrary.data.schools.first!
+        createdPlayerSchool = SchoolLibrary.none.rawValue
         createdPlayerFirstName = ""
         createdPlayerLastName = ""
     }
@@ -272,6 +276,27 @@ import SwiftUI
         }
     }
 
+    nonisolated func saveVerifiedStatus() async {
+        do {
+            if (await playerProfile) != nil {
+                //Need to fetch most recent record or else error: 'client oplock error updating record' will happen
+                let playerProfileRecord = try await CloudKitManager.shared.fetchRecord(with: playerProfile!.id)
+                playerProfileRecord[TUPlayer.kIsVerfiedStudent] = await studentVerifiedStatus.rawValue
+
+                let newPlayerRecord = try await CloudKitManager.shared.save(record: playerProfileRecord)
+
+                await MainActor.run {
+                    self.playerProfile = TUPlayer(record: newPlayerRecord)
+                }
+            }
+        } catch {
+            await MainActor.run {
+                alertItem = AlertContext.unableToSaveVerifiedStatus
+                isShowingAlert = true
+            }
+        }
+    }
+
     func saveEditedProfile() async {
         await MainActor.run {
             if editedUsername.isEmpty && editedFirstName.isEmpty && editedLastName.isEmpty && editedSelectedSchool == playerProfile!.inSchool  {
@@ -287,8 +312,8 @@ import SwiftUI
         let isValidLastName  = isValidName(name: editedLastName )
         
         do {
-            //May need to fetch most recent record if any issues persist, for now using record property within TUPlayer
-            let playerProfileRecord = playerProfile!.record
+            //Need to fetch most recent record or else error: 'client oplock error updating record' will happen
+            let playerProfileRecord = try await CloudKitManager.shared.fetchRecord(with: playerProfile!.id)
             let usernameExists = try await CloudKitManager.shared.checkUsernameExists(for: editedUsername)
 
             if !editedUsername.isEmpty {
@@ -433,7 +458,7 @@ import SwiftUI
                 } else {
                     playerProfile = nil
                     isClubLeader = .notClubLeader
-                    isVerifiedStudent = false
+                    studentVerifiedStatus = .notVerified
                 }
             } catch {
                 //Player Profile tab already displays the need to log into iCloud
