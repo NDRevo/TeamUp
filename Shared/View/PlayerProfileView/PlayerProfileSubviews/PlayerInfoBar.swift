@@ -11,7 +11,6 @@ struct PlayerInfoBar: View {
     @EnvironmentObject var playerManager: PlayerManager
 
     var body: some View {
-        if playerManager.isEditingProfile {
             VStack(alignment: .leading) {
                 HStack {
                     VStack(alignment: .leading, spacing: 8) {
@@ -19,16 +18,43 @@ struct PlayerInfoBar: View {
                             Image(systemName: "graduationcap.fill")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 25)
-                            Picker("School", selection: $playerManager.editedSelectedSchool) {
-                                ForEach(SchoolLibrary.allCases, id: \.self){school in
-                                    Text(school.rawValue)
-                                        .tag(school.rawValue.self)
+                                .frame(width: 20)
+                            if playerManager.isEditingProfile {
+                                Picker("School", selection: $playerManager.editedSelectedSchool) {
+                                    ForEach(SchoolLibrary.allCases, id: \.self){school in
+                                        Text(school.rawValue)
+                                            .tag(school.rawValue.self)
+                                    }
+                                }
+                                .disabled((playerManager.isClubLeader == .clubLeader || playerManager.isClubLeader == .requestClubLeader) || playerManager.studentVerifiedStatus == .isVerifiedStudent)
+                                .pickerStyle(.menu)
+                            } else {
+                                if playerManager.playerProfile?.inSchool != WordConstants.none {
+                                    Text(playerManager.playerProfile!.inSchool)
+                                        .font(.body)
+                                        .fontWeight(.semibold)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.85)
+                                    Spacer()
+                                    if playerManager.studentVerifiedStatus == .isVerifiedStudent {
+                                        Image(systemName: "checkmark.seal.fill")
+                                            .foregroundStyle(.primary, .secondary)
+                                            .foregroundColor(.green)
+                                    }
                                 }
                             }
-                            .disabled((playerManager.isClubLeader == .clubLeader || playerManager.isClubLeader == .requestClubLeader) || playerManager.studentVerifiedStatus == .isVerifiedStudent)
-                            .pickerStyle(.menu)
                             Spacer()
+                        }
+                        if playerManager.isClubLeader == .clubLeader && !playerManager.isEditingProfile{
+                            HStack {
+                                Image(systemName: "person.badge.shield.checkmark.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20)
+                                Text(playerManager.playerProfile!.clubLeaderClubName)
+                                    .font(.body)
+                                    .fontWeight(.semibold)
+                            }
                         }
                     }
                     Spacer()
@@ -38,7 +64,8 @@ struct PlayerInfoBar: View {
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundColor(.appCell)
                 }
-                if (playerManager.isClubLeader == .clubLeader || playerManager.isClubLeader == .requestClubLeader) || playerManager.studentVerifiedStatus == .isVerifiedStudent {
+                //Footer
+                if playerManager.isEditingProfile && ((playerManager.isClubLeader == .clubLeader || playerManager.isClubLeader == .requestClubLeader) || playerManager.studentVerifiedStatus == .isVerifiedStudent) {
                     Text("Remove club and school verification status before changing schools!")
                         .foregroundColor(.secondary)
                         .font(.footnote)
@@ -47,42 +74,6 @@ struct PlayerInfoBar: View {
                 }
             }
             .padding(.horizontal,12)
-        } else if playerManager.playerProfile?.inSchool != WordConstants.none || playerManager.isClubLeader == .clubLeader {
-            HStack {
-                VStack(alignment: .leading, spacing: 8) {
-                    if playerManager.playerProfile?.inSchool != WordConstants.none {
-                        HStack{
-                            Image(systemName: "graduationcap.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20)
-                            Text(playerManager.playerProfile!.inSchool)
-                                .font(.body)
-                                .fontWeight(.semibold)
-                        }
-                    }
-                    if playerManager.isClubLeader == .clubLeader {
-                        HStack {
-                            Image(systemName: "person.badge.shield.checkmark.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20)
-                            Text(playerManager.playerProfile!.clubLeaderClubName)
-                                .font(.body)
-                                .fontWeight(.semibold)
-                        }
-                    }
-                }
-                Spacer()
-            }
-            .padding(12)
-            .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(.appCell)
-            }
-            .padding(.horizontal,12)
-        
-        }
     }
 }
 
