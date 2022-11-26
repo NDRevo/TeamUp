@@ -37,7 +37,7 @@ struct PlayerInfoBar: View {
                     .foregroundColor(.appCell)
             }
             .padding(.horizontal,12)
-        } else if playerManager.playerProfile?.inSchool != WordConstants.none || playerManager.isGameLeader {
+        } else if playerManager.playerProfile?.inSchool != WordConstants.none || playerManager.isClubLeader == .clubLeader {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
                     if playerManager.playerProfile?.inSchool != WordConstants.none {
@@ -51,7 +51,7 @@ struct PlayerInfoBar: View {
                                 .fontWeight(.semibold)
                         }
                     }
-                    if playerManager.isGameLeader {
+                    if playerManager.isClubLeader == .clubLeader {
                         HStack {
                             Image(systemName: "person.badge.shield.checkmark.fill")
                                 .resizable()

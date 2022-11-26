@@ -12,7 +12,6 @@ import SwiftUI
 @MainActor final class EventsManager: ObservableObject {
 
     @Published var events: [TUEvent]        = []
-    @Published var players: [TUPlayer]      = []
 
     @Published var myPublishedEvents: [TUEvent]     = []
     @Published var myUnpublishedEvents: [TUEvent]   = []

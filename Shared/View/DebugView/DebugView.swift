@@ -16,20 +16,29 @@ struct DebugView: View {
     var body: some View {
         NavigationView {
             List{
-                ForEach(eventsManager.players){ player in
+                ForEach(viewModel.players){ player in
                         HStack{
-                            VStack(alignment: .leading){
+                            VStack(alignment: .leading,spacing: 12){
                                 Text(player.username)
                                     .bold()
                                     .font(.title2)
                                 
-                                Spacer()
+                                Text(player.clubLeaderClubName)
+                                Text(player.clubLeaderRequestDescription)
                                 
-                                if player.isGameLeader == 2 {
-                                    Button {
-                                        viewModel.giveGameLeader(to: player)
-                                    } label: {
-                                        Text("Give Leader")
+                                if player.isClubLeader == ClubLeaderStatus.requestClubLeader.rawValue  {
+                                    HStack{
+                                        Button {
+                                            viewModel.changeClubLeaderRequestStatusTo(to: 1, for: player)
+                                        } label: {
+                                            Text("Give Leader")
+                                        }
+                                        Spacer()
+                                        Button {
+                                            viewModel.changeClubLeaderRequestStatusTo(to: 3, for: player)
+                                        } label: {
+                                            Text("Deny Leader")
+                                        }
                                     }
 
                                 }
@@ -40,21 +49,21 @@ struct DebugView: View {
                 }
                 .onDelete { indexSet in
                     for index in indexSet {
-                        let recordID = eventsManager.players[index].id
+                        let recordID = viewModel.players[index].id
                         viewModel.deletePlayer(recordID: recordID, using: playerManager)
 
-                        eventsManager.players.remove(at: index)
+                        viewModel.players.remove(at: index)
                     }
                 }
             }
             .listStyle(.insetGrouped)
             .navigationTitle("Players")
             .refreshable {
-                viewModel.getPlayers(for: eventsManager)
+                viewModel.getPlayers()
             }
             .task {
                 if !viewModel.onAppearHasFired {
-                    viewModel.getPlayers(for: eventsManager)
+                    viewModel.getPlayers()
                 }
                 viewModel.onAppearHasFired = true
             }
@@ -62,7 +71,7 @@ struct DebugView: View {
                 viewModel.alertItem.alertMessage
             })
             .toolbar {
-                PlayerListToolbarContent(viewModel: viewModel, playerList: eventsManager.players)
+                PlayerListToolbarContent(viewModel: viewModel)
             }
             .sheet(isPresented: $viewModel.isShowingAddPlayerSheet){
                 NavigationView {
@@ -83,11 +92,10 @@ struct DebugView_Previews: PreviewProvider {
 struct PlayerListToolbarContent: ToolbarContent {
 
     @ObservedObject var viewModel: DebugViewModel
-    var playerList: [TUPlayer]
 
     var body: some ToolbarContent {
         ToolbarItem(placement:.navigationBarLeading) {
-            if !playerList.isEmpty {
+            if !viewModel.players.isEmpty {
                 EditButton()
             }
         }

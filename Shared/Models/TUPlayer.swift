@@ -10,15 +10,17 @@ import SwiftUI
 
 struct TUPlayer: Identifiable, Hashable {
 
-    static let kUsername            = "userName"
+    static let kUsername            = "username"
     static let kFirstName           = "firstName"
     static let kLastName            = "lastName"
     static let kProfileColor        = "profileColor"
     static let kInEvents            = "inEvents"
     static let kInSchool            = "inSchool"
     static let kOnTeams             = "onTeams"
-    static let kIsGameLeader        = "isGameLeader"
+    static let kIsClubLeader        = "isGameLeader"
     static let kIsVerfiedStudent    = "isVerifiedStudent"
+    static let kClubLeaderClubName = "clubLeaderClubName"
+    static let kClubLeaderRequestDescription = "clubLeaderRequestDescription"
 
     let record: CKRecord
     let id: CKRecord.ID
@@ -27,10 +29,12 @@ struct TUPlayer: Identifiable, Hashable {
     let firstName: String
     let lastName: String
     let profileColor: Color
-    let isGameLeader: Int
+    let isClubLeader: Int
     let inEvents: [CKRecord.Reference]
     let inSchool: String
     let isVerifiedStudent: Int
+    let clubLeaderClubName: String
+    let clubLeaderRequestDescription: String
 
     init(record: CKRecord){
         self.record = record
@@ -40,9 +44,11 @@ struct TUPlayer: Identifiable, Hashable {
         firstName           = record[TUPlayer.kFirstName]       as? String ?? "N/A"
         lastName            = record[TUPlayer.kLastName]        as? String ?? "N/A"
         profileColor        = Color(hexString: record[TUPlayer.kProfileColor] as? String ?? "#42a7f5")
-        isGameLeader        = record[TUPlayer.kIsGameLeader]    as? Int    ?? 0
+        isClubLeader        = record[TUPlayer.kIsClubLeader]    as? Int ?? 0
         inEvents            = record[TUPlayer.kInEvents]        as? [CKRecord.Reference] ?? []
         inSchool            = record[TUPlayer.kInSchool]        as? String ?? "N/A"
-        isVerifiedStudent   = record[TUPlayer.kIsVerfiedStudent]as? Int    ?? 0
+        isVerifiedStudent   = record[TUPlayer.kIsVerfiedStudent] as? Int ?? 0
+        clubLeaderClubName  = record[TUPlayer.kClubLeaderClubName] as? String ?? ""
+        clubLeaderRequestDescription = record[TUPlayer.kClubLeaderRequestDescription] as? String ?? ""
     }
 }

@@ -18,7 +18,7 @@ final class CloudKitManager {
 
     func checkUsernameExists(for username: String) async throws -> Bool {
         //CASE SENSITIVE!!!
-        let predicate = NSPredicate(format: "userName == %@", username)
+        let predicate = NSPredicate(format: "username == %@", username)
         let query = CKQuery(recordType: RecordType.player, predicate: predicate)
 
         let (results, _) = try await container.publicCloudDatabase.records(matching: query)
@@ -30,7 +30,7 @@ final class CloudKitManager {
     }
 
     func getPlayers() async throws -> [TUPlayer] {
-        let sortDescriptor = NSSortDescriptor(key: TUPlayer.kFirstName, ascending: true)
+        let sortDescriptor = NSSortDescriptor(key: TUPlayer.kUsername, ascending: true)
         let query = CKQuery(recordType: RecordType.player, predicate: NSPredicate(value: true))
         query.sortDescriptors = [sortDescriptor]
         
@@ -42,7 +42,7 @@ final class CloudKitManager {
 
     func getPlayers(with username: String) async throws -> [TUPlayer] {
         let sortDescriptor = NSSortDescriptor(key: TUPlayer.kUsername, ascending: true)
-        let usernamePredicate  = NSPredicate(format: "userName BEGINSWITH %@", username)
+        let usernamePredicate  = NSPredicate(format: "username BEGINSWITH %@", username)
 
         //let compoundPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [firstNamePredicate,])
         let usernameQuery = CKQuery(recordType: RecordType.player, predicate: usernamePredicate)

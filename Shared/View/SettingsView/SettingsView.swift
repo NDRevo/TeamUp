@@ -17,47 +17,51 @@ struct SettingsView: View {
             if let playerProfile =  playerManager.playerProfile {
                 if playerProfile.inSchool != WordConstants.none {
                     Section {
-                        if playerManager.isVerifiedStudent {
-                                Button {
-                                    Task{
-                                        viewModel.isShowingWebsite = true
-                                    }
-                                } label: {
-                                    Text("Verify Student")
+                        if !playerManager.isVerifiedStudent {
+                            Button {
+                                Task{
+                                    viewModel.isShowingWebsite = true
                                 }
-                            }
-                    } footer: {
-                        if playerManager.isVerifiedStudent {
-                            HStack(alignment: .center){
-                                Spacer()
-                                    Text("Verified \(playerProfile.inSchool) Student")
-                                Spacer()
+                            } label: {
+                                Label("Verify School Attendance", systemImage: "graduationcap.fill")
                             }
                         }
-                    }
-
-                    Section {
-                        if playerManager.isRequestingGameLeader {
-                            Text("Game Leader Request Pending")
+                        if playerManager.isClubLeader == .requestClubLeader {
+                            Label("Club Leader Request Pending", systemImage: "person.badge.clock.fill")
                                 .foregroundColor(.gray)
-                        } else if playerManager.isGameLeader {
+                        }
+                        else if playerManager.isClubLeader == .clubLeader {
                             Button(role: .destructive) {
                                 viewModel.checkCanRemoveRole(eventsManager.myPublishedEvents)
                                 Task{
-                                   await eventsManager.deleteAllUnpublishedEvents()
+                                    await eventsManager.deleteAllUnpublishedEvents()
                                 }
                             } label: {
-                                Text("Remove Game Leader Role")
+                                Text("Remove Club Leader Role")
                             }
-                        } else {
+                        }
+                        else if playerManager.isClubLeader == .deniedClubLeader {
+                            Label {
+                                Text("Denied Club Leader Role")
+                                    .foregroundColor(.secondary)
+                            } icon: {
+                                Image(systemName: "person.fill.xmark")
+                                    .foregroundStyle(.red)
+                            }
+                        }
+                        else {
                             Button {
-                                Task {
-                                    await viewModel.changeGameLeaderPosition(to: 2, handledBy: playerManager)
-                                }
+                                viewModel.isShowingRequestClubLeaderSheet = true
                             } label: {
-                                Text("Request Game Leader")
+                                Label("Request Club Leader",systemImage: "person.badge.shield.checkmark.fill")
                             }
-                            .disabled(playerManager.isRequestingGameLeader)
+                            .disabled(playerManager.isClubLeader == .requestClubLeader)
+                        }
+                    } footer: {
+                        if playerManager.isVerifiedStudent {
+                            HStack(alignment: .center){
+                                Text("Verified \(playerProfile.inSchool) Student")
+                            }
                         }
                     }
                 }
@@ -77,10 +81,13 @@ struct SettingsView: View {
                     }
             }
         }
+        .sheet(isPresented: $viewModel.isShowingRequestClubLeaderSheet) {
+            RequestClubLeaderSheet(viewModel: viewModel)
+        }
         .confirmationDialog("Remove Game Leader Role?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {
                 Task {
-                    await viewModel.changeGameLeaderPosition(to: 0, handledBy: playerManager)
+                    await viewModel.changeClubLeaderPosition(to: 0, handledBy: playerManager)
                 }
             } label: { Text("Remove role") }
         }, message: { Text("Removing game leader role will retain archived events but delete unpublished events, are you sure?")}
@@ -88,7 +95,6 @@ struct SettingsView: View {
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage
         })
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

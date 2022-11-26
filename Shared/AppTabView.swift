@@ -19,7 +19,7 @@ struct AppTabView: View {
                     Label("Events", systemImage: "calendar")
                 }
             //INFO: If user is a game leader, they have access to this tab to create events
-            if playerManager.isGameLeader {
+            if playerManager.isClubLeader == .clubLeader {
                 MyEventsView()
                     .tabItem {
                         Label("My Events", systemImage: "slider.horizontal.2.square.on.square")

@@ -10,6 +10,8 @@ import SwiftUI
 
 @MainActor final class DebugViewModel: ObservableObject {
 
+    @Published var players: [TUPlayer]      = []
+
     @Published var playerUsername: String   = ""
     @Published var playerFirstName: String  = ""
     @Published var playerLastName: String   = ""
@@ -30,7 +32,7 @@ import SwiftUI
         playerRecord[TUPlayer.kUsername]        = playerUsername
         playerRecord[TUPlayer.kFirstName]       = playerFirstName
         playerRecord[TUPlayer.kLastName]        = playerLastName
-        playerRecord[TUPlayer.kIsGameLeader]    = 0
+        playerRecord[TUPlayer.kIsClubLeader]    = ClubLeaderStatus.notClubLeader.rawValue
 
         return playerRecord
     }
@@ -55,8 +57,8 @@ import SwiftUI
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
                 //Reloads view, locally adds player until another network call is made
-                eventsManager.players.append(TUPlayer(record: playerRecord))
-                eventsManager.players.sort(by: {$0.firstName < $1.firstName})
+                players.append(TUPlayer(record: playerRecord))
+                players.sort(by: {$0.firstName < $1.firstName})
                 isShowingAddPlayerSheet = false
             } catch {
                 alertItem = AlertContext.unableToCreatePlayer
@@ -65,10 +67,10 @@ import SwiftUI
         }
     }
 
-    func getPlayers(for eventsManager: EventsManager){
+    func getPlayers(){
         Task {
             do {
-                eventsManager.players = try await CloudKitManager.shared.getPlayers()
+                players = try await CloudKitManager.shared.getPlayers()
             } catch {
                 alertItem = AlertContext.unableToGetPlayerList
                 isShowingAlert = true
@@ -76,11 +78,11 @@ import SwiftUI
         }
     }
 
-    func giveGameLeader(to player: TUPlayer){
+    func changeClubLeaderRequestStatusTo(to value: Int, for player: TUPlayer){
         Task{
             do {
                 let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
-                playerRecord[TUPlayer.kIsGameLeader] = 1
+                playerRecord[TUPlayer.kIsClubLeader] = value
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
             } catch {

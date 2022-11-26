@@ -188,11 +188,11 @@ struct AlertContext {
                                                             button: Button.init("Ok", role: .none, action: {}))
     //MARK: - SettingsView
     
-    static let unableToChangeGameLeaderPosition     = AlertItem(alertTitle: Text("Server Error"),
+    static let unableToChangeClubLeaderPosition     = AlertItem(alertTitle: Text("Server Error"),
                                                             alertMessage: Text("Failed to make game leader.\n Check your internet connection and try again."),
                                                             button: Button.init("Ok", role: .none, action: {}))
 
-    static let unableToRemoveGameLeaderRole         = AlertItem(alertTitle: Text("Can't Remove Role"),
+    static let unableToRemoveClubLeaderRole         = AlertItem(alertTitle: Text("Can't Remove Role"),
                                                             alertMessage: Text("Remove your published events before removing game leader role."),
                                                             button: Button.init("Ok", role: .none, action: {}))
 }

@@ -88,11 +88,10 @@ struct EventParticipantsView: View {
                 LazyVStack {
                     ForEach(viewModel.playersInEvent){ player in
                         EventParticipantCell(event: viewModel.event, player: player)
+                        //This stops scrolling
                             .onLongPressGesture {
-                                //This stops scrolling
                                 if viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isArchived == 0 {
                                     viewModel.removePlayerFromEventWith(for: player)
-                                    //viewModel.refreshEventDetails(with: eventsManager.players)
                                 }
                             }
                     }

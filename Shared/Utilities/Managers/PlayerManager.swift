@@ -11,9 +11,8 @@ import SwiftUI
 //MARK: PlayersManager
 @MainActor final class PlayerManager: ObservableObject {
 
-    @AppStorage("isGameLeader") var isGameLeader: Bool = false
+    @AppStorage("isClubLeader") var isClubLeader: ClubLeaderStatus = .notClubLeader
     @AppStorage("isVerifiedStudent") var isVerifiedStudent: Bool = false
-    @AppStorage("isRequestingGameLeader") var isRequestingGameLeader: Bool = false
 
     //iCloudRecord has Published wrapper so it updates Profile view after call to fetch record
     @Published var iCloudRecord: CKRecord?
@@ -171,7 +170,7 @@ import SwiftUI
         playerRecord[TUPlayer.kInSchool]         = createdPlayerSchool
         playerRecord[TUPlayer.kFirstName]        = createdPlayerFirstName
         playerRecord[TUPlayer.kLastName]         = createdPlayerLastName
-        playerRecord[TUPlayer.kIsGameLeader]     = 0
+        playerRecord[TUPlayer.kIsClubLeader]     = ClubLeaderStatus.notClubLeader.rawValue
         playerRecord[TUPlayer.kIsVerfiedStudent] = 0
 
         return playerRecord
@@ -276,14 +275,14 @@ import SwiftUI
     func saveEditedProfile() async {
         await MainActor.run {
             if editedUsername.isEmpty && editedFirstName.isEmpty && editedLastName.isEmpty && editedSelectedSchool == playerProfile!.inSchool  {
-                withAnimation{
+                withAnimation {
                     isEditingProfile = false
                 }
                 return
             }
         }
 
-        let isValidUserame   = isValidUsername(username: editedUsername)
+        let isValidUsername = isValidUsername(username: editedUsername)
         let isValidFirstName = isValidName(name: editedFirstName )
         let isValidLastName  = isValidName(name: editedLastName )
         
@@ -298,7 +297,7 @@ import SwiftUI
                     alertItem = AlertContext.invalidUsername
                     isShowingAlert = true
                     return
-                } else if isValidUserame && !usernameExists {
+                } else if isValidUsername && !usernameExists {
                     playerProfileRecord[TUPlayer.kUsername] = editedUsername
                 }
             }
@@ -326,8 +325,8 @@ import SwiftUI
                 isEditingProfile = false
             }
         } catch {
-            //Valid checks change the AlertContext
-            if !isValidUserame || !isValidFirstName || !isValidLastName { isShowingAlert = true }
+            //Valid checks change the alertItem
+            if !isValidUsername || !isValidFirstName || !isValidLastName { isShowingAlert = true }
             else {
                 alertItem = AlertContext.unableToSaveEditedProfile
                 isShowingAlert = true
@@ -418,15 +417,22 @@ import SwiftUI
                 if let profileReference = iCloudRecord!["userProfile"] as? CKRecord.Reference {
                     let playerProfileRecord = try await CloudKitManager.shared.fetchRecord(with: profileReference.recordID)
                     playerProfile = TUPlayer(record: playerProfileRecord)
-                    //Force unwrapping due to guarenteed record existing
-                    isGameLeader = playerProfile!.isGameLeader == 1 ? true : false
-                    isRequestingGameLeader = playerProfile!.isGameLeader == 2 ? true : false
+
+                    if let playerProfile = playerProfile {
+                        switch playerProfile.isClubLeader {
+                        case 0: isClubLeader = .notClubLeader
+                        case 1: isClubLeader = .clubLeader
+                        case 2: isClubLeader = .requestClubLeader
+                        case 3: isClubLeader = .deniedClubLeader
+                        default:
+                            isClubLeader = .notClubLeader
+                        }
+                    }
                     getGameProfiles()
                     getEventsParticipating()
                 } else {
                     playerProfile = nil
-                    isGameLeader = false
-                    isRequestingGameLeader = false
+                    isClubLeader = .notClubLeader
                     isVerifiedStudent = false
                 }
             } catch {
