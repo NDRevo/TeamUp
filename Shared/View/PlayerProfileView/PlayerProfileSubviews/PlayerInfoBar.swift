@@ -57,7 +57,7 @@ struct PlayerInfoBar: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20)
-                            Text("Rutgers VALORANT Club")
+                            Text(playerManager.playerProfile!.clubLeaderClubName)
                                 .font(.body)
                                 .fontWeight(.semibold)
                         }

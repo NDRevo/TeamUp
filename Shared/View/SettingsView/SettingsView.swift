@@ -37,7 +37,8 @@ struct SettingsView: View {
                                     await eventsManager.deleteAllUnpublishedEvents()
                                 }
                             } label: {
-                                Text("Remove Club Leader Role")
+                                Label("Remove Club Leader Role", systemImage: "person.fill.xmark")
+                                    .foregroundColor(.red)
                             }
                         }
                         else if playerManager.isClubLeader == .deniedClubLeader {

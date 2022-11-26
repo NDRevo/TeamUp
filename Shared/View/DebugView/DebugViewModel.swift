@@ -78,11 +78,17 @@ import SwiftUI
         }
     }
 
-    func changeClubLeaderRequestStatusTo(to value: Int, for player: TUPlayer){
+    func changeClubLeaderRequestStatusTo(to status: ClubLeaderStatus, for player: TUPlayer){
         Task{
             do {
                 let playerRecord = try await CloudKitManager.shared.fetchRecord(with: player.id)
-                playerRecord[TUPlayer.kIsClubLeader] = value
+                if status == .notClubLeader {
+                    playerRecord[TUPlayer.kClubLeaderClubName] = nil
+                    playerRecord[TUPlayer.kClubLeaderRequestDescription] = nil
+                    playerRecord[TUPlayer.kIsClubLeader] = status.rawValue
+                } else {
+                    playerRecord[TUPlayer.kIsClubLeader] = status.rawValue
+                }
                 let _ = try await CloudKitManager.shared.save(record: playerRecord)
 
             } catch {

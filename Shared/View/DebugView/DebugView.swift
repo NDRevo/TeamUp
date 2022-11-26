@@ -29,18 +29,23 @@ struct DebugView: View {
                                 if player.isClubLeader == ClubLeaderStatus.requestClubLeader.rawValue  {
                                     HStack{
                                         Button {
-                                            viewModel.changeClubLeaderRequestStatusTo(to: 1, for: player)
+                                            viewModel.changeClubLeaderRequestStatusTo(to: .clubLeader, for: player)
                                         } label: {
                                             Text("Give Leader")
                                         }
                                         Spacer()
                                         Button {
-                                            viewModel.changeClubLeaderRequestStatusTo(to: 3, for: player)
+                                            viewModel.changeClubLeaderRequestStatusTo(to: .deniedClubLeader, for: player)
                                         } label: {
                                             Text("Deny Leader")
                                         }
                                     }
-
+                                } else if player.isClubLeader == ClubLeaderStatus.deniedClubLeader.rawValue {
+                                    Button {
+                                        viewModel.changeClubLeaderRequestStatusTo(to: .notClubLeader, for: player)
+                                    } label: {
+                                        Text("Undeny Player Club Request")
+                                    }
                                 }
                                 
                                 
@@ -56,6 +61,7 @@ struct DebugView: View {
                     }
                 }
             }
+            .buttonStyle(.borderless)
             .listStyle(.insetGrouped)
             .navigationTitle("Players")
             .refreshable {
