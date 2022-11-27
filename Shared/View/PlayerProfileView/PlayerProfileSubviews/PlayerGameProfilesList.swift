@@ -27,10 +27,9 @@ struct PlayerGameProfilesList: View {
                     Image(systemName: "person.crop.rectangle.badge.plus")
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(playerManager.isEditingProfile ? .secondary : .primary, .secondary)
+                        .foregroundStyle(.primary, .secondary)
                         .frame(width: 30)
                 }
-                .disabled(playerManager.isEditingProfile)
             }
             .padding(.horizontal, 12)
             if playerManager.playerGameProfiles.isEmpty {
@@ -42,6 +41,7 @@ struct PlayerGameProfilesList: View {
                         .foregroundColor(.secondary)
                         .bold()
                 }
+                .padding()
             } else {
                 ScrollView(.horizontal) {
                     LazyHStack(alignment: .top, spacing: 10) {

@@ -18,11 +18,13 @@ struct PlayerProfileView: View {
             else if playerManager.playerProfile == nil { CreateProfileView() }
             else {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 12){
+                    VStack(alignment: .leading, spacing: 8){
                         ProfileNameBar()
                         PlayerInfoBar()
-                        PlayerGameProfilesList()
-                        ParticipatingInEventsList()
+                        if !playerManager.isEditingProfile {
+                            PlayerGameProfilesList()
+                            ParticipatingInEventsList()
+                        }
                     }
                 }
                 .scrollIndicators(.hidden)

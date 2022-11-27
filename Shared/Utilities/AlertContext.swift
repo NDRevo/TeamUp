@@ -193,10 +193,10 @@ struct AlertContext {
     //MARK: - SettingsView
     
     static let unableToChangeClubLeaderPosition     = AlertItem(alertTitle: Text("Server Error"),
-                                                            alertMessage: Text("Failed to make game leader.\n Check your internet connection and try again."),
+                                                            alertMessage: Text("Failed to make club leader.\n Check your internet connection and try again."),
                                                             button: Button.init("Ok", role: .none, action: {}))
 
     static let unableToRemoveClubLeaderRole         = AlertItem(alertTitle: Text("Can't Remove Role"),
-                                                            alertMessage: Text("Remove your published events before removing game leader role."),
+                                                            alertMessage: Text("Remove your published events before removing club leader role."),
                                                             button: Button.init("Ok", role: .none, action: {}))
 }

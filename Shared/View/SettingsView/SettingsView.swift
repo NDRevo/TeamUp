@@ -69,12 +69,6 @@ struct SettingsView: View {
                             }
                             .disabled(playerManager.isClubLeader == .requestClubLeader)
                         }
-                    } footer: {
-                        if playerManager.studentVerifiedStatus == .isVerifiedStudent {
-                            HStack(alignment: .center){
-                                Text("Verified \(playerProfile.inSchool) Student")
-                            }
-                        }
                     }
                 }
             }
@@ -97,13 +91,13 @@ struct SettingsView: View {
         .sheet(isPresented: $viewModel.isShowingRequestClubLeaderSheet) {
             RequestClubLeaderSheet(viewModel: viewModel)
         }
-        .confirmationDialog("Remove Game Leader Role?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
+        .confirmationDialog("Remove Club Leader Role?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
             Button(role: .destructive) {
                 Task {
                     await viewModel.changeClubLeaderPosition(to: 0, handledBy: playerManager)
                 }
             } label: { Text("Remove role") }
-        }, message: { Text("Removing game leader role will retain archived events but delete unpublished events, are you sure?")}
+        }, message: { Text("Removing club leader role will retain archived events but delete unpublished events, are you sure?")}
         )
         .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
             viewModel.alertItem.alertMessage

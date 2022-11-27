@@ -69,3 +69,10 @@ struct EventMatchesView: View {
         }
     }
 }
+
+struct EventMatchesView_Previews: PreviewProvider {
+    static var previews: some View {
+        EventMatchesView(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+            .environmentObject(PlayerManager(playerProfile: TUPlayer(record: MockData.player)))
+    }
+}

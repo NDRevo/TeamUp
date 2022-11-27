@@ -100,3 +100,10 @@ struct EventParticipantsView: View {
         }
     }
 }
+
+struct EventParticipantsView_Previews: PreviewProvider {
+    static var previews: some View {
+        EventParticipantsView(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+            .environmentObject(PlayerManager(playerProfile: TUPlayer(record: MockData.player)))
+    }
+}

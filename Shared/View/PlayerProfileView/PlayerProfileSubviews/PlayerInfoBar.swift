@@ -35,15 +35,16 @@ struct PlayerInfoBar: View {
                                         .fontWeight(.semibold)
                                         .lineLimit(1)
                                         .minimumScaleFactor(0.85)
-                                    Spacer()
                                     if playerManager.studentVerifiedStatus == .isVerifiedStudent {
                                         Image(systemName: "checkmark.seal.fill")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 20)
                                             .foregroundStyle(.primary, .secondary)
-                                            .foregroundColor(.green)
+                                            .foregroundColor(playerManager.profileColor ?? .green)
                                     }
                                 }
                             }
-                            Spacer()
                         }
                         if playerManager.isClubLeader == .clubLeader && !playerManager.isEditingProfile{
                             HStack {
@@ -51,6 +52,7 @@ struct PlayerInfoBar: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 20)
+                                    .foregroundStyle(playerManager.profileColor ?? .secondary, .primary)
                                 Text(playerManager.playerProfile!.clubLeaderClubName)
                                     .font(.body)
                                     .fontWeight(.semibold)

@@ -17,12 +17,12 @@ struct RequestClubLeaderSheet: View {
             ScrollView{
                 VStack(spacing: 12) {
                     VStack(alignment: .center) {
-                        Text("Request Game Leader")
+                        Text("Request Club Leader")
                             .font(.title)
                             .bold()
                     }
                     VStack(spacing: 12){
-                        Text("Requesting the Game Leader role will require manual verification. Enter the club name you are a leader of. You'll be required to submit any links that can identify you as being a leader of the club.")
+                        Text("Requesting the Club Leader role will require manual verification. Enter the club name you are a leader of. You'll be required to submit any links that can identify you as being a leader of the club.")
                         HStack{
                             Image(systemName: "graduationcap.fill")
                                 .resizable()
@@ -53,7 +53,7 @@ struct RequestClubLeaderSheet: View {
                                 .autocorrectionDisabled()
                                 .textInputAutocapitalization(.never)
                         }
-                        Button("Request Game Leader", action: {
+                        Button("Request Club Leader", action: {
                             Task {
                                 await viewModel.changeClubLeaderPosition(to: 2, handledBy: playerManager)
                                 viewModel.isShowingRequestClubLeaderSheet = false

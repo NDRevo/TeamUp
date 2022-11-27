@@ -13,7 +13,7 @@ struct ProfileNameBar: View {
     @EnvironmentObject var playerManager: PlayerManager
 
     var body: some View {
-        HStack(spacing: 12){
+        HStack(spacing: 8){
             ZStack(alignment: .center) {
                 RoundedRectangle(cornerRadius: 8)
                     .frame(width: 80,height: playerManager.isEditingProfile ? 130 : 80)
@@ -23,7 +23,7 @@ struct ProfileNameBar: View {
                         playerManager.isShowingColorPicker = true
                     } label: {
                         Image(systemName: "swatchpalette.fill")
-                            .foregroundColor(.appBackground)
+                            .foregroundColor(.appCell)
                             .font(.title)
                             .frame(width: 80,height: playerManager.isEditingProfile ? 130 : 80)
                         

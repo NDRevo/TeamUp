@@ -67,3 +67,9 @@ struct EventLocationView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
+
+struct EventLocationView_Previews: PreviewProvider {
+    static var previews: some View {
+        EventLocationView(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+    }
+}

@@ -21,13 +21,13 @@ struct EventDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack {
-                EventTimeDetailsView(viewModel: viewModel)
-                    .padding(.horizontal, 12)
-                EventLocationView(viewModel: viewModel)
-                    .padding(.horizontal, 12)
-                EventDescriptionView(viewModel: viewModel)
-                    .padding(.horizontal, 12)
+            VStack(spacing: 8) {
+                VStack(spacing: 8) {
+                    EventTimeDetailsView(viewModel: viewModel)
+                    EventLocationView(viewModel: viewModel)
+                    EventDescriptionView(viewModel: viewModel)
+                }
+                .padding(.horizontal, 12)
                 EventMatchesView(viewModel: viewModel)
                 EventParticipantsView(viewModel: viewModel)
                     .padding(.horizontal, 12)

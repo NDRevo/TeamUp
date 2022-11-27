@@ -30,6 +30,12 @@ struct EventTimeDetailsView: View {
     }
 }
 
+struct EventTimeDetailsView_Previews: PreviewProvider {
+    static var previews: some View {
+        EventTimeDetailsView(viewModel: EventDetailViewModel(event: TUEvent(record: MockData.event)))
+    }
+}
+
 //MARK: DetailItemView
 //INFO: Reused view to display Image and Title on top of the detail item text
 struct DetailItemView: View {
