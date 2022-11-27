@@ -19,6 +19,7 @@ struct EventMoreDetailsSheet: View {
             MoreDetailItemView(textContent: viewModel.event.eventOwnerName, detailType: .owner)
             MoreDetailItemView(textContent: viewModel.event.eventGameName+viewModel.event.eventGameVariantName , detailType: .game)
             MoreDetailItemView(textContent: viewModel.event.eventSchool, detailType: .school)
+            MoreDetailItemView(textContent: viewModel.event.eventSchoolClub, detailType: .clubHosting)
         }
     }
 }

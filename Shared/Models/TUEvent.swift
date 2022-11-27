@@ -19,6 +19,7 @@ struct TUEvent: Identifiable, Hashable {
     static let kEventLocationTitle      = "eventLocationTitle"
     static let kEventLocation           = "eventLocation"
     static let kEventSchool             = "eventSchool"
+    static let kEventSchoolClub         = "eventSchoolClub"
     static let kEventOwner              = "eventOwner"
     static let kEventOwnerName          = "eventOwnerName"
     static let kIsPublished             = "isPublished"
@@ -37,6 +38,7 @@ struct TUEvent: Identifiable, Hashable {
     let eventOwner: CKRecord.Reference
     let eventOwnerName: String
     let eventSchool: String
+    let eventSchoolClub: String
     let isPublished: Int
     let isArchived: Int
 
@@ -56,6 +58,7 @@ struct TUEvent: Identifiable, Hashable {
         eventOwner              = record[TUEvent.kEventOwner] as? CKRecord.Reference ?? CKRecord.Reference(recordID: CKRecord.ID(recordName: "31394CE3-68AD-4AC2-A125-59E665637500"), action: .deleteSelf)
         eventOwnerName          = record[TUEvent.kEventOwnerName] as? String ?? "N/A"
         eventSchool             = record[TUEvent.kEventSchool] as? String ?? "N/A"
+        eventSchoolClub         = record[TUEvent.kEventSchoolClub] as? String ?? "N/A"
         isPublished             = record[TUEvent.kIsPublished] as? Int ?? 0
         isArchived              = record[TUEvent.kIsArchived] as? Int ?? 0
     }

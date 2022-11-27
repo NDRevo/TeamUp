@@ -16,7 +16,7 @@ enum PresentingSheet {
 }
 
 enum DetailItem {
-    case date,time,endTime,location,owner,game,school
+    case date,time,endTime,location,owner,game,school, clubHosting
 
     func getSystemImage() -> String {
         switch self {
@@ -27,6 +27,7 @@ enum DetailItem {
         case .owner:    return "person.text.rectangle"
         case .game:     return "gamecontroller.fill"
         case .school:   return "graduationcap.fill"
+        case .clubHosting: return "suit.club.fill"
         }
     }
 
@@ -39,6 +40,7 @@ enum DetailItem {
         case .owner:    return "Event Owner"
         case .game:     return "Event Game"
         case .school:   return "School"
+        case .clubHosting: return "Club Hosting"
         }
     }
 }

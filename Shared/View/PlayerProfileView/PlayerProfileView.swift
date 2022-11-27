@@ -76,6 +76,9 @@ struct PlayerProfileView: View {
                     }
                 }
                 .background(Color.appBackground)
+                .onDisappear {
+                    playerManager.isEditingProfile = false
+                }
             }
         }
     }

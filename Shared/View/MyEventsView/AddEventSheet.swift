@@ -37,14 +37,6 @@ struct AddEventSheet: View {
                     }
                     .focused($focusField, equals: .eventName)
 
-                DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
-                DatePicker("Event End Date", selection: $viewModel.eventEndDate, in: viewModel.dateRange)
-                    .onChange(of: viewModel.eventDate) { newValue in
-                        if viewModel.eventEndDate <= newValue {
-                            viewModel.eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: newValue)!
-                        }
-                    }
-
                 Picker("Game", selection: $viewModel.eventGame) {
                     //Starts from 2 to remove "All" & other case
                     ForEach(GameLibrary.data.games[2...]){game in
@@ -53,6 +45,14 @@ struct AddEventSheet: View {
                     }
                 }
                 .pickerStyle(.menu)
+
+                DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
+                DatePicker("Event End Date", selection: $viewModel.eventEndDate, in: viewModel.dateRange)
+                    .onChange(of: viewModel.eventDate) { newValue in
+                        if viewModel.eventEndDate <= newValue {
+                            viewModel.eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: newValue)!
+                        }
+                    }
 
                 if !viewModel.eventGame.gameVariants.isEmpty {
                         Picker("Variant", selection: $viewModel.eventGameVariant) {

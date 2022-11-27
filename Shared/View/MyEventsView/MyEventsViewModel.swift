@@ -109,6 +109,7 @@ enum EventError: Error {
             record[TUEvent.kEventOwner]         = CKRecord.Reference(record: profileRecord!, action: .none)
             record[TUEvent.kEventOwnerName]     = profile.username
             record[TUEvent.kEventSchool]        = profile.inSchool
+            record[TUEvent.kEventSchoolClub]    = profile.clubLeaderClubName
         }
         return record
     }
