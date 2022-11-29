@@ -99,9 +99,7 @@ struct SettingsView: View {
             } label: { Text("Remove role") }
         }, message: { Text("Removing club leader role will retain archived events but delete unpublished events, are you sure?")}
         )
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
-        })
+        .alert($viewModel.isShowingAlert, alertInfo: viewModel.alertItem)
     }
 }
 

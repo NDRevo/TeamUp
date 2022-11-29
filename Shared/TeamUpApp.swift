@@ -24,9 +24,7 @@ struct TeamUpApp: App {
                     eventsManager.getMyUnpublishedEvents(for: playerManager.playerProfile)
                 }
                 //This should be displayed within all tabs and sheets
-                .alert(playerManager.alertItem.alertTitle, isPresented: $playerManager.isShowingAlert, actions: {}, message: {
-                    playerManager.alertItem.alertMessage
-                })
+                .alert($playerManager.isShowingAlert, alertInfo: playerManager.alertItem)
         }
     }
 }

@@ -45,9 +45,7 @@ struct MatchDetailView: View {
         .task {
             viewModel.getTeamsForMatch()
         }
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
-        })
+        .alert($viewModel.isShowingAlert, alertInfo: viewModel.alertItem)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 HStack(spacing: 20) {

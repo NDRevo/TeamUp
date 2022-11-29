@@ -63,6 +63,7 @@ import SwiftUI
 
     @Published var isEditingGameProfile          = false
     @Published var isPresentingSheet             = false
+    @Published var isShowingAddGameProfileAlert  = false
     @Published var isShowingAlert                = false
     @Published var isShowingColorPicker          = false
     @Published var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
@@ -362,7 +363,7 @@ import SwiftUI
     func saveGameProfile(){
         guard isValidGameProfile() else {
             alertItem = AlertContext.invalidGameProfile
-            isShowingAlert = true
+            isShowingAddGameProfileAlert = true
             return
         }
 
@@ -370,7 +371,7 @@ import SwiftUI
             do {
                 guard let playerProfileID = playerProfile else {
                     alertItem = AlertContext.unableToGetUserProfile
-                    isShowingAlert = true
+                    isShowingAddGameProfileAlert = true
                     return
                 }
                 let playerGameProfile = createPlayerGameProfile()
@@ -383,7 +384,7 @@ import SwiftUI
                 isPresentingSheet = false
             } catch {
                 alertItem = AlertContext.unableToSaveGameProfile
-                isShowingAlert = true
+                isShowingAddGameProfileAlert = true
             }
         }
     }

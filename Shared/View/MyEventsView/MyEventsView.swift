@@ -46,9 +46,7 @@ struct MyEventsView: View {
                 eventsManager.getMyPublishedEvents(for: playerManager.playerProfile)
                 eventsManager.getMyUnpublishedEvents(for: playerManager.playerProfile)
             }
-            .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-                viewModel.alertItem.alertMessage
-            })
+            .alert($viewModel.isShowingAlert, alertInfo: viewModel.alertItem)
             .toolbar {
                 EventsListToolbarContent(viewModel: viewModel)
             }

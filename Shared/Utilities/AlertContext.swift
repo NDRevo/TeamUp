@@ -12,6 +12,18 @@ struct AlertItem {
     var alertTitle: Text
     var alertMessage: Text
     var button: Button<Text>?
+
+    init(alertTitle: Text, alertMessage: Text, button: Button<Text>? = nil){
+        self.alertTitle = alertTitle
+        self.alertMessage = alertMessage
+        self.button = button
+    }
+
+    init(_ error: Error) {
+        self.alertTitle = Text("Error")
+        self.alertMessage = Text(error.localizedDescription)
+        self.button = Button.init("Ok", role: .none, action: {})
+    }
 }
 
 struct AlertContext {

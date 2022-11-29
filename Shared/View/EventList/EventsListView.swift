@@ -35,12 +35,8 @@ struct EventsListView: View {
                     await eventsManager.archiveEvents()
                 }
             }
-            .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-                viewModel.alertItem.alertMessage
-            })
-            .alert(eventsManager.alertItem.alertTitle, isPresented: $eventsManager.isShowingAlert, actions: {}, message: {
-                eventsManager.alertItem.alertMessage
-            })
+            .alert($viewModel.isShowingAlert, alertInfo: viewModel.alertItem)
+            .alert($eventsManager.isShowingAlert, alertInfo: eventsManager.alertItem)
         }
     }
 }

@@ -40,9 +40,7 @@ struct AddTeamSheet: View {
                 Button("Dismiss") {dismiss()}
             }
         }
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
-        })
+        .alert($viewModel.isShowingAlert, alertInfo: viewModel.alertItem)
     }
 }
 

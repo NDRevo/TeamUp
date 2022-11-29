@@ -80,10 +80,11 @@ enum DetailItem {
             isShowingSheet = true
         }
     }
+    //Publishing Changes Issue
+    @Published var isShowingEventDetailViewAlert: Bool = false
+    @Published var isShowingAddMatchSheetAlert: Bool = false
+    var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
 
-    @Published var isShowingAlert: Bool             = false
-    @Published var alertItem: AlertItem             = AlertItem(alertTitle: Text("Unable To Show Alert"),
-                                                                alertMessage: Text("There was a problem showing the alert."))
     /// Check to see if user is owner of event
     /// - Parameter playerRecord: CKRecord of player being checked
     /// - Returns: Bool
@@ -118,7 +119,7 @@ enum DetailItem {
                
                 await MainActor.run{
                     alertItem = AlertContext.unableToAccessCalendar
-                    isShowingAlert = true
+                    isShowingEventDetailViewAlert = true
                 }
             }
         } catch {}
@@ -186,7 +187,7 @@ enum DetailItem {
     func createMatchForEvent(){
         guard isValidMatch() else {
             alertItem = AlertContext.invalidMatch
-            isShowingAlert = true
+            isShowingAddMatchSheetAlert = true
             return
         }
 
@@ -201,7 +202,7 @@ enum DetailItem {
                 isShowingSheet = false
             } catch {
                 alertItem = AlertContext.unableToCreateMatch
-                isShowingAlert = true
+                isShowingAddMatchSheetAlert = true
             }
         }
     }
@@ -230,7 +231,7 @@ enum DetailItem {
             } catch {
                 //MARK: Unable to add you to event
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
-                isShowingAlert = true
+                isShowingEventDetailViewAlert = true
             }
         }
     }
@@ -255,7 +256,7 @@ enum DetailItem {
             } catch {
                 //MARK: Unable to add leave event
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
-                isShowingAlert = true
+                isShowingEventDetailViewAlert = true
             }
         }
     }
@@ -287,7 +288,7 @@ enum DetailItem {
                 }
             } catch {
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
-                isShowingAlert = true
+                isShowingEventDetailViewAlert = true
             }
         }
     }
@@ -297,7 +298,7 @@ enum DetailItem {
     func publishEvent(eventsManager: EventsManager){
         if event.eventStartDate < Date() {
             alertItem = AlertContext.eventPastStartTime
-            isShowingAlert = true
+            isShowingEventDetailViewAlert = true
         } else {
             Task {
                 do {
@@ -307,7 +308,7 @@ enum DetailItem {
                     isShowingPublishedButton = false
                 } catch {
                     alertItem = AlertContext.unableToPublishEvent
-                    isShowingAlert = true
+                    isShowingEventDetailViewAlert = true
                 }
             }
         }
@@ -315,32 +316,26 @@ enum DetailItem {
 
     /// Fetches matches from cloudkit using event id
     private func getMatchesForEvent(){
-        showLoadingView()
         Task {
             do {
                 let loadingMatches =  try await CloudKitManager.shared.getMatches(for: event.id)
                 matches = loadingMatches
-                hideLoadingView()
             } catch{
-                hideLoadingView()
                 alertItem = AlertContext.unableToGetMatchesForEvent
-                isShowingAlert = true
+                isShowingEventDetailViewAlert = true
             }
         }
     }
 
     /// Fetches list of players in an event from cloudkit by using the event id
     private func getPlayersInEvents(){
-        showLoadingView()
         Task {
             do {
                 let loadingPlayers = try await CloudKitManager.shared.getPlayersForEvent(for: event.id)
                 playersInEvent = loadingPlayers
-                hideLoadingView()
             } catch{
-                hideLoadingView()
                 alertItem = AlertContext.unableToGetPlayersForEvent
-                isShowingAlert = true
+                isShowingEventDetailViewAlert = true
             }
         }
     }
@@ -353,7 +348,7 @@ enum DetailItem {
                 availablePlayers =  try await CloudKitManager.shared.getPlayers(with: searchString)
             } catch {
                 alertItem = AlertContext.unableToSearchForPlayers
-                isShowingAlert = true
+                isShowingEventDetailViewAlert = true
             }
         }
     }
@@ -392,11 +387,8 @@ enum DetailItem {
                     playersInEvent.removeAll(where: {$0.id == player.id})
                 } catch{
                     alertItem = AlertContext.unableToRemovePlayerFromTeam
-                    isShowingAlert = true
+                    isShowingEventDetailViewAlert = true
                 }
             }
     }
-
-    private func showLoadingView(){isLoading = true}
-    private func hideLoadingView(){isLoading = false}
 }

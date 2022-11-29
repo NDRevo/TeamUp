@@ -46,9 +46,7 @@ struct EventDetailView: View {
         .task {
             viewModel.setUpEventDetails()
         }
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
-        })
+        .alert($viewModel.isShowingEventDetailViewAlert, alertInfo: viewModel.alertItem)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button {

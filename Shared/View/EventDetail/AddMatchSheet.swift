@@ -44,9 +44,7 @@ struct AddMatchSheet: View {
                 Button("Dismiss") {dismiss()}
             }
         }
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
-        })
+        .alert($viewModel.isShowingAddMatchSheetAlert, alertInfo: viewModel.alertItem)
     }
 }
 

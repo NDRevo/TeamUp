@@ -14,6 +14,10 @@ extension View {
     func allowToPresentCalendar(with data: EventDetailViewModel) -> some View {
         modifier(onTapPresentCalendar(viewModel: data))
     }
+
+    func alert(_ isShowingAlert: Binding<Bool>, alertInfo: AlertItem) -> some View{
+        modifier(presentAlert(isShowingAlert: isShowingAlert, alert: alertInfo))
+    }
 }
 
 struct RoundedCorner: Shape {
@@ -41,5 +45,18 @@ struct onTapPresentCalendar: ViewModifier {
             .sheet(isPresented: $viewModel.isShowingCalendarView) {
                 CalendarViewController(event: viewModel.event, store: viewModel.store, isShowingCalendarView: $viewModel.isShowingCalendarView)
             }
+    }
+}
+
+struct presentAlert: ViewModifier {
+
+    @Binding var isShowingAlert: Bool
+    var alert: AlertItem
+
+    func body(content: Content) -> some View {
+        content
+            .alert(alert.alertTitle, isPresented: $isShowingAlert, actions: {alert.button}, message: {
+                alert.alertMessage
+            })
     }
 }

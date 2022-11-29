@@ -82,6 +82,7 @@ struct AddPlayerGameProfileSheet: View {
                 Button("Dismiss") { dismiss() }
             }
         }
+        .alert($playerManager.isShowingAddGameProfileAlert, alertInfo: playerManager.alertItem)
     }
 }
 

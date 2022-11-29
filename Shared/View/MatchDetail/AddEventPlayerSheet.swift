@@ -53,9 +53,7 @@ struct AddEventPlayerSheet: View {
         .onAppear {
             viewModel.getAvailablePlayers(eventDetailViewModel: eventDetailViewModel)
         }
-        .alert(viewModel.alertItem.alertTitle, isPresented: $viewModel.isShowingAlert, actions: {}, message: {
-            viewModel.alertItem.alertMessage
-        })
+        .alert($viewModel.isShowingAlert, alertInfo: viewModel.alertItem)
     }
 }
 
