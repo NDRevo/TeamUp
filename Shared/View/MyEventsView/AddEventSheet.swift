@@ -8,7 +8,7 @@
 import SwiftUI
 
 private enum Field: Int, CaseIterable {
-    case eventName, eventIRLLocation, eventDiscordLocation, eventDescription
+    case eventName,eventGameName, eventIRLLocation, eventDiscordLocation, eventDescription
 }
 
 public enum locations: String, CaseIterable {
@@ -39,12 +39,17 @@ struct AddEventSheet: View {
 
                 Picker("Game", selection: $viewModel.eventGame) {
                     //Starts from 2 to remove "All" & other case
-                    ForEach(GameLibrary.data.games[2...]){game in
+                    ForEach(GameLibrary.data.games[1...]){game in
                         Text(game.name)
                             .tag(game.self)
                     }
                 }
                 .pickerStyle(.menu)
+
+                if viewModel.eventGame.name == GameNames.other {
+                    TextField("Game Name", text: $viewModel.userInputEventGameName)
+                        .focused($focusField, equals: .eventGameName)
+                }
 
                 DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
                 DatePicker("Event End Date", selection: $viewModel.eventEndDate, in: viewModel.dateRange)

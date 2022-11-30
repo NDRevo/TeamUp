@@ -17,7 +17,9 @@ struct EventMoreDetailsSheet: View {
     var body: some View {
         List {
             MoreDetailItemView(textContent: viewModel.event.eventOwnerName, detailType: .owner)
-            MoreDetailItemView(textContent: viewModel.event.eventGameName+viewModel.event.eventGameVariantName , detailType: .game)
+            if viewModel.event.eventGameName != GameNames.none {
+                MoreDetailItemView(textContent: viewModel.event.processedGameName , detailType: .game)
+            }
             MoreDetailItemView(textContent: viewModel.event.eventSchool, detailType: .school)
             MoreDetailItemView(textContent: viewModel.event.eventSchoolClub, detailType: .clubHosting)
         }

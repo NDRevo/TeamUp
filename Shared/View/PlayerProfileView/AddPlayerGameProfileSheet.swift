@@ -19,7 +19,7 @@ struct AddPlayerGameProfileSheet: View {
         List {
             Section{
                 Picker("Game", selection: $playerManager.selectedGame) {
-                    ForEach(GameLibrary.data.games[1...], id: \.self){ game in
+                    ForEach(GameLibrary.data.games[3...], id: \.self){ game in
                         Text(game.name)
                     }
                 }

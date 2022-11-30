@@ -10,6 +10,7 @@ import SwiftUI
 
 enum GameNames {
     static let empty            = ""
+    static let none             = "None"
     static let all              = "All"
     static let amongus          = "Among Us"
     static let apexlegends      = "Apex Legends"
@@ -76,8 +77,9 @@ final class GameLibrary {
     static let data = GameLibrary()
 
     let games: [Game] = [
-        Game(name: GameNames.all, ranks: [],image: Image(systemName: "rectangle.stack")),
-        Game(name: GameNames.other, ranks: [],image: Image(systemName: "square.grid.2x2.fill")),
+        Game(name: GameNames.all, ranks: [],image: Image(systemName: "rectangle.stack.fill")),
+        Game(name: GameNames.none, ranks: [],image: Image(systemName: "square.grid.2x2.fill")),
+        Game(name: GameNames.other, ranks: [],image: Image(systemName: "questionmark.app.fill")),
         Game(name: GameNames.amongus, gameColor: .amongus, ranks: [], image: Image(GameNames.amongus)),
         //MARK: Apex Legends
         Game(name: GameNames.apexlegends,

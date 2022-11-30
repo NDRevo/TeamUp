@@ -66,7 +66,7 @@ struct EventGameName: View {
     var event: TUEvent
 
     var body: some View {
-        Text(event.eventGameName + event.eventGameVariantName)
+        Text(event.processedGameName)
             .minimumScaleFactor(0.90)
             .lineLimit(1)
             .truncationMode(.tail)

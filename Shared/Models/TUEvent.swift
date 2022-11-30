@@ -97,4 +97,12 @@ struct TUEvent: Identifiable, Hashable {
         dateFormatter.dateFormat = "E, MMM d"
         return dateFormatter.string(from: eventStartDate)
     }
+
+    var processedGameName: String {
+        if eventGameName == GameNames.other || eventGameName == GameNames.none {
+            return eventGameVariantName
+        } else {
+            return eventGameName + eventGameVariantName
+        }
+    }
 }

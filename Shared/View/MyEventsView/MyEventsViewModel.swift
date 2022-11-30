@@ -24,7 +24,9 @@ enum EventError: Error {
     @Published var eventLocation: String     = ""
     @Published var eventDate: Date           = Date()
     @Published var eventEndDate: Date        = Date()
-    @Published var eventGame: Game           = Game(name: GameNames.other, ranks: [])
+    //When eventGame is set to other
+    @Published var userInputEventGameName: String = ""
+    @Published var eventGame: Game           = Game(name: GameNames.amongus, ranks: [])
     @Published var eventGameVariant: Game    = Game(name: GameNames.empty, ranks: [])
 
     @Published var isPresentingAddEvent      = false
@@ -51,7 +53,9 @@ enum EventError: Error {
         eventName        = ""
         eventDate        = currentDateAndHour
         eventEndDate     = Calendar.current.date(byAdding: .hour, value: 1, to: currentDateAndHour)!
-        eventGame        = Game(name: GameNames.other, ranks: [])
+        userInputEventGameName    = ""
+        //eventGame should be the same as the first item in picker or else 'selection is invalid and does not have an associated tag, this will give undefined results.'
+        eventGame        = GameLibrary.data.games[3]
         eventGameVariant = Game(name: GameNames.empty, ranks: [])
         eventDescription = ""
         eventLocationTitle = nil
@@ -92,7 +96,18 @@ enum EventError: Error {
         record[TUEvent.kEventStartDate]         = eventDate
         record[TUEvent.kEventEndDate]           = eventEndDate
         record[TUEvent.kEventGameName]          = eventGame.name
-        record[TUEvent.kEventGameVariantName]   = eventGameVariant.name
+
+        if eventGame.name == GameNames.other {
+            //Use user inputted game name
+            record[TUEvent.kEventGameVariantName] = userInputEventGameName
+        } else if eventGame.name == GameNames.none {
+            //Use club name
+            record[TUEvent.kEventGameVariantName] = profile?.clubLeaderClubName
+        } else {
+            //Use game variant name
+            record[TUEvent.kEventGameVariantName] = eventGameVariant.name
+        }
+
         record[TUEvent.kEventDescription]       = eventDescription
 
         if locationPicked == .discord {
