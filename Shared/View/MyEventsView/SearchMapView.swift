@@ -11,7 +11,8 @@ import Combine
 
 struct SearchMapView: View {
     @StateObject private var searchViewModel = SearchMapViewModel()
-    @ObservedObject var viewModel: MyEventsViewModel
+    @Binding var eventLocationTitle: String?
+    @Binding var eventLocation: String
 
     @Environment(\.dismiss) var dismiss
 
@@ -23,8 +24,8 @@ struct SearchMapView: View {
                     Text(item.subtitle)
                         .foregroundColor(.secondary)
                 }.onTapGesture {
-                    viewModel.eventLocationTitle = item.title
-                    viewModel.eventLocation = item.subtitle
+                    eventLocationTitle = item.title
+                    eventLocation = item.subtitle
                     dismiss()
                 }
             }
@@ -42,6 +43,6 @@ struct SearchMapView: View {
 
 struct SearchMapView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchMapView(viewModel: MyEventsViewModel())
+        SearchMapView(eventLocationTitle: .constant("Rutgers Esports Center"), eventLocation: .constant("Rutgers"))
     }
 }

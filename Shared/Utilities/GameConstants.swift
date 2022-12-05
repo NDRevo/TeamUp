@@ -175,4 +175,12 @@ final class GameLibrary {
         }
         return games.first(where: {$0.name == gameName})!.getRanksForGame()
     }
+
+    func getGameByName(gameName: String) -> Game {
+        return games.first(where: {$0.name == gameName}) ?? Game(name: gameName, ranks: [])
+    }
+
+    func getGameVariantByGameName(gameName: String, gameVariantName: String) -> Game {
+        return games.first(where: {$0.name == gameName})?.gameVariants.first(where: {$0.name == gameVariantName}) ?? Game(name: gameVariantName, ranks: [])
+    }
 }

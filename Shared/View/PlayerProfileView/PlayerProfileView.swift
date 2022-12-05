@@ -14,7 +14,7 @@ struct PlayerProfileView: View {
 
     var body: some View {
         NavigationView{
-            if playerManager.iCloudRecord == nil { NoiCloudView() }
+            if playerManager.iCloudRecord == nil { NoiCloudView() } // .task to check iCloud record
             else if playerManager.playerProfile == nil { CreateProfileView() }
             else {
                 ScrollView {

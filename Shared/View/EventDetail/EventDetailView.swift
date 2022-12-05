@@ -23,20 +23,26 @@ struct EventDetailView: View {
         ScrollView {
             VStack(spacing: 8) {
                 VStack(spacing: 8) {
+                    EventTitleView(viewModel: viewModel)
                     EventTimeDetailsView(viewModel: viewModel)
                     EventLocationView(viewModel: viewModel)
                     EventDescriptionView(viewModel: viewModel)
+                    if viewModel.isEditingEventDetails {
+                        EditGameView(viewModel: viewModel)
+                    }
                 }
                 .padding(.horizontal, 12)
-                EventMatchesView(viewModel: viewModel)
-                EventParticipantsView(viewModel: viewModel)
-                    .padding(.horizontal, 12)
+                if !viewModel.isEditingEventDetails {
+                    EventMatchesView(viewModel: viewModel)
+                    EventParticipantsView(viewModel: viewModel)
+                        .padding(.horizontal, 12)
+                }
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
         .refreshable {
             viewModel.refreshEventDetails()
         }
-        .navigationTitle(viewModel.event.eventName)
         .sheet(isPresented: $viewModel.isShowingSheet){
             NavigationView {
                 viewModel.presentSheet()
@@ -49,32 +55,54 @@ struct EventDetailView: View {
         .alert($viewModel.isShowingEventDetailViewAlert, alertInfo: viewModel.alertItem)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Button {
-                    viewModel.sheetToPresent = .eventMoreDetails
-                } label: {
-                    Image(systemName: "info.square")
-                        .foregroundColor(.blue)
+                if !viewModel.isEditingEventDetails {
+                    Button {
+                        viewModel.sheetToPresent = .eventMoreDetails
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .foregroundColor(.blue)
+                    }
                 }
 
                 if viewModel.isEventOwner(for: playerManager.playerProfile?.record) {
-                    Menu {
-                        if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton && viewModel.event.isArchived == 0 {
-                            Button {
-                                viewModel.publishEvent(eventsManager: eventsManager)
-                            } label: {
-                                Text("Publish")
+                    if viewModel.event.isPublished == 0 && viewModel.event.isArchived == 0 {
+                        Button {
+                            withAnimation {
+                                viewModel.isEditingEventDetails.toggle()
                             }
-                        }
-
-                        Button(role: .destructive) {
-                            viewModel.isShowingConfirmationDialogue = true
                         } label: {
-                            Text("Delete Event")
+                            Image(systemName: viewModel.isEditingEventDetails ? "rectangle.badge.xmark" : "pencil.circle")
+                                .foregroundStyle(viewModel.isEditingEventDetails ? .red : .blue, .blue)
                         }
+                    }
 
-                    } label: {
-                        Image(systemName: "ellipsis")
-                            .foregroundColor(.blue)
+                    if viewModel.isEditingEventDetails {
+                        Button {
+                            //Save
+                        } label: {
+                            Image(systemName: "rectangle.badge.checkmark")
+                                .foregroundStyle(.green, .primary)
+                        }
+                    } else {
+                        Menu {
+                            if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton && viewModel.event.isArchived == 0 {
+                                Button {
+                                    viewModel.publishEvent(eventsManager: eventsManager)
+                                } label: {
+                                    Text("Publish")
+                                }
+                            }
+
+                            Button(role: .destructive) {
+                                viewModel.isShowingConfirmationDialogue = true
+                            } label: {
+                                Text("Delete Event")
+                            }
+
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .foregroundColor(.blue)
+                        }
                     }
                 }
             }
@@ -97,5 +125,64 @@ struct EventDetailView_Previews: PreviewProvider {
         EventDetailView(event: TUEvent(record: MockData.event))
             .environmentObject(PlayerManager(iCloudRecord: MockData.player, playerProfile: TUPlayer(record: MockData.player)))
             .environmentObject(EventsManager())
+    }
+}
+
+struct EditGameView: View {
+    @ObservedObject var viewModel: EventDetailViewModel
+
+    var body: some View {
+        VStack(spacing: 0){
+            HStack {
+                Text("Game")
+                Spacer()
+                Picker("", selection: $viewModel.editedEventGame) {
+                    //Starts from 2 to remove "All" & other case
+                    ForEach(GameLibrary.data.games[1...]){game in
+                        Text(game.name)
+                            .tag(game.self)
+                    }
+                }
+                .pickerStyle(.menu)
+                .labelsHidden()
+            }
+
+            if !viewModel.editedEventGame.gameVariants.isEmpty {
+                HStack {
+                    Text("Variant")
+                    Spacer()
+                    Picker("Variant", selection: $viewModel.editedEventGameVariant) {
+                        ForEach(viewModel.editedEventGame.gameVariants){game in
+                            Text(game.name)
+                                .tag(game.self)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                }
+            }
+
+            if viewModel.editedEventGame.name == GameNames.other {
+                TextField("Game Name", text: $viewModel.userInputEditedEventGameName)
+            }
+        }
+        .padding(10)
+        .background(Color.appCell)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+}
+
+struct EventTitleView: View {
+    @ObservedObject var viewModel: EventDetailViewModel
+
+    var body: some View {
+        HStack {
+            TextField(text: $viewModel.editedEventName) {
+                Text(viewModel.event.eventName)
+                    .foregroundColor(viewModel.isEditingEventDetails ? .gray : .primary)
+            }
+            .disabled(!viewModel.isEditingEventDetails)
+            Spacer()
+        }
+        .font(.title.bold())
     }
 }

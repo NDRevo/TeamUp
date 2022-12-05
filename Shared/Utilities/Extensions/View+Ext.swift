@@ -18,6 +18,14 @@ extension View {
     func alert(_ isShowingAlert: Binding<Bool>, alertInfo: AlertItem) -> some View{
         modifier(presentAlert(isShowingAlert: isShowingAlert, alert: alertInfo))
     }
+    @ViewBuilder
+    func hidden(_ hidden: Bool) -> some View {
+        if hidden {
+            self.hidden()
+        } else {
+            self
+        }
+    }
 }
 
 struct RoundedCorner: Shape {

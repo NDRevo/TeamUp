@@ -38,20 +38,16 @@ struct ProfileNameBar: View {
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
                             if let playerProfile = playerManager.playerProfile {
-                                if playerManager.isEditingProfile {
-                                    TextField(playerProfile.username, text: $playerManager.editedUsername)
-                                        .font(.title)
-                                        .bold()
-                                        .keyboardType(.twitter)
-                                        .textInputAutocapitalization(.never)
-                                        .autocorrectionDisabled()
-                                        .minimumScaleFactor(0.75)
-                                        .padding(.horizontal, 4)
-                                } else {
-                                    Text("@\(playerProfile.username)")
-                                        .font(.title)
-                                        .bold()
+                                TextField(text: $playerManager.editedUsername) {
+                                        Text(playerManager.isEditingProfile ? playerProfile.username : "\(playerProfile.username)")
+                                            .font(.title.bold())
+                                            .foregroundColor(playerManager.isEditingProfile ? .gray : .primary)
+                                            .keyboardType(.twitter)
+                                            .textInputAutocapitalization(.never)
+                                            .autocorrectionDisabled()
+                                            .minimumScaleFactor(0.75)
                                 }
+                                .disabled(!playerManager.isEditingProfile)
                                 
                                 if playerManager.isEditingProfile {
                                     VStack(spacing: 6) {

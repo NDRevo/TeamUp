@@ -11,7 +11,7 @@ private enum Field: Int, CaseIterable {
     case eventName,eventGameName, eventIRLLocation, eventDiscordLocation, eventDescription
 }
 
-public enum locations: String, CaseIterable {
+public enum Locations: String, CaseIterable {
     case irl = "IRL"
     case discord = "Discord"
 }
@@ -46,19 +46,6 @@ struct AddEventSheet: View {
                 }
                 .pickerStyle(.menu)
 
-                if viewModel.eventGame.name == GameNames.other {
-                    TextField("Game Name", text: $viewModel.userInputEventGameName)
-                        .focused($focusField, equals: .eventGameName)
-                }
-
-                DatePicker("Event Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
-                DatePicker("Event End Date", selection: $viewModel.eventEndDate, in: viewModel.dateRange)
-                    .onChange(of: viewModel.eventDate) { newValue in
-                        if viewModel.eventEndDate <= newValue {
-                            viewModel.eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: newValue)!
-                        }
-                    }
-
                 if !viewModel.eventGame.gameVariants.isEmpty {
                         Picker("Variant", selection: $viewModel.eventGameVariant) {
                             ForEach(viewModel.eventGame.gameVariants){game in
@@ -68,6 +55,19 @@ struct AddEventSheet: View {
                         }
                         .pickerStyle(.menu)
                 }
+
+                if viewModel.eventGame.name == GameNames.other {
+                    TextField("Game Name", text: $viewModel.userInputEventGameName)
+                        .focused($focusField, equals: .eventGameName)
+                }
+
+                DatePicker("Start Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
+                DatePicker("End Date", selection: $viewModel.eventEndDate, in: viewModel.dateRange)
+                    .onChange(of: viewModel.eventDate) { newValue in
+                        if viewModel.eventEndDate <= newValue {
+                            viewModel.eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: newValue)!
+                        }
+                    }
             }
 
             Section {
@@ -138,7 +138,7 @@ struct AddEventSheet: View {
         }
         .navigationTitle("Create Event")
         .sheet(isPresented: $viewModel.isPresentingMap, content: {
-            SearchMapView(viewModel: viewModel)
+            SearchMapView(eventLocationTitle: $viewModel.eventLocationTitle, eventLocation: $viewModel.eventLocation)
         })
         .scrollIndicators(.hidden)
         .toolbar {

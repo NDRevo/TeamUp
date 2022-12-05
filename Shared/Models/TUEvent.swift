@@ -94,7 +94,8 @@ struct TUEvent: Identifiable, Hashable {
 
     var getEventDetailDate: String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "E, MMM d"
+        //dateFormatter.dateFormat = "E, MMM d"
+        dateFormatter.dateFormat = "MMM d, YYYY"
         return dateFormatter.string(from: eventStartDate)
     }
 

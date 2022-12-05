@@ -48,10 +48,22 @@ enum DetailItem {
 @MainActor final class EventDetailViewModel: ObservableObject {
 
     var event: TUEvent
+    var eventLocationType: Locations {  return event.eventLocation.starts(with: "discord.gg") ? .discord : .irl }
+    var eventDateRange: PartialRangeFrom<Date>
 
     init(event: TUEvent){
         self.event = event
         matchDate = event.eventStartDate
+
+        let date = Date()
+        let calendar = Calendar.current
+        let startDate = DateComponents(
+            year: calendar.component(.year, from: date),
+            month: calendar.component(.month, from: date),
+            day: calendar.component(.day, from: date),
+            hour: calendar.component(.hour, from: date)
+        )
+        eventDateRange = calendar.date(from:startDate)!...
     }
 
     var store = EKEventStore()
@@ -65,7 +77,18 @@ enum DetailItem {
     @Published var matchName: String                = ""
     @Published var matchDate: Date                  = Date()
 
-    @Published var searchString: String              = ""
+    // Editing Event
+    @Published var searchString: String             = ""
+    @Published var editedEventName: String = ""
+    @Published var editedDescription: String = ""
+    @Published var editedLocationTypePicked: Locations = .irl
+    @Published var editedLocationTitle: String?
+    @Published var editedLocationName: String = ""
+    @Published var editedEventStartDate: Date = Date()
+    @Published var editedEventEndDate: Date = Date()
+    @Published var userInputEditedEventGameName: String = ""
+    @Published var editedEventGame: Game = Game(name: GameNames.amongus, ranks: [])
+    @Published var editedEventGameVariant: Game = Game(name: GameNames.empty, ranks: [])
 
     @Published var onAppearHasFired                 = false
     @Published var isShowingConfirmationDialogue    = false
@@ -73,6 +96,27 @@ enum DetailItem {
     @Published var isShowingSheet                   = false
     @Published var isShowingCalendarView            = false
     @Published var isShowingPublishedButton         = true
+
+    @Published var isPresentingMap                  = false
+    @Published var isEditingEventDetails            = false {
+        didSet {
+            switch self.isEditingEventDetails {
+            case true:
+                editedDescription = event.eventDescription
+                editedLocationTypePicked = eventLocationType
+                editedLocationTitle = eventLocationType == .discord ? "" : event.eventLocationTitle
+                editedLocationName = eventLocationType == .discord ? String(event.eventLocation.split(separator: "/", omittingEmptySubsequences: true)[1]) : event.eventLocation
+                editedEventStartDate = event.eventStartDate
+                editedEventEndDate = event.eventEndDate
+                editedEventGame = GameLibrary.data.getGameByName(gameName: event.eventGameName)
+                editedEventGameVariant = GameLibrary.data.getGameVariantByGameName(gameName: event.eventGameName, gameVariantName: event.eventGameVariantName)
+            case false:
+                editedEventName = ""
+                editedDescription = ""
+                editedLocationName = ""
+            }
+        }
+    }
 
     @Published var isShowingCreateMatchesView       = false
     @Published var sheetToPresent: PresentingSheet? {
@@ -143,7 +187,8 @@ enum DetailItem {
 
     /// Presents a sheet based on PresentingSheet enumerator
     /// - Returns: A sheet view
-    @ViewBuilder func presentSheet() -> some View {
+    @ViewBuilder
+    func presentSheet() -> some View {
         switch sheetToPresent {
             case .eventMoreDetails:
                 EventMoreDetailsSheet(viewModel: self)
