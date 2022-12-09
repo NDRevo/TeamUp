@@ -50,6 +50,7 @@ enum DetailItem {
     var event: TUEvent
     var eventLocationType: Locations {  return event.eventLocation.starts(with: "discord.gg") ? .discord : .irl }
     var eventDateRange: PartialRangeFrom<Date>
+    var eventEndDateRange: PartialRangeFrom<Date>
 
     init(event: TUEvent){
         self.event = event
@@ -63,7 +64,17 @@ enum DetailItem {
             day: calendar.component(.day, from: date),
             hour: calendar.component(.hour, from: date)
         )
+
+        let endDate = DateComponents(
+            year: calendar.component(.year, from: event.eventStartDate),
+            month: calendar.component(.month, from: event.eventStartDate),
+            day: calendar.component(.day, from: event.eventStartDate),
+            hour: calendar.component(.hour, from: event.eventStartDate),
+            minute: calendar.component(.minute, from: event.eventStartDate + (60*15))
+        )
+
         eventDateRange = calendar.date(from:startDate)!...
+        eventEndDateRange = calendar.date(from: endDate)!...
     }
 
     var store = EKEventStore()
@@ -82,7 +93,7 @@ enum DetailItem {
     @Published var editedEventName: String = ""
     @Published var editedDescription: String = ""
     @Published var editedLocationTypePicked: Locations = .irl
-    @Published var editedLocationTitle: String?
+    @Published var editedLocationTitle: String = ""
     @Published var editedLocationName: String = ""
     @Published var editedEventStartDate: Date = Date()
     @Published var editedEventEndDate: Date = Date()
@@ -104,16 +115,21 @@ enum DetailItem {
             case true:
                 editedDescription = event.eventDescription
                 editedLocationTypePicked = eventLocationType
-                editedLocationTitle = eventLocationType == .discord ? "" : event.eventLocationTitle
-                editedLocationName = eventLocationType == .discord ? String(event.eventLocation.split(separator: "/", omittingEmptySubsequences: true)[1]) : event.eventLocation
+                editedLocationTitle = event.eventLocationTitle ?? ""
+                editedLocationName = eventLocationType == .discord ? String(event.eventLocation.split(separator: "/", omittingEmptySubsequences: true).last ?? "") : event.eventLocation
                 editedEventStartDate = event.eventStartDate
                 editedEventEndDate = event.eventEndDate
                 editedEventGame = GameLibrary.data.getGameByName(gameName: event.eventGameName)
-                editedEventGameVariant = GameLibrary.data.getGameVariantByGameName(gameName: event.eventGameName, gameVariantName: event.eventGameVariantName)
+                if editedEventGame.name == GameNames.other {
+                    userInputEditedEventGameName = event.eventGameVariantName
+                } else {
+                    editedEventGameVariant = GameLibrary.data.getGameVariantByGameName(gameName: event.eventGameName, gameVariantName: event.eventGameVariantName) ?? GameLibrary.data.getGameByName(gameName: event.eventGameName).gameVariants.first ?? Game(name: GameNames.empty, ranks: [])
+                }
             case false:
                 editedEventName = ""
                 editedDescription = ""
                 editedLocationName = ""
+                editedLocationTitle = ""
             }
         }
     }
@@ -278,6 +294,87 @@ enum DetailItem {
                 alertItem = AlertContext.unableToAddSelectedPlayersToEvent
                 isShowingEventDetailViewAlert = true
             }
+        }
+    }
+
+    private func isValidEventTime() -> Bool {
+        guard editedEventStartDate >= Date(), editedEventEndDate >= editedEventStartDate else {
+            return false
+        }
+        return true
+    }
+
+    func saveEditedEventDetails() async {
+        if !isValidEventTime() {
+            //INVALID EVENT TIME
+            return
+        }
+
+        do {
+            //Need to fetch most recent record or else error: 'client oplock error updating record' will happen
+            let eventRecord = try await CloudKitManager.shared.fetchRecord(with: event.id)
+            
+            if !editedEventName.isEmpty {
+                eventRecord[TUEvent.kEventName] = editedEventName
+                
+            }
+            if !editedDescription.isEmpty {
+                eventRecord[TUEvent.kEventDescription] = editedDescription
+            }
+            
+            if editedEventGame.name == GameNames.other {
+                if userInputEditedEventGameName.isEmpty {
+                    //EMPTY USER GAME NAME
+                    return
+                } else {
+                    eventRecord[TUEvent.kEventGameName] = editedEventGame.name
+                    eventRecord[TUEvent.kEventGameVariantName] = userInputEditedEventGameName
+                }
+            } else if editedEventGame.name == GameNames.none {
+                eventRecord[TUEvent.kEventGameName] = editedEventGame.name
+                eventRecord[TUEvent.kEventGameVariantName] = event.eventSchoolClub
+            } else if editedEventGame.name != event.eventGameName {
+                eventRecord[TUEvent.kEventGameName] = editedEventGame.name
+            }
+
+            // Called only if only the variant has been changed
+            if editedEventGameVariant.name != event.eventGameVariantName && editedEventGame.name != GameNames.other {
+                eventRecord[TUEvent.kEventGameVariantName] = editedEventGameVariant.name
+            }
+            
+            if editedLocationName != event.eventLocation && !editedLocationName.isEmpty {
+                switch editedLocationTypePicked {
+                case .irl :
+                    if editedLocationTitle != event.eventLocationTitle && !editedLocationTitle.isEmpty {
+                        eventRecord[TUEvent.kEventLocationTitle] = editedLocationTitle
+                    }
+                    eventRecord[TUEvent.kEventLocation] = editedLocationName
+                case .discord:
+                    eventRecord[TUEvent.kEventLocationTitle] = nil
+                    eventRecord[TUEvent.kEventLocation] = "discord.gg/\(editedLocationName)"
+                }
+            }
+            
+            if editedLocationTitle != event.eventLocationTitle && !editedLocationTitle.isEmpty {
+                eventRecord[TUEvent.kEventLocationTitle] = editedLocationTitle
+            }
+            
+            if editedEventStartDate != event.eventStartDate {
+                eventRecord[TUEvent.kEventStartDate] = editedEventStartDate
+            }
+
+            if editedEventEndDate != event.eventEndDate {
+                eventRecord[TUEvent.kEventEndDate] = editedEventEndDate
+            }
+            
+            let newEventRecord = try await CloudKitManager.shared.save(record: eventRecord)
+            event = TUEvent(record: newEventRecord)
+
+            withAnimation{
+                isEditingEventDetails = false
+            }
+        } catch {
+            //THROW ERROR
         }
     }
 

@@ -17,7 +17,7 @@ struct MockData {
         event[TUEvent.kEventEndDate]  = Date() + 100_000_000
         event[TUEvent.kEventLocation]  = "discord.gg/valowatch"
         event[TUEvent.kEventSchool]  = "Rutgers University"
-        event[TUEvent.kEventDescription]  = "Club event"
+        event[TUEvent.kEventDescription]  = "This is an event where you can see the description of said event. This event will be hosted on x date with prizes being rewarded for everyone that wins"
 
         return event
     }

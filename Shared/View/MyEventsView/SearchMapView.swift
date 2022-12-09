@@ -11,7 +11,7 @@ import Combine
 
 struct SearchMapView: View {
     @StateObject private var searchViewModel = SearchMapViewModel()
-    @Binding var eventLocationTitle: String?
+    @Binding var eventLocationTitle: String
     @Binding var eventLocation: String
 
     @Environment(\.dismiss) var dismiss

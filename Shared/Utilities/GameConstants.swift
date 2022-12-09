@@ -177,10 +177,17 @@ final class GameLibrary {
     }
 
     func getGameByName(gameName: String) -> Game {
-        return games.first(where: {$0.name == gameName}) ?? Game(name: gameName, ranks: [])
+        if gameName.isEmpty {
+            return Game(name: GameNames.none, ranks: [])
+        }
+        if let game = games.first(where: {$0.name == gameName}) {
+            return game
+        } else {
+            return Game(name: GameNames.other, ranks: [])
+        }
     }
 
-    func getGameVariantByGameName(gameName: String, gameVariantName: String) -> Game {
-        return games.first(where: {$0.name == gameName})?.gameVariants.first(where: {$0.name == gameVariantName}) ?? Game(name: gameVariantName, ranks: [])
+    func getGameVariantByGameName(gameName: String, gameVariantName: String) -> Game? {
+        return games.first(where: {$0.name == gameName})?.gameVariants.first(where: {$0.name == gameVariantName})
     }
 }

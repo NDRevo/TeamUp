@@ -57,8 +57,33 @@ struct DetailItemView: View {
                     .font(.callout)
             }
             if viewModel.isEditingEventDetails {
-                DatePicker(selection: $selectionDate, in: viewModel.eventDateRange, displayedComponents: [detailType == .date ? .date : .hourAndMinute]) {}
+                DatePicker(selection: $selectionDate, in: detailType == .endTime ? viewModel.eventEndDateRange : viewModel.eventDateRange, displayedComponents: [detailType == .date ? .date : .hourAndMinute]) {}
                     .labelsHidden()
+                    .onChange(of: viewModel.editedEventStartDate) { newValue in
+                        if viewModel.editedEventEndDate <= newValue {
+                            viewModel.editedEventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: newValue)!
+
+                            //Prevents 12AM next day from happening
+//                            if !viewModel.editedEventEndDate.hasSame(.day, as: viewModel.editedEventStartDate){
+//                                viewModel.editedEventEndDate = Calendar.current.date(byAdding: .minute, value: 59, to: viewModel.editedEventStartDate)!
+//                            }
+                        }
+
+                        let calendar = Calendar.current
+                        let endDate = DateComponents(
+                            year: calendar.component(.year, from: newValue),
+                            month: calendar.component(.month, from: newValue),
+                            day: calendar.component(.day, from: newValue),
+                            hour: calendar.component(.hour, from: newValue),
+                            minute: calendar.component(.minute, from: newValue + (60*15))
+                        )
+                        viewModel.eventEndDateRange = calendar.date(from: endDate)!...
+                    }
+                    .onChange(of: viewModel.editedEventEndDate) { newValue in
+                        if !viewModel.editedEventEndDate.hasSame(.day, as: viewModel.editedEventStartDate){
+                            viewModel.editedEventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: viewModel.editedEventStartDate)!
+                        }
+                    }
             } else {
                 Text(textContent)
                     .lineLimit(1)
@@ -72,4 +97,17 @@ struct DetailItemView: View {
             }
         }
     }
+}
+
+
+extension Date {
+    func distance(from date: Date, only component: Calendar.Component, calendar: Calendar = .current) -> Int {
+           let days1 = calendar.component(component, from: self)
+           let days2 = calendar.component(component, from: date)
+           return days1 - days2
+       }
+
+       func hasSame(_ component: Calendar.Component, as date: Date) -> Bool {
+           distance(from: date, only: component) == 0
+       }
 }

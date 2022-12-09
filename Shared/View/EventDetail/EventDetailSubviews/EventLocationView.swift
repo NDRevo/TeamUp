@@ -20,11 +20,18 @@ struct EventLocationView: View {
                 if !(viewModel.eventLocationType == .discord && !viewModel.isEditingEventDetails) {
                     VStack(alignment: .leading, spacing: 4){
                         if let eventLocationTitle = viewModel.event.eventLocationTitle {
-                            if !viewModel.isEditingEventDetails {
-                                Text(eventLocationTitle)
-                                    .bold()
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.75)
+                            if !eventLocationTitle.isEmpty && viewModel.editedLocationTypePicked != .discord{
+                                TextField(text: $viewModel.editedLocationTitle) {
+                                    Text(eventLocationTitle)
+                                        .bold()
+                                        .foregroundColor((viewModel.editedLocationName.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.75)
+                                }
+                                .textInputAutocapitalization(.words)
+                                .autocorrectionDisabled()
+                                .minimumScaleFactor(0.85)
+                                .disabled(!viewModel.isEditingEventDetails)
                             }
                         }
                         HStack(spacing: viewModel.editedLocationTypePicked == .discord ? 0 : nil) {
@@ -64,12 +71,12 @@ struct EventLocationView: View {
             SearchMapView(eventLocationTitle: $viewModel.editedLocationTitle, eventLocation: $viewModel.editedLocationName)
         })
         .onChange(of: viewModel.editedLocationTypePicked) { _ in
-            viewModel.editedLocationTitle = viewModel.eventLocationType == .irl ? viewModel.editedLocationTypePicked == .discord ? "" : viewModel.event.eventLocationTitle  : ""
+            viewModel.editedLocationTitle = viewModel.eventLocationType == .irl ? viewModel.editedLocationTypePicked == .discord ? "" : viewModel.event.eventLocationTitle ?? ""  : ""
             
-            viewModel.editedLocationName = viewModel.eventLocationType == .discord ? viewModel.editedLocationTypePicked == .discord ? String(viewModel.event.eventLocation.split(separator: "/", omittingEmptySubsequences: true)[1]) : "" : viewModel.editedLocationTypePicked == .irl ? viewModel.event.eventLocation : ""
+            viewModel.editedLocationName = viewModel.eventLocationType == .discord ? viewModel.editedLocationTypePicked == .discord ? String(viewModel.event.eventLocation.split(separator: "/", omittingEmptySubsequences: true).last ?? "N/A") : "" : viewModel.editedLocationTypePicked == .irl ? viewModel.event.eventLocation : ""
         }
         .onChange(of: viewModel.isEditingEventDetails) { _ in
-            viewModel.editedLocationName = viewModel.eventLocationType == .discord ? String(viewModel.event.eventLocation.split(separator: "/", omittingEmptySubsequences: true)[1]) : viewModel.event.eventLocation
+            viewModel.editedLocationName = viewModel.eventLocationType == .discord ? String(viewModel.event.eventLocation.split(separator: "/", omittingEmptySubsequences: true).last ?? "N/A") : viewModel.event.eventLocation
         }
         .onTapGesture {
             if !viewModel.isEditingEventDetails {

@@ -14,34 +14,37 @@ struct EventDescriptionView: View {
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
-        HStack{
-            VStack(alignment: .leading, spacing: 10){
-                HStack(alignment: .center ,spacing: 4){
-                    Image(systemName: "doc.plaintext")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 15)
-                        .foregroundColor(.blue)
-                    Text("Description")
-                }
-
-                TextField(text: $viewModel.editedDescription, axis: .vertical) {
-                    Text((viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? "Event Description" : viewModel.event.eventDescription)
-                        .foregroundColor((viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
-                }
-                .lineLimit(viewModel.isEditingEventDetails ? 15 : nil)
-                .disabled(!viewModel.isEditingEventDetails)
-                .onChange(of: viewModel.editedDescription) { _ in
-                    viewModel.editedDescription = String(viewModel.editedDescription.prefix(350))
-                }
-
-                if viewModel.isEditingEventDetails {
-                    Text("\(350 - viewModel.editedDescription.count) characters left.")
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                }
+        VStack(alignment: .leading, spacing: 10){
+            HStack(alignment: .center ,spacing: 4){
+                Image(systemName: "doc.plaintext")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 15)
+                    .foregroundColor(.blue)
+                Text("Description")
             }
-            Spacer()
+            TextField(text: $viewModel.editedDescription, axis: .vertical) {
+                Text((viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? "Event Description" : viewModel.event.eventDescription)
+                        .foregroundColor((viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
+                
+            }
+            .lineLimit(nil)
+            .disabled(!viewModel.isEditingEventDetails)
+            .onChange(of: viewModel.editedDescription) { _ in
+                viewModel.editedDescription = String(viewModel.editedDescription.prefix(350))
+            }
+            .onChange(of: viewModel.isEditingEventDetails) { _ in
+                viewModel.editedDescription = (viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? "Event Description" : viewModel.event.eventDescription
+            }
+            .onAppear {
+                viewModel.editedDescription = (viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? "Event Description" : viewModel.event.eventDescription
+            }
+            
+            if viewModel.isEditingEventDetails {
+                Text("\(350 - viewModel.editedDescription.count) characters left.")
+                    .font(.footnote)
+                    .foregroundColor(.gray)
+            }
         }
         .padding(10)
         .background(Color.appCell)

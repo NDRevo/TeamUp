@@ -78,7 +78,7 @@ struct EventDetailView: View {
 
                     if viewModel.isEditingEventDetails {
                         Button {
-                            //Save
+                            Task{ await viewModel.saveEditedEventDetails() }
                         } label: {
                             Image(systemName: "rectangle.badge.checkmark")
                                 .foregroundStyle(.green, .primary)
@@ -147,12 +147,12 @@ struct EditGameView: View {
                 .labelsHidden()
             }
 
-            if !viewModel.editedEventGame.gameVariants.isEmpty {
+            if viewModel.editedEventGame.hasVariants() {
                 HStack {
                     Text("Variant")
                     Spacer()
                     Picker("Variant", selection: $viewModel.editedEventGameVariant) {
-                        ForEach(viewModel.editedEventGame.gameVariants){game in
+                        ForEach(viewModel.editedEventGame.gameVariants){ game in
                             Text(game.name)
                                 .tag(game.self)
                         }
@@ -168,6 +168,17 @@ struct EditGameView: View {
         .padding(10)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .onChange(of: viewModel.editedEventGame) { newGame in
+            if !newGame.hasVariants(){
+                viewModel.editedEventGameVariant = Game(name: GameNames.empty, ranks: [])
+            } else {
+                viewModel.editedEventGameVariant = newGame.gameVariants.first!
+            }
+
+            if newGame.name != GameNames.other {
+                viewModel.userInputEditedEventGameName = ""
+            }
+        }
     }
 }
 

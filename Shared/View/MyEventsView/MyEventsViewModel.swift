@@ -20,7 +20,7 @@ enum EventError: Error {
     @Published var eventName: String         = ""
     @Published var eventSchool: String       = ""
     @Published var eventDescription: String  = ""
-    @Published var eventLocationTitle: String?
+    @Published var eventLocationTitle: String = ""
     @Published var eventLocation: String     = ""
     @Published var eventDate: Date           = Date()
     @Published var eventEndDate: Date        = Date()
@@ -58,7 +58,7 @@ enum EventError: Error {
         eventGame        = GameLibrary.data.games[3]
         eventGameVariant = Game(name: GameNames.empty, ranks: [])
         eventDescription = ""
-        eventLocationTitle = nil
+        eventLocationTitle = ""
         eventLocation    = ""
         locationPicked   = .irl
     }
