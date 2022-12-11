@@ -99,8 +99,16 @@ struct AlertContext {
                                                              alertMessage: Text("Unable to publish event.\n Current time is past event start time."),
                                                              button: Button.init("Ok", role: .none, action: {}))
 
+    static let invalidEditedEventDate            = AlertItem(alertTitle: Text("Date Error"),
+                                                             alertMessage: Text("Edited event time is before current time. Unable to save edited event."),
+                                                             button: Button.init("Ok", role: .none, action: {}))
+
     static let unableToSearchForPlayers          = AlertItem(alertTitle: Text("Server Error"),
                                                              alertMessage: Text("Unable to search for players.\n Check your internet connection and try again."),
+                                                             button: Button.init("Ok", role: .none, action: {}))
+
+    static let unableToSaveEditedEvent           = AlertItem(alertTitle: Text("Uh oh..."),
+                                                             alertMessage: Text("Unable to save your edits.\n Check your internet connection and try again."),
                                                              button: Button.init("Ok", role: .none, action: {}))
 
     //MARK: - PlayersListView

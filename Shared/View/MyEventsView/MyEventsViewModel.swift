@@ -111,7 +111,7 @@ enum EventError: Error {
         record[TUEvent.kEventDescription]       = eventDescription
 
         if locationPicked == .discord {
-            record[TUEvent.kEventLocation] = "discord.gg/\(eventLocation)"
+            record[TUEvent.kEventLocation] = "\(WordConstants.discordgg)/\(eventLocation)"
         } else {
             record[TUEvent.kEventLocationTitle] = eventLocationTitle
             record[TUEvent.kEventLocation] = eventLocation

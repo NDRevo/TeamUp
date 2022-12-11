@@ -87,7 +87,7 @@ struct AddEventSheet: View {
                 }
                 if viewModel.locationPicked == .discord {
                     HStack(spacing:0){
-                        Text("discord.gg/")
+                        Text("\(WordConstants.discordgg)/")
                             .bold()
                         TextField(text: $viewModel.eventLocation) {
                             Text("valowatch")

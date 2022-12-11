@@ -119,6 +119,7 @@
 		56A0790F289E3700001852A5 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0790D289E3700001852A5 /* SettingsViewModel.swift */; };
 		56A0791128A01723001852A5 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0791028A01723001852A5 /* CalendarViewController.swift */; };
 		56A0791228A01723001852A5 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0791028A01723001852A5 /* CalendarViewController.swift */; };
+		56B3A0632943AFBB0082E12E /* EditGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B3A0622943AFBB0082E12E /* EditGameView.swift */; };
 		56BC3211292E635A00051943 /* PlayerInfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BC3210292E635A00051943 /* PlayerInfoBar.swift */; };
 		56BC3216292F004F00051943 /* UIKit+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BC3215292F004F00051943 /* UIKit+ColorPicker.swift */; };
 		56BC3218292F9C6000051943 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BC3217292F9C6000051943 /* UIColor+Ext.swift */; };
@@ -216,6 +217,7 @@
 		56A0790D289E3700001852A5 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		56A0791028A01723001852A5 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		56A0791328A01B18001852A5 /* TeamUp--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TeamUp--iOS--Info.plist"; sourceTree = "<group>"; };
+		56B3A0622943AFBB0082E12E /* EditGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGameView.swift; sourceTree = "<group>"; };
 		56BC3210292E635A00051943 /* PlayerInfoBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInfoBar.swift; sourceTree = "<group>"; };
 		56BC3215292F004F00051943 /* UIKit+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+ColorPicker.swift"; sourceTree = "<group>"; };
 		56BC3217292F9C6000051943 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 				567C6994291EE3CF00B5B3E3 /* EventMatchesView.swift */,
 				567C6990291EE39700B5B3E3 /* EventParticipantsView.swift */,
 				567C6996291EE3ED00B5B3E3 /* EventMatchCellView.swift */,
+				56B3A0622943AFBB0082E12E /* EditGameView.swift */,
 			);
 			path = EventDetailSubviews;
 			sourceTree = "<group>";
@@ -654,6 +657,7 @@
 				560E42C42794F22200408B4B /* AddPlayerListCell.swift in Sources */,
 				567C698A291DFA7900B5B3E3 /* SearchMapViewModel.swift in Sources */,
 				560E42832790B2C700408B4B /* AddPlayerSheet.swift in Sources */,
+				56B3A0632943AFBB0082E12E /* EditGameView.swift in Sources */,
 				566AB2E8278D285000F4035C /* EventsListView.swift in Sources */,
 				567C6995291EE3CF00B5B3E3 /* EventMatchesView.swift in Sources */,
 				563A46D9279D9DE4006A406B /* PlayerProfileView.swift in Sources */,

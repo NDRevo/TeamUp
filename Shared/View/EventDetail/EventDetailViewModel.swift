@@ -9,7 +9,6 @@ import CloudKit
 import SwiftUI
 import EventKit
 
-
 /// Determines what sheet to present
 enum PresentingSheet {
     case addMatch, addPlayer, eventMoreDetails
@@ -45,10 +44,16 @@ enum DetailItem {
     }
 }
 
+enum EventField: Hashable {
+    case eventTitle, eventLocationTitle, eventLocation, eventDescription, eventGameName
+}
+
 @MainActor final class EventDetailViewModel: ObservableObject {
 
+    @Published var focusField: EventField?
+
     var event: TUEvent
-    var eventLocationType: Locations {  return event.eventLocation.starts(with: "discord.gg") ? .discord : .irl }
+    var eventLocationType: Locations {  return event.eventLocation.starts(with: WordConstants.discordgg) ? .discord : .irl }
     var eventDateRange: PartialRangeFrom<Date>
     var eventEndDateRange: PartialRangeFrom<Date>
 
@@ -65,16 +70,22 @@ enum DetailItem {
             hour: calendar.component(.hour, from: date)
         )
 
+        var fromDate = event.eventStartDate
+        if event.eventStartDate < date {
+            fromDate = date
+        }
+
         let endDate = DateComponents(
-            year: calendar.component(.year, from: event.eventStartDate),
-            month: calendar.component(.month, from: event.eventStartDate),
-            day: calendar.component(.day, from: event.eventStartDate),
-            hour: calendar.component(.hour, from: event.eventStartDate),
-            minute: calendar.component(.minute, from: event.eventStartDate + (60*15))
+            year: calendar.component(.year, from: fromDate),
+            month: calendar.component(.month, from: fromDate),
+            day: calendar.component(.day, from: fromDate),
+            hour: calendar.component(.hour, from: fromDate.addingTimeInterval(TimeInterval(60.0 * 60.0)) )
         )
 
         eventDateRange = calendar.date(from:startDate)!...
         eventEndDateRange = calendar.date(from: endDate)!...
+
+        discordInviteCode = String(event.eventLocation.split(separator: "/", omittingEmptySubsequences: true).last ?? "N/A")
     }
 
     var store = EKEventStore()
@@ -144,6 +155,8 @@ enum DetailItem {
     @Published var isShowingEventDetailViewAlert: Bool = false
     @Published var isShowingAddMatchSheetAlert: Bool = false
     var alertItem: AlertItem = AlertItem(alertTitle: Text("Unable To Show Alert"), alertMessage: Text("There was a problem showing the alert."))
+
+    var discordInviteCode: String
 
     /// Check to see if user is owner of event
     /// - Parameter playerRecord: CKRecord of player being checked
@@ -306,7 +319,8 @@ enum DetailItem {
 
     func saveEditedEventDetails() async {
         if !isValidEventTime() {
-            //INVALID EVENT TIME
+            alertItem = AlertContext.invalidEditedEventDate
+            isShowingEventDetailViewAlert = true
             return
         }
 
@@ -351,7 +365,7 @@ enum DetailItem {
                     eventRecord[TUEvent.kEventLocation] = editedLocationName
                 case .discord:
                     eventRecord[TUEvent.kEventLocationTitle] = nil
-                    eventRecord[TUEvent.kEventLocation] = "discord.gg/\(editedLocationName)"
+                    eventRecord[TUEvent.kEventLocation] = "\(WordConstants.discordgg)/\(editedLocationName)"
                 }
             }
             
@@ -374,7 +388,8 @@ enum DetailItem {
                 isEditingEventDetails = false
             }
         } catch {
-            //THROW ERROR
+            alertItem = AlertContext.unableToSaveEditedEvent
+            isShowingEventDetailViewAlert = true
         }
     }
 

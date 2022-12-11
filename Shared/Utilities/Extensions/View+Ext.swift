@@ -46,8 +46,10 @@ struct onTapPresentCalendar: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onTapGesture {
-                Task {
-                    await viewModel.checkCalendarAcces()
+                if !viewModel.isEditingEventDetails {
+                    Task {
+                        await viewModel.checkCalendarAcces()
+                    }
                 }
             }
             .sheet(isPresented: $viewModel.isShowingCalendarView) {

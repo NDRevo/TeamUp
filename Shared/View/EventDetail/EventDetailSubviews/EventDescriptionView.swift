@@ -24,7 +24,7 @@ struct EventDescriptionView: View {
                 Text("Description")
             }
             TextField(text: $viewModel.editedDescription, axis: .vertical) {
-                Text((viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? "Event Description" : viewModel.event.eventDescription)
+                Text("Hello")
                         .foregroundColor((viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
                 
             }
@@ -34,12 +34,12 @@ struct EventDescriptionView: View {
                 viewModel.editedDescription = String(viewModel.editedDescription.prefix(350))
             }
             .onChange(of: viewModel.isEditingEventDetails) { _ in
-                viewModel.editedDescription = (viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? "Event Description" : viewModel.event.eventDescription
+                viewModel.editedDescription = (viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? WordConstants.eventDescription : viewModel.event.eventDescription
             }
             .onAppear {
-                viewModel.editedDescription = (viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? "Event Description" : viewModel.event.eventDescription
+                viewModel.editedDescription = (viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? WordConstants.eventDescription : viewModel.event.eventDescription
             }
-            
+
             if viewModel.isEditingEventDetails {
                 Text("\(350 - viewModel.editedDescription.count) characters left.")
                     .font(.footnote)

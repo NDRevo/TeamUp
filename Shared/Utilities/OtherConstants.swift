@@ -9,6 +9,9 @@ import SwiftUI
 
 enum WordConstants {
     static let none = "None"
+    static let discordgg = "discord.gg"
+    static let eventDescription = "Event Description"
+    static let address = "Address"
 }
 
 enum RecordType{

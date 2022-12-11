@@ -38,6 +38,7 @@ struct EventDetailView: View {
                         .padding(.horizontal, 12)
                 }
             }
+            Spacer()
         }
         .navigationBarTitleDisplayMode(.inline)
         .refreshable {
@@ -55,56 +56,7 @@ struct EventDetailView: View {
         .alert($viewModel.isShowingEventDetailViewAlert, alertInfo: viewModel.alertItem)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                if !viewModel.isEditingEventDetails {
-                    Button {
-                        viewModel.sheetToPresent = .eventMoreDetails
-                    } label: {
-                        Image(systemName: "info.circle")
-                            .foregroundColor(.blue)
-                    }
-                }
-
-                if viewModel.isEventOwner(for: playerManager.playerProfile?.record) {
-                    if viewModel.event.isPublished == 0 && viewModel.event.isArchived == 0 {
-                        Button {
-                            withAnimation {
-                                viewModel.isEditingEventDetails.toggle()
-                            }
-                        } label: {
-                            Image(systemName: viewModel.isEditingEventDetails ? "rectangle.badge.xmark" : "pencil.circle")
-                                .foregroundStyle(viewModel.isEditingEventDetails ? .red : .blue, .blue)
-                        }
-                    }
-
-                    if viewModel.isEditingEventDetails {
-                        Button {
-                            Task{ await viewModel.saveEditedEventDetails() }
-                        } label: {
-                            Image(systemName: "rectangle.badge.checkmark")
-                                .foregroundStyle(.green, .primary)
-                        }
-                    } else {
-                        Menu {
-                            if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton && viewModel.event.isArchived == 0 {
-                                Button {
-                                    viewModel.publishEvent(eventsManager: eventsManager)
-                                } label: {
-                                    Text("Publish")
-                                }
-                            }
-
-                            Button(role: .destructive) {
-                                viewModel.isShowingConfirmationDialogue = true
-                            } label: {
-                                Text("Delete Event")
-                            }
-
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .foregroundColor(.blue)
-                        }
-                    }
-                }
+                EventDetailToolbarButtons(viewModel: viewModel)
             }
         }
         .confirmationDialog("Delete Event?", isPresented: $viewModel.isShowingConfirmationDialogue, actions: {
@@ -128,60 +80,6 @@ struct EventDetailView_Previews: PreviewProvider {
     }
 }
 
-struct EditGameView: View {
-    @ObservedObject var viewModel: EventDetailViewModel
-
-    var body: some View {
-        VStack(spacing: 0){
-            HStack {
-                Text("Game")
-                Spacer()
-                Picker("", selection: $viewModel.editedEventGame) {
-                    //Starts from 2 to remove "All" & other case
-                    ForEach(GameLibrary.data.games[1...]){game in
-                        Text(game.name)
-                            .tag(game.self)
-                    }
-                }
-                .pickerStyle(.menu)
-                .labelsHidden()
-            }
-
-            if viewModel.editedEventGame.hasVariants() {
-                HStack {
-                    Text("Variant")
-                    Spacer()
-                    Picker("Variant", selection: $viewModel.editedEventGameVariant) {
-                        ForEach(viewModel.editedEventGame.gameVariants){ game in
-                            Text(game.name)
-                                .tag(game.self)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                }
-            }
-
-            if viewModel.editedEventGame.name == GameNames.other {
-                TextField("Game Name", text: $viewModel.userInputEditedEventGameName)
-            }
-        }
-        .padding(10)
-        .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .onChange(of: viewModel.editedEventGame) { newGame in
-            if !newGame.hasVariants(){
-                viewModel.editedEventGameVariant = Game(name: GameNames.empty, ranks: [])
-            } else {
-                viewModel.editedEventGameVariant = newGame.gameVariants.first!
-            }
-
-            if newGame.name != GameNames.other {
-                viewModel.userInputEditedEventGameName = ""
-            }
-        }
-    }
-}
-
 struct EventTitleView: View {
     @ObservedObject var viewModel: EventDetailViewModel
 
@@ -195,5 +93,73 @@ struct EventTitleView: View {
             Spacer()
         }
         .font(.title.bold())
+    }
+}
+
+struct EventDetailToolbarButtons: View {
+    @EnvironmentObject var eventsManager: EventsManager
+    @EnvironmentObject var playerManager: PlayerManager
+    @ObservedObject var viewModel: EventDetailViewModel
+
+    var body: some View {
+        
+        //Information Button
+        if !viewModel.isEditingEventDetails {
+            Button {
+                viewModel.sheetToPresent = .eventMoreDetails
+            } label: {
+                Image(systemName: "info.circle")
+                    .foregroundColor(.blue)
+            }
+        }
+
+        //If the event owner
+        if viewModel.isEventOwner(for: playerManager.playerProfile?.record) {
+            //If not published and not archived
+            if viewModel.event.isPublished == 0 && viewModel.event.isArchived == 0 {
+                //Start editing or cancel editing
+                Button {
+                    withAnimation {
+                        viewModel.isEditingEventDetails.toggle()
+                    }
+                } label: {
+                    Image(systemName: viewModel.isEditingEventDetails ? "rectangle.badge.xmark" : "pencil.circle")
+                        .foregroundStyle(viewModel.isEditingEventDetails ? .red : .blue, .blue)
+                }
+            }
+
+            //If editing
+            if viewModel.isEditingEventDetails {
+                //Save event details button
+                Button {
+                    Task{ await viewModel.saveEditedEventDetails() }
+                } label: {
+                    Image(systemName: "rectangle.badge.checkmark")
+                        .foregroundStyle(.green, .primary)
+                }
+            } else {
+                Menu {
+                    //If not published and not archived
+                    if viewModel.event.isPublished == 0 && viewModel.isShowingPublishedButton && viewModel.event.isArchived == 0 {
+                        Button {
+                            viewModel.publishEvent(eventsManager: eventsManager)
+                        } label: {
+                            Text("Publish")
+                        }
+                    }
+
+                    //Delete event button
+                    Button(role: .destructive) {
+                        viewModel.isShowingConfirmationDialogue = true
+                    } label: {
+                        Text("Delete Event")
+                    }
+
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .foregroundColor(.blue)
+                }
+            }
+        }
     }
 }
