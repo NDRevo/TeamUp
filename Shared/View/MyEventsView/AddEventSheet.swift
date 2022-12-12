@@ -30,6 +30,7 @@ struct AddEventSheet: View {
         List{
             Section{
                 TextField("Event Name", text: $viewModel.eventName)
+                    .font(.system(.body, design: .rounded, weight: .regular))
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.words)
                     .onChange(of: viewModel.eventName) { _ in
@@ -45,6 +46,7 @@ struct AddEventSheet: View {
                     }
                 }
                 .pickerStyle(.menu)
+                .font(.system(.body, design: .monospaced, weight: .medium))
 
                 if !viewModel.eventGame.gameVariants.isEmpty {
                         Picker("Variant", selection: $viewModel.eventGameVariant) {
@@ -54,15 +56,19 @@ struct AddEventSheet: View {
                             }
                         }
                         .pickerStyle(.menu)
+                        .font(.system(.body, design: .monospaced, weight: .medium))
                 }
 
                 if viewModel.eventGame.name == GameNames.other {
                     TextField("Game Name", text: $viewModel.userInputEventGameName)
                         .focused($focusField, equals: .eventGameName)
+                        .font(.system(.body, design: .rounded, weight: .regular))
                 }
 
                 DatePicker("Start Date", selection: $viewModel.eventDate, in: viewModel.dateRange)
+                    .font(.system(.body, design: .monospaced, weight: .medium))
                 DatePicker("End Date", selection: $viewModel.eventEndDate, in: viewModel.dateRange)
+                    .font(.system(.body, design: .monospaced, weight: .medium))
                     .onChange(of: viewModel.eventDate) { newValue in
                         if viewModel.eventEndDate <= newValue {
                             viewModel.eventEndDate = Calendar.current.date(byAdding: .hour, value: 1, to: newValue)!
@@ -81,6 +87,7 @@ struct AddEventSheet: View {
                     }
                 }, label: {
                     Text("Location Type")
+                        .font(.system(.body, design: .monospaced, weight: .medium))
                 })
                 .onChange(of: viewModel.locationPicked) { _ in
                     viewModel.eventLocation = ""
@@ -96,6 +103,7 @@ struct AddEventSheet: View {
                         .textInputAutocapitalization(.never)
                         .focused($focusField, equals: .eventDiscordLocation)
                     }
+                    .font(.system(.body, design: .monospaced, weight: .medium))
                 } else {
                     HStack{
                         Image(systemName: "magnifyingglass")
@@ -106,6 +114,7 @@ struct AddEventSheet: View {
                         TextField(text: $viewModel.eventLocation) {
                             Text("Event Location")
                         }
+                        .font(.system(.body, design: .rounded, weight: .regular))
                         .focused($focusField, equals: .eventIRLLocation)
                         .textInputAutocapitalization(.words)
                     }
@@ -116,6 +125,7 @@ struct AddEventSheet: View {
             
             Section {
                 TextField("Event Description", text: $viewModel.eventDescription, axis: .vertical)
+                    .font(.system(.body, design: .rounded, weight: .regular))
                     .lineLimit(10, reservesSpace: true)
                     .onChange(of: viewModel.eventDescription) { _ in
                         viewModel.eventDescription = String(viewModel.eventDescription.prefix(350))
