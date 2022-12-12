@@ -16,8 +16,7 @@ struct TeamHeaderView: View {
     var body: some View {
         HStack {
             Text(team.teamName)
-                .font(.title)
-                .bold()
+                .font(.system(.title2, design: .rounded, weight: .medium))
                 .lineLimit(1)
                 //FIX: When adding players, this actives for some reason?
                 //.minimumScaleFactor(0.75)
@@ -29,21 +28,20 @@ struct TeamHeaderView: View {
                         viewModel.selectedTeam = team
                     } label: {
                         Image(systemName: "person.badge.plus")
-                            .font(.title)
+                            .font(.system(.title2, design: .rounded, weight: .regular))
                     }
                     Button(role: .destructive){
                         viewModel.deleteTeam(teamID: team.id)
                     } label: {
                         Image(systemName: "minus.circle.fill")
-                            .font(.title)
+                            .font(.system(.title2, design: .rounded, weight: .regular))
                     }
                 }
             }
         }
-        .padding(.horizontal,15)
-        .padding(.vertical,10)
+        .padding(appCellPadding)
         .background {
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: appCornerRadius)
                 .foregroundColor(.appCell)
         }
     }

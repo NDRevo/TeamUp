@@ -16,32 +16,31 @@ struct ParticipatingInEventsList: View {
         VStack {
             HStack {
                 Text("Events Participating")
-                    .bold()
-                    .font(.title2)
+                    .font(.system(.title2, design: .rounded, weight: .bold))
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
             }
 
             if !playerManager.eventsParticipating.isEmpty {
-                LazyVStack(alignment: .center, spacing: 12){
+                LazyVStack(alignment: .center, spacing: appCellSpacing){
                     ForEach(playerManager.eventsParticipating) { event in
                         EventListCell(event: event)
                     }
                 }
                 .padding(.bottom, 12)
             } else {
-                VStack(alignment: .center, spacing: 12){
+                VStack(alignment: .center, spacing: appImageToTextEmptyContentSpacing){
                     Image(systemName: "calendar.badge.exclamationmark")
-                        .font(.system(size: 36))
+                        .font(.system(size: appImageSizeEmptyContent))
                         .foregroundStyle(.primary, .secondary)
                     Text("Not part of any events")
+                        .font(.system(.headline, design: .monospaced, weight: .medium))
                         .foregroundColor(.secondary)
-                        .bold()
                 }
                 .offset(y: 60)
             }
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, appHorizontalViewPadding)
         .onAppear {
             playerManager.getEventsParticipating()
         }

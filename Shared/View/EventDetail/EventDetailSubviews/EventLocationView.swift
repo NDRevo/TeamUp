@@ -14,7 +14,7 @@ struct EventLocationView: View {
 
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 10){
+            VStack(alignment: .leading, spacing: appHeaderToContentSpacing){
                 EventLocationHeader(viewModel: viewModel)
 
                 if !(viewModel.eventLocationType == .discord && !viewModel.isEditingEventDetails) {
@@ -24,10 +24,10 @@ struct EventLocationView: View {
             
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, 10)
-        .padding(.vertical, viewModel.eventLocationType == .discord ? 14 : 10)
+        .padding(.horizontal, appCellPadding)
+        .padding(.vertical, viewModel.eventLocationType == .discord ? 14 : appCellPadding)
         .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(RoundedRectangle(cornerRadius: appCornerRadius))
         .sheet(isPresented: $viewModel.isPresentingMap, content: {
             SearchMapView(eventLocationTitle: $viewModel.editedLocationTitle, eventLocation: $viewModel.editedLocationName)
         })
@@ -73,7 +73,7 @@ struct EventLocationHeader: View {
 
     var body: some View {
         HStack(alignment: .center){
-            HStack(spacing: 4){
+            HStack(spacing: imageTextSpacing){
                 Image(systemName: (viewModel.event.eventLocation.starts(with: WordConstants.discordgg) && !viewModel.isEditingEventDetails) ? "link" : DetailItem.location.getSystemImage())
                     .font(.headline)
                     .foregroundColor(.blue)
@@ -121,7 +121,7 @@ struct EventLocationBody: View {
                             Text((viewModel.editedLocationTitle.isEmpty && viewModel.isEditingEventDetails) ? WordConstants.addressTitle : eventLocationTitle)
                                 .foregroundColor((viewModel.editedLocationTitle.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
                                 .lineLimit(1)
-                                .minimumScaleFactor(0.85)
+                                .minimumScaleFactor(appMinimumScaleFactor)
                         }
                         .font(.system(.body, design: .rounded, weight: .bold))
                         .textInputAutocapitalization(.words)
@@ -133,7 +133,7 @@ struct EventLocationBody: View {
                         Text((viewModel.editedLocationTitle.isEmpty && viewModel.isEditingEventDetails) ? WordConstants.addressTitle : viewModel.event.eventLocationTitle ?? "")
                             .foregroundColor((viewModel.editedLocationTitle.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
                             .lineLimit(1)
-                            .minimumScaleFactor(0.85)
+                            .minimumScaleFactor(appMinimumScaleFactor)
                     }
                     .font(.system(.body, design: .rounded, weight: .bold))
                     .textInputAutocapitalization(.words)
@@ -162,7 +162,7 @@ struct EventLocationBody: View {
                 .font(.system(.body, design: .rounded, weight: .regular))
                 .textInputAutocapitalization(viewModel.editedLocationTypePicked == .discord ? .never : .words)
                 .autocorrectionDisabled()
-                .minimumScaleFactor(0.85)
+                .minimumScaleFactor(appMinimumScaleFactor)
                 .disabled(!viewModel.isEditingEventDetails)
             }
         }

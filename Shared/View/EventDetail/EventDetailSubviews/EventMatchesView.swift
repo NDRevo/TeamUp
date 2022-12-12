@@ -15,7 +15,7 @@ struct EventMatchesView: View {
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading, spacing: appCellSpacing){
             HStack {
                 Text("Matches")
                     .font(.system(.title2, design: .rounded, weight: .bold))
@@ -30,8 +30,8 @@ struct EventMatchesView: View {
                     }
                 }
             }
-            .padding(.horizontal, 4)
-            
+            .padding(.horizontal, appHorizontalViewPadding)
+
             if viewModel.isLoading {
                 LoadingView()
                     .padding(.top, 48)

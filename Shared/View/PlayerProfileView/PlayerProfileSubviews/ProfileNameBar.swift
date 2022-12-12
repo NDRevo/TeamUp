@@ -15,7 +15,7 @@ struct ProfileNameBar: View {
     var body: some View {
         HStack(spacing: 8){
             ZStack(alignment: .center) {
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: appCornerRadius)
                     .frame(width: 80,height: playerManager.isEditingProfile ? 130 : 80)
                     .foregroundColor(playerManager.profileColor)
                 if playerManager.isEditingProfile {
@@ -31,7 +31,7 @@ struct ProfileNameBar: View {
                 }
             }
 
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: appCornerRadius)
                 .frame(height: playerManager.isEditingProfile ? 130 : 80)
                 .foregroundColor(.appCell)
                 .overlay(alignment: .center) {
@@ -45,7 +45,7 @@ struct ProfileNameBar: View {
                                             .keyboardType(.twitter)
                                             .textInputAutocapitalization(.never)
                                             .autocorrectionDisabled()
-                                            .minimumScaleFactor(0.75)
+                                            .minimumScaleFactor(appMinimumScaleFactor)
                                 }
                                 .disabled(!playerManager.isEditingProfile)
                                 
@@ -61,11 +61,11 @@ struct ProfileNameBar: View {
                                             .autocorrectionDisabled()
                                     }
                                     .font(.title2)
-                                    .minimumScaleFactor(0.75)
+                                    .minimumScaleFactor(appMinimumScaleFactor)
                                 } else {
                                     Text("\(playerProfile.firstName) \(playerProfile.lastName)")
                                         .font(.title2)
-                                        .minimumScaleFactor(0.75)
+                                        .minimumScaleFactor(appMinimumScaleFactor)
                                 }
                             }
                         }
@@ -74,7 +74,7 @@ struct ProfileNameBar: View {
                     .padding(.horizontal, 8)
                 }
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, appHorizontalViewPadding)
         .sheet(isPresented: $playerManager.isShowingColorPicker) {
             NavigationView {
                 VStack{

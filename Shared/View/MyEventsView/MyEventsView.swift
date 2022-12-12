@@ -16,32 +16,40 @@ struct MyEventsView: View {
     @EnvironmentObject private var eventsManager: EventsManager
     @StateObject private var viewModel = MyEventsViewModel()
 
+    init() { UINavigationBar.appearance().largeTitleTextAttributes = [.font : navigationTitleFont] }
+
     var body: some View {
         NavigationView {
-            ZStack{
-                Color.appBackground.edgesIgnoringSafeArea(.all)
-                if !eventsManager.myUnpublishedEvents.isEmpty || !eventsManager.myPublishedEvents.isEmpty {
-                    ScrollView {
-                        VStack(alignment: .leading){
-                            MyEventsListView(myEvents: eventsManager.myUnpublishedEvents, typeOfEvents: "Unpublished Event")
+            VStack(spacing: 4) {
+                ScrollView {
+                    if !eventsManager.myUnpublishedEvents.isEmpty || !eventsManager.myPublishedEvents.isEmpty {
+                        VStack(spacing: appHeaderToContentSpacing){
                             MyEventsListView(myEvents: eventsManager.myPublishedEvents, typeOfEvents: "Published Event")
+                            MyEventsListView(myEvents: eventsManager.myUnpublishedEvents, typeOfEvents: "Unpublished Event")
+                        }
+                        .padding(.horizontal, appHorizontalViewPadding)
+                        
+                    } else {
+                        HStack {
+                            Spacer()
+                            VStack(spacing: appImageToTextEmptyContentSpacing){
+                                Image(systemName: "calendar.badge.plus")
+                                    .font(.system(size: appImageSizeEmptyContent))
+                                    .foregroundColor(.secondary)
+                                Text("You have no events")
+                                    .font(.system(.headline, design: .monospaced, weight: .medium))
+                                    .foregroundColor(.secondary)
+                            }
+                            .offset(y: 190)
                             Spacer()
                         }
-                        .padding(.horizontal, 12)
                     }
-                } else {
-                    VStack(spacing: 12){
-                        Image(systemName: "calendar.badge.plus")
-                            .font(.system(size: 36))
-                            .foregroundColor(.secondary)
-                        Text("You have no events")
-                            .foregroundColor(.secondary)
-                            .bold()
-                    }
-                    .offset(y: -90)
                 }
+                .scrollIndicators(.hidden)
             }
             .navigationTitle(Text("My Events"))
+            .labelsHidden()
+            .background{Color.appBackground.edgesIgnoringSafeArea(.all)}
             .task {
                 eventsManager.getMyPublishedEvents(for: playerManager.playerProfile)
                 eventsManager.getMyUnpublishedEvents(for: playerManager.playerProfile)
@@ -99,15 +107,16 @@ struct MyEventsListView: View {
     
     var body: some View {
         if !myEvents.isEmpty {
-            Text(typeOfEvents)
-                .bold()
-                .font(.title2)
-            VStack(spacing: 12){
-                ForEach(myEvents) { event in
-                    NavigationLink {
-                        EventDetailView(event: event)
-                    } label: {
-                        EventListCell(event: event)
+            VStack(alignment: .leading, spacing: appHeaderToContentSpacing){
+                Text(typeOfEvents)
+                    .font(.system(.title2, design: .rounded, weight: .bold))
+                VStack(spacing: appCellSpacing){
+                    ForEach(myEvents) { event in
+                        NavigationLink {
+                            EventDetailView(event: event)
+                        } label: {
+                            EventListCell(event: event)
+                        }
                     }
                 }
             }

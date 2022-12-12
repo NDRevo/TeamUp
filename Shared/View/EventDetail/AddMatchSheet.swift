@@ -23,7 +23,7 @@ struct AddMatchSheet: View {
                     .font(.system(.largeTitle, design: .rounded, weight: .bold))
                 Spacer()
             }
-            .padding(.horizontal, 14)
+            .padding(.horizontal, appHorizontalViewPadding)
             List {
                 TextField("Match Name", text: $viewModel.matchName)
                     .font(.system(.body, design: .rounded, weight: .regular))

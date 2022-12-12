@@ -13,7 +13,7 @@ struct ArchivedEventsView: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 12) {
+            LazyVStack(spacing: appCellSpacing) {
                 ForEach(eventsManager.myArchivedEvents){ event in
                     NavigationLink {
                         EventDetailView(event: event)
@@ -22,8 +22,9 @@ struct ArchivedEventsView: View {
                     }
                 }
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, appHorizontalViewPadding)
         }
+        .background { Color.appBackground.edgesIgnoringSafeArea(.all)}
         .onAppear {
             eventsManager.getMyArchivedEvents(for: playerManager.playerProfile)
         }

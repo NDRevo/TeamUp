@@ -34,7 +34,7 @@ struct PlayerInfoBar: View {
                                         .font(.body)
                                         .fontWeight(.semibold)
                                         .lineLimit(1)
-                                        .minimumScaleFactor(0.85)
+                                        .minimumScaleFactor(appMinimumScaleFactor)
                                     if playerManager.studentVerifiedStatus == .isVerifiedStudent {
                                         Image(systemName: "checkmark.seal.fill")
                                             .resizable()
@@ -61,9 +61,9 @@ struct PlayerInfoBar: View {
                     }
                     Spacer()
                 }
-                .padding(12)
+                .padding(appCellPadding)
                 .background {
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: appCornerRadius)
                         .foregroundColor(.appCell)
                 }
                 //Footer
@@ -75,7 +75,7 @@ struct PlayerInfoBar: View {
                         .padding(.horizontal, 12)
                 }
             }
-            .padding(.horizontal,12)
+            .padding(.horizontal, appHorizontalViewPadding)
     }
 }
 

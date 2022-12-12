@@ -31,10 +31,9 @@ struct EventParticipantCell: View {
             }
             Spacer()
         }
-        .padding(.horizontal, 10)
-        .frame(height: 65)
+        .padding(appCellPadding)
         .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(RoundedRectangle(cornerRadius: appCornerRadius))
         .task {
             do{
                 gameProfile = try await CloudKitManager.shared.getPlayerGameProfile(for: player,event: event)

@@ -21,10 +21,10 @@ struct EventDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 8) {
+            VStack(spacing: appCellSpacing) {
                 EventTitleView(viewModel: viewModel)
-                    .padding(.horizontal, 10)
-                VStack(spacing: 8) {
+                    .padding(.horizontal, 10) // More of an inset
+                VStack(spacing: appCellSpacing) {
                     EventTimeDetailsView(viewModel: viewModel)
                     EventLocationView(viewModel: viewModel)
                     EventDescriptionView(viewModel: viewModel)
@@ -32,11 +32,11 @@ struct EventDetailView: View {
                         EditGameView(viewModel: viewModel)
                     }
                 }
-                .padding(.horizontal, 4)
+                .padding(.horizontal, appHorizontalViewPadding)
                 if !viewModel.isEditingEventDetails {
                     EventMatchesView(viewModel: viewModel)
                     EventParticipantsView(viewModel: viewModel)
-                        .padding(.horizontal, 4)
+                        .padding(.horizontal, appHorizontalViewPadding)
                 }
             }
             Spacer()

@@ -14,7 +14,7 @@ struct EventParticipantsView: View {
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading, spacing: appCellSpacing){
             HStack{
                 Text("Participants")
                     .font(.system(.title2, design: .rounded, weight: .bold))

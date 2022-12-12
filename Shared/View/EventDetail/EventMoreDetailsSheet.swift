@@ -34,7 +34,7 @@ struct MoreDetailItemView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 5){
-            HStack(spacing: 4){
+            HStack(spacing: imageTextSpacing){
                 Image(systemName: detailType.getSystemImage())
                     .font(.headline)
                     .foregroundColor(.blue)
@@ -44,7 +44,7 @@ struct MoreDetailItemView: View {
             Text(textContent)
                 .font(.system(.body, design: .rounded, weight: .regular))
                 .lineLimit(1)
-                .minimumScaleFactor(0.75)
+                .minimumScaleFactor(appMinimumScaleFactor)
         }
     }
 }

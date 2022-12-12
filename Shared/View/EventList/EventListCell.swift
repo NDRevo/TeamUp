@@ -25,9 +25,9 @@ struct EventListCell: View {
     var body: some View {
         HStack {
             VStack(spacing: 30){
-                HStack(alignment:.top){
+                HStack(alignment:.center){
                     EventDate(event: event)
-                    VStack(alignment: .leading, spacing: 6){
+                    VStack(alignment: .leading, spacing: 4){
                         EventGameName(event: event)
                         EventName(event: event)
                     }
@@ -43,9 +43,9 @@ struct EventListCell: View {
                     EventInfoItem(infoItemText: "Players", eventItem: "\(eventsManager.playerCountPerEvent[event.id] ?? 0)")
                 }
             }
-            .padding(12)
+            .padding(appCellPadding)
             .background{
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: appCornerRadius)
                     .foregroundColor(.appCell)
             }
             .tint(.primary)
@@ -67,16 +67,15 @@ struct EventGameName: View {
 
     var body: some View {
         Text(event.processedGameName)
-            .minimumScaleFactor(0.90)
+            .minimumScaleFactor(appMinimumScaleFactor)
             .lineLimit(1)
             .truncationMode(.tail)
-            .fontWeight(.heavy)
-            .font(.body)
+            .font(.system(.body, design: .rounded, weight: .heavy))
             .foregroundColor(.appCell)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
             .background {
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: appCornerRadius)
                     .foregroundColor(Color.getGameColor(gameName: event.eventGameName))
                     .frame(height: 25)
             }
@@ -90,10 +89,9 @@ struct EventName: View {
     var event: TUEvent
     var body: some View {
         Text(event.eventName)
-            .fontWeight(.bold)
-            .font(.title)
+            .font(.system(.title, design: .rounded, weight: .bold))
             .lineLimit(1)
-            .minimumScaleFactor(0.75)
+            .minimumScaleFactor(appMinimumScaleFactor)
     }
 }
 
@@ -105,18 +103,16 @@ struct EventDate: View {
     var body: some View {
         VStack(alignment: .center){
             Text("\(event.getMonth)")
-                .fontWeight(.medium)
-                .font(.body)
+                .font(.system(.body, design: .monospaced, weight: .medium))
                 .foregroundColor(.secondary)
                 .textCase(.uppercase)
             Text("\(event.getDateDetails.day!)")
-                .bold()
-                .font(.title)
+                .font(.system(.title, design: .monospaced, weight: .bold))
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 2)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
         .background {
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: appCornerRadius)
                 .foregroundColor(.appBackground)
         }
     }
@@ -129,16 +125,14 @@ struct EventInfoItem: View {
     var eventItem: String
     
     var body: some View {
-        VStack(alignment: .center, spacing: 5){
+        VStack(alignment: .center, spacing: (appHeaderToContentSpacing/2)){
             Text(infoItemText)
-                .fontWeight(.medium)
-                .font(.subheadline)
+                .font(.system(.callout, design: .monospaced, weight: .medium))
                 .foregroundColor(.secondary)
             Text("\(eventItem)")
-                .bold()
-                .font(.body)
+                .font(.system(.body, design: .rounded, weight: .regular))
                 .lineLimit(1)
-                .minimumScaleFactor(0.75)
+                .minimumScaleFactor(appMinimumScaleFactor)
         }
     }
 }

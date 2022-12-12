@@ -15,7 +15,7 @@ struct PlayerGameProfileCell: View {
     var gameProfile: TUPlayerGameProfile
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 8)
+        RoundedRectangle(cornerRadius: appCornerRadius)
             .frame(width: 205, height: 95)
             .foregroundColor(.appCell)
             .overlay(alignment: .topLeading) {
@@ -24,33 +24,29 @@ struct PlayerGameProfileCell: View {
                         VStack(alignment: .leading){
                             Text(gameProfile.gameName + gameProfile.gameVariantName)
                                 .foregroundColor(Color.appCell)
-                                .fontWeight(.heavy)
-                                .font(.body)
+                                .font(.system(.body, design: .rounded, weight: .heavy))
                                 .lineLimit(1)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 2)
                                 .background {
-                                    RoundedRectangle(cornerRadius: 10)
+                                    RoundedRectangle(cornerRadius: appCornerRadius)
                                         .foregroundColor(Color.getGameColor(gameName: gameProfile.gameName))
                                 }
                             VStack(alignment: .leading) {
                                 Text(gameProfile.gameID)
-                                    .bold()
-                                    .font(.title)
+                                    .font(.system(.title, design: .monospaced, weight: .bold))
                                     .lineLimit(1)
+                                    //Have its own minimumscale factor, must be shown at all times
                                     .minimumScaleFactor(0.35)
                                 Text(gameProfile.gameRank)
-                                    .fontWeight(.semibold)
+                                    .font(.system(.subheadline, design: .monospaced, weight: .medium))
                                     .lineLimit(1)
                             }
                         }
                         Spacer()
                         VStack {
                             Image(systemName: "square.and.pencil")
-                                .resizable()
-                                .scaledToFit()
-                                .fontWeight(.semibold)
-                                .frame(width: 20)
+                                .font(.system(.headline, design: .default, weight: .medium))
                                 .foregroundColor(.blue)
                                 .onTapGesture {
                                     playerManager.isEditingGameProfile.toggle()
@@ -58,15 +54,12 @@ struct PlayerGameProfileCell: View {
                                 }
                             Spacer()
                             Image(systemName: "square.on.square.badge.person.crop")
-                                .resizable()
-                                .scaledToFit()
-                                .fontWeight(.semibold)
-                                .frame(width: 22)
+                                .font(.system(.headline, design: .default, weight: .medium))
                                 .foregroundColor(.blue)
                         }
                         
                     }
-                    .padding(9)
+                    .padding(appCellPadding)
                 }
             }
     }
@@ -75,5 +68,6 @@ struct PlayerGameProfileCell: View {
 struct PlayerGameProfileCell_Previews: PreviewProvider {
     static var previews: some View {
         PlayerGameProfileCell(gameProfile: TUPlayerGameProfile(record: MockData.playerGameProfile))
+            .environmentObject(PlayerManager(iCloudRecord: MockData.player, playerProfile: TUPlayer(record: MockData.player)))
     }
 }

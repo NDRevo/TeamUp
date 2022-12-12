@@ -27,10 +27,10 @@ struct EventTimeDetailsView: View {
             }
         }
         .frame(maxWidth: 365)
-        .padding(10)
+        .padding(appCellPadding)
         .allowToPresentCalendar(with: viewModel)
         .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(RoundedRectangle(cornerRadius: appCornerRadius))
     }
 }
 
@@ -51,7 +51,7 @@ struct DetailItemView: View {
 
     var body: some View {
         HStack(alignment: .center){
-            HStack(spacing: 4){
+            HStack(spacing: imageTextSpacing){
                 Image(systemName: detailType.getSystemImage())
                     .font(.headline)
                     .foregroundColor(.blue)
@@ -74,7 +74,6 @@ struct DetailItemView: View {
                             month: calendar.component(.month, from: newValue),
                             day: calendar.component(.day, from: newValue),
                             hour: calendar.component(.hour, from: newValue)
-//                          ,minute: calendar.component(.minute, from: newValue + (60*15))
                         )
                         viewModel.eventEndDateRange = calendar.date(from: endDate)!...
                     }
@@ -89,13 +88,13 @@ struct DetailItemView: View {
                     Text(textContent)
                         .font(.system(.body, design: .monospaced, weight: .bold))
                         .lineLimit(1)
-                        .minimumScaleFactor(0.85)
+                        .minimumScaleFactor(appMinimumScaleFactor)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
                         .frame(width: 100)
                 }
                 .background {
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: appCornerRadius)
                         .foregroundColor(.appBackground)
                 }
             }
@@ -123,7 +122,7 @@ struct EditEventDateView: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 5)
         .background {
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: appCornerRadius)
                 .foregroundColor(.appBackground)
         }
     }

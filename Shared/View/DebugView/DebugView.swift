@@ -18,7 +18,7 @@ struct DebugView: View {
             List{
                 ForEach(viewModel.players){ player in
                         HStack{
-                            VStack(alignment: .leading,spacing: 12){
+                            VStack(alignment: .leading,spacing: appCellSpacing){
                                 Text(player.username)
                                     .bold()
                                     .font(.title2)

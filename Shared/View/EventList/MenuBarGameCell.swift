@@ -13,8 +13,10 @@ struct MenuBarGameCell: View {
     @ObservedObject var viewModel: EventsListViewModel
     var game: Game
 
+    let menuBarGameCellCornerRadius: CGFloat = 8
+
     var body: some View {
-        RoundedRectangle(cornerRadius: 8)
+        RoundedRectangle(cornerRadius: menuBarGameCellCornerRadius )
             .foregroundStyle(
                 game.gameColor
             )
@@ -31,7 +33,7 @@ struct MenuBarGameCell: View {
                         .bold()
                 }
                 if game.name == viewModel.currentGameSelected.name {
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: menuBarGameCellCornerRadius)
                         .stroke(Color.appPrimaryInverse, lineWidth: 4)
                 }
             }

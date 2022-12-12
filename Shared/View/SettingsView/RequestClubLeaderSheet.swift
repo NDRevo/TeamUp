@@ -15,38 +15,39 @@ struct RequestClubLeaderSheet: View {
     var body: some View {
         NavigationView {
             ScrollView{
-                VStack(spacing: 12) {
+                VStack(spacing: appCellSpacing) {
                     VStack(alignment: .center) {
                         Text("Request Club Leader")
-                            .font(.title)
-                            .bold()
+                            .font(.system(.title, design: .rounded, weight: .bold))
                     }
-                    VStack(spacing: 12){
+                    VStack(spacing: appCellSpacing){
                         Text("Requesting the Club Leader role will require manual verification. Enter the club name you are a leader of. You'll be required to submit any links that can identify you as being a leader of the club.")
+                            .font(.system(.body, design: .rounded, weight: .regular))
                         HStack{
                             Image(systemName: "graduationcap.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20)
                             Text(playerManager.playerProfile!.inSchool)
-                                .font(.body)
-                                .fontWeight(.semibold)
+                                .font(.system(.callout, design: .rounded, weight: .medium))
                         }
                         TextField("Club Name (Ex. Rutgers VALORANT Club)", text: $viewModel.clubLeaderClubName)
-                            .padding(8)
+                            .font(.system(.body, design: .rounded, weight: .regular))
+                            .padding(appCellPadding)
                             .background {
-                                RoundedRectangle(cornerRadius: 8)
+                                RoundedRectangle(cornerRadius: appCornerRadius)
                                     .foregroundColor(.appBackground)
                             }
                             .autocorrectionDisabled()
                             .textInputAutocapitalization(.words)
                         Section {
                             TextField("Links", text: $viewModel.clubLeaderRequestDescription, axis: .vertical)
+                                .font(.system(.body, design: .rounded, weight: .regular))
                                 .textContentType(.URL)
                                 .lineLimit(5, reservesSpace: true)
-                                .padding(8)
+                                .padding(appCellPadding)
                                 .background {
-                                    RoundedRectangle(cornerRadius: 8)
+                                    RoundedRectangle(cornerRadius: appCornerRadius)
                                         .foregroundColor(.appBackground)
                                 }
                                 .keyboardType(.URL)
@@ -67,7 +68,7 @@ struct RequestClubLeaderSheet: View {
                     Spacer()
                 }
             }
-            .padding(12)
+            .padding(appCellPadding)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {

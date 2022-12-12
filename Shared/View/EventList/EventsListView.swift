@@ -14,17 +14,17 @@ struct EventsListView: View {
     @EnvironmentObject private var eventsManager: EventsManager
     @StateObject private var viewModel = EventsListViewModel()
 
+    init() { UINavigationBar.appearance().largeTitleTextAttributes = [.font : navigationTitleFont] }
+
     var body: some View {
         NavigationView {
-            ZStack{
-                Color.appBackground.edgesIgnoringSafeArea(.all)
-                VStack {
-                    GameMenuBar(viewModel: viewModel)
-                    if eventsManager.events.isEmpty {NoEventsFoundMessage()}
-                    else {ListOfEvents(viewModel: viewModel)}
-                    Spacer()
-                }
+            VStack{
+                GameMenuBar(viewModel: viewModel)
+                if eventsManager.events.isEmpty {NoEventsFoundMessage()}
+                else {ListOfEvents(viewModel: viewModel)}
+                Spacer()
             }
+            .background{Color.appBackground.edgesIgnoringSafeArea(.all)}
             .refreshable {
                 eventsManager.getPublicEvents(forGame: viewModel.currentGameSelected)
             }
@@ -60,8 +60,7 @@ struct GameMenuBar: View {
                     MenuBarGameCell(viewModel: viewModel, game: game)
                 }
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 4)
+            .padding(4)
         }
     }
 }
@@ -74,7 +73,7 @@ struct ListOfEvents: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 12) {
+            LazyVStack(spacing: appCellSpacing) {
                 ForEach(eventsManager.events){ event in
                     NavigationLink {
                         EventDetailView(event: event)
@@ -83,7 +82,7 @@ struct ListOfEvents: View {
                     }
                 }
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, appHorizontalViewPadding)
         }
     }
 }
@@ -93,13 +92,13 @@ struct ListOfEvents: View {
 struct NoEventsFoundMessage: View {
     var body: some View {
         ScrollView {
-            VStack(spacing: 12){
+            VStack(spacing: appImageToTextEmptyContentSpacing){
                 Image(systemName: "calendar")
-                    .font(.system(size: 36))
+                    .font(.system(size: appImageSizeEmptyContent))
                     .foregroundColor(.secondary)
                 Text("No events found")
+                    .font(.system(.headline, design: .monospaced, weight: .medium))
                     .foregroundColor(.secondary)
-                    .bold()
             }
             .offset(y: 120)
         }

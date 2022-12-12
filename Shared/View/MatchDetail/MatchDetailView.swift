@@ -97,5 +97,7 @@ struct MatchDetailView: View {
 struct MatchDetailView_Previews: PreviewProvider {
     static var previews: some View {
         MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event)))
+            .environmentObject(PlayerManager( playerProfile: TUPlayer(record: MockData.player)))
+            .environmentObject(EventDetailViewModel(event: TUEvent(record: MockData.event)))
     }
 }

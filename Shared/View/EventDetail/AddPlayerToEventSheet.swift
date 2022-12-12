@@ -26,9 +26,9 @@ struct AddPlayerToEventSheet: View {
                     }
                 }
             } else {
-                VStack(spacing: 12) {
+                VStack(spacing: appImageToTextEmptyContentSpacing) {
                     Image(systemName: "person.3")
-                        .font(.system(size: 36))
+                        .font(.system(size: appImageSizeEmptyContent))
                         .foregroundColor(.secondary)
                     Text("Search players by their username")
                         .foregroundColor(.secondary)

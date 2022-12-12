@@ -13,7 +13,7 @@ struct EditGameView: View {
     var body: some View {
         VStack(spacing: 0){
             HStack {
-                HStack(spacing: 4){
+                HStack(spacing: imageTextSpacing){
                     Image(systemName: "gamecontroller")
                         .font(.headline)
                         .foregroundColor(.blue)
@@ -57,9 +57,9 @@ struct EditGameView: View {
                     .replaceDisabled()
             }
         }
-        .padding(10)
+        .padding(appCellPadding)
         .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(RoundedRectangle(cornerRadius: appCornerRadius))
         .onChange(of: viewModel.editedEventGame) { newGame in
             if !newGame.hasVariants(){
                 viewModel.editedEventGameVariant = Game(name: GameNames.empty, ranks: [])

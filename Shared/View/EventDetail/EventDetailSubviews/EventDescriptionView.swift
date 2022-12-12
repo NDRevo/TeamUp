@@ -14,8 +14,8 @@ struct EventDescriptionView: View {
     @ObservedObject var viewModel: EventDetailViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10){
-            HStack(alignment: .center ,spacing: 4){
+        VStack(alignment: .leading, spacing: appHeaderToContentSpacing){
+            HStack(alignment: .center ,spacing: imageTextSpacing){
                 Image(systemName: "doc.plaintext")
                     .font(.headline)
                     .frame(width: 15)
@@ -47,9 +47,9 @@ struct EventDescriptionView: View {
                     .foregroundColor(.gray)
             }
         }
-        .padding(10)
+        .padding(appCellPadding)
         .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(RoundedRectangle(cornerRadius: appCornerRadius))
     }
 }
 

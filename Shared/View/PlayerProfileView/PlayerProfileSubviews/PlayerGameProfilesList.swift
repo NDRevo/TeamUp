@@ -13,11 +13,10 @@ struct PlayerGameProfilesList: View {
     @EnvironmentObject var playerManager: PlayerManager
 
     var body: some View {
-        VStack(alignment: .center, spacing: 12) {
+        VStack(alignment: .center, spacing: appCellSpacing) {
             HStack {
                 Text("Game Profiles")
-                    .bold()
-                    .font(.title2)
+                    .font(.system(.title2, design: .rounded, weight: .bold))
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
                 Button {
@@ -29,17 +28,17 @@ struct PlayerGameProfilesList: View {
                         .foregroundStyle(.primary, .secondary)
                 }
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, appHorizontalViewPadding)
             if playerManager.playerGameProfiles.isEmpty {
-                VStack(alignment: .center, spacing: 12){
+                VStack(alignment: .center, spacing: appImageToTextEmptyContentSpacing){
                     Image(systemName: "person.text.rectangle")
-                        .font(.system(size: 36))
+                        .font(.system(size: appImageSizeEmptyContent))
                         .foregroundColor(.secondary)
                     Text("No game profiles found")
+                        .font(.system(.headline, design: .monospaced, weight: .medium))
                         .foregroundColor(.secondary)
-                        .bold()
                 }
-                .padding()
+                .padding(appCellPadding)
             } else {
                 ScrollView(.horizontal) {
                     LazyHStack(alignment: .top, spacing: 10) {
@@ -53,7 +52,7 @@ struct PlayerGameProfilesList: View {
                                 }
                         }
                     }
-                    .padding(.horizontal, 12)
+                    .padding(.horizontal, appHorizontalViewPadding)
                 }
             }
         }

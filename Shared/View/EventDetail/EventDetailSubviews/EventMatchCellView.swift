@@ -16,8 +16,8 @@ struct EventMatchCellView: View {
 
     var body: some View {
         HStack{
-            VStack(alignment: .leading, spacing: 12){
-                HStack(spacing: 4) {
+            VStack(alignment: .leading, spacing: appHeaderToContentSpacing){
+                HStack(alignment: .center, spacing: imageTextSpacing) {
                     Image(systemName: "clock")
                     Text(match.matchStartTime.convertDateToString())
                 }
@@ -25,7 +25,7 @@ struct EventMatchCellView: View {
                 HStack{
                     Text(match.matchName)
                         .lineLimit(1)
-                        .minimumScaleFactor(0.85)
+                        .minimumScaleFactor(appMinimumScaleFactor)
                         .font(.system(.body, design: .rounded, weight: .bold))
                     Spacer()
                 }
@@ -33,12 +33,12 @@ struct EventMatchCellView: View {
                 .padding(.vertical, 4)
                 //Adjust based on amount of events
                 .background(Color.getGameColor(gameName: viewModel.event.eventGameName))
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .clipShape(RoundedRectangle(cornerRadius: appCornerRadius))
             }
         }
-        .padding(10)
+        .padding(appCellPadding)
         .background(Color.appCell)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(RoundedRectangle(cornerRadius: appCornerRadius))
         .frame(width: 200)
     }
 }
