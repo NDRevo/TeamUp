@@ -21,7 +21,9 @@ struct SearchMapView: View {
             List(searchViewModel.viewData) { item in
                 VStack(alignment: .leading) {
                     Text(item.title)
+                        .font(.system(.body, design: .rounded, weight: .bold))
                     Text(item.subtitle)
+                        .font(.system(.body, design: .rounded, weight: .regular))
                         .foregroundColor(.secondary)
                 }.onTapGesture {
                     eventLocationTitle = item.title

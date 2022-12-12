@@ -16,29 +16,48 @@ struct AddMatchSheet: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        List{
-            TextField("Match Name", text: $viewModel.matchName)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.words)
-                .onChange(of: viewModel.matchName) { _ in
-                    viewModel.matchName = String(viewModel.matchName.prefix(25))
-                }
-
-            ///Bug:  **Causes UI contraint bugs
-            DatePicker("Match Date", selection: $viewModel.matchDate, in: viewModel.dateRange(), displayedComponents: [.hourAndMinute])
-
-            Section{
-                Button {
-                    Task {
-                        viewModel.createMatchForEvent()
-                    }
-                } label: {
-                    Text("Create Match")
-                        .foregroundColor(.blue)
-                }
+        VStack(spacing: 0) {
+            HStack {
+                Text("Create Match")
+                    .foregroundColor(.primary)
+                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                Spacer()
             }
+            .padding(.horizontal, 14)
+            List {
+                TextField("Match Name", text: $viewModel.matchName)
+                    .font(.system(.body, design: .rounded, weight: .regular))
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.words)
+                    .onChange(of: viewModel.matchName) { _ in
+                        viewModel.matchName = String(viewModel.matchName.prefix(25))
+                    }
+                    .listRowBackground(Color.appCell)
+
+                ///Bug:  **Causes UI contraint bugs
+                DatePicker(selection: $viewModel.matchDate, in: viewModel.dateRange(), displayedComponents: [.hourAndMinute]){
+                    Text("Match Date")
+                        .font(.system(.body, design: .monospaced, weight: .medium))
+                }
+                .listRowBackground(Color.appCell)
+
+                Section{
+                    Button {
+                        Task { viewModel.createMatchForEvent() }
+                    } label: {
+                        Text("Create Match")
+                            .font(.system(.body, design: .rounded, weight: .regular))
+                            .foregroundColor(.blue)
+                    }
+                }
+                .listRowBackground(Color.appCell)
+            }
+            .scrollContentBackground(.hidden)
+            
         }
-        .navigationTitle("Create Match")
+        .background {
+            Color.appBackground.ignoresSafeArea()
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Dismiss") {dismiss()}

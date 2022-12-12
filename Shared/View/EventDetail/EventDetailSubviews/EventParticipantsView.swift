@@ -17,8 +17,7 @@ struct EventParticipantsView: View {
         VStack(alignment: .leading){
             HStack{
                 Text("Participants")
-                    .font(.title2)
-                    .bold()
+                    .font(.system(.title2, design: .rounded, weight: .bold))
                 Spacer()
                 if viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isPublished == 1 {
                     NavigationLink {
@@ -67,9 +66,8 @@ struct EventParticipantsView: View {
                 HStack{
                     Spacer()
                     Text("Publish event to manually add players")
-                        .font(.title3)
+                        .font(.system(.headline, design: .monospaced, weight: .medium))
                         .foregroundColor(.secondary)
-                        .bold()
                         .multilineTextAlignment(.center)
                     Spacer()
                 }
@@ -78,9 +76,8 @@ struct EventParticipantsView: View {
                 HStack{
                     Spacer()
                     Text("No participants found")
-                        .font(.title3)
+                        .font(.system(.headline, design: .monospaced, weight: .medium))
                         .foregroundColor(.secondary)
-                        .bold()
                     Spacer()
                 }
                 .padding()

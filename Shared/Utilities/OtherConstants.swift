@@ -12,6 +12,7 @@ enum WordConstants {
     static let discordgg = "discord.gg"
     static let eventDescription = "Event Description"
     static let address = "Address"
+    static let addressTitle = "Address Title"
 }
 
 enum RecordType{

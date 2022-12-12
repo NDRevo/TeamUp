@@ -13,7 +13,13 @@ struct EditGameView: View {
     var body: some View {
         VStack(spacing: 0){
             HStack {
-                Text("Game")
+                HStack(spacing: 4){
+                    Image(systemName: "gamecontroller")
+                        .font(.headline)
+                        .foregroundColor(.blue)
+                    Text("Game")
+                        .font(.system(.body, design: .monospaced, weight: .medium))
+                }
                 Spacer()
                 Picker("", selection: $viewModel.editedEventGame) {
                     //Starts from 2 to remove "All" & other case
@@ -24,11 +30,13 @@ struct EditGameView: View {
                 }
                 .pickerStyle(.menu)
                 .labelsHidden()
+                .font(.system(.body, design: .rounded, weight: .regular))
             }
 
             if viewModel.editedEventGame.hasVariants() {
                 HStack {
                     Text("Variant")
+                        .font(.system(.body, design: .monospaced, weight: .medium))
                     Spacer()
                     Picker("Variant", selection: $viewModel.editedEventGameVariant) {
                         ForEach(viewModel.editedEventGame.gameVariants){ game in
@@ -37,11 +45,14 @@ struct EditGameView: View {
                         }
                     }
                     .pickerStyle(.menu)
+                    .labelsHidden()
+                    .font(.system(.body, design: .rounded, weight: .regular))
                 }
             }
 
             if viewModel.editedEventGame.name == GameNames.other {
                 TextField("Game Name", text: $viewModel.userInputEditedEventGameName)
+                    .font(.system(.body, design: .rounded, weight: .regular))
                     .autocorrectionDisabled()
                     .replaceDisabled()
             }

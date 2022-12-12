@@ -36,12 +36,13 @@ struct MoreDetailItemView: View {
         VStack(alignment: .leading, spacing: 5){
             HStack(spacing: 4){
                 Image(systemName: detailType.getSystemImage())
+                    .font(.headline)
                     .foregroundColor(.blue)
                 Text(detailType.getTextHeading())
-                    .font(.callout)
+                    .font(.system(.callout, design: .monospaced, weight: .medium))
             }
             Text(textContent)
-                .bold()
+                .font(.system(.body, design: .rounded, weight: .regular))
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
         }

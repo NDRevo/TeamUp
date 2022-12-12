@@ -37,6 +37,8 @@ struct EventLocationView: View {
             viewModel.editedLocationName = (viewModel.eventLocationType == .discord) ? viewModel.editedLocationTypePicked == .discord ? viewModel.discordInviteCode : "" : viewModel.editedLocationTypePicked == .irl ? viewModel.event.eventLocation : ""
         }
         .onChange(of: viewModel.isEditingEventDetails) { _ in
+            viewModel.editedLocationTitle = viewModel.event.eventLocationTitle ?? ""
+
             viewModel.editedLocationName = (viewModel.eventLocationType == .discord) ? viewModel.discordInviteCode : viewModel.event.eventLocation
         }
         .onTapGesture {
@@ -73,18 +75,16 @@ struct EventLocationHeader: View {
         HStack(alignment: .center){
             HStack(spacing: 4){
                 Image(systemName: (viewModel.event.eventLocation.starts(with: WordConstants.discordgg) && !viewModel.isEditingEventDetails) ? "link" : DetailItem.location.getSystemImage())
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 15)
+                    .font(.headline)
                     .foregroundColor(.blue)
                     
                 Text( (viewModel.eventLocationType == .discord && !viewModel.isEditingEventDetails) ? "Discord" : DetailItem.location.getTextHeading())
-                    .fontWeight((viewModel.eventLocationType == .discord && !viewModel.isEditingEventDetails) ? .semibold : nil)
+                    .font(.system(.body, design: .monospaced, weight: .medium))
                 
                 Spacer()
                 if viewModel.eventLocationType == .discord && !viewModel.isEditingEventDetails{
                     Text(viewModel.event.eventLocation)
-                        .font(.system(.caption, design: .default, weight: .bold))
+                        .font(.system(.caption, design: .monospaced, weight: .thin))
                         .foregroundColor(.gray)
                         .textSelection(.enabled)
                 }
@@ -114,38 +114,53 @@ struct EventLocationBody: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4){
-            if let eventLocationTitle = viewModel.event.eventLocationTitle {
-                if !eventLocationTitle.isEmpty && viewModel.editedLocationTypePicked != .discord{
+            if viewModel.editedLocationTypePicked == .irl {
+                if let eventLocationTitle = viewModel.event.eventLocationTitle {
+                    if (eventLocationTitle.isEmpty && viewModel.isEditingEventDetails) || !eventLocationTitle.isEmpty {
+                        TextField(text: $viewModel.editedLocationTitle) {
+                            Text((viewModel.editedLocationTitle.isEmpty && viewModel.isEditingEventDetails) ? WordConstants.addressTitle : eventLocationTitle)
+                                .foregroundColor((viewModel.editedLocationTitle.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.85)
+                        }
+                        .font(.system(.body, design: .rounded, weight: .bold))
+                        .textInputAutocapitalization(.words)
+                        .autocorrectionDisabled()
+                        .disabled(!viewModel.isEditingEventDetails)
+                    }
+                } else if viewModel.isEditingEventDetails {
                     TextField(text: $viewModel.editedLocationTitle) {
-                        Text(eventLocationTitle)
-                            .bold()
-                            .foregroundColor((viewModel.editedLocationName.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
+                        Text((viewModel.editedLocationTitle.isEmpty && viewModel.isEditingEventDetails) ? WordConstants.addressTitle : viewModel.event.eventLocationTitle ?? "")
+                            .foregroundColor((viewModel.editedLocationTitle.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
                             .lineLimit(1)
                             .minimumScaleFactor(0.85)
                     }
+                    .font(.system(.body, design: .rounded, weight: .bold))
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled()
-                    .disabled(!viewModel.isEditingEventDetails)
                 }
             }
+
             HStack(spacing: viewModel.editedLocationTypePicked == .discord ? 0 : nil) {
                 if viewModel.isEditingEventDetails {
                     if viewModel.editedLocationTypePicked == .irl {
                         Image(systemName: "magnifyingglass")
                             .onTapGesture {  viewModel.isPresentingMap = true }
+                            .font(.headline)
                             .foregroundColor(.blue)
                     } else {
                         Text(WordConstants.discordgg + "/")
-                            .font(.system(.body, design: .default, weight: .bold))
+                            .font(.system(.body, design: .monospaced, weight: .thin))
                             .foregroundColor(.gray)
                     }
                 }
-                
+
                 TextField(text: $viewModel.editedLocationName) {
-                    Text((viewModel.editedLocationName.isEmpty && viewModel.isEditingEventDetails) ? (viewModel.editedLocationTypePicked == .irl) ? WordConstants.address : "" : (viewModel.editedLocationTypePicked == .discord) ? viewModel.discordInviteCode : viewModel.event.eventLocation)
+                    Text((viewModel.editedLocationName.isEmpty && viewModel.isEditingEventDetails) ? (viewModel.editedLocationTypePicked == .irl) ? WordConstants.address : "" : (viewModel.editedLocationTypePicked == .irl) ? viewModel.event.eventLocation : viewModel.discordInviteCode)
                         .foregroundColor((viewModel.editedLocationName.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
                 }
-                .textInputAutocapitalization(.words)
+                .font(.system(.body, design: .rounded, weight: .regular))
+                .textInputAutocapitalization(viewModel.editedLocationTypePicked == .discord ? .never : .words)
                 .autocorrectionDisabled()
                 .minimumScaleFactor(0.85)
                 .disabled(!viewModel.isEditingEventDetails)

@@ -25,10 +25,8 @@ struct PlayerGameProfilesList: View {
                     playerManager.resetGameProfileInput()
                 } label: {
                     Image(systemName: "person.crop.rectangle.badge.plus")
-                        .resizable()
-                        .scaledToFit()
+                        .font(.title2)
                         .foregroundStyle(.primary, .secondary)
-                        .frame(width: 30)
                 }
             }
             .padding(.horizontal, 12)

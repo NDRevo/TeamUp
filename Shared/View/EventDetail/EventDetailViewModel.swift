@@ -24,7 +24,7 @@ enum DetailItem {
         case .location: return "map"
         case .endTime:  return "clock.badge.exclamationmark"
         case .owner:    return "person.text.rectangle"
-        case .game:     return "gamecontroller.fill"
+        case .game:     return "gamecontroller"
         case .school:   return "graduationcap.fill"
         case .clubHosting: return "suit.club.fill"
         }
@@ -52,7 +52,11 @@ enum EventField: Hashable {
 
     @Published var focusField: EventField?
 
-    var event: TUEvent
+    var event: TUEvent {
+        didSet {
+            discordInviteCode = String(event.eventLocation.split(separator: "/", omittingEmptySubsequences: true).last ?? "N/A")
+        }
+    }
     var eventLocationType: Locations {  return event.eventLocation.starts(with: WordConstants.discordgg) ? .discord : .irl }
     var eventDateRange: PartialRangeFrom<Date>
     var eventEndDateRange: PartialRangeFrom<Date>
@@ -141,6 +145,7 @@ enum EventField: Hashable {
                 editedDescription = ""
                 editedLocationName = ""
                 editedLocationTitle = ""
+                editedLocationTypePicked = eventLocationType
             }
         }
     }
@@ -368,11 +373,12 @@ enum EventField: Hashable {
                     eventRecord[TUEvent.kEventLocation] = "\(WordConstants.discordgg)/\(editedLocationName)"
                 }
             }
-            
-            if editedLocationTitle != event.eventLocationTitle && !editedLocationTitle.isEmpty {
+
+            //Location Title can be empty
+            if editedLocationTitle != event.eventLocationTitle && editedLocationTypePicked == .irl {
                 eventRecord[TUEvent.kEventLocationTitle] = editedLocationTitle
             }
-            
+
             if editedEventStartDate != event.eventStartDate {
                 eventRecord[TUEvent.kEventStartDate] = editedEventStartDate
             }
@@ -380,7 +386,7 @@ enum EventField: Hashable {
             if editedEventEndDate != event.eventEndDate {
                 eventRecord[TUEvent.kEventEndDate] = editedEventEndDate
             }
-            
+
             let newEventRecord = try await CloudKitManager.shared.save(record: eventRecord)
             event = TUEvent(record: newEventRecord)
 

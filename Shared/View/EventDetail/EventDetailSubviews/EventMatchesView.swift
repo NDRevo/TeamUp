@@ -18,8 +18,7 @@ struct EventMatchesView: View {
         VStack(alignment: .leading){
             HStack {
                 Text("Matches")
-                    .font(.title2)
-                    .bold()
+                    .font(.system(.title2, design: .rounded, weight: .bold))
                 Spacer()
                 if viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isArchived == 0 {
                     Button {
@@ -31,7 +30,7 @@ struct EventMatchesView: View {
                     }
                 }
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 4)
             
             if viewModel.isLoading {
                 LoadingView()
@@ -40,9 +39,8 @@ struct EventMatchesView: View {
                 HStack{
                     Spacer()
                     Text("No matches found")
-                        .font(.title3)
+                        .font(.system(.headline, design: .monospaced, weight: .medium))
                         .foregroundColor(.secondary)
-                        .bold()
                     Spacer()
                 }
                 .padding()
@@ -57,12 +55,12 @@ struct EventMatchesView: View {
                                         viewModel.refreshEventDetails()
                                     }
                             } label: {
-                                EventMatchCellView(matchName: match.matchName, matchTime: match.matchStartTime.convertDateToString())
+                                EventMatchCellView(viewModel: viewModel, match: match)
                             }
                             .buttonStyle(PlainButtonStyle()) //Removes blue highlight from MatchCell
                         }
                     }
-                    .offset(x: 12) //Shifts start position of cells to the right 16pt
+                    .offset(x: 4) //Shifts start position of cells to the right 12pt
                     .padding(.trailing, 24) //Makes last cell not cut off
                 }
             }

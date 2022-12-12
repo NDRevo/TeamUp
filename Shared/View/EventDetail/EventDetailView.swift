@@ -22,8 +22,9 @@ struct EventDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
+                EventTitleView(viewModel: viewModel)
+                    .padding(.horizontal, 10)
                 VStack(spacing: 8) {
-                    EventTitleView(viewModel: viewModel)
                     EventTimeDetailsView(viewModel: viewModel)
                     EventLocationView(viewModel: viewModel)
                     EventDescriptionView(viewModel: viewModel)
@@ -31,11 +32,11 @@ struct EventDetailView: View {
                         EditGameView(viewModel: viewModel)
                     }
                 }
-                .padding(.horizontal, 12)
+                .padding(.horizontal, 4)
                 if !viewModel.isEditingEventDetails {
                     EventMatchesView(viewModel: viewModel)
                     EventParticipantsView(viewModel: viewModel)
-                        .padding(.horizontal, 12)
+                        .padding(.horizontal, 4)
                 }
             }
             Spacer()
@@ -89,10 +90,10 @@ struct EventTitleView: View {
                 Text(viewModel.event.eventName)
                     .foregroundColor(viewModel.isEditingEventDetails ? .gray : .primary)
             }
+            .font(.system(.largeTitle, design: .rounded, weight: .bold))
             .disabled(!viewModel.isEditingEventDetails)
             Spacer()
         }
-        .font(.title.bold())
     }
 }
 

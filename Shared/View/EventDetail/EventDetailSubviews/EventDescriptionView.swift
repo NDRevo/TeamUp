@@ -17,17 +17,18 @@ struct EventDescriptionView: View {
         VStack(alignment: .leading, spacing: 10){
             HStack(alignment: .center ,spacing: 4){
                 Image(systemName: "doc.plaintext")
-                    .resizable()
-                    .scaledToFit()
+                    .font(.headline)
                     .frame(width: 15)
                     .foregroundColor(.blue)
                 Text("Description")
+                    .font(.system(.body, design: .monospaced, weight: .medium))
             }
             TextField(text: $viewModel.editedDescription, axis: .vertical) {
-                Text("Hello")
+                Text((viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? "Event Description" : viewModel.event.eventDescription)
                         .foregroundColor((viewModel.editedDescription.isEmpty && viewModel.isEditingEventDetails) ? .gray : .primary)
                 
             }
+            .font(.system(.body, design: .rounded, weight: .regular))
             .lineLimit(nil)
             .disabled(!viewModel.isEditingEventDetails)
             .onChange(of: viewModel.editedDescription) { _ in
@@ -42,7 +43,7 @@ struct EventDescriptionView: View {
 
             if viewModel.isEditingEventDetails {
                 Text("\(350 - viewModel.editedDescription.count) characters left.")
-                    .font(.footnote)
+                    .font(.system(.footnote, design: .monospaced, weight: .regular))
                     .foregroundColor(.gray)
             }
         }
