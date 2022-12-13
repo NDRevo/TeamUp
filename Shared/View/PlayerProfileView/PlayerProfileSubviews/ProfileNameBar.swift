@@ -40,22 +40,24 @@ struct ProfileNameBar: View {
                             if let playerProfile = playerManager.playerProfile {
                                 TextField(text: $playerManager.editedUsername) {
                                         Text(playerManager.isEditingProfile ? playerProfile.username : "\(playerProfile.username)")
-                                            .font(.title.bold())
                                             .foregroundColor(playerManager.isEditingProfile ? .gray : .primary)
-                                            .keyboardType(.twitter)
-                                            .textInputAutocapitalization(.never)
-                                            .autocorrectionDisabled()
-                                            .minimumScaleFactor(appMinimumScaleFactor)
                                 }
+                                .font(.system(.title, design: .rounded, weight: .bold))
+                                .keyboardType(.twitter)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                                .minimumScaleFactor(appMinimumScaleFactor)
                                 .disabled(!playerManager.isEditingProfile)
                                 
                                 if playerManager.isEditingProfile {
                                     VStack(spacing: 6) {
                                         TextField(playerProfile.firstName, text: $playerManager.editedFirstName)
+                                            .font(.system(.title2, design: .rounded, weight: .medium))
                                             .padding(4)
                                             .background { Color.appBackground.cornerRadius(8) }
                                             .autocorrectionDisabled()
                                         TextField(playerProfile.lastName, text: $playerManager.editedLastName)
+                                            .font(.system(.title2, design: .rounded, weight: .medium))
                                             .padding(4)
                                             .background { Color.appBackground.cornerRadius(8) }
                                             .autocorrectionDisabled()
@@ -64,7 +66,7 @@ struct ProfileNameBar: View {
                                     .minimumScaleFactor(appMinimumScaleFactor)
                                 } else {
                                     Text("\(playerProfile.firstName) \(playerProfile.lastName)")
-                                        .font(.title2)
+                                        .font(.system(.title2, design: .rounded, weight: .medium))
                                         .minimumScaleFactor(appMinimumScaleFactor)
                                 }
                             }

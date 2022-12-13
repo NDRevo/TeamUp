@@ -67,7 +67,7 @@ struct PlayerGameProfileCell: View {
                                     .foregroundColor(.blue)
                             }
                             Spacer()
-                            if let gameAliases = gameProfile.gameAliases {
+                            if let _ = gameProfile.gameAliases {
                                 Button {
                                     isShowingAliases.toggle()
                                 } label: {
