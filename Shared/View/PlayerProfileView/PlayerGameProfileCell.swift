@@ -14,6 +14,8 @@ struct PlayerGameProfileCell: View {
     @EnvironmentObject var playerManager: PlayerManager
     var gameProfile: TUPlayerGameProfile
 
+    @State var isShowingAliases: Bool = false
+
     var body: some View {
         RoundedRectangle(cornerRadius: appCornerRadius)
             .frame(width: 205, height: 95)
@@ -32,32 +34,49 @@ struct PlayerGameProfileCell: View {
                                     RoundedRectangle(cornerRadius: appCornerRadius)
                                         .foregroundColor(Color.getGameColor(gameName: gameProfile.gameName))
                                 }
+                            Spacer()
                             VStack(alignment: .leading) {
-                                Text(gameProfile.gameID)
-                                    .font(.system(.title, design: .monospaced, weight: .bold))
-                                    .lineLimit(1)
+                                Text(isShowingAliases ? gameProfile.gameAliases?.first ?? "" : gameProfile.gameID)
+                                        .font(.system(.headline, design: .monospaced, weight: .bold))
+                                        .lineLimit(1)
                                     //Have its own minimumscale factor, must be shown at all times
-                                    .minimumScaleFactor(0.35)
-                                Text(gameProfile.gameRank)
-                                    .font(.system(.subheadline, design: .monospaced, weight: .medium))
-                                    .lineLimit(1)
+                                        .minimumScaleFactor(0.35)
+                                    if !gameProfile.gameRank.isEmpty && !isShowingAliases {
+                                        Text(gameProfile.gameRank)
+                                            .font(.system(.subheadline, design: .monospaced, weight: .medium))
+                                            .lineLimit(1)
+                                    } else if let secondAliases = gameProfile.gameAliases?.last, isShowingAliases {
+                                        if !secondAliases.isEmpty {
+                                            Text(secondAliases)
+                                                    .font(.system(.headline, design: .monospaced, weight: .bold))
+                                                    .lineLimit(1)
+                                                //Have its own minimumscale factor, must be shown at all times
+                                                    .minimumScaleFactor(0.35)
+                                        }
+                                    }
                             }
                         }
                         Spacer()
                         VStack {
-                            Image(systemName: "square.and.pencil")
-                                .font(.system(.headline, design: .default, weight: .medium))
-                                .foregroundColor(.blue)
-                                .onTapGesture {
-                                    playerManager.isEditingGameProfile.toggle()
-                                    playerManager.tappedGameProfile = gameProfile
-                                }
+                            Button {
+                                playerManager.isEditingGameProfile.toggle()
+                                playerManager.tappedGameProfile = gameProfile
+                            } label: {
+                                Image(systemName: "square.and.pencil")
+                                    .font(.system(.headline, design: .default, weight: .medium))
+                                    .foregroundColor(.blue)
+                            }
                             Spacer()
-                            Image(systemName: "square.on.square.badge.person.crop")
-                                .font(.system(.headline, design: .default, weight: .medium))
-                                .foregroundColor(.blue)
+                            if let gameAliases = gameProfile.gameAliases {
+                                Button {
+                                    isShowingAliases.toggle()
+                                } label: {
+                                    Image(systemName: "square.on.square.badge.person.crop")
+                                        .font(.system(.headline, design: .default, weight: .medium))
+                                        .foregroundColor(.blue)
+                                }
+                            }
                         }
-                        
                     }
                     .padding(appCellPadding)
                 }

@@ -20,7 +20,7 @@ struct EventMatchesView: View {
                 Text("Matches")
                     .font(.system(.title2, design: .rounded, weight: .bold))
                 Spacer()
-                if viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isArchived == 0 {
+                if viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isArchived == 0 && viewModel.event.isPublished == 1{
                     Button {
                         viewModel.sheetToPresent = .addMatch
                         viewModel.resetMatchInput()
@@ -38,7 +38,7 @@ struct EventMatchesView: View {
             } else if viewModel.matches.isEmpty {
                 HStack{
                     Spacer()
-                    Text("No matches found")
+                    Text(viewModel.event.isPublished == 0 ? "Publish event to create matches" : "No matches found")
                         .font(.system(.headline, design: .monospaced, weight: .medium))
                         .foregroundColor(.secondary)
                     Spacer()

@@ -76,7 +76,9 @@ struct EditGameProfileView: View {
         .onAppear {
             gameID = gameProfile.gameID
             gameRank = gameProfile.gameRank
-            gameAliases = gameProfile.gameAliases
+            if let gameAliases = gameProfile.gameAliases {
+                self.gameAliases = gameAliases
+            }
         }
         .navigationTitle("Edit")
     }
@@ -87,11 +89,16 @@ struct EditGameProfileView: View {
                 isSavable = true
             } else if gameID != gameProfile.gameID {
                 isSavable = true
-            } else if gameProfile.gameAliases[0] != gameAliases[0] {
+            } else if let gameAliases = gameProfile.gameAliases {
+                if gameAliases[0] != self.gameAliases[0] {
+                    isSavable = true
+                } else if gameAliases[1] != self.gameAliases[1] {
+                    isSavable = true
+                }
+            } else if !gameAliases[0].isEmpty || !gameAliases[1].isEmpty {
                 isSavable = true
-            } else if gameProfile.gameAliases[1] != gameAliases[1] {
-                isSavable = true
-            } else {
+            }
+            else {
                 isSavable = false
             }
         } else {

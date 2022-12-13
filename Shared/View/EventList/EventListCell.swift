@@ -16,9 +16,13 @@ struct EventListCell: View {
 
     var eventLocation: String {
         if let eventLocationTitle = event.eventLocationTitle {
-            return eventLocationTitle
+            return !eventLocationTitle.isEmpty ? eventLocationTitle : event.eventLocation
         } else {
-           return event.eventLocation
+            if event.eventLocation.starts(with: WordConstants.discordgg) {
+                return "Discord"
+            } else {
+                return event.eventLocation
+            }
         }
     }
 

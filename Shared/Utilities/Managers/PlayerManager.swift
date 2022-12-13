@@ -164,7 +164,7 @@ import SwiftUI
 
         playerGameProfile[TUPlayerGameProfile.kGameName]        = selectedGame.name
         playerGameProfile[TUPlayerGameProfile.kGameID]          = gameID
-        playerGameProfile[TUPlayerGameProfile.kGameAliases]     = ["",""]
+        playerGameProfile[TUPlayerGameProfile.kGameAliases]     = nil
 
         return playerGameProfile
     }
@@ -261,12 +261,21 @@ import SwiftUI
 
             gameProfileRecord[TUPlayerGameProfile.kGameID] = gameID
             gameProfileRecord[TUPlayerGameProfile.kGameRank] = gameRank
-            gameProfileRecord[TUPlayerGameProfile.kGameAliases] = gameAliases
+            
+            if gameAliases.allSatisfy({ aliases in
+                aliases.isEmpty || aliases.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            }) {
+                gameProfileRecord[TUPlayerGameProfile.kGameAliases] = nil
+            } else {
+                gameProfileRecord[TUPlayerGameProfile.kGameAliases] = gameAliases
+            }
+        
 
             let newGameProfileRecord = try await CloudKitManager.shared.save(record: gameProfileRecord)
             await MainActor.run {
                 playerGameProfiles.removeAll(where: {$0.id == gameProfile.id})
                 playerGameProfiles.append(TUPlayerGameProfile(record: newGameProfileRecord))
+                playerGameProfiles.sort(by: {$0.gameName < $1.gameName})
                 isEditingGameProfile = false
             }
         } catch {

@@ -25,7 +25,7 @@ struct TUPlayerGameProfile: Identifiable {
     let gameRank: String
 
     //MARK: Make Optional
-    let gameAliases: [String]
+    let gameAliases: [String]?
 
     init(record: CKRecord){
         id  = record.recordID
@@ -34,6 +34,6 @@ struct TUPlayerGameProfile: Identifiable {
         gameVariantName = record[TUPlayerGameProfile.kGameVariantName]  as? String ?? ""
         gameID          = record[TUPlayerGameProfile.kGameID]    as? String ?? "N/A"
         gameRank        = record[TUPlayerGameProfile.kGameRank]  as? String ?? ""
-        gameAliases     = record[TUPlayerGameProfile.kGameAliases] as? [String] ?? []
+        gameAliases     = record[TUPlayerGameProfile.kGameAliases] as? [String] ?? nil
     }
 }
