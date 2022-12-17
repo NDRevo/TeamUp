@@ -36,8 +36,12 @@ import SwiftUI
         self.event = event
     }
 
-    func isEventOwner(for player: TUPlayer?) -> Bool{
-        return event.eventOwner.recordID == player!.id
+    func isEventOwner(for player: TUPlayer?) -> Bool {
+        if let player = player {
+            return event.eventOwner.recordID == player.id
+        } else {
+            return false
+        }
     }
 
     func isAbleToChangeTeams(for player: TUPlayer?) -> Bool {

@@ -16,33 +16,48 @@ struct TeamHeaderView: View {
     var body: some View {
         HStack {
             Text(team.teamName)
-                .font(.system(.title2, design: .rounded, weight: .medium))
+                .font(.system(.title2, design: .rounded, weight: .bold))
                 .lineLimit(1)
-                //FIX: When adding players, this actives for some reason?
-                //.minimumScaleFactor(0.75)
+                .minimumScaleFactor(appMinimumScaleFactor)
             Spacer()
-            HStack(alignment: .firstTextBaseline, spacing: 20){
+            HStack{
                 if  viewModel.event.isArchived == 0 {
-                    Button {
+                    Button(action: {
                         viewModel.isShowingAddPlayer = true
                         viewModel.selectedTeam = team
-                    } label: {
+                    }, label: {
                         Image(systemName: "person.badge.plus")
-                            .font(.system(.title2, design: .rounded, weight: .regular))
-                    }
-                    Button(role: .destructive){
+                            .font(.system(.headline))
+                            .frame(height: 14)
+                           
+                    })
+                    .buttonStyle(.borderedProminent)
+                    .tint(.blue)
+                    .controlSize(.regular)
+                    .headerProminence(.increased)
+                    .font(.system(.caption2, design: .rounded, weight: .semibold))
+                    
+                    Button(action: {
                         viewModel.deleteTeam(teamID: team.id)
-                    } label: {
-                        Image(systemName: "minus.circle.fill")
-                            .font(.system(.title2, design: .rounded, weight: .regular))
-                    }
+                    }, label: {
+                        Image(systemName: "minus")
+                            .font(.system(.headline))
+                            .frame(height: 14)
+                    })
+                    .buttonStyle(.borderedProminent)
+                    .tint(.red)
+                    .controlSize(.regular)
+                    .headerProminence(.increased)
+                    .font(.system(.caption2, design: .rounded, weight: .semibold))
+                    
                 }
             }
         }
         .padding(appCellPadding)
         .background {
-            RoundedRectangle(cornerRadius: appCornerRadius)
+            Rectangle()
                 .foregroundColor(.appCell)
+                .cornerRadius(appCornerRadius, corners: [.topLeft,.topRight])
         }
     }
 }

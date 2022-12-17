@@ -49,7 +49,7 @@ struct EventMatchesView: View {
                     HStack{
                         ForEach(viewModel.matches) { match in
                             NavigationLink {
-                                MatchDetailView(viewModel: MatchDetailViewModel(match: match, event: viewModel.event))
+                                MatchDetailView(match: match, event: viewModel.event)
                                     .environmentObject(viewModel)
                                     .onDisappear {
                                         viewModel.refreshEventDetails()

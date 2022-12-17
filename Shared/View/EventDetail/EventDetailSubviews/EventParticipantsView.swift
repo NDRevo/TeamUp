@@ -13,6 +13,8 @@ struct EventParticipantsView: View {
     @EnvironmentObject var playerManager: PlayerManager
     @ObservedObject var viewModel: EventDetailViewModel
 
+    @State var isPresentingAddPlayerToEventSheet: Bool = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: appCellSpacing){
             HStack{
@@ -20,8 +22,8 @@ struct EventParticipantsView: View {
                     .font(.system(.title2, design: .rounded, weight: .bold))
                 Spacer()
                 if viewModel.isEventOwner(for: playerManager.playerProfile?.record) && viewModel.event.isPublished == 1 {
-                    NavigationLink {
-                        AddPlayerToEventSheet(viewModel: viewModel)
+                    Button {
+                        isPresentingAddPlayerToEventSheet = true
                     } label: {
                         Image(systemName: "person.badge.plus")
                             .font(.system(size: 24, design: .default))
@@ -94,6 +96,9 @@ struct EventParticipantsView: View {
                     }
                 }
             }
+        }
+        .sheet(isPresented: $isPresentingAddPlayerToEventSheet) {
+            AddPlayerToEventSheet(viewModel: viewModel)
         }
     }
 }

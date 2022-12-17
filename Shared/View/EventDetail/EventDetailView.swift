@@ -41,6 +41,7 @@ struct EventDetailView: View {
             }
             Spacer()
         }
+        //Might not need
         .navigationBarTitleDisplayMode(.inline)
         .refreshable {
             viewModel.refreshEventDetails()

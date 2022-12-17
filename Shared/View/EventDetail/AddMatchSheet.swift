@@ -17,13 +17,6 @@ struct AddMatchSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Text("Create Match")
-                    .foregroundColor(.primary)
-                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
-                Spacer()
-            }
-            .padding(.horizontal, appHorizontalViewPadding)
             List {
                 TextField("Match Name", text: $viewModel.matchName)
                     .font(.system(.body, design: .rounded, weight: .regular))
@@ -55,11 +48,12 @@ struct AddMatchSheet: View {
             .scrollContentBackground(.hidden)
             
         }
+        .navigationTitle("Create Match")
         .background {
             Color.appBackground.ignoresSafeArea()
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .navigationBarLeading) {
                 Button("Dismiss") {dismiss()}
             }
         }

@@ -13,34 +13,61 @@ import SwiftUI
 struct MatchDetailView: View {
     @EnvironmentObject var playerManager: PlayerManager
     @EnvironmentObject var eventDetailViewModel: EventDetailViewModel
-    @ObservedObject var viewModel: MatchDetailViewModel
+    @StateObject var viewModel: MatchDetailViewModel
 
     @Environment(\.dismiss) var dismiss
 
-    var body: some View {
-        ScrollView(showsIndicators: false) {
-            ZStack {
-                VStack{
-                    if viewModel.isAbleToChangeTeams(for: playerManager.playerProfile) && viewModel.event.isArchived == 0{
-                        MatchOptionButtons(viewModel: viewModel)
-                    }
+    init(match: TUMatch, event: TUEvent){ _viewModel = StateObject(wrappedValue: MatchDetailViewModel(match: match, event: event)) }
 
-                    ForEach(viewModel.teams) { team in
-                        VStack{
-                            TeamHeaderView(viewModel: viewModel, team: team)
-                            PlayerListForTeam(viewModel: viewModel, team: team)
-                        }
-                        .padding(12)
+    var body: some View {
+    
+        VStack(spacing: appCellSpacing){
+                VStack(spacing: 0) {
+                    MatchTimeHeader(matchTime: viewModel.match.matchStartTime)
+                    HStack {
+                        Button(action: {
+                            viewModel.shufflePlayers()
+                        }, label: {
+                            Text("Shuffle")
+                                .frame(maxWidth: .infinity)
+                        })
+                        .modifier(MatchDetailButtonStyle(color: .yellow))
+                        
+                        Spacer()
+                        Button(action: {
+                         
+                        }, label: {
+                            Text("Balance")
+                                .frame(maxWidth: .infinity)
+                        })
+                        .modifier(MatchDetailButtonStyle(color: .blue))
                     }
+                    .padding(.bottom, appCellPadding)
+                    .padding(.horizontal, appCellPadding)
+                    //Make sure it works
+                    .disabled(!(viewModel.isAbleToChangeTeams(for: playerManager.playerProfile) && viewModel.event.isArchived == 0))
                 }
-                if viewModel.isLoading{LoadingView()}
-            }
-        }
-        //FIX: This fails to show refresh indicator but still refreshes??
-        .refreshable {
-            viewModel.getTeamsForMatch()
+                .background(Color.appCell)
+                .clipShape(RoundedRectangle(cornerRadius: appCornerRadius))
+                .padding(.horizontal, appHorizontalViewPadding)
+
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: appCellSpacing) {
+                        ForEach(viewModel.teams) { team in
+                            VStack(spacing: 0){
+                                TeamHeaderView(viewModel: viewModel, team: team)
+                                PlayerListForTeam(viewModel: viewModel, team: team)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, appHorizontalViewPadding)
+                }
+                .refreshable {
+                    viewModel.getTeamsForMatch()
+                }
         }
         .background(Color.appBackground)
+        .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(viewModel.match.matchName)
         .task {
             viewModel.getTeamsForMatch()
@@ -96,8 +123,39 @@ struct MatchDetailView: View {
 
 struct MatchDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchDetailView(viewModel: MatchDetailViewModel(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event)))
+        MatchDetailView(match: TUMatch(record: MockData.match), event: TUEvent(record: MockData.event))
             .environmentObject(PlayerManager( playerProfile: TUPlayer(record: MockData.player)))
             .environmentObject(EventDetailViewModel(event: TUEvent(record: MockData.event)))
+    }
+}
+
+struct MatchTimeHeader: View {
+    var matchTime: Date
+
+    var body: some View {
+        HStack(alignment: .center){
+            HStack(spacing: imageTextSpacing){
+                Image(systemName: "clock")
+                    .font(.headline)
+                    .foregroundColor(.blue)
+                Text("Match Start Time")
+                    .font(.system(.callout, design: .monospaced, weight: .medium))
+            }
+            Spacer()
+            HStack{
+                Text(matchTime.convertDateToString())
+                    .font(.system(.body, design: .monospaced, weight: .bold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(appMinimumScaleFactor)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .frame(width: 100)
+            }
+            .background {
+                RoundedRectangle(cornerRadius: appCornerRadius)
+                    .foregroundColor(.appBackground)
+            }
+        }
+        .padding(appCellPadding)
     }
 }

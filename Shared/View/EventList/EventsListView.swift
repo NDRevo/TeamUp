@@ -11,6 +11,7 @@ import SwiftUI
 //INFO: First tab displayed to user. Shows list of events for all games or a specific game
 struct EventsListView: View {
 
+    @EnvironmentObject private var playerManager: PlayerManager
     @EnvironmentObject private var eventsManager: EventsManager
     @StateObject private var viewModel = EventsListViewModel()
 
@@ -27,6 +28,10 @@ struct EventsListView: View {
             .background{Color.appBackground.edgesIgnoringSafeArea(.all)}
             .refreshable {
                 eventsManager.getPublicEvents(forGame: viewModel.currentGameSelected)
+                guard let _ = playerManager.playerProfile else {
+                    Task{await playerManager.getRecordAndPlayerProfile()}
+                    return
+                }
             }
             .navigationTitle("Events")
             .onAppear {

@@ -104,7 +104,7 @@ enum EventField: Hashable {
     @Published var matchDate: Date                  = Date()
 
     // Editing Event
-    @Published var searchString: String             = ""
+    @Published var searchString: String = ""
     @Published var editedEventName: String = ""
     @Published var editedDescription: String = ""
     @Published var editedLocationTypePicked: Locations = .irl

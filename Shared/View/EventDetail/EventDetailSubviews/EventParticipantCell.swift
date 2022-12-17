@@ -1,14 +1,12 @@
 //
 //  EventParticipantCell.swift
-//  TeamUp
+//  TeamUp (iOS)
 //
-//  Created by Noé Duran on 3/18/22.
+//  Created by Noé Duran on 12/16/22.
 //
 
 import SwiftUI
 
-//MARK: EventParticipantCell
-//INFO: View that displays players name and game profile details
 struct EventParticipantCell: View {
 
     var event: TUEvent
@@ -17,21 +15,20 @@ struct EventParticipantCell: View {
 
     var body: some View {
         HStack{
-            VStack(alignment: .leading){
+            VStack(alignment: .leading, spacing: 0){
                 if let gameProfile = gameProfile {
                     Text("\(gameProfile.gameID)")
-                        .bold()
-                        .font(.title3)
+                        .font(.system(.headline, design: .rounded, weight: .medium))
                     Text(gameProfile.gameRank)
                 } else {
                     Text("\(player.username)")
-                        .bold()
-                        .font(.title)
+                        .font(.system(.headline, design: .rounded, weight: .medium))
                 }
             }
+            .padding(.vertical, appCellPadding)
             Spacer()
         }
-        .padding(appCellPadding)
+        .padding(.horizontal, appHorizontalViewPadding)
         .background(Color.appCell)
         .clipShape(RoundedRectangle(cornerRadius: appCornerRadius))
         .task {
